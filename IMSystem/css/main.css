@@ -1,8 +1,6 @@
-/* 
-    Document   : main
-    Created on : 2014/09/24, 16:00:43
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-
+body{
+	font-size: 14px;
+	color: #4f4f4f;
+	font-family: Microsoft Yahei, Helvetica, Simsun !important ;
+	background: #fff;
+}

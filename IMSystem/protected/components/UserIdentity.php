@@ -17,13 +17,33 @@ class UserIdentity extends CUserIdentity {
      */
     public function authenticate() {
         $user = TUsers::model()->find("username=:username and status='1'", array(':username' => $this->username));
-        
+
         if (is_null($user)) {
+            // 用户不存在
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         } elseif ($this->password !== $user->password) {
+            // 密码错误
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
-            $this->errorCode = self::ERROR_NONE;
+            $loginUser = null;
+            if ($user->roles === 'S') {
+                $loginUser = TStudents::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
+            } else {
+                $loginUser = TTeachers::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
+            }
+
+            if (!is_null($loginUser)) {
+                $this->errorCode = self::ERROR_NONE;
+                
+                $this->setState('role',      $user->roles);
+                $this->setState('name',      $loginUser->name);
+                
+                $this->setState('user',      $user);
+                $this->setState('loginUser', $loginUser);
+            } else {
+                $this->errorCode = self::ERROR_USERNAME_INVALID;
+            }
+            
         }
 
         return !$this->errorCode;

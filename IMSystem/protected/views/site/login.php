@@ -5,7 +5,7 @@
 $baseUrl = Yii::app()->baseUrl; 
 $this->pageTitle=Yii::app()->name . '登录画面';
 $this->breadcrumbs=array(
-	'Login',
+	'登录',
 );
 
 $cs=Yii::app()->clientScript;

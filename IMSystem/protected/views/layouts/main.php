@@ -56,30 +56,34 @@
   
     <div class="container">
       <!-- Menu button for smallar screens -->
-      <div class="navbar-header">
-		  <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>Menu</span></button>
-      <a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
-		  <!-- Site name for smallar screens -->
-		  <a href="index.html" class="navbar-brand">Mood<span class="bold">Strap</span></a>
-		</div>
+        <div class="navbar-header">
+            <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>Menu</span></button>
+            <a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
+            <!-- Site name for smallar screens -->
+            <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">IM<span class="bold">System</span></a>
+        </div>
 
       <!-- Navigation starts -->
       <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">         
         
         <!-- Links -->
         <ul class="nav navbar-nav pull-right">
-          <li class="dropdown pull-right user-data">            
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-              <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/user.png"> John <span class="bold">Doe</span> <b class="caret"></b>              
-            </a>
+            <li class="dropdown pull-right user-data">            
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/user.png"> 
+                    <span class="bold"><?php echo Yii::app()->user->getState('name'); ?></span> 
+                    <b class="caret"></b>
+                </a>
+
+                <!-- Dropdown menu -->
+                <ul class="dropdown-menu">
+                    <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                    <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+                    <li><a href="<?php echo $this->createurl('site/logout');?>"><i class="fa fa-key"></i>退出</a></li>
+                </ul>
+            </li>
             
-            <!-- Dropdown menu -->
-            <ul class="dropdown-menu">
-              <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-              <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
-              <li><a href="login.html"><i class="fa fa-key"></i> Logout</a></li>
-            </ul>
-          </li>
+            
           <!-- Upload to server link. Class "dropdown-big" creates big dropdown -->
           <li class="dropdown dropdown-big leftonmobile">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cloud-upload"></i></a>
@@ -90,10 +94,10 @@
                 <p>Photo Upload in Progress</p>
                 <!-- Bootstrap progress bar -->
                 <div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-info"  role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-						<span class="sr-only">40% Complete</span>
-					</div>
-			    </div>
+                    <div class="progress-bar progress-bar-info"  role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                        <span class="sr-only">40% Complete</span>
+                    </div>
+                </div>
 
                 <hr />
 
@@ -101,10 +105,10 @@
                 <p>Video Upload in Progress</p>
                 <!-- Bootstrap progress bar -->
                 <div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-						<span class="sr-only">80% Complete</span>
-					</div>
-			    </div> 
+                    <div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                        <span class="sr-only">80% Complete</span>
+                    </div>
+                </div> 
 
                 <hr />             
 
