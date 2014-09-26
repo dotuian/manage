@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'信息管理系统',
-    'language' => 'zh-CN',
+    'language' => 'zh_cn',
     
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -33,6 +33,11 @@ return array(
 
 	// application components
 	'components'=>array(
+        // 设置自定义消息路径
+        'coreMessages'=>array(
+             'basePath'=> dirname(__FILE__).DIRECTORY_SEPARATOR.'..\messages'
+        ),
+        
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>false,
@@ -79,7 +84,7 @@ return array(
             'enableProfiling' => true,
             'enableParamLogging'=>true,
             'enableSlave' => false,
-            'slaves' => array(//slave connection config is same as CDbConnection
+            'slaves' => array(
                 array(
                     'connectionString' => 'mysql:host=localhost;dbname=score_db;port=3316',
                     'username' => 'root',
@@ -103,6 +108,8 @@ return array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
 		),
+        
+        
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -111,11 +118,10 @@ return array(
 					'levels'=>'error, warning',
 				),
 				// uncomment the following to show log messages on web pages
-				/*
+
 				array(
 					'class'=>'CWebLogRoute',
 				),
-				*/
 			),
 		),
 	),
@@ -125,5 +131,7 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+        
+        'EmptySelectOption' => '--------',
 	),
 );

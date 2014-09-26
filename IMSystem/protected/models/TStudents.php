@@ -71,7 +71,7 @@ class TStudents extends CActiveRecord
 			array('birthday, comment', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, code, name, status, sex, id_card_no, birthday, class_id, old_class_id, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, code, name, status, sex, id_card_no, birthday, class_id, old_class_id, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment, create_user, create_time, update_user, update_time', 'safe'),
 		);
 	}
 

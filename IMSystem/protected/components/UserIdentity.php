@@ -35,7 +35,11 @@ class UserIdentity extends CUserIdentity {
             if (!is_null($loginUser)) {
                 $this->errorCode = self::ERROR_NONE;
                 
+                $this->setState('ID',        $user->ID);
+                $this->setState('username',  $user->username);
+                $this->setState('password',  $user->password);
                 $this->setState('role',      $user->roles);
+                
                 $this->setState('name',      $loginUser->name);
                 
                 $this->setState('user',      $user);

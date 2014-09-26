@@ -21,6 +21,22 @@ class SiteController extends Controller
 		);
 	}
 
+    
+    public function accessRules() {
+        return array(
+            array('allow',
+                'users' => array('@'),
+            ),
+            array('allow',
+                'actions' => array('login'),
+                'users' => array('*'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+    
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
@@ -37,6 +53,8 @@ class SiteController extends Controller
 	 */
 	public function actionError()
 	{
+        Yii::log("================");
+        
 		if($error=Yii::app()->errorHandler->error)
 		{
 			if(Yii::app()->request->isAjaxRequest)

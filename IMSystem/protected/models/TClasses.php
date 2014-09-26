@@ -129,4 +129,21 @@ class TClasses extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    
+    
+    public function getClassOption($flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $data = self::model()->findAll("status='1'");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->class_name;
+        }
+
+        return $result;
+    }
 }
+

@@ -2,11 +2,15 @@ body {
   background: #eee !important;
 }
 
-body,input {
+body,input{
 	font-size: 14px;
 	color: #4f4f4f;
 	font-family: Microsoft Yahei, Helvetica, Simsun !important ;
 	background: #fff;
+}
+
+h2 {
+    font-family: Microsoft Yahei, Helvetica, Simsun !important ;
 }
 
 .wrapper {
@@ -51,9 +55,9 @@ body,input {
   border-top-right-radius: 0;
 }
 
-div.errorMessage{
-    padding: 2px;
-    color: #b94a48;
+/** 错误消息自定义样式 */
+span.errorMessage, div.errorMessage{
+    padding: 1px;
+    color: #F00000;
     margin-bottom: 1px;
 }
-

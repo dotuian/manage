@@ -2,6 +2,7 @@
 /* @var $this SiteController */
 /* @var $model LoginForm */
 /* @var $form CActiveForm  */
+
 $baseUrl = Yii::app()->baseUrl; 
 $this->pageTitle=Yii::app()->name . '登录画面';
 $this->breadcrumbs=array(

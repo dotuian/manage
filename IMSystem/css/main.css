@@ -1,6 +1,34 @@
-body{
-	font-size: 14px;
-	color: #4f4f4f;
-	font-family: Microsoft Yahei, Helvetica, Simsun !important ;
-	background: #fff;
+body {
+    font-size: 14px;
+    color: #4f4f4f;
+    font-family: Microsoft Yahei, Helvetica, Simsun !important ;
+    background: #fff;
+}
+
+h1, h2, h3, h4, h5, h6, input, label, div, span, p {
+    font-family: Microsoft Yahei, Helvetica, Simsun !important ;
+}
+
+
+/** 错误消息自定义样式 */
+span.errorMessage, div.errorMessage{
+    padding: 1px;
+    color: #F00000;
+    margin-bottom: 1px;
+}
+
+input.error{
+    background-color: #fff8cc;
+}
+
+
+div.alert{
+    padding : 10px 15px;
+    margin-bottom : 0px !important;
+}
+
+
+.form-control {
+/*    display: inline !important;
+    width : auto !important;*/
 }

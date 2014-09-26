@@ -46,7 +46,9 @@
 
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-
+        
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.js"></script> 
+        
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     </head>
 
@@ -266,15 +268,26 @@
         <ul id="nav">
           <!-- Main menu with font awesome icon -->
           <li>
-              <a href="index.html">
+              <a href="<?php echo Yii::app()->homeUrl; ?>">
                   <i class="fa fa-home"></i> <span>首页</span>
               </a>
           </li>
           
-          <li class="has_sub"><a href="#">
-            <i class="fa fa-list-alt"></i> <span>学生管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+          <li class="has_sub">
+            <a href="#">
+                <i class="fa fa-list-alt"></i> <span>学生管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span>
+            </a>
             <ul>
-              <li><a href="#">学生信息</a></li>
+              <li><a href="<?php echo $this->createUrl('teacher/searchStudent');?>">学生信息查询</a></li>
+              <li><a href="<?php echo $this->createUrl('teacher/addStudent');?>">学生信息添加</a></li>
+            </ul>
+          </li>
+          
+          <li class="has_sub">
+            <a href="#">
+            <i class="fa fa-user"></i> <span>个人信息</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+            <ul>
+              <li><a href="<?php echo $this->createUrl('setting/changePassword');?>">密码变更</a></li>
               <li><a href="#">学生登录</a></li>
             </ul>
           </li>
@@ -342,16 +355,15 @@
       
 	    <!-- Page heading -->
 	    <div class="page-head">
-            <h2 class="pull-left"><?php echo '主标题'?></h2>
+            <h2 class="pull-left"><?php echo $this->pageTitle; ?></h2>
             <div class="clearfix"></div>
         
             <!-- Breadcrumb -->
             <div class="bread-crumb">
-                <a href="<?php echo Yii::app()->homeUrl; ?>">
-                <i class="fa fa-home"></i> 首页</a>
-                <!-- Divider -->
-                <span class="divider">/</span> 
-                <a href="#" class="bread-current">Forms</a>
+                <?php $this->widget('zii.widgets.CBreadcrumbs', array(
+                        'links'=>$this->breadcrumbs,
+                        'homeLink' => CHtml::link('<i class="fa fa-home"></i> 首页</a>', Yii::app()->homeUrl),
+                )); ?>
             </div>
         
             <div class="clearfix"></div>
@@ -362,6 +374,29 @@
 	    <div class="matter">
             
             <div class="container">
+                <!-- 提示消息显示区域 -->
+                <?php if (Yii::app()->user->hasFlash('success')) { ?>
+                    <div class="alert alert-success">
+                        <?php echo Yii::app()->user->getFlash('success'); ?>
+                    </div>
+                <?php } ?>
+                <?php if (Yii::app()->user->hasFlash('warning')) { ?>
+                    <div class="alert alert-warning">
+                        <?php echo Yii::app()->user->getFlash('warning'); ?>
+                    </div>
+                <?php } ?>
+                <?php if (Yii::app()->user->hasFlash('info')) { ?>
+                    <div class="alert alert-info">
+                        <?php echo Yii::app()->user->getFlash('info'); ?>
+                    </div>
+                <?php } ?>
+                <?php if (Yii::app()->user->hasFlash('danger')) { ?>
+                    <div class="alert alert-danger">
+                        <?php echo Yii::app()->user->getFlash('danger'); ?>
+                    </div>
+                <?php } ?>
+                
+                
                 <?php echo $content; ?>
             </div>
         </div>
@@ -390,10 +425,12 @@
 <!-- Footer ends -->
 
 <!-- Scroll to top -->
+<!--
 <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+-->
+
 
 <!-- JS -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.js"></script> <!-- jQuery -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.js"></script> <!-- Bootstrap -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-ui-1.9.2.custom.min.js"></script> <!-- jQuery UI -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
@@ -403,7 +440,7 @@
 <!-- jQuery Flot -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/excanvas.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.resize.js"></script>
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.resize.js"></script>-->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.pie.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.stack.js"></script>
 

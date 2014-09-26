@@ -23,26 +23,34 @@ class Controller extends CController {
      * for more details on how to specify this property.
      */
     public $breadcrumbs = array();
-
+    
+    
+    public function init() {
+        // 错误标签的设定
+        CHtml::$errorContainerTag = 'span';
+    }
+    
     public function filters() {
         return array(
             'accessControl',
         );
     }
-
+    
     public function accessRules() {
         return array(
             array('allow',
                 'users' => array('@'),
             ),
-            array('allow',
-                'actions' => array('login'),
-                'users' => array('*'),
-            ),
-            array('deny', // deny all users
+            array('deny',
+                // deny all users
                 'users' => array('*'),
             ),
         );
     }
-
+    
+    public function getLoginUserId() {
+        return Yii::app()->user->getState('ID');
+    }
+    
+    
 }
