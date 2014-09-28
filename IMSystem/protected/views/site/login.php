@@ -14,6 +14,8 @@ $cs=Yii::app()->clientScript;
 $cs->registerCssFile($baseUrl.'/css/bootstrap.css');
 $cs->registerCssFile($baseUrl.'/css/login.css');
 
+// 错误标签的设定
+CHtml::$errorContainerTag = 'div';
 ?>
 
 <div class="wrapper">

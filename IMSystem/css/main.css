@@ -32,3 +32,23 @@ div.alert{
 /*    display: inline !important;
     width : auto !important;*/
 }
+
+.pager .next>a, .pager .next>span {
+    float : left !important;
+}
+
+.pager ul li.selected a{
+    background-color: #BFCFFF;
+}
+
+#search-form table tr td {
+    padding: 4px !important;
+}
+
+#search-form table tr th {
+    text-align: center;
+}
+
+table#result tr th {
+    text-align: center;
+}

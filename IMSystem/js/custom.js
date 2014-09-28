@@ -350,19 +350,23 @@ $(document).ready(function(){
 });
 
 
-/* Date picker */
-
-  $(function() {
+/* 日期选择器 */
+$(function() {
     $('#datetimepicker1').datetimepicker({
-      pickTime: false
+        language:  'zh-CN',
+        autoclose: 1,
+        pickTime: false
     });
-  });
+});
 
-   $(function() {
+/* 时间选择器 */
+$(function() {
     $('#datetimepicker2').datetimepicker({
-      pickDate: false
+        language:  'zh-CN',
+        autoclose: 1,
+        pickDate: false
     });
-  });
+});
 
 
 

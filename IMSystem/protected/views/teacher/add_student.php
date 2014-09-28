@@ -1,7 +1,7 @@
 <?php
 $this->pageTitle= '学生信息添加';
 $this->breadcrumbs = array(
-    '学生信息添加',
+    $this->pageTitle,
 );
 ?>
 <script>
@@ -10,8 +10,6 @@ $(document).ready(function(){
     $('#datetimepicker1').datetimepicker({
         pickTime: false
     });
-
-    
 });
 </script>
 
@@ -56,7 +54,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">性别</label>
                             <div class="col-lg-10">
-                                <?php echo $form->radioButtonList($model,'sex', array('M'=>'男', 'F'=>'女'), array('separator'=>'　')); ?>
+                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'sex'); ?>
                             </div>
                         </div>

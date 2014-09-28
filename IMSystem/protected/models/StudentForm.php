@@ -98,7 +98,7 @@ class StudentForm extends CFormModel
 	}
     
     
-    public static function getPaymentOption($flag) {
+    public static function getPaymentOption($flag=true) {
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];
@@ -109,4 +109,17 @@ class StudentForm extends CFormModel
 
         return $result;
     }
+    
+    public static function getSexOption($flag=true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['M'] = '男';
+        $result['F'] = '女';
+
+        return $result;
+    }
+
 }

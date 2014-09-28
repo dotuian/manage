@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'信息管理系统',
-    'language' => 'zh_cn',
+        'language' => 'zh_cn',
     
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -38,21 +38,21 @@ return array(
              'basePath'=> dirname(__FILE__).DIRECTORY_SEPARATOR.'..\messages'
         ),
         
-		'user'=>array(
-			// enable cookie-based authentication
-			'allowAutoLogin'=>false,
-		),
-		// uncomment the following to enable URLs in path-format
-		/*
-		'urlManager'=>array(
-			'urlFormat'=>'path',
-			'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-			),
-		),
-		*/
+        'user'=>array(
+            // enable cookie-based authentication
+            'allowAutoLogin'=>false,
+        ),
+        // uncomment the following to enable URLs in path-format
+        /*
+        'urlManager'=>array(
+                'urlFormat'=>'path',
+                'rules'=>array(
+                        '<controller:\w+>/<id:\d+>'=>'<controller>/view',
+                        '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+                        '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                ),
+        ),
+        */
         
         'request'=>array(
             'enableCsrfValidation'=>true,
@@ -60,19 +60,19 @@ return array(
 
         
         
-		/*
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
-		// uncomment the following to use a MySQL database
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
-		),
-		*/
+        /*
+        'db'=>array(
+                'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
+        ),
+        // uncomment the following to use a MySQL database
+        'db'=>array(
+                'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+                'emulatePrepare' => true,
+                'username' => 'root',
+                'password' => '',
+                'charset' => 'utf8',
+        ),
+        */
         
         'db' => array(
             'class' => 'DbConnectionMan',
@@ -133,5 +133,6 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
         
         'EmptySelectOption' => '--------',
+        'PageSize' => 10,
 	),
 );

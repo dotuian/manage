@@ -24,10 +24,20 @@ class Controller extends CController {
      */
     public $breadcrumbs = array();
     
+    // 登录用户ID
+    public $ID = '';
+    // 登录用户角色
+    public $role = '';
     
     public function init() {
         // 错误标签的设定
         CHtml::$errorContainerTag = 'span';
+        
+        // 登录用户ID
+        $this->ID = Yii::app()->user->getState('ID');
+        
+        // 登录用户角色
+        $this->role = Yii::app()->user->getState('role');
     }
     
     public function filters() {
@@ -52,5 +62,20 @@ class Controller extends CController {
         return Yii::app()->user->getState('ID');
     }
     
+    /**
+     * 判断登录的用户是否为学生用户
+     * @return type
+     */    
+    public function isStudent(){
+        return $this->role === 'S';
+    }
     
+    /**
+     * 判断登录的用户是否为学生用户
+     * @return type
+     */
+    public function isTeacher() {
+        return $this->role != 'S';
+    }
+
 }

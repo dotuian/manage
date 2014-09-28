@@ -62,6 +62,7 @@ class TStudents extends CActiveRecord
 			array('code, name, sex, class_id, create_time, update_time', 'required'),
 			array('senior_score, school_year, college_score', 'numerical', 'integerOnly'=>true),
 			array('code, id_card_no', 'length', 'max'=>20),
+			array('name', 'length', 'max'=>12),
 			array('name, class_id, old_class_id, create_user, update_user', 'length', 'max'=>10),
 			array('status, sex', 'length', 'max'=>1),
 			array('accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, school_of_graduation', 'length', 'max'=>50),
@@ -86,7 +87,7 @@ class TStudents extends CActiveRecord
 			'tScores' => array(self::HAS_MANY, 'TScores', 'student_id'),
 			'class' => array(self::BELONGS_TO, 'TClasses', 'class_id'),
 			'oldClass' => array(self::BELONGS_TO, 'TClasses', 'old_class_id'),
-			'iD' => array(self::BELONGS_TO, 'TUsers', 'ID'),
+			'user' => array(self::BELONGS_TO, 'TUsers', 'ID'),
 		);
 	}
 
