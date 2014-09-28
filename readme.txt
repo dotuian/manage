@@ -1,4 +1,4 @@
-or create a new repository on the command line
+﻿or create a new repository on the command line
 
 	touch README.md
 	git init
@@ -14,7 +14,7 @@ or push an existing repository from the command line
 
 
 
-CREATE USER ＜ユーザ名＞ IDENTIFIED BY '＜パスワード＞';
+CREATE USER ＜用户名＞ IDENTIFIED BY '＜密码＞';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
     ON bankaccount.*
     TO 'custom'@'localhost'
