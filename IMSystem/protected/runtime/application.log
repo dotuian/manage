@@ -1741,3 +1741,32 @@ REQUEST_URI=/imsystem/index.php?r=setting/profile
 in D:\PHP\manage\IMSystem\protected\views\setting\profile.php (43)
 in D:\PHP\manage\IMSystem\protected\controllers\SettingController.php (27)
 in D:\PHP\manage\IMSystem\index.php (13)
+2014/09/29 09:50:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "addStudent" 动作.' in D:\PHP\manage\yii-1.1.15.022a51\framework\web\CController.php:483
+Stack trace:
+#0 D:\PHP\manage\yii-1.1.15.022a51\framework\web\CController.php(270): CController->missingAction('addStudent')
+#1 D:\PHP\manage\yii-1.1.15.022a51\framework\web\CWebApplication.php(282): CController->run('addStudent')
+#2 D:\PHP\manage\yii-1.1.15.022a51\framework\web\CWebApplication.php(141): CWebApplication->runController('teacher/addStud...')
+#3 D:\PHP\manage\yii-1.1.15.022a51\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 D:\PHP\manage\IMSystem\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/im/index.php?r=teacher/addStudent
+HTTP_REFERER=http://localhost/im/
+---
+2014/09/29 09:50:50 [error] [php] Use of undefined constant MENU_NAME - assumed 'MENU_NAME' (D:\PHP\manage\IMSystem\protected\controllers\StudentController.php:10)
+Stack trace:
+#0 D:\PHP\manage\yii-1.1.15.022a51\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#1 D:\PHP\manage\IMSystem\index.php(13): CWebApplication->run()
+REQUEST_URI=/im/index.php?r=student/create
+in D:\PHP\manage\IMSystem\protected\controllers\StudentController.php (10)
+in D:\PHP\manage\IMSystem\index.php (13)
+2014/09/29 09:51:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message '系统无法找到请求的 "search" 动作.' in D:\PHP\manage\yii-1.1.15.022a51\framework\web\CController.php:483
+Stack trace:
+#0 D:\PHP\manage\yii-1.1.15.022a51\framework\web\CController.php(270): CController->missingAction('search')
+#1 D:\PHP\manage\yii-1.1.15.022a51\framework\web\CWebApplication.php(282): CController->run('search')
+#2 D:\PHP\manage\yii-1.1.15.022a51\framework\web\CWebApplication.php(141): CWebApplication->runController('teacher/search')
+#3 D:\PHP\manage\yii-1.1.15.022a51\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 D:\PHP\manage\IMSystem\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/im/index.php?r=teacher/search
+HTTP_REFERER=http://localhost/im/index.php?r=student/create
+---

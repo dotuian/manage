@@ -2,6 +2,60 @@
 
 class SettingController extends Controller {
 
+    public function init() {
+        parent::init();
+        Yii::app()->user->setState('menu', 'setting');
+    }
+    
+    
+    public function accessRules()
+    {
+        return array(
+            array('allow',  //允许所有人执行'login','error','index'
+                'actions'=>array('login','error','index'),
+                'users'=>array('*'),
+            ),
+            array('allow', //允许超级管理员执行所有动作
+                'actions'=>array('create','update','delete'),
+                'expression'=>array($this,'isSuperAdmin'),
+            ),
+            array('allow',//允许普通管理员执行
+                'actions'=>array('update'),
+                'expression'=>array($this,'isNormalAdmin'),    //表示调用$this(即AdminController)中的isNormalAdmin方法。
+            ),      
+            array('deny',  // deny all users
+                'users'=>array('*'),
+            ),
+        );
+    }
+    
+    /**
+     * 判断是否是超级管理员
+     * @param type $user 代表Yii::app()->user即登录用户
+     * @return type
+     */
+    protected function isSuperAdmin($user) {
+        return ($this->loadModel($user->id)->adminAdminFlag == 1);
+    }
+
+    /**
+     * 判断是否是普通管理员
+     * @param type $user 代表Yii::app()->user即登录用户
+     * @return type
+     */
+    protected function isNormalAdmin($user) {
+        return ($this->loadModel($user->id)->adminAdminFlag == 0);
+    }
+
+    public function loadModel($id) {
+        $model = TUsers::model()->findByPk((int) $id);
+        if ($model === null) {
+            throw new CHttpException(404, '页面不存在！');
+        }
+        return $model;
+    }
+    
+    
     /**
      * 登录用户信息
      */

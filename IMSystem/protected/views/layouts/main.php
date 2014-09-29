@@ -112,49 +112,49 @@
             </li>
           
             <li class="has_sub">
-                <a href="#" class="open">
+                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'student' ? 'open' : ''; ?>">
                     <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span>
                 </a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('teacher/searchStudent');?>">学生信息查询</a></li>
-                    <li><a href="<?php echo $this->createUrl('teacher/addStudent');?>">学生信息添加</a></li>
+                    <li><a href="<?php echo $this->createUrl('student/search');?>">学生信息查询</a></li>
+                    <li><a href="<?php echo $this->createUrl('student/create');?>">学生信息添加</a></li>
                 </ul>
             </li>
           
             <li class="has_sub">
-                <a href="#" class="open">
+                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'teacher' ? 'open' : ''; ?>">
                 <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('#');?>">教师信息查询</a></li>
-                    <li><a href="<?php echo $this->createUrl('#');?>">教师信息添加</a></li>
+                    <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息查询</a></li>
+                    <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息添加</a></li>
                 </ul>
             </li>
           
             <li class="has_sub">
-                <a href="#" class="open">
+                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'class' ? 'open' : ''; ?>">
                 <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('#');?>">班级信息查询</a></li>
-                    <li><a href="<?php echo $this->createUrl('#');?>">班级信息添加</a></li>
+                    <li><a href="<?php echo $this->createUrl('class/search');?>">班级信息查询</a></li>
+                    <li><a href="<?php echo $this->createUrl('class/create');?>">班级信息添加</a></li>
                 </ul>
             </li>
           
             <li class="has_sub">
-                <a href="#" class="open">
+                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'course' ? 'open' : ''; ?>">
                 <i class="fa fa-table"></i> <span>课程信息</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('#');?>">课程信息查询</a></li>
-                    <li><a href="<?php echo $this->createUrl('#');?>">课程信息添加</a></li>
+                    <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息查询</a></li>
+                    <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息添加</a></li>
                 </ul>
             </li>
           
           
             <li class="has_sub">
-                <a href="#" class="open">
+                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'class' ? 'score' : ''; ?>">
                 <i class="fa fa-bar-chart-o"></i> <span>成绩信息</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('#');?>">成绩信息查询</a></li>
-                    <li><a href="<?php echo $this->createUrl('#');?>">学生成绩录入</a></li>
+                    <li><a href="<?php echo $this->createUrl('score/search');?>">成绩信息查询</a></li>
+                    <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
                 </ul>
             </li>
           

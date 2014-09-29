@@ -40,20 +40,32 @@ class Controller extends CController {
         $this->role = Yii::app()->user->getState('role');
     }
     
+    /**
+     * 基于角色访问控制（role-based access (RBAC)）
+     * @return type
+     */
     public function filters() {
         return array(
             'accessControl',
         );
     }
     
+    /**
+     * 在控制器（controller）里重载CController::filters方法，
+     * 设置访问过滤器来控制访问动作
+     * @return type
+     * 
+     * *: 任何用户，包括匿名和验证通过的用户
+     * ?: 匿名用户
+     * @: 验证通过的用户
+     */
     public function accessRules() {
         return array(
             array('allow',
-                'users' => array('@'),
+                'users' => array('@'), // 允许所有验证用户访问
             ),
             array('deny',
-                // deny all users
-                'users' => array('*'),
+                'users' => array('*'), // 拒绝所有用户
             ),
         );
     }

@@ -25,14 +25,14 @@ class SiteController extends Controller
     public function accessRules() {
         return array(
             array('allow',
-                'users' => array('@'),
+                'users' => array('@'), // 允许所有验证用户
             ),
             array('allow',
                 'actions' => array('login'),
-                'users' => array('*'),
+                'users' => array('*'), // 允许所有用户访问login
             ),
-            array('deny', // deny all users
-                'users' => array('*'),
+            array('deny', 
+                'users' => array('*'), // 拒绝所有用户
             ),
         );
     }
