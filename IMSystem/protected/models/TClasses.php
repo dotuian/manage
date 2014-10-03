@@ -7,6 +7,7 @@
  * @property string $ID
  * @property string $class_code
  * @property string $class_name
+ * @property string $class_type
  * @property string $status
  * @property integer $term_year
  * @property string $teacher_id
@@ -18,6 +19,7 @@
  * The followings are the available model relations:
  * @property MCourses[] $mCourses
  * @property TTeachers $teacher
+ * @property TScores[] $tScores
  * @property TStudents[] $tStudents
  * @property TStudents[] $tStudents1
  */
@@ -43,11 +45,11 @@ class TClasses extends CActiveRecord
 			array('term_year', 'numerical', 'integerOnly'=>true),
 			array('class_code', 'length', 'max'=>20),
 			array('class_name', 'length', 'max'=>50),
-			array('status', 'length', 'max'=>1),
+			array('class_type, status', 'length', 'max'=>1),
 			array('teacher_id, create_user, update_user', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, class_code, class_name, status, term_year, teacher_id, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, class_code, class_name, class_type, status, term_year, teacher_id, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,6 +63,7 @@ class TClasses extends CActiveRecord
 		return array(
 			'mCourses' => array(self::HAS_MANY, 'MCourses', 'class_id'),
 			'teacher' => array(self::BELONGS_TO, 'TTeachers', 'teacher_id'),
+			'tScores' => array(self::HAS_MANY, 'TScores', 'class_id'),
 			'tStudents' => array(self::HAS_MANY, 'TStudents', 'class_id'),
 			'tStudents1' => array(self::HAS_MANY, 'TStudents', 'old_class_id'),
 		);
@@ -75,7 +78,8 @@ class TClasses extends CActiveRecord
 			'ID' => 'ID',
 			'class_code' => '班级CODE',
 			'class_name' => '班级名称',
-			'status' => '状态(1:正常 2:异常)',
+			'class_type' => '班级类型(0:综合   1:文科   2:理科)',
+			'status' => '状态(1:在校 2:毕业)',
 			'term_year' => '届',
 			'teacher_id' => '班主任ID',
 			'create_user' => 'Create User',
@@ -106,6 +110,7 @@ class TClasses extends CActiveRecord
 		$criteria->compare('ID',$this->ID,true);
 		$criteria->compare('class_code',$this->class_code,true);
 		$criteria->compare('class_name',$this->class_name,true);
+		$criteria->compare('class_type',$this->class_type,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('term_year',$this->term_year);
 		$criteria->compare('teacher_id',$this->teacher_id,true);
@@ -130,8 +135,6 @@ class TClasses extends CActiveRecord
 		return parent::model($className);
 	}
     
-    
-    
     public function getClassOption($flag = true) {
         $result = array();
         if ($flag === true) {
@@ -145,5 +148,6 @@ class TClasses extends CActiveRecord
 
         return $result;
     }
+    
 }
 

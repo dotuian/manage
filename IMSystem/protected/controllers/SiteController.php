@@ -69,6 +69,8 @@ class SiteController extends Controller
 	 */
 	public function actionLogin()
 	{
+        Yii::log(print_r($_POST, true));
+        
         $this->layout = '//layouts/empty';
         
 		$model=new LoginForm;
@@ -79,7 +81,7 @@ class SiteController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-
+        
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{

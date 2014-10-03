@@ -20,7 +20,7 @@ return array (
   'Delete' => '删除',
   'Displaying {start}-{end} of 1 result.|Displaying {start}-{end} of {count} results.' => '第 {start}-{end} 条, 共 {count} 条.',
   'Either "name" or "value" must be specified for CDataColumn.' => 'CDataColumn 必须指定 "name" 或 "value" 至少一项.',
-  'No results found.' => '没有找到数据.',
+  'No results found.' => '没有找到数据！',
   'Not set' => '未设置',
   'Please specify the "attributes" property.' => '请指定 "attributes" 属性.',
   'Please specify the "data" property.' => '请指定 "data" 属性.',

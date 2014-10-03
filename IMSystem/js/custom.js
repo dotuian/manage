@@ -94,6 +94,8 @@ $(document).ready(function(){
         $(".sidebar #nav").slideUp(350);
         $(".sidebar-dropdown a").removeClass("open");
         
+        $(".sidebar #nav a").removeClass("open");
+        
         // open our new menu and add the open class
         $(".sidebar #nav").slideDown(350);
         $(this).addClass("open");

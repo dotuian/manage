@@ -40,7 +40,7 @@ class TTeachers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, name, sex, create_time, update_time', 'required'),
+			array('code, name, sex, birthday, address, telephonoe, create_time, update_time', 'required'),
 			array('code', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>12),
 			array('create_user, update_user', 'length', 'max'=>10),
@@ -75,10 +75,10 @@ class TTeachers extends CActiveRecord
 	{
 		return array(
 			'ID' => 'ID',
-			'code' => '教师CODE',
+			'code' => '教工号',
 			'name' => '教师姓名',
-			'status' => '状态(1:正常 2:异常)',
-			'sex' => '性别(F: 女 M:男)',
+			'status' => '状态',
+			'sex' => '性别',
 			'birthday' => '出生年月日',
 			'address' => '地址',
 			'telephonoe' => '电话号码',
@@ -135,4 +135,17 @@ class TTeachers extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    public function getTeacherOption($flag = true){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $data = TTeachers::model()->findAll("status='1'");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->code . ' | ' . $value->name;
+        }
+        return $result;
+    }
 }

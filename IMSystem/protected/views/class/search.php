@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle = '学生信息检索';
+$this->pageTitle = '班级信息检索';
 $this->breadcrumbs = array(
     $this->pageTitle,
 );
@@ -34,31 +34,34 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>学号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>身份证号码</th>
-                    <th>班级</th>
+                    <th>班级代号</th>
+                    <th>班级名称</th>
+                    <th>文理科</th>
+                    <th>状态</th>
+                    <th>届</th>
+                    <th>班主任</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->textField($model,'code', array('class'=>'form-control', 'placeholder'=>'学号')); ?>
+                        <?php echo $form->textField($model,'class_code', array('class'=>'form-control', 'placeholder'=>'班级代号')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
+                        <?php echo $form->textField($model,'class_name', array('class'=>'form-control', 'placeholder'=>'班级名称')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'sex', StudentForm::getSexOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control', 'placeholder'=>'身份证号码')); ?>
+                        <?php echo $form->dropDownList($model,'status', ClassForm::getStatusOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'status', ClassForm::getTermYearOption(5, true), array('class'=>'form-control')); ?>
                     </td>
-
+                    <td>
+                        <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getTeacherOption(), array('class'=>'form-control')); ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -73,8 +76,6 @@ $(document).ready(function(){
         
     </div>
 </div>
-
-
 
 
 <?php if($dataProvider->totalItemCount > 0 ) { ?>
@@ -93,15 +94,16 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>学号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>身份证号码</th>
-                    <th>出生日期</th>
-                    <th>所在班级</th>
+                    <th>班级代号</th>
+                    <th>班级名称</th>
+                    <th>文理科</th>
+                    <th>状态</th>
+                    <th>届</th>
+                    <th>班主任</th>
                     <th>操作</th>
                 </tr>
             </thead>
+
             <tbody>
                 <?php 
                     $listview = $this->widget('zii.widgets.CListView', array(
@@ -111,21 +113,17 @@ $(document).ready(function(){
                         'template' => "{items}",
                         'pager' => array(
                             'header' => '',
-                            //'firstPageLabel' => '&lt;&lt; 第一页',
-                            //'prevPageLabel' => '&laquo; 前一页',
-                            //'nextPageLabel' => '下一页 &raquo;',
-                            //'lastPageLabel' => '最后一页 &gt;&gt;',
                             'htmlOptions' => array('class'=>'pagination pull-right')
                         ),
                     ));
+
                 ?>
-            <div class="clearfix"></div> 
+                <div class="clearfix"></div> 
                 <tr>
                     <td colspan="7">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
-                </td>
-                
+                </tr>
             </tbody>
         </table>
         

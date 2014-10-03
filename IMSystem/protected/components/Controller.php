@@ -30,6 +30,9 @@ class Controller extends CController {
     public $role = '';
     
     public function init() {
+        Yii::log('POST DATA ' . print_r($_POST, true));
+        Yii::log('GET DATA ' . print_r($_GET, true));
+        
         // 错误标签的设定
         CHtml::$errorContainerTag = 'span';
         

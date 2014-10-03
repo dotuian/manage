@@ -6,8 +6,9 @@
  * The followings are the available columns in table 't_scores':
  * @property string $ID
  * @property string $exam_id
- * @property string $student_id
  * @property string $subject_id
+ * @property string $class_id
+ * @property string $student_id
  * @property integer $score
  * @property string $create_user
  * @property string $create_time
@@ -17,6 +18,7 @@
  * The followings are the available model relations:
  * @property MExams $exam
  * @property MSubjects $subject
+ * @property TClasses $class
  * @property TStudents $student
  */
 class TScores extends CActiveRecord
@@ -37,12 +39,12 @@ class TScores extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('exam_id, student_id, subject_id, score, create_time, update_time', 'required'),
+			array('exam_id, subject_id, class_id, student_id, score, create_time, update_time', 'required'),
 			array('score', 'numerical', 'integerOnly'=>true),
-			array('exam_id, student_id, subject_id, create_user, update_user', 'length', 'max'=>10),
+			array('exam_id, subject_id, class_id, student_id, create_user, update_user', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, exam_id, student_id, subject_id, score, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, exam_id, subject_id, class_id, student_id, score, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,6 +58,7 @@ class TScores extends CActiveRecord
 		return array(
 			'exam' => array(self::BELONGS_TO, 'MExams', 'exam_id'),
 			'subject' => array(self::BELONGS_TO, 'MSubjects', 'subject_id'),
+			'class' => array(self::BELONGS_TO, 'TClasses', 'class_id'),
 			'student' => array(self::BELONGS_TO, 'TStudents', 'student_id'),
 		);
 	}
@@ -68,8 +71,9 @@ class TScores extends CActiveRecord
 		return array(
 			'ID' => 'ID',
 			'exam_id' => '考试名称ID',
-			'student_id' => '学生ID',
 			'subject_id' => '科目ID',
+			'class_id' => '班级ID',
+			'student_id' => '学生ID',
 			'score' => '分数',
 			'create_user' => 'Create User',
 			'create_time' => 'Create Time',
@@ -98,8 +102,9 @@ class TScores extends CActiveRecord
 
 		$criteria->compare('ID',$this->ID,true);
 		$criteria->compare('exam_id',$this->exam_id,true);
-		$criteria->compare('student_id',$this->student_id,true);
 		$criteria->compare('subject_id',$this->subject_id,true);
+		$criteria->compare('class_id',$this->class_id,true);
+		$criteria->compare('student_id',$this->student_id,true);
 		$criteria->compare('score',$this->score);
 		$criteria->compare('create_user',$this->create_user,true);
 		$criteria->compare('create_time',$this->create_time,true);

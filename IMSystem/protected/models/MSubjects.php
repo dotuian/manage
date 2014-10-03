@@ -7,6 +7,7 @@
  * @property string $ID
  * @property string $subject_code
  * @property string $subject_name
+ * @property string $subject_type
  * @property string $status
  * @property string $create_user
  * @property string $create_time
@@ -37,10 +38,10 @@ class MSubjects extends CActiveRecord
 		return array(
 			array('subject_code, subject_name, create_time, update_time', 'required'),
 			array('subject_code, subject_name, create_user, update_user', 'length', 'max'=>10),
-			array('status', 'length', 'max'=>1),
+			array('subject_type, status', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, subject_code, subject_name, status, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, subject_code, subject_name, subject_type, status, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,6 +67,7 @@ class MSubjects extends CActiveRecord
 			'ID' => 'ID',
 			'subject_code' => '科目CODE',
 			'subject_name' => '科目名称',
+			'subject_type' => '班级类型(0:综合   1:文科   2:理科)',
 			'status' => '状态(1:正常 2:异常)',
 			'create_user' => 'Create User',
 			'create_time' => 'Create Time',
@@ -95,6 +97,7 @@ class MSubjects extends CActiveRecord
 		$criteria->compare('ID',$this->ID,true);
 		$criteria->compare('subject_code',$this->subject_code,true);
 		$criteria->compare('subject_name',$this->subject_name,true);
+		$criteria->compare('subject_type',$this->subject_type,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('create_user',$this->create_user,true);
 		$criteria->compare('create_time',$this->create_time,true);
@@ -116,4 +119,19 @@ class MSubjects extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    
+    public function getAllSubjectsOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $data = MSubjects::model()->findAll("status='1'");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->subject_code . ' | ' . $value->subject_name;
+        }
+        return $result;
+    }
+    
 }

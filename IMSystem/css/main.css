@@ -17,16 +17,18 @@ span.errorMessage, div.errorMessage{
     margin-bottom: 1px;
 }
 
-input.error{
+input.error, select.error{
     background-color: #fff8cc;
 }
 
+div.error  select {
+    background-color: #fff8cc;
+}
 
 div.alert{
     padding : 10px 15px;
     margin-bottom : 0px !important;
 }
-
 
 .form-control {
 /*    display: inline !important;
@@ -41,7 +43,7 @@ div.alert{
     background-color: #BFCFFF;
 }
 
-#search-form table tr td {
+table tr td {
     padding: 4px !important;
 }
 
@@ -52,3 +54,40 @@ div.alert{
 table#result tr th {
     text-align: center;
 }
+
+
+
+/** 顶端导航栏 */
+.navbar{
+    background-color : #00008B !important;
+    border-bottom : #00008B !important;
+}
+
+/** 口风琴菜单 */
+.sidebar #nav > li:hover > a, .sidebar #nav > li > a.open, .sidebar #nav > li > a.subdrop {
+    border-top: 1px solid #4F5861;
+    border-bottom: 1px solid #3C434A;
+    background-color: #3C434A;  /* 展开父级菜单背景颜色 */
+}
+
+/** 口风琴菜单 */
+.sidebar #nav li ul li a {
+    background: #2E3338;  /* 展开子菜单背景颜色 */
+    border-bottom: 1px solid #2E3338;
+}
+
+
+a:visited {
+    color: #0186ba;
+}
+a {
+    color: #0069a6;
+}
+
+
+/** 调节表格中数据的显示的位置 */
+.table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
+    vertical-align : middle;
+}
+
+
