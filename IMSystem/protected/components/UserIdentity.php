@@ -39,9 +39,27 @@ class UserIdentity extends CUserIdentity {
                 $this->setState('username',  $user->username);
                 $this->setState('password',  $user->password);
                 $this->setState('role',      $user->roles);
+                switch ($user->roles) {
+                    case 'S':
+                        $this->setState('rolename', '学生');
+                        break;
+                    case 'T':
+                        $this->setState('rolename', '教师');
+                        break;
+                    case 'T1':
+                        $this->setState('rolename', '教务处');
+                        break;
+                    case 'T2':
+                        $this->setState('rolename', '学生科');
+                        break;
+                    case 'A':
+                        $this->setState('rolename', '校长');
+                        break;
+                    default:
+                        break;
+                }
                 
                 $this->setState('name',      $loginUser->name);
-                
                 $this->setState('user',      $user);
                 $this->setState('loginUser', $loginUser);
             } else {

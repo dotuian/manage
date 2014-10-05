@@ -74,14 +74,14 @@ $(document).ready(function(){
                         <div class="form-group" id="subject" style="display: <?php echo $model->type=='2' ? '' : 'none' ?>">
                             <label class="col-lg-2 control-label">科目</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'subject_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'subject_id'); ?>
                             </div>
                         </div>
                         <div class="form-group" id="teacher" style="display: <?php echo $model->type=='3' ? '' : 'none' ?>">
                             <label class="col-lg-2 control-label">教师</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'teacher_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getTeacherOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>

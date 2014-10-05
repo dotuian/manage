@@ -7,8 +7,10 @@
  * @property string $ID
  * @property string $subject_code
  * @property string $subject_name
+ * @property string $subject_short_name
  * @property string $subject_type
  * @property string $status
+ * @property string $level
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
@@ -36,12 +38,14 @@ class MSubjects extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('subject_code, subject_name, create_time, update_time', 'required'),
+			array('subject_code, subject_name, subject_short_name, level, create_time, update_time', 'required'),
 			array('subject_code, subject_name, create_user, update_user', 'length', 'max'=>10),
+			array('subject_short_name', 'length', 'max'=>4),
 			array('subject_type, status', 'length', 'max'=>1),
+			array('level', 'length', 'max'=>2),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, subject_code, subject_name, subject_type, status, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,8 +71,11 @@ class MSubjects extends CActiveRecord
 			'ID' => 'ID',
 			'subject_code' => '科目CODE',
 			'subject_name' => '科目名称',
+			'subject_short_name' => '科目简称',
 			'subject_type' => '班级类型(0:综合   1:文科   2:理科)',
+
 			'status' => '状态(1:正常 2:异常)',
+			'level' => '排序用',
 			'create_user' => 'Create User',
 			'create_time' => 'Create Time',
 			'update_user' => 'Update User',
@@ -97,8 +104,10 @@ class MSubjects extends CActiveRecord
 		$criteria->compare('ID',$this->ID,true);
 		$criteria->compare('subject_code',$this->subject_code,true);
 		$criteria->compare('subject_name',$this->subject_name,true);
+		$criteria->compare('subject_short_name',$this->subject_short_name,true);
 		$criteria->compare('subject_type',$this->subject_type,true);
 		$criteria->compare('status',$this->status,true);
+		$criteria->compare('level',$this->level,true);
 		$criteria->compare('create_user',$this->create_user,true);
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('update_user',$this->update_user,true);

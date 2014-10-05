@@ -116,4 +116,19 @@ class MExams extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        
+        
+    public function getAllExamsOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $data = MExams::model()->findAll("status='1'");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->exam_name;
+        }
+        return $result;
+    }
 }

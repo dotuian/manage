@@ -86,9 +86,6 @@ class CourseController extends Controller {
         if (isset($_POST['CourseForm'])) {
             $model->attributes = $_POST['CourseForm'];
             
-            Yii::log(print_r($model->attributes, true));
-            Yii::log(print_r($_POST['CourseForm'], true));
-            
             $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
             if(is_null($class)){
                 throw new CHttpException('500', '该班级信息不存在！');

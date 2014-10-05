@@ -72,6 +72,7 @@
             <li class="dropdown pull-right user-data">            
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                     <i class="fa fa-user"></i>
+                    [<?php echo Yii::app()->user->getState('rolename'); ?>]
                     <span class="bold"><?php echo Yii::app()->user->getState('name'); ?></span> 
                     <b class="caret"></b>
                 </a>
@@ -141,7 +142,7 @@
           
             <li class="has_sub">
                 <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'course' ? 'open' : ''; ?>">
-                <i class="fa fa-table"></i> <span>课程信息</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息检索</a></li>
                     <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
@@ -152,12 +153,17 @@
           
             <li class="has_sub">
                 <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'class' ? 'score' : ''; ?>">
-                <i class="fa fa-bar-chart-o"></i> <span>成绩信息</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('score/search');?>">成绩信息检索</a></li>
                     <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
                 </ul>
             </li>
+          
+          <!-- 学生成绩查询 -->
+          <?php if($this->isStudent()) { ?>
+          <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-bar-chart-o"></i> <span>成绩查询</span></a></li> 
+          <?php } ?>
           
           <!--
             <li><a href="charts.html"><i class="fa fa-bar-chart-o"></i> <span>Charts</span></a></li> 
@@ -272,7 +278,10 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- Copyright info -->
-                <p class="copy">Copyright &copy; 2012 | <a href="#">Your Site</a> </p>
+                <p class="copy">
+                    Copyright &copy; 2014 -- <?php echo date('Y')?> | 
+                    <a href="http://xgzhgz.com">孝感市综合高级中学</a> 
+                </p>
             </div>
         </div>
     </div>

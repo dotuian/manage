@@ -5,6 +5,47 @@
  */
 class ClassController extends Controller {
 
+    public function accessRules()
+    {
+        /**
+        * *: 任何用户，包括匿名和验证通过的用户
+        * ?: 匿名用户
+        * @: 验证通过的用户
+         */
+        return array(
+            // 允许管理员执行（A）
+            array('allow', 
+                'actions'=>array('*'),
+                'expression'=>array($this,'isAdmin'),
+            ),
+            // 允许教务处访问（T1）
+            array('allow', 
+                'actions'=>array('search','create','update'),
+                'expression'=>array($this,'isDeanOffice'),
+            ),
+            // 允许学工科执行（T2）
+            array('allow', 
+                'actions'=>array(),
+                'expression'=>array($this,'isStudentAffairs'),
+            ),
+            // 允许普通教师执行（T）
+            array('allow', 
+                'actions'=>array(),
+                'expression'=>array($this,'isTeacher'),
+            ),
+            // 允许学生用户执行（S）
+            array('allow', 
+                'actions'=>array(''),
+                'expression'=>array($this,'isStudent'),
+            ),
+
+            array('deny',  // 拒绝所有用户
+                'users'=>array('*'),
+            ),
+        );
+    }
+    
+    
     public function init() {
         parent::init();
         Yii::app()->user->setState('menu', 'class');
