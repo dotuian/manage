@@ -1,3 +1,10 @@
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+!.htaccess
+
+
 yii-1.1.15.022a51/
 index.php
 readme.txt
