@@ -1,5 +1,32 @@
-# Ignore everything in this directory
-*
-# Except this file
+﻿# 以斜杠“/”开头表示目录；
+# 以星号“*”通配多个字符；
+# 以问号“?”通配单个字符
+# 以方括号“[]”包含单个字符的匹配列表；
+# 以叹号“!”表示不忽略(跟踪)匹配到的文件或目录；
+
+
+#忽略/IMSystem/assets/文件下所有内容，除了readme.txt
+/IMSystem/assets/*
+!/IMSystem/assets/readme.txt
+
+#忽略/IMSystem/protected/runtime/文件下所有内容，除了readme.txt
+/IMSystem/protected/runtime/*
+!/IMSystem/protected/runtime/readme.txt
+
+#不忽略.gitignore文件
 !.gitignore
-!.htaccess
+
+
+#忽略一下文件夹及文件
+/index.php
+/yii-1.1.15.022a51.tar.gz
+/yii-1.1.15.022a51/
+
+
+
+
+
+
+
+
+
