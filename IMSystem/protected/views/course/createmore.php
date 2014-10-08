@@ -56,21 +56,24 @@ $(document).ready(function(){
                     </h6>
                     <hr/>
                         
+                        <!--
                         <div class="form-group">
                             <label class="col-lg-2 control-label">添加方式</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->radioButtonList($model,'type', CourseForm::getCreateTypeOption(), array('separator'=>'　')); ?>
                             </div>
                         </div>
+                        -->
 
                         <div class="form-group" id="class" style="display: <?php echo $model->type=='1' ? '' : 'none'; ?>">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
 
+                        <!--
                         <div class="form-group" id="subject" style="display: <?php echo $model->type=='2' ? '' : 'none' ?>">
                             <label class="col-lg-2 control-label">科目</label>
                             <div class="col-lg-10 inline-block">
@@ -81,15 +84,16 @@ $(document).ready(function(){
                         <div class="form-group" id="teacher" style="display: <?php echo $model->type=='3' ? '' : 'none' ?>">
                             <label class="col-lg-2 control-label">教师</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getTeacherOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>
+                        -->
                     </div>
 
                     <div class="widget-foot">
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('检索', array('class'=>'btn btn-primary ')); ?>
+                            <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary ')); ?>
                         </div>
                         <div class="clearfix"></div> 
                     </div>
@@ -139,7 +143,7 @@ $(document).ready(function(){
                                 <td class="center"><?php echo $class->class_name; ?></td>
                                 <td class="center"><?php echo $subject->subject_name; ?></td>
                                 <td class="center">
-                                    <?php echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getTeacherOption(true), array(
+                                    <?php echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array(
                                         'class'=>'form-control',
                                         'id' => 'teacher_id' . $subject->ID ,
                                         'ajax'=>array(
@@ -152,15 +156,29 @@ $(document).ready(function(){
                                             ),
                                             'url' => Yii::app()->createUrl('course/insert'),
                                             //'update'=>'#objtype',
-                                            //'beforeSend'=>'function(){}',
+                                            'beforeSend'=>"function(){
+                                                    $('#result$subject->ID').html('');
+                                                    $.blockUI({ message: null });
+                                                }",
                                             'success'=>"function(data){
-                                                    $('#result$subject->ID').text(data);
+                                                    $.unblockUI();
+                                                    data = JSON.parse(data);
+                                                    var show = $('#result$subject->ID');
+
+                                                    show.removeClass();
+                                                    if(data.result) {
+                                                        show.addClass('label label-success');
+                                                    } else {
+                                                        show.addClass('label label-danger');
+                                                    }
+                                                    show.text(data.message);
+
                                                 }",
                                         )
                                         )); ?>
                                 </td>
                                 <td class="center">
-                                    <div id="result<?php echo $subject->ID; ?>" />
+                                    <span id="result<?php echo $subject->ID; ?>"></span>
                                 </td>
                             <?php $this->endWidget(); ?>
                         </tr>
@@ -170,21 +188,6 @@ $(document).ready(function(){
                 </tbody>
             </table>
         <?php } ?>
-        
-        
-        <!-- 以科目为单位添加 --->
-        <?php if($model->type ==='2' && !is_null($classes) ) { ?>
-        
-        
-        <?php } ?>
-        
-        
-        <!-- 以科目为单位添加 --->
-        <?php if($model->type ==='3' && !is_null($classes) ) { ?>
-        
-        
-        <?php } ?>
-        
     </div>
 </div>
 <?php } ?>

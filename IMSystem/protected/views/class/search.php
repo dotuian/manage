@@ -16,9 +16,6 @@ $(document).ready(function(){
 <div class="widget">
     <div class="widget-head">
         <div class="pull-left">检索条件</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -54,13 +51,13 @@ $(document).ready(function(){
                         <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'status', ClassForm::getStatusOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'status', ClassForm::getTermYearOption(5, true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getTeacherOption(), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>
@@ -84,9 +81,6 @@ $(document).ready(function(){
 
     <div class="widget-head">
         <div class="pull-left">检索结果</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 

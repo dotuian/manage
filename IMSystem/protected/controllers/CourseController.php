@@ -5,12 +5,6 @@
  */
 class CourseController extends Controller {
 
-    public function init() {
-        parent::init();
-        Yii::app()->user->setState('menu', 'course');
-    }
-    
-    
     // 未完了
     public function actionSearch() {
         
@@ -106,7 +100,7 @@ class CourseController extends Controller {
             // 收集页面数据
             $data = new MCourses();
             
-            $this->render('create', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
+            $this->render('createmore', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
             
             Yii::app()->end();
         }
@@ -115,56 +109,57 @@ class CourseController extends Controller {
     }
     
     public function actionInsert() {
+        if (!Yii::app()->request->isAjaxRequest) {
+            return;
+        }
+        
+        $data = array('result' => false, 'message' => '操作失败！');
         
         if (isset($_POST['class_id']) && $_POST['subject_id'] && $_POST['teacher_id']) {
             $class_id = trim($_POST['class_id']);
             $subject_id = trim($_POST['subject_id']);
             $teacher_id = trim($_POST['teacher_id']);
 
-            if (!TClasses::model()->exists("ID=:ID and status='1'", array(":ID" => $class_id))) {
-                echo '班级信息不存在！';
-            }
-            if (!MSubjects::model()->exists("ID=:ID and status='1'", array(":ID" => $subject_id))) {
-                echo '科目信息不存在！';
-            }
-            if (!TTeachers::model()->exists("ID=:ID and status='1'", array(":ID" => $teacher_id))) {
-                echo '教师信息不存在！';
-            }
+//            if (!TClasses::model()->exists("ID=:ID and status='1'", array(":ID" => $class_id))) {
+//                $data['message'] ='班级信息不存在！';
+//            }
+//            if (!MSubjects::model()->exists("ID=:ID and status='1'", array(":ID" => $subject_id))) {
+//                $data['message'] ='科目信息不存在！';
+//            }
+//            if (!TTeachers::model()->exists("ID=:ID and status='1'", array(":ID" => $teacher_id))) {
+//                $data['message'] ='教师信息不存在！';
+//            }
 
-            $tran = Yii::app()->db->beginTransaction();
             try {
-                // 新的课程对象
-                $new = new MCourses();
-                $new->class_id = $class_id;
-                $new->subject_id = $subject_id;
-                $new->teacher_id = $teacher_id;
-                $new->status = '1';
-                $new->create_user = $this->getLoginUserId();
-                $new->update_user = $this->getLoginUserId();
-                $new->create_time = new CDbExpression('NOW()');
-                $new->update_time = new CDbExpression('NOW()');
-
                 // 判断该课程是否已经存在
                 $course = MCourses::model()->find("class_id=:class_id and subject_id=:subject_id and status='1'",array(':subject_id' => $subject_id, ':class_id' => $class_id));
-                if (!is_null($course)) {
-                    $course->status = '2';
-                    $result = $course->save() && $new->save();
+                if (is_null($course)) {
+                    $course = new MCourses();
+                    $course->class_id = $class_id;
+                    $course->subject_id = $subject_id;
+                    $course->teacher_id = $teacher_id;
+                    $course->status = '1';
+                    $course->create_user = $this->getLoginUserId();
+                    $course->update_user = $this->getLoginUserId();
+                    $course->create_time = new CDbExpression('NOW()');
+                    $course->update_time = new CDbExpression('NOW()');                    
                 } else {
-                    $result = $new->save();
+                    $course->teacher_id = $teacher_id;
+                    $course->update_user = $this->getLoginUserId();
+                    $course->update_time = new CDbExpression('NOW()');     
                 }
-
-                if ($result) {
-                    $tran->commit();
-                    echo '操作成功！';
-                } else {
-                    Yii::log(print_r($new->errors, true));
-                    echo '操作失败！';
+                
+                if ($course->save()) {
+                    $data['result'] = true;
+                    $data['message'] = '操作成功！';
                 }
             } catch (Exception $e) {
-                echo '系统异常';
+                $data['message'] = '系统异常！';
                 throw new CHttpException(400, "系统异常！");
             }
         }
+        
+        echo json_encode($data);
     }
     
     

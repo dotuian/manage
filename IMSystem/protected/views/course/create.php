@@ -32,7 +32,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id',  TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id',  TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
@@ -48,7 +48,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">任课教师</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getTeacherOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>

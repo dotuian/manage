@@ -40,7 +40,8 @@ class TScores extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('exam_id, subject_id, class_id, student_id, score, create_time, update_time', 'required'),
-			array('score', 'numerical', 'integerOnly'=>true),
+			array('score', 'numerical', 'integerOnly'=>false),
+			array('score', 'length', 'max'=>5),
 			array('exam_id, subject_id, class_id, student_id, create_user, update_user', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

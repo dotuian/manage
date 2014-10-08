@@ -136,7 +136,7 @@ class TTeachers extends CActiveRecord
 		return parent::model($className);
 	}
     
-    public function getTeacherOption($flag = true){
+    public function getAllTeacherOption($flag = true){
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];

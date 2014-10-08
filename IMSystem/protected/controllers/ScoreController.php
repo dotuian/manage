@@ -5,12 +5,6 @@
  */
 class ScoreController extends Controller {
 
-    public function init() {
-        parent::init();
-        Yii::app()->user->setState('menu', 'score');
-    }
-
-    
     /**
      * 学生成绩查询
      * @throws CHttpException
@@ -158,8 +152,6 @@ class ScoreController extends Controller {
         
     }    
     
-    
-    
 
     public function actionCreate() {
 
@@ -195,10 +187,19 @@ class ScoreController extends Controller {
 
                 //  获取这个班级上的所有学生
                 $students = TStudents::model()->findAll("class_id=:class_id and status='1'", array(':class_id'=>$class->ID));
-
+                
+                // 获取已经录入的成绩信息
+                $scores = array();
+                $temp = TScores::model()->findAll("exam_id=:exam_id and subject_id=:subject_id and class_id=:class_id", 
+                        array(':exam_id' => $model->exam_id, ':subject_id' => $model->subject_id, ':class_id' => $model->class_id));
+                foreach ($temp as $score) {
+                    $key = "$score->student_id|$score->exam_id|$score->subject_id|$score->class_id";
+                    $scores[$key] = $score->score;
+                }
+                
                 // 收集页面数据
                 $data = new TScores();
-                $this->render('create', array('model' => $model, 'data'=>$data, 'exam'=>$exam, 'class'=>$class, 'subjects'=>$subjects, 'students'=>$students));
+                $this->render('create', array('model' => $model, 'data'=>$data, 'scores'=>$scores, 'exam'=>$exam, 'class'=>$class, 'subjects'=>$subjects, 'students'=>$students));
                 Yii::app()->end();
             } 
             
@@ -210,6 +211,11 @@ class ScoreController extends Controller {
 
     
     public function actionInsert(){
+        if (Yii::app()->request->isAjaxRequest) {
+            
+        }
+        
+        $data = array('result' => false, 'message' => '操作失败！');
         
         if(isset($_POST) && isset($_POST['class_id']) && isset($_POST['student_id']) && isset($_POST['subject_id']) && isset($_POST['exam_id']) && isset($_POST['score'])){
             $class_id = trim($_POST['class_id']);
@@ -218,60 +224,129 @@ class ScoreController extends Controller {
             $exam_id = trim($_POST['exam_id']);
             $score = trim($_POST['score']);
 
-            if (!((is_int((int)$score) || is_float((float)$score)) && $score >= 0 && $score <= 150)) {
-                echo '请输入正确的分数！';
+            if (!(is_numeric($score) && $score >= 0 && $score <= 150)) {
+                $data['message'] = '请输入正确的分数！';
+                echo json_encode($data);
                 return ;
             }
             
-            $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$class_id));
-            if(is_null($class)){
-                echo '该班级信息不存在！';
-                return ;
-            }
+//            $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$class_id));
+//            if(is_null($class)){
+//                $data['message'] = '该班级信息不存在！';
+//                return ;
+//            }
+//
+//            $student = TStudents::model()->find("status='1' and ID=:ID", array(":ID"=>$student_id));
+//            if(is_null($student)){
+//                $data['message'] = '该学生信息不存在！';
+//                return ;
+//            }
+//
+//            $subject = MSubjects::model()->find("status='1' and ID=:ID", array(":ID"=>$subject_id));
+//            if(is_null($subject)){
+//                $data['message'] = '该科目信息不存在！';
+//                return ;
+//            }
+//            
+//            $exam = MExams::model()->find("status='1' and ID=:ID", array(":ID"=>$exam_id));
+//            if(is_null($exam)){
+//                $data['message'] = '该考试信息不存在！';
+//                return ;
+//            }
+            
+            try {
+                $score_info = TScores::model()->find("exam_id=:exam_id and subject_id=:subject_id and class_id=:class_id and student_id=:student_id",
+                        array(':exam_id'=>$exam_id, ':subject_id'=>$subject_id, ':class_id'=>$class_id, ':student_id'=>$student_id ));
+                if (is_null($score_info)) {
+                    // 不存在的情况下，新加一条数据
+                    $score_info = new TScores('create');
+                    $score_info->exam_id = $exam_id;
+                    $score_info->subject_id = $subject_id;
+                    $score_info->class_id = $class_id;
+                    $score_info->student_id = $student_id;
+                    $score_info->score = $score;
 
-            $student = TStudents::model()->find("status='1' and ID=:ID", array(":ID"=>$student_id));
-            if(is_null($student)){
-                echo '该学生信息不存在！';
-                return ;
-            }
+                    $score_info->create_user = $this->getLoginUserId();
+                    $score_info->update_user = $this->getLoginUserId();
+                    $score_info->create_time = new CDbExpression('NOW()');
+                    $score_info->update_time = new CDbExpression('NOW()');
+                } else {
+                    // 不存在的情况下，新加一条数据                
+                    $score_info->score = $score;
+                    $score_info->update_user = $this->getLoginUserId();
+                    $score_info->update_time = new CDbExpression('NOW()');
+                }
 
-            $subject = MSubjects::model()->find("status='1' and ID=:ID", array(":ID"=>$subject_id));
-            if(is_null($subject)){
-                echo '该科目信息不存在！';
-                return ;
-            }
-            
-            $exam = MExams::model()->find("status='1' and ID=:ID", array(":ID"=>$exam_id));
-            if(is_null($exam)){
-                echo '该考试信息不存在！';
-                return ;
-            }
-            
-            $score_info = TScores::model()->find("exam_id=:exam_id and subject_id=:subject_id and class_id=:class_id and student_id=:student_id",
-                    array(':exam_id'=>$exam_id, ':subject_id'=>$subject_id, ':class_id'=>$class_id, ':student_id'=>$student_id ));
-            if(is_null($score_info)){
-                $score_info = new TScores('create');
-                $score_info->exam_id    = $exam_id;
-                $score_info->subject_id = $subject_id;
-                $score_info->class_id   = $class_id;
-                $score_info->student_id = $student_id;
-                $score_info->score      = $score;
+                if ($score_info->save()) {
+                    $data['result'] = true;
+                    $data['message'] = '操作成功！';
+                }
                 
-                $score_info->create_user = $this->getLoginUserId();
-                $score_info->update_user = $this->getLoginUserId();
-                $score_info->create_time = new CDbExpression('NOW()');
-                $score_info->update_time = new CDbExpression('NOW()');
-            } else {
-                $score_info->score = $score;
-                $score_info->update_user = $this->getLoginUserId();
-                $score_info->update_time = new CDbExpression('NOW()');
+            }  catch (Exception $e) {
+                $data['message'] = '系统异常！';
+                throw new CHttpException(400, "系统异常！");
             }
             
-            if ($score_info->save()) {
-                echo '成绩添加成功！';
-            } else {
-                echo '成绩添加失败！';
-            }
+            echo json_encode($data);
         }
     }
+    
+    
+
+    public function actionUpdate() {
+
+        if (isset($_GET['ID'])) {
+            $ID = trim($_GET['ID']);
+            $score = TScores::model()->find("ID=:ID", array(":ID" => $ID));
+            if (is_null($score)) {
+                throw new CHttpException(400, "该成绩信息不存在！");
+            }
+            
+            if (isset($_POST['TScores'])) {
+                $score->score  = trim($_POST['TScores']['score']);
+                $score->update_user = $this->getLoginUserId();
+                $score->update_time = new CDbExpression('NOW()');
+                
+                if ($score->save()) {
+                    Yii::app()->user->setFlash('success', "成绩信息变更成功！");
+                } else {
+                    Yii::log(print_r($score->errors, true));
+                    Yii::app()->user->setFlash('warning', "成绩信息变更失败！");
+                }
+            }
+
+            $this->render('update', array(
+                'model' => $score,
+            ));
+        } else {
+            throw new CHttpException(400, "找不到该页面！");
+        }
+    }
+    
+    public function actionDelete() {
+
+        if (isset($_POST['ID'])) {
+            
+            $ID = trim($_POST['ID']);
+            $score = TScores::model()->find("ID=:ID", array(":ID" => $ID));
+            if (is_null($score)) {
+                throw new CHttpException(400, "该成绩信息不存在！");
+            }
+            
+            if ($score->delete()) {
+                Yii::app()->user->setFlash('success', "成绩信息删除成功！");
+                $this->redirect($this->createUrl('search'));
+            } else {
+                Yii::log(print_r($score->errors, true));
+                Yii::app()->user->setFlash('warning', "成绩信息删除失败！");
+            }
+
+            $this->render('update', array(
+                'model' => $score,
+            ));
+        } else {
+            throw new CHttpException(400, "找不到该页面！");
+        }
+    }
+    
 }

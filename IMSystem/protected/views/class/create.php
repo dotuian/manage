@@ -49,7 +49,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">状态</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'status', ClassForm::getStatusOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'status'); ?>
                             </div>
                         </div>
@@ -65,7 +65,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班主任</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getTeacherOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>

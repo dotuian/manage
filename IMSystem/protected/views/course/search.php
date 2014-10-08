@@ -16,9 +16,6 @@ $(document).ready(function(){
 <div class="widget">
     <div class="widget-head">
         <div class="pull-left">检索条件</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -52,7 +49,7 @@ $(document).ready(function(){
                         <?php echo $form->textField($model,'teacher_name', array('class'=>'form-control', 'placeholder'=>'任课教师姓名')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>
@@ -76,9 +73,6 @@ $(document).ready(function(){
 
     <div class="widget-head">
         <div class="pull-left">检索结果</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 

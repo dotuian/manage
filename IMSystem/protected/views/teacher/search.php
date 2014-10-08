@@ -16,9 +16,6 @@ $(document).ready(function(){
 <div class="widget">
     <div class="widget-head">
         <div class="pull-left">检索条件</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -76,9 +73,6 @@ $(document).ready(function(){
 
     <div class="widget-head">
         <div class="pull-left">检索结果</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 

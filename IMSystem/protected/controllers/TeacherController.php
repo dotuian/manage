@@ -2,11 +2,6 @@
 
 class TeacherController extends Controller {
 
-    public function init() {
-        parent::init();
-        Yii::app()->user->setState('menu', 'teacher');
-    }
-    
     public function actionCreate() {
 
         $model = new TeacherForm('add');

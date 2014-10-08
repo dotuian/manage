@@ -2,6 +2,11 @@
 
 class SiteController extends Controller
 {
+    
+    protected function beforeAction($action) {
+        return true;
+    }
+    
 	/**
 	 * Declares class-based actions.
 	 */

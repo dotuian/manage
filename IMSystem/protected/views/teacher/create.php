@@ -46,17 +46,6 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                     
-                        <!--
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">状态</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'status', ClassForm::getStatusOption(false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'status'); ?>
-                            </div>
-                        </div>
-                        -->
-                    
-                    
                         <div class="form-group">
                             <label class="col-lg-2 control-label">性别</label>
                             <div class="col-lg-10">

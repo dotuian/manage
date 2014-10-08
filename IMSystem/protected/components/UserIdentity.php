@@ -25,39 +25,25 @@ class UserIdentity extends CUserIdentity {
             // 密码错误
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
-            $loginUser = null;
-            if ($user->roles === 'S') {
-                $loginUser = TStudents::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
-            } else {
+            $loginUser = TStudents::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
+            if (is_null($loginUser)) {
                 $loginUser = TTeachers::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
             }
 
             if (!is_null($loginUser)) {
                 $this->errorCode = self::ERROR_NONE;
-                
                 $this->setState('ID',        $user->ID);
                 $this->setState('username',  $user->username);
                 $this->setState('password',  $user->password);
-                $this->setState('role',      $user->roles);
-                switch ($user->roles) {
-                    case 'S':
-                        $this->setState('rolename', '学生');
-                        break;
-                    case 'T':
-                        $this->setState('rolename', '教师');
-                        break;
-                    case 'T1':
-                        $this->setState('rolename', '教务处');
-                        break;
-                    case 'T2':
-                        $this->setState('rolename', '学生科');
-                        break;
-                    case 'A':
-                        $this->setState('rolename', '校长');
-                        break;
-                    default:
-                        break;
+                
+                // 用户类型
+                if ('TStudents' == get_class($loginUser)) {
+                    $this->setState('user_type',  'teacher');
+                } else {
+                    $this->setState('user_type',  'teacher');
                 }
+                // 用户权限
+                $this->setState('roles',  $user->getUserAuthoritys());
                 
                 $this->setState('name',      $loginUser->name);
                 $this->setState('user',      $user);

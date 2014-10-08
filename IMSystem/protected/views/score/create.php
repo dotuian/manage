@@ -3,12 +3,31 @@ $this->pageTitle= '成绩信息添加';
 $this->breadcrumbs = array(
     $this->pageTitle,
 );
+
+
+
+Yii::app()->clientScript->registerScript('search', "
+$(document).ready(function(){
+    
+//    $('input[name=\'TScores[score]]\').blur(function(){
+//        alert();
+//    });
+    
+//    function beforeSend(data){
+//        if(!data.val().match(/^[0-9]+[.]?[0-9]+$/)){
+//            alert('输入正确的数字!');
+//            data.focus();
+//        }        
+//    }
+
+});
+
+",CClientScript::POS_HEAD);
+
 ?>
+
 <script>
 $(document).ready(function(){
-    $("input[name='TScores[score]']").blur(function(){
-        console.log('input score : ' + $(this).val());
-    });
     
 });
 </script>
@@ -47,7 +66,7 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
@@ -82,9 +101,6 @@ $(document).ready(function(){
 
     <div class="widget-head">
         <div class="pull-left">检索结果</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -111,41 +127,71 @@ $(document).ready(function(){
                     <td class="center"><?php echo $student->name; ?></td>
                     <?php foreach ($subjects as $subject) {?>
                     <td style="width: 80px">
-                            <?php
-                                $form = $this->beginWidget('CActiveForm', array(
-                                    'id' => 'add-score-form' . $subject->ID . $student->code,
-                                    'enableClientValidation' => false,
-                                    'method' => 'post',
-                                    'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
-                                ));
-                                    echo $form->textField($data,'score', array(
-                                        'class'=>'form-control',
-                                        'id' => 'form' . $student->code . $subject->ID ,
-                                        'ajax'=>array(
-                                            'type'=>'POST',
-                                            'data' => array(
-                                                'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
-                                                'class_id'=> $class->ID,
-                                                'student_id'=> $student->ID,
-                                                'subject_id'=> $subject->ID,
-                                                'exam_id'=> $exam->ID,
-                                                'score'=> 'js:$(this).val()',
-                                            ),
-                                            'url' => Yii::app()->createUrl('score/insert'),
-                                            //'update'=>'#objtype',
-                                            //'beforeSend'=>'function(){}',
-                                            'success'=>"function(data){
-                                                    console.log(data);
-                                                    $('#$student->code$subject->ID').text(data);
-                                                }",
-                                        )
-                                        )); 
-                            $this->endWidget(); 
+                        <?php
+                            $form = $this->beginWidget('CActiveForm', array(
+                                'id' => 'add-score-form' . $subject->ID . $student->code,
+                                'enableClientValidation' => false,
+                                'method' => 'post',
+                                'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
+                            ));
+                                // 显示已经登录的成绩信息
+                                $key = "$student->ID|$exam->ID|$subject->ID|$class->ID";
+                                if(isset($scores[$key])){
+                                    $data->score = $scores[$key];
+                                } else {
+                                    $data->score = null;
+                                }
+
+                                echo $form->textField($data,'score', array(
+                                    'class'=>'form-control',
+                                    'id' => 'text' . $student->code . $subject->ID ,
+                                    'ajax'=>array(
+                                        'type'=>'POST',
+                                        'data' => array(
+                                            'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                            'class_id'=> $class->ID,
+                                            'student_id'=> $student->ID,
+                                            'subject_id'=> $subject->ID,
+                                            'exam_id'=> $exam->ID,
+                                            'score'=> 'js:$(this).val()',
+                                        ),
+                                        'url' => Yii::app()->createUrl('score/insert'),
+                                        //'update'=>"#$student->code",
+                                        'beforeSend'=>"function(xhr, opts){
+                                                var data = $('#text$student->code$subject->ID');
+                                                var show = $('#$student->code');
+                                                if(data.val().match(/^[0-9]+[.]?[0-9]+$/) && data.val() >= 0 && data.val() <=150) {
+                                                    show.text('');
+                                                    $.blockUI({ message: null }); 
+                                                } else {
+                                                    show.removeClass();
+                                                    show.addClass('label label-danger');
+                                                    show.text('请输入正确的分数。');
+                                                    data.focus();
+                                                    xhr.abort();// 阻止提交ajax
+                                                }
+                                            }",
+                                        'success'=>"function(data){
+                                                $.unblockUI();
+                                                data = JSON.parse(data);
+                                                var show = $('#$student->code');
+
+                                                show.removeClass();
+                                                if(data.result) {
+                                                    show.addClass('label label-primary');
+                                                } else {
+                                                    show.addClass('label label-danger');
+                                                }
+                                                show.text(data.message);
+                                            }",
+                                    )
+                                    )); 
+                        $this->endWidget();
                         ?>
-                        </td>
-                        <td>
-                            <div id="<?php echo $student->code . $subject->ID ;?>"></div>
-                        </td>
+                    </td>
+                    <td>
+                        <span id="<?php echo $student->code?>"></span>
+                    </td>
                     <?php } ?>
                 </tr>
             <?php } ?>

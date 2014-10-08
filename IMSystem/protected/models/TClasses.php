@@ -135,7 +135,7 @@ class TClasses extends CActiveRecord
 		return parent::model($className);
 	}
     
-    public function getClassOption($flag = true) {
+    public function getAllClassOption($flag = true) {
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];

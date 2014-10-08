@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 
 Yii::app()->clientScript->registerScript('js', "
 $(document).ready(function(){
-    
+    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false});
 });
 ", CClientScript::POS_HEAD);
 ?>

@@ -2,11 +2,6 @@
 
 class SettingController extends Controller {
 
-    public function init() {
-        parent::init();
-        Yii::app()->user->setState('menu', 'setting');
-    }
-    
     /**
      * 登录用户信息
      */
@@ -56,8 +51,8 @@ class SettingController extends Controller {
     /**
      * 用户密码变更页面
      */
-    public function actionChangePassword() {
-        $model = new UserForm('changePassword');
+    public function actionPassword() {
+        $model = new UserForm('password');
         if (isset($_POST['UserForm'])) {
             $model->attributes = $_POST['UserForm'];
 
@@ -74,7 +69,7 @@ class SettingController extends Controller {
             }
         }
 
-        $this->render('changePassword', array('model' => $model));
+        $this->render('password', array('model' => $model));
     }
 
 }   

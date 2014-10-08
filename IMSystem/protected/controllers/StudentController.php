@@ -2,11 +2,6 @@
 
 class StudentController extends Controller {
 
-    public function init() {
-        parent::init();
-        Yii::app()->user->setState('menu', 'student');
-    }
-
     /**
      * 查询学生信息
      */
@@ -92,6 +87,7 @@ class StudentController extends Controller {
             if ($model->validate()) {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
+                    // 登录用的用户信息
                     $user = new TUsers();
                     $user->username = $model->code;
                     $user->password = substr($model->id_card_no, -6); // 密码默认为身份证后六位
@@ -103,6 +99,7 @@ class StudentController extends Controller {
                     $user->update_time = new CDbExpression('NOW()');
 
                     if ($user->save()) {
+                        // 学生用户信息
                         $student = new TStudents();
                         $student->attributes = $model->attributes;
                         $student->ID = $user->ID;
@@ -110,7 +107,17 @@ class StudentController extends Controller {
                         $student->update_user = $this->getLoginUserId();
                         $student->create_time = new CDbExpression('NOW()');
                         $student->update_time = new CDbExpression('NOW()');
-                        if ($student->save()) {
+                        
+                        // 学生权限用户信息
+                        $userRole = new TUserRoles();
+                        $userRole->user_id = $user->ID;
+                        $userRole->role_id = '1'; //学生角色(固定值)
+                        $userRole->create_user = $this->getLoginUserId();
+                        $userRole->update_user = $this->getLoginUserId();
+                        $userRole->create_time = new CDbExpression('NOW()');
+                        $userRole->update_time = new CDbExpression('NOW()');
+                        
+                        if ($student->save() && $userRole->save()) {
                             $tran->commit();
                             Yii::app()->user->setFlash('success', "学生信息添加成功！");
                             $this->redirect($this->createUrl('create'));

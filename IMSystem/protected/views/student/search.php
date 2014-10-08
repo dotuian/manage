@@ -6,19 +6,21 @@ $this->breadcrumbs = array(
 
 Yii::app()->clientScript->registerScript('js', "
 $(document).ready(function(){
-    
+
+
+
 });
-", CClientScript::POS_HEAD);
+", CClientScript::POS_END );
 ?>
+
+<script>
+</script>
 
 
 <!-- 检索条件 -->
 <div class="widget">
     <div class="widget-head">
         <div class="pull-left">检索条件</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -56,7 +58,7 @@ $(document).ready(function(){
                         <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control', 'placeholder'=>'身份证号码')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                     </td>
 
                 </tr>
@@ -83,9 +85,6 @@ $(document).ready(function(){
 
     <div class="widget-head">
         <div class="pull-left">检索结果</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -119,15 +118,15 @@ $(document).ready(function(){
                         ),
                     ));
                 ?>
-            <div class="clearfix"></div> 
                 <tr>
                     <td colspan="7">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </td>
-                
+                <div class="clearfix"></div> 
             </tbody>
         </table>
+
         
         <?php if ($dataProvider->getPagination()->pageCount > 1) { ?>
         <div class="widget-foot">

@@ -16,9 +16,6 @@ $(document).ready(function(){
 <div class="widget">
     <div class="widget-head">
         <div class="pull-left">检索条件</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -48,7 +45,7 @@ $(document).ready(function(){
                         <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(false), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
@@ -84,9 +81,6 @@ $(document).ready(function(){
 
     <div class="widget-head">
         <div class="pull-left">检索结果</div>
-        <div class="widget-icons pull-right">
-            <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
-        </div>  
         <div class="clearfix"></div>
     </div>
 
@@ -94,11 +88,11 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
+                    <th>考试名称</th>
                     <th>班级</th>
+                    <th>科目</th>
                     <th>学号</th>
                     <th>姓名</th>
-                    <th>考试名称</th>
-                    <th>科目</th>
                     <th>成绩</th>
                     <th>操作</th>
                 </tr>

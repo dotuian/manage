@@ -21,14 +21,35 @@ input.error, select.error{
     background-color: #fff8cc;
 }
 
-div.error  select {
+div.error select {
     background-color: #fff8cc;
 }
 
 div.alert{
     padding : 10px 15px;
     margin-bottom : 0px !important;
+    font-weight: bold;
 }
+
+/** 错误消息 */
+div.alert-danger{
+    border-color: #D1203B;
+}
+
+/** 警告消息 */
+div.alert-warning{
+    border-color: #996B13;
+}
+
+/** 成功消息 */
+div.alert-success{
+    border-color: #556646;
+}
+/** 成功消息 */
+div.alert-success{
+    border-color: #46686F;
+}
+
 
 .form-control {
 /*    display: inline !important;
@@ -40,7 +61,7 @@ div.alert{
 }
 
 .pager ul li.selected a{
-    background-color: #BFCFFF;
+    background-color: #BFCF;
 }
 
 table tr td {
@@ -59,8 +80,9 @@ table#result tr th {
 
 /** 顶端导航栏 */
 .navbar{
-    background-color : #00008B !important;
-    border-bottom : #00008B !important;
+/*    background-color : #00008B !important;
+    border-bottom : #00008B !important;*/
+    /*background-image: url(../images/header.png);*/
 }
 
 /** 口风琴菜单 */
@@ -86,8 +108,19 @@ a {
 
 
 /** 调节表格中数据的显示的位置 */
-.table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
-    vertical-align : middle;
+table>tbody>tr>th , table>tbody>tr>td {
+    vertical-align : middle !important;
+}
+
+/** 鼠标悬浮在表格上的颜色 */
+table>tbody>tr:hover>td{
+    background-color: #d9edf7 !important;
 }
 
 
+
+
+/** 消除dataTables底部黑色横线 */
+table.dataTable.no-footer{
+    border-bottom:0px !important;
+}

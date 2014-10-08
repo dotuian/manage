@@ -8,7 +8,6 @@
  * @property string $username
  * @property string $password
  * @property string $status
- * @property string $roles
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
@@ -17,6 +16,7 @@
  * The followings are the available model relations:
  * @property TStudents $tStudents
  * @property TTeachers $tTeachers
+ * @property TUserRoles[] $tUserRoles
  */
 class TUsers extends CActiveRecord
 {
@@ -36,14 +36,13 @@ class TUsers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, roles, create_time, update_time', 'required'),
+			array('username, password, create_time, update_time', 'required'),
 			array('username, password', 'length', 'max'=>20),
 			array('status', 'length', 'max'=>1),
-			array('roles', 'length', 'max'=>2),
 			array('create_user, update_user', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, username, password, status, roles, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, username, password, status, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,6 +56,7 @@ class TUsers extends CActiveRecord
 		return array(
 			'tStudents' => array(self::HAS_ONE, 'TStudents', 'ID'),
 			'tTeachers' => array(self::HAS_ONE, 'TTeachers', 'ID'),
+			'tUserRoles' => array(self::HAS_MANY, 'TUserRoles', 'user_id'),
 		);
 	}
 
@@ -70,7 +70,6 @@ class TUsers extends CActiveRecord
 			'username' => '用户名',
 			'password' => '密码',
 			'status' => '状态(1:正常 2:异常)',
-			'roles' => '用户角色(S:学生 T:教师 T1:教务处 T2:学生科 A:管理员 )',
 			'create_user' => 'Create User',
 			'create_time' => 'Create Time',
 			'update_user' => 'Update User',
@@ -100,7 +99,6 @@ class TUsers extends CActiveRecord
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('status',$this->status,true);
-		$criteria->compare('roles',$this->roles,true);
 		$criteria->compare('create_user',$this->create_user,true);
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('update_user',$this->update_user,true);
@@ -121,4 +119,28 @@ class TUsers extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    
+    /**
+     * 获取用户的所有权限
+     */
+    public function getUserAuthoritys() {
+        
+        $result = array();
+        // 
+        $sql = "select d.ID, d.access_path from t_user_roles a, m_roles b, m_role_authoritys c, m_authoritys d where a.role_id=b.ID and b.ID=c.role_id and c.authority_id=d.ID and a.user_id=:user_id";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $command->bindValue(":user_id", $this->ID);
+        $data = $command->query();
+
+        foreach ($data as $value) {
+            $result[$value['ID']] = $value['access_path'];
+        }
+        
+        return $result;
+    }
+    
+    
+
 }

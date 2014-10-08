@@ -31,19 +31,27 @@
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker-bs3.css" />
         <!-- Bootstrap toggle -->
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap-switch.css" />
-
+        
         <!-- Main stylesheet -->
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/style.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/widgets.css" />
         <!--<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/dropzone.css" />-->
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.gritter.css" />
+        
 
         <!-- HTML5 Support for IE -->
         <!--[if lt IE 9]>
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/html5shim.js"></script>    
         <![endif]-->
 
+        
+        <!-- datatables -->
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/css/dataTables.bootstrap.css" />
+        
+        
+        
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
         
@@ -72,7 +80,6 @@
             <li class="dropdown pull-right user-data">            
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                     <i class="fa fa-user"></i>
-                    [<?php echo Yii::app()->user->getState('rolename'); ?>]
                     <span class="bold"><?php echo Yii::app()->user->getState('name'); ?></span> 
                     <b class="caret"></b>
                 </a>
@@ -80,7 +87,7 @@
                 <!-- Dropdown menu -->
                 <ul class="dropdown-menu">
                     <li><a href="<?php echo $this->createUrl('setting/profile');?>"><i class="fa fa-user"></i> 个人信息</a></li>
-                    <li><a href="<?php echo $this->createurl('setting/changePassword');?>"><i class="fa fa-cogs"></i> 密码变更</a></li>
+                    <li><a href="<?php echo $this->createurl('setting/password');?>"><i class="fa fa-cogs"></i> 密码变更</a></li>
                     <li><a href="<?php echo $this->createurl('site/logout');?>"><i class="fa fa-key"></i>退出</a></li>
                 </ul>
             </li>
@@ -111,9 +118,14 @@
                     <i class="fa fa-home"></i> <span>首页</span>
                 </a>
             </li>
-          
+            
+          <?php
+                $controller = Yii::app()->controller->id;  // controller
+                $action = $this->getAction()->getId(); // action
+                $route =$this->getRoute(); // route 
+          ?>
             <li class="has_sub">
-                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'student' ? 'open' : ''; ?>">
+                <a href="#" class="<?php echo $controller == 'student' ? 'open' : ''; ?>">
                     <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span>
                 </a>
                 <ul>
@@ -123,7 +135,7 @@
             </li>
           
             <li class="has_sub">
-                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'teacher' ? 'open' : ''; ?>">
+                <a href="#" class="<?php echo $controller == 'teacher' ? 'open' : ''; ?>">
                 <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息检索</a></li>
@@ -132,16 +144,17 @@
             </li>
           
             <li class="has_sub">
-                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'class' ? 'open' : ''; ?>">
+                <a href="#" class="<?php echo $controller == 'class' ? 'open' : ''; ?>">
                 <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('class/search');?>">班级信息检索</a></li>
                     <li><a href="<?php echo $this->createUrl('class/create');?>">班级信息添加</a></li>
+                    <li><a href="<?php echo $this->createUrl('class/upgrade');?>">班级升级</a></li>
                 </ul>
             </li>
           
             <li class="has_sub">
-                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'course' ? 'open' : ''; ?>">
+                <a href="#" class="<?php echo $controller == 'course' ? 'open' : ''; ?>">
                 <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息检索</a></li>
@@ -152,7 +165,7 @@
           
           
             <li class="has_sub">
-                <a href="#" class="<?php echo Yii::app()->user->getState('menu') == 'class' ? 'score' : ''; ?>">
+                <a href="#" class="<?php echo $controller == 'score' ? 'open' : ''; ?>">
                 <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('score/search');?>">成绩信息检索</a></li>
@@ -164,6 +177,16 @@
           <?php if($this->isStudent()) { ?>
           <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-bar-chart-o"></i> <span>成绩查询</span></a></li> 
           <?php } ?>
+          
+          
+            <li class="has_sub">
+                <a href="#" class="<?php echo $controller == 'role' ? 'open' : ''; ?>">
+                <i class="fa fa-bar-chart-o"></i> <span>权限角色管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <ul>
+                    <li><a href="<?php echo $this->createUrl('role/search');?>">角色检索</a></li>
+                    <li><a href="<?php echo $this->createUrl('role/create');?>">角色添加</a></li>
+                </ul>
+            </li>
           
           <!--
             <li><a href="charts.html"><i class="fa fa-bar-chart-o"></i> <span>Charts</span></a></li> 
@@ -238,18 +261,13 @@
                 <div class="container">
                     <!-- 提示消息显示区域 -->
                     <?php if (Yii::app()->user->hasFlash('success')) { ?>
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-info">
                             <?php echo Yii::app()->user->getFlash('success'); ?>
                         </div>
                     <?php } ?>
                     <?php if (Yii::app()->user->hasFlash('warning')) { ?>
                         <div class="alert alert-warning">
                             <?php echo Yii::app()->user->getFlash('warning'); ?>
-                        </div>
-                    <?php } ?>
-                    <?php if (Yii::app()->user->hasFlash('info')) { ?>
-                        <div class="alert alert-info">
-                            <?php echo Yii::app()->user->getFlash('info'); ?>
                         </div>
                     <?php } ?>
                     <?php if (Yii::app()->user->hasFlash('danger')) { ?>
@@ -329,9 +347,25 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script> <!-- jQuery iCheck -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/dropzone.js"></script> <!-- jQuery Dropzone -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/filter.js"></script> <!-- Filter for support page -->
+
+
+
+
+
+
+<!-- blockUI -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.blockUI.js"></script>
+<!-- dataTables -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/js/dataTables.bootstrap.js"></script>
+
+
+
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/custom.js"></script>
 
 
 </body>
+
 
 </html>

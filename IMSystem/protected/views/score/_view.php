@@ -1,9 +1,9 @@
 <tr>
+    <td class="center"><?php echo $data['exam_name'] ; ?></td>
     <td class="center"><?php echo $data['class_name']; ?></td>
+    <td class="center"><?php echo $data['subject_name'] ; ?></td>
     <td class="center"><?php echo $data['code']; ?></td>
     <td class="center"><?php echo $data['name']; ?></td>
-    <td class="center"><?php echo $data['exam_name'] ; ?></td>
-    <td class="center"><?php echo $data['subject_name'] ; ?></td>
     <td class="center"><?php echo $data['score'] ; ?></td>
     
     <td class="center">

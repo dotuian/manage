@@ -47,14 +47,5 @@ class CourseForm extends CFormModel
 		);
 	}
     
-    public static function getCreateTypeOption(){
-        return array(
-            '1' => '班级',
-//            '2' => '科目',
-//            '3' => '教师',
-//            '0' => '高级',
-        );
-    }
-    
 }
 

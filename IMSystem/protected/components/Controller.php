@@ -44,6 +44,26 @@ class Controller extends CController {
     }
     
     /**
+     * 在init()方法之后执行，进行权限检查
+     * @param type $action
+     * @return boolean
+     * @throws CHttpException
+     */
+    protected function beforeAction($action){
+//        if (parent::beforeAction($action)) {
+//            if (!in_array($this->getRoute(), Yii::app()->user->getState('roles'))) {
+//                throw new CHttpException(500,'没有权限！');
+//            }
+//            return true;
+//        } else {
+//            return false;
+//        }
+        
+        return true;
+    }
+    
+    
+    /**
      * 基于角色访问控制（role-based access (RBAC)）
      * @return type
      */

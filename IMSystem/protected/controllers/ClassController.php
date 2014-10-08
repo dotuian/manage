@@ -5,51 +5,45 @@
  */
 class ClassController extends Controller {
 
-    public function accessRules()
-    {
-        /**
-        * *: 任何用户，包括匿名和验证通过的用户
-        * ?: 匿名用户
-        * @: 验证通过的用户
-         */
-        return array(
-            // 允许管理员执行（A）
-            array('allow', 
-                'actions'=>array('*'),
-                'expression'=>array($this,'isAdmin'),
-            ),
-            // 允许教务处访问（T1）
-            array('allow', 
-                'actions'=>array('search','create','update'),
-                'expression'=>array($this,'isDeanOffice'),
-            ),
-            // 允许学工科执行（T2）
-            array('allow', 
-                'actions'=>array(),
-                'expression'=>array($this,'isStudentAffairs'),
-            ),
-            // 允许普通教师执行（T）
-            array('allow', 
-                'actions'=>array(),
-                'expression'=>array($this,'isTeacher'),
-            ),
-            // 允许学生用户执行（S）
-            array('allow', 
-                'actions'=>array(''),
-                'expression'=>array($this,'isStudent'),
-            ),
-
-            array('deny',  // 拒绝所有用户
-                'users'=>array('*'),
-            ),
-        );
-    }
-    
-    
-    public function init() {
-        parent::init();
-        Yii::app()->user->setState('menu', 'class');
-    }
+//    public function accessRules()
+//    {
+//        /**
+//        * *: 任何用户，包括匿名和验证通过的用户
+//        * ?: 匿名用户
+//        * @: 验证通过的用户
+//         */
+//        return array(
+//            // 允许管理员执行（A）
+//            array('allow', 
+//                'actions'=>array('*'),
+//                'expression'=>array($this,'isAdmin'),
+//            ),
+//            // 允许教务处访问（T1）
+//            array('allow', 
+//                'actions'=>array('search','create','update'),
+//                'expression'=>array($this,'isDeanOffice'),
+//            ),
+//            // 允许学工科执行（T2）
+//            array('allow', 
+//                'actions'=>array(),
+//                'expression'=>array($this,'isStudentAffairs'),
+//            ),
+//            // 允许普通教师执行（T）
+//            array('allow', 
+//                'actions'=>array(),
+//                'expression'=>array($this,'isTeacher'),
+//            ),
+//            // 允许学生用户执行（S）
+//            array('allow', 
+//                'actions'=>array(''),
+//                'expression'=>array($this,'isStudent'),
+//            ),
+//
+//            array('deny',  // 拒绝所有用户
+//                'users'=>array('*'),
+//            ),
+//        );
+//    }
     
     /**
      * 查询班级信息
@@ -179,35 +173,71 @@ class ClassController extends Controller {
         if (isset($_GET['ID'])) {
             $ID = trim($_GET['ID']);
             
-            $student = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
-            if (is_null($student)) {
+            $class = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
+            if (is_null($class)) {
                 throw new CHttpException(400, "该班级信息不存在！");
             }
 
             if (isset($_POST['TClasses'])) {
-                $student->class_name = trim($_POST['TClasses']['class_name']);
-                $student->class_type = trim($_POST['TClasses']['class_type']);
-                $student->status = trim($_POST['TClasses']['status']);
-                $student->term_year = trim($_POST['TClasses']['term_year']);
-                $student->teacher_id = trim($_POST['TClasses']['teacher_id']);
+                $class->class_name = trim($_POST['TClasses']['class_name']);
+                $class->class_type = trim($_POST['TClasses']['class_type']);
+                $class->status = trim($_POST['TClasses']['status']);
+                $class->term_year = trim($_POST['TClasses']['term_year']);
+                $class->teacher_id = trim($_POST['TClasses']['teacher_id']);
 
-                $student->update_user = $this->getLoginUserId();
-                $student->update_time = new CDbExpression('NOW()');
+                $class->update_user = $this->getLoginUserId();
+                $class->update_time = new CDbExpression('NOW()');
 
-                if ($student->save()) {
+                if ($class->save()) {
                     Yii::app()->user->setFlash('success', "班级信息变更成功！");
                 } else {
-                    Yii::log(print_r($student->errors, true));
+                    Yii::log(print_r($class->errors, true));
                     Yii::app()->user->setFlash('warning', "班级信息变更失败！");
                 }
             }
 
             $this->render('update', array(
-                'model' => $student,
+                'model' => $class,
             ));
         } else {
             throw new CHttpException(400, "找不到该页面！");
         }
+    }
+ 
+    
+    /**
+     * 新学年的开始，学生的班级信息批量变更
+     */
+    public function actionUpgrade() {
+        
+        $model = new ClassUpgradeForm();
+        
+        if (isset($_POST['ClassUpgradeForm'])) {
+            $model->attributes = $_POST['ClassUpgradeForm'];
+            
+            if($model->validate()){
+                $tran = Yii::app()->db->beginTransaction();
+                try {
+                    $sql = "update t_students set class_id=:new_class_id, old_class_id=:old_class_id, update_user=:update_user, update_time=now() where class_id=:old_class_id and status='1'";
+                    $command = Yii::app()->db->createCommand($sql);
+                    $command->bindValue(":new_class_id", $model->new_class_id);
+                    $command->bindValue(":old_class_id", $model->old_class_id);
+                    $command->bindValue(":update_user", $this->getLoginUserId());
+                    $count = $command->execute();
+                    if($count > 0 ) {
+                        $tran->commit();
+                        Yii::app()->user->setFlash('success', "升级处理成功！一共{$count}个学生班级信息变更成功！");
+                    } else {
+                        Yii::app()->user->setFlash('success', "升级处理成功！");
+                    }
+                } catch (Exception $e) {
+                    throw new CHttpException(400, "系统异常！");
+                }
+            }
+        }
+        
+        $this->render('upgrade', array('model' => $model));
+        
     }
     
     

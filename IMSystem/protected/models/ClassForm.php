@@ -44,7 +44,7 @@ class ClassForm extends CFormModel
         );
     }
     
-    public static function getStatusOption($flag){
+    public static function getClassStatusOption($flag){
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];
