@@ -24,6 +24,9 @@
  */
 class TTeachers extends CActiveRecord
 {
+    // 教师角色
+    public $roles = array();
+    
 	/**
 	 * @return string the associated database table name
 	 */
@@ -48,6 +51,7 @@ class TTeachers extends CActiveRecord
 			array('address', 'length', 'max'=>100),
 			array('telephonoe', 'length', 'max'=>11),
 			array('birthday', 'safe'),
+			array('roles', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID, code, name, status, sex, birthday, address, telephonoe, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),

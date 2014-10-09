@@ -93,7 +93,7 @@ $(document).ready(function(){
 
                     <div class="widget-foot">
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary ')); ?>
+                            <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary')); ?>
                         </div>
                         <div class="clearfix"></div> 
                     </div>

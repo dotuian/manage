@@ -10,9 +10,6 @@ class ScoreController extends Controller {
      * @throws CHttpException
      */
     public function actionQuery(){
-        if(!$this->isStudent()){
-            throw new CHttpException('500', '没有权限！');
-        }
         
         $student = TStudents::model()->find("ID=:ID and status='1'", array(':ID' => $this->getLoginUserId()));
         if (is_null($student)) {
@@ -284,7 +281,7 @@ class ScoreController extends Controller {
                 
             }  catch (Exception $e) {
                 $data['message'] = '系统异常！';
-                throw new CHttpException(400, "系统异常！");
+                throw new CHttpException(404, "系统异常！");
             }
             
             echo json_encode($data);
@@ -299,7 +296,7 @@ class ScoreController extends Controller {
             $ID = trim($_GET['ID']);
             $score = TScores::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($score)) {
-                throw new CHttpException(400, "该成绩信息不存在！");
+                throw new CHttpException(404, "该成绩信息不存在！");
             }
             
             if (isset($_POST['TScores'])) {
@@ -319,7 +316,7 @@ class ScoreController extends Controller {
                 'model' => $score,
             ));
         } else {
-            throw new CHttpException(400, "找不到该页面！");
+            throw new CHttpException(404, "找不到该页面！");
         }
     }
     
@@ -330,7 +327,7 @@ class ScoreController extends Controller {
             $ID = trim($_POST['ID']);
             $score = TScores::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($score)) {
-                throw new CHttpException(400, "该成绩信息不存在！");
+                throw new CHttpException(404, "该成绩信息不存在！");
             }
             
             if ($score->delete()) {
@@ -345,7 +342,7 @@ class ScoreController extends Controller {
                 'model' => $score,
             ));
         } else {
-            throw new CHttpException(400, "找不到该页面！");
+            throw new CHttpException(404, "找不到该页面！");
         }
     }
     

@@ -44,7 +44,7 @@ $(document).ready(function(){
 
         <div class="widget-foot">
             <div class="pull-right">
-                <?php echo CHtml::submitButton('检索', array('class'=>'btn btn-primary ')); ?>
+                <?php echo CHtml::submitButton('检索', array('class'=>'btn btn-search')); ?>
             </div>
             <div class="clearfix"></div> 
         </div>

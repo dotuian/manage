@@ -38,12 +38,16 @@ class UserIdentity extends CUserIdentity {
                 
                 // 用户类型
                 if ('TStudents' == get_class($loginUser)) {
-                    $this->setState('user_type',  'teacher');
+                    $this->setState('user_type',  'student');
                 } else {
                     $this->setState('user_type',  'teacher');
                 }
-                // 用户权限
-                $this->setState('roles',  $user->getUserAuthoritys());
+                
+                // 用户所有的权限
+                $this->setState('authoritys',  $user->getAllUserAuthoritys());
+                // 用户所有的权限分类
+                $this->setState('auth_category', $user->getAllUserAuthorityCategory());
+                
                 
                 $this->setState('name',      $loginUser->name);
                 $this->setState('user',      $user);

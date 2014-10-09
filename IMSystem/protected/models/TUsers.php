@@ -121,10 +121,28 @@ class TUsers extends CActiveRecord
 	}
     
     
+    
+    public function getAllUserAuthorityCategory(){
+        $result = array();
+        // 
+        $sql = "select DISTINCT d.category from t_user_roles a, m_roles b, m_role_authoritys c, m_authoritys d where a.role_id=b.ID and b.ID=c.role_id and c.authority_id=d.ID and a.user_id=:user_id";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $command->bindValue(":user_id", $this->ID);
+        $data = $command->query();
+
+        foreach ($data as $value) {
+            $result[] = $value['category'];
+        }
+        
+        return $result;
+    }
+    
+    
     /**
      * 获取用户的所有权限
      */
-    public function getUserAuthoritys() {
+    public function getAllUserAuthoritys() {
         
         $result = array();
         // 
@@ -141,6 +159,16 @@ class TUsers extends CActiveRecord
         return $result;
     }
     
+    
+    public function getUserRoleIds(){
+        $result = array();
+        
+        foreach ($this->tUserRoles as $userRole) {
+            $result[] = $userRole->role_id;
+        }
+        
+        return $result;
+    }
     
 
 }

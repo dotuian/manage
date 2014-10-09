@@ -139,4 +139,18 @@ class MRoles extends CActiveRecord
         
     }
     
+    public function getAllRolesOption($flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+        
+        $data = self::model()->findAll("status='1' order by level");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->role_name;
+        }
+        
+        return $result;
+    }
+    
 }

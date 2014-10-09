@@ -34,7 +34,7 @@ $(document).ready(function(){
                         ));
                     ?>
                     
-                    <?php if ($user->roles === 'S') { // 学生个人信息?>
+                    <?php if(Yii::app()->user->getState('user_type') === 'student') { // 学生个人信息?>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">学号</label>
                             <div class="col-lg-10 inline-block">
@@ -274,8 +274,8 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">电话号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
-                                <?php echo $form->error($model,'parents_tel'); ?>
+                                <?php echo $form->textField($model,'telephonoe', array('class'=>'form-control', 'placeholder'=>'电话号码')); ?>
+                                <?php echo $form->error($model,'telephonoe'); ?>
                             </div>
                         </div>
                     <?php } ?>
@@ -283,8 +283,8 @@ $(document).ready(function(){
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-default" value='重置' />
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-primary ')); ?>
+                                <input type="reset" class="btn btn-reset" value='重置' />
+                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>
                     

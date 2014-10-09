@@ -127,7 +127,7 @@ class StudentController extends Controller {
                     Yii::log(print_r($user->errors, true));
                     Yii::app()->user->setFlash('warning', "学生信息添加失败！");
                 } catch (Exception $e) {
-                    throw new CHttpException(400, "系统异常！");
+                    throw new CHttpException(404, "系统异常！");
                 }
             }
         }
@@ -141,7 +141,7 @@ class StudentController extends Controller {
             $ID = trim($_GET['ID']);
             $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($student)) {
-                throw new CHttpException(400, "该学生信息不存在！");
+                throw new CHttpException(404, "该学生信息不存在！");
             }
 
             if (isset($_POST['TStudents'])) {
@@ -184,9 +184,42 @@ class StudentController extends Controller {
                 'model' => $student,
             ));
         } else {
-            throw new CHttpException(400, "找不到该页面！");
+            throw new CHttpException(404, "找不到该页面！");
         }
     }
+    
+    
+    public function actionImport() {
 
+        $model = new TFileUpload('import_student');
+
+        if (isset($_POST['TFileUpload'])) {
+            $model->attributes = $_POST['TFileUpload'];
+            // 上传文件名
+            $model->filename = CUploadedFile::getInstance($model, 'filename');
+            // 保存文件名
+            $model->realpath = Yii::app()->params['FilePath'] . time() . '.xlsx';
+            $model->category = 'import_student';
+
+            $model->create_user = $this->getLoginUserId();
+            $model->update_user = $this->getLoginUserId();
+            $model->create_time = new CDbExpression('NOW()');
+            $model->update_time = new CDbExpression('NOW()');
+
+            if ($model->validate()) {
+                if ($model->save()) {
+                    $model->filename->saveAs($model->realpath);
+                    Yii::app()->user->setFlash('success', "文件上传成功！");
+                } else {
+                    Yii::app()->user->setFlash('warning', "文件上传失败！");
+                }
+            }
+        }
+
+        $this->render('import', array(
+            'model' => $model,
+        ));
+    }
+    
 }
 

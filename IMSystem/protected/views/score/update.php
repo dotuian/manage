@@ -71,11 +71,11 @@ $(document).ready(function(){
                                         'confirm'=>'确定要删除吗？',
                                         'params'=>array('ID' => $model->ID),
                                         'submit' => array('delete'),
-                                        'class'=>'btn',
+                                        'class'=>'btn btn-delete',
                                         'encode'=>false,
                                     ));
                                 ?>
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-primary ')); ?>
+                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>
                     

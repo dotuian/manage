@@ -50,14 +50,14 @@ class Controller extends CController {
      * @throws CHttpException
      */
     protected function beforeAction($action){
-//        if (parent::beforeAction($action)) {
-//            if (!in_array($this->getRoute(), Yii::app()->user->getState('roles'))) {
-//                throw new CHttpException(500,'没有权限！');
-//            }
-//            return true;
-//        } else {
-//            return false;
-//        }
+        if (parent::beforeAction($action)) {
+            if (!in_array($this->getRoute(), Yii::app()->user->getState('authoritys'))) {
+                throw new CHttpException(500,'没有权限！');
+            }
+            return true;
+        } else {
+            return false;
+        }
         
         return true;
     }
@@ -97,54 +97,5 @@ class Controller extends CController {
         return Yii::app()->user->getState('ID');
     }
     
-    /**
-     * 判断登录的用户是否为学生用户
-     * @return type
-     */    
-    public function isStudent(){
-        return $this->role === 'S';
-    }
     
-    /**
-     * 判断登录的用户是否为学生用户
-     * @return type
-     */
-    public function isTeacher() {
-        return $this->role === 'T';
-    }
-    
-    /**
-     * 判断登录的用户是否为教务处用户
-     * @return type
-     */
-    public function isDeanOffice(){
-        return $this->role === 'T1';
-    }
-    
-    /**
-     * 判断登录的用户是否为学工处
-     * @return type
-     */
-    public function isStudentAffairs(){
-        return $this->role === 'T2';
-    }
-    
-    /**
-     * 判断是否是管理员
-     * @param type $user 代表Yii::app()->user即登录用户
-     * @return type
-     */
-    protected function isAdmin($user) {
-        return $this->role === 'A';
-    }
-
-    /**
-     * 判断是否是普通管理员
-     * @param type $user 代表Yii::app()->user即登录用户
-     * @return type
-     */
-    protected function isNormalAdmin($user) {
-        return ($this->loadModel($user->id)->adminAdminFlag == 0);
-    }
-
 }

@@ -80,21 +80,21 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'telephonoe'); ?>
                             </div>
                         </div>
-                        
-
+                    
                         <div class="form-group">
                             <label class="col-lg-2 control-label">角色</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'role', TeacherForm::getTeacherRoleOption(false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'role'); ?>
+                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getAllRolesOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>
+                    
 
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-default" value='重置' />
-                                <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary ')); ?>
+                                <input type="reset" class="btn btn-reset" value='重置' />
+                                <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary')); ?>
                             </div>
                         </div>
                     

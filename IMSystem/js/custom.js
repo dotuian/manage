@@ -49,6 +49,8 @@ $(document).ready(function(){
   $(".content #nav a").on('click',function(e){
       if(!$(this).parents(".content:first").hasClass("enlarged")){
 
+      $(".content #nav a").removeClass('open');
+
       if($(this).parent().hasClass("has_sub")) {
         e.preventDefault();
       }   

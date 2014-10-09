@@ -159,7 +159,7 @@ class ClassController extends Controller {
                         Yii::app()->user->setFlash('warning', "班级信息添加失败！");
                     }
                 } catch (Exception $e) {
-                    throw new CHttpException(400, "系统异常！");
+                    throw new CHttpException(404, "系统异常！");
                 }
             }
         }
@@ -175,7 +175,7 @@ class ClassController extends Controller {
             
             $class = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($class)) {
-                throw new CHttpException(400, "该班级信息不存在！");
+                throw new CHttpException(404, "该班级信息不存在！");
             }
 
             if (isset($_POST['TClasses'])) {
@@ -200,7 +200,7 @@ class ClassController extends Controller {
                 'model' => $class,
             ));
         } else {
-            throw new CHttpException(400, "找不到该页面！");
+            throw new CHttpException(404, "找不到该页面！");
         }
     }
  
@@ -231,7 +231,7 @@ class ClassController extends Controller {
                         Yii::app()->user->setFlash('success', "升级处理成功！");
                     }
                 } catch (Exception $e) {
-                    throw new CHttpException(400, "系统异常！");
+                    throw new CHttpException(404, "系统异常！");
                 }
             }
         }

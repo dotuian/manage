@@ -155,7 +155,7 @@ class CourseController extends Controller {
                 }
             } catch (Exception $e) {
                 $data['message'] = '系统异常！';
-                throw new CHttpException(400, "系统异常！");
+                throw new CHttpException(404, "系统异常！");
             }
         }
         
@@ -189,7 +189,7 @@ class CourseController extends Controller {
                         Yii::app()->user->setFlash('warning', "课程信息添加失败！");
                     }
                 } catch (Exception $e) {
-                    throw new CHttpException(400, "系统异常！");
+                    throw new CHttpException(404, "系统异常！");
                 }
             }
         }
@@ -204,7 +204,7 @@ class CourseController extends Controller {
             $ID = trim($_GET['ID']);
             $course = MCourses::model()->find("ID=:ID and status='1' ", array(":ID" => $ID));
             if (is_null($course)) {
-                throw new CHttpException(400, "该课程信息不存在！");
+                throw new CHttpException(404, "该课程信息不存在！");
             }
             
             if (isset($_POST['MCourses'])) {
@@ -224,7 +224,7 @@ class CourseController extends Controller {
                 'model' => $course,
             ));
         } else {
-            throw new CHttpException(400, "找不到该页面！");
+            throw new CHttpException(404, "找不到该页面！");
         }
     }
     
@@ -235,7 +235,7 @@ class CourseController extends Controller {
             $ID = trim($_POST['ID']);
             $course = MCourses::model()->find("ID=:ID and status='1' ", array(":ID" => $ID));
             if (is_null($course)) {
-                throw new CHttpException(400, "该课程信息不存在！");
+                throw new CHttpException(404, "该课程信息不存在！");
             }
             
             $course->status = '2';
@@ -253,7 +253,7 @@ class CourseController extends Controller {
                 'model' => $course,
             ));
         } else {
-            throw new CHttpException(400, "找不到该页面！");
+            throw new CHttpException(404, "找不到该页面！");
         }
     }
     

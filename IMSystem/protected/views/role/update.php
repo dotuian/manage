@@ -66,10 +66,10 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">课程管理权限</label>
+                            <label class="col-lg-2 control-label">课程安排管理权限</label>
                             <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'subject_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('SUBJECT'), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'subject_authoritys'); ?>
+                                <?php echo $form->checkBoxList($model,'course_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('COURSE'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'course_authoritys'); ?>
                             </div>
                         </div>
                     
@@ -90,6 +90,14 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">权限管理权限</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'authority_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('AUTHORITY'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'authority_authoritys'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">其他权限</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'other_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('OTHER'), array('separator'=>'　')); ?>
@@ -105,7 +113,7 @@ $this->breadcrumbs = array(
                                         'confirm'=>'确定要删除吗？',
                                         'params'=>array('ID' => $model->role_id),
                                         'submit' => array('delete'),
-                                        'class'=>'btn',
+                                        'class'=>'btn btn-delete',
                                         'encode'=>false,
                                     ));
                                 ?>

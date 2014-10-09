@@ -67,6 +67,9 @@
     <div class="container">
       <!-- Menu button for smallar screens -->
         <div class="navbar-header">
+            <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>个人设置</span></button>
+            
+
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
                  <span class="bold">XXXXXX</span>
             </a>
@@ -123,115 +126,159 @@
                 $controller = Yii::app()->controller->id;  // controller
                 $action = $this->getAction()->getId(); // action
                 $route =$this->getRoute(); // route 
+                
+                $authoritys = Yii::app()->user->getState('authoritys');
+                // 权限分类
+                $category = Yii::app()->user->getState('auth_category');
           ?>
+          
+            <?php if(in_array('STUDENT', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'student' ? 'open' : ''; ?>">
                     <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span>
                 </a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('student/search');?>">学生信息检索</a></li>
-                    <li><a href="<?php echo $this->createUrl('student/create');?>">学生信息添加</a></li>
+                    <?php if(in_array('student/search', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('student/search');?>">学生信息检索</a></li>
+                    <?php } ?>
+                        
+                    <?php if(in_array('student/create', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('student/create');?>">学生信息添加</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('student/import', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('student/import');?>">学生信息导入</a></li>
+                    <?php } ?>
                 </ul>
             </li>
+            <?php } ?>
           
+          
+            <?php if(in_array('TEACHER', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'teacher' ? 'open' : ''; ?>">
                 <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息检索</a></li>
-                    <li><a href="<?php echo $this->createUrl('teacher/create');?>">教师信息添加</a></li>
+                    <?php if(in_array('teacher/search', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('teacher/create', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('teacher/create');?>">教师信息添加</a></li>
+                    <?php } ?>
                 </ul>
             </li>
+            <?php } ?>
           
+          
+            <?php if(in_array('CLASS', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'class' ? 'open' : ''; ?>">
                 <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
+                    <?php if(in_array('class/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/search');?>">班级信息检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('class/create', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/create');?>">班级信息添加</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('class/upgrade', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/upgrade');?>">班级升级</a></li>
+                    <?php } ?>
                 </ul>
             </li>
+            <?php } ?>
           
+          
+            <?php if(in_array('COURSE', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'course' ? 'open' : ''; ?>">
                 <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息检索</a></li>
-                    <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
-                    <li><a href="<?php echo $this->createUrl('course/CreateMore');?>">课程信息添加(批量)</a></li>
+                    <?php if(in_array('course/search', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('course/create', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('course/CreateMore', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('course/CreateMore');?>">课程信息添加(批量)</a></li>
+                    <?php } ?>
                 </ul>
             </li>
+            <?php } ?>
           
           
+            <?php if(in_array('SCORE', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'score' ? 'open' : ''; ?>">
                 <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
+                    <?php if(in_array('score/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/search');?>">成绩信息检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('score/create', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
+                    <?php } ?>
                 </ul>
             </li>
-          
-          <!-- 学生成绩查询 -->
-          <?php if($this->isStudent()) { ?>
-          <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-bar-chart-o"></i> <span>成绩查询</span></a></li> 
-          <?php } ?>
+            <?php } ?>
           
           
+            <?php if(in_array('ROLE', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'role' ? 'open' : ''; ?>">
-                <i class="fa fa-bar-chart-o"></i> <span>权限角色管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-users"></i> <span>角色管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
+                    <?php if(in_array('role/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('role/search');?>">角色检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('role/create', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('role/create');?>">角色添加</a></li>
+                    <?php } ?>
                 </ul>
             </li>
+            <?php } ?>
           
-          <!--
-            <li><a href="charts.html"><i class="fa fa-bar-chart-o"></i> <span>Charts</span></a></li> 
-            <li><a href="tables.html"><i class="fa fa-table"></i> <span>Tables</span></a></li>
-            <li><a href="forms.html" class="open"><i class="fa fa-tasks"></i> <span>Forms</span></a></li>
-            <li><a href="ui.html"><i class="fa fa-magic"></i> <span>User Interface</span></a></li>
-            <li><a href="typography.html"><i class="fa fa-edit"></i> <span>Typography</span></a></li>
-            <li><a href="calendar.html"><i class="fa fa-calendar"></i> <span>Calendar</span></a></li>
           
-            <li class="has_sub"><a href="#"><i class="fa fa-sitemap"></i> <span>Extra Pages #1</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
-                <ul>
-                    <li><a href="post.html">Post</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="support.html">Support</a></li>
-                    <li><a href="invoice.html">Invoice</a></li>
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                </ul>
-            </li> 
-            
-            <li class="has_sub"><a href="#"><i class="fa fa-file-text"></i> <span>Extra Pages #2</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
-                <ul>
-                    <li><a href="media.html">Media</a></li>
-                    <li><a href="statement.html">Statement</a></li>
-                    <li><a href="error.html">Error</a></li>
-                    <li><a href="error-log.html">Error Log</a></li>
-                    <li><a href="calendar.html">Calendar</a></li>
-                    <li><a href="grid.html">Grid</a></li>
-                </ul>
-            </li>
-            
+            <?php if(in_array('AUTHORITY', $category)) { ?>
             <li class="has_sub">
-                <a href="#"><i class="fa fa-heart"></i> <span>3 Level Menu</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <a href="#" class="<?php echo $controller == 'authority' ? 'open' : ''; ?>">
+                <i class="fa fa-wrench"></i> <span>权限管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
                 <ul>
-                    <li><a href="#"><i class="fa fa-bookmark"></i> Subitem 1</a></li>
-                    <li class="has_sub"><a href="#"><i class="fa fa-glass"></i> Subitem 2 <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-bell"></i> Subitem 1</a></li>
-                            <li><a href="#"><i class="fa fa-camera"></i> Subitem 2</a></li>
-                        </ul>
-                    </li>
+                    <?php if(in_array('authority/search', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('authority/search');?>">权限检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('authority/create', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('authority/create');?>">权限添加</a></li>
+                    <?php } ?>
                 </ul>
             </li>
-          -->
+            <?php } ?>
+          
+            <!-- 学生成绩查询 -->
+            <?php if(in_array('authority/create', $authoritys)) { ?>
+                <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
+            <?php } ?>
+          
+            <!-- 个人设置 -->
+            <li class="has_sub">
+                <a href="#" class="<?php echo $controller == 'setting' ? 'open' : ''; ?>">
+                <i class="fa fa-cogs"></i> <span>个人设置</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <ul>
+                    <li><a href="<?php echo $this->createUrl('setting/profile');?>">个人信息</a></li>
+                    <li><a href="<?php echo $this->createUrl('setting/password');?>">密码变更</a></li>
+                    <li><a href="<?php echo $this->createUrl('site/logout');?>">退出登录</a></li>
+                </ul>
+            </li>
+          
         </ul>
     </div>
     <!-- Sidebar ends -->
@@ -341,12 +388,12 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.cleditor.min.js"></script> <!-- CLEditor -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.zh-CN.js"></script> <!-- Date picker -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script> <!-- jQuery SlimScroll -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script> <!-- Bootstrap Toggle -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script> <!-- jQuery Masked Input -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script> <!-- jQuery iCheck -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/dropzone.js"></script> <!-- jQuery Dropzone -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/filter.js"></script> <!-- Filter for support page -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script>  jQuery SlimScroll 
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script>  Bootstrap Toggle 
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script>  jQuery Masked Input 
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script>  jQuery iCheck 
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/dropzone.js"></script>  jQuery Dropzone -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/filter.js"></script>  Filter for support page -->
 
 
 

@@ -1,4 +1,7 @@
 <?php
+// php.ini 
+// 为了是文件上传，需要修改php.ini中的post_max_size = 1G
+
 
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
@@ -8,7 +11,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'信息管理系统',
-        'language' => 'zh_cn',
+    'language' => 'zh_cn',
     
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -17,6 +20,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+        'application.extensions.*',
 	),
 
 	'modules'=>array(
@@ -133,5 +137,7 @@ return array(
         
         'EmptySelectOption' => '--------',
         'PageSize' => 10,
+        
+        'FilePath' => 'E:/file/',
 	),
 );

@@ -10,14 +10,14 @@ class TeacherForm extends CFormModel
     public $birthday;
     public $address;
     public $telephonoe;
-    public $role;
+    public $roles = array();
     
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, name, sex, birthday, role, address, telephonoe', 'required'),
+			array('code, name, sex, birthday, roles, address, telephonoe', 'required'),
 			array('code', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>12),
 			array('status, sex', 'length', 'max'=>1),
@@ -26,7 +26,7 @@ class TeacherForm extends CFormModel
 			array('birthday', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, code, name, status, sex, birthday, address, telephonoe,role', 'safe'),
+			array('ID, code, name, status, sex, birthday, address, telephonoe,roles', 'safe'),
 		);
 	}
 
@@ -47,28 +47,6 @@ class TeacherForm extends CFormModel
 		);
 	}
     
-    public static function getTeacherRoleOption($flag){
-        $result = array();
-        if ($flag === true) {
-            $result[''] = yii::app()->params['EmptySelectOption'];
-        }
-        
-        $result['T'] = '普通教师';
-        $result['T1'] = '教务处';
-        $result['T2'] = '学生科';
 
-        return $result;
-    }
-    
-    
-    public static function getStatusOption($flag){
-        $result = array();
-        if ($flag === true) {
-            $result[''] = yii::app()->params['EmptySelectOption'];
-        }
-        
-        return $result;
-    }
-    
 }
 
