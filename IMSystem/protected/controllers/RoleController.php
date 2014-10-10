@@ -132,6 +132,7 @@ class RoleController extends Controller {
             $model->role_code = $role->role_code;
             $model->role_name = $role->role_name;
             $model->class_authoritys = array_keys($role->getRoleAuthorityByCategory('CLASS'));
+            $model->subject_authoritys = array_keys($role->getRoleAuthorityByCategory('SUBJECT'));
             $model->course_authoritys = array_keys($role->getRoleAuthorityByCategory('COURSE'));
             $model->student_authoritys = array_keys($role->getRoleAuthorityByCategory('STUDENT'));
             $model->teacher_authoritys = array_keys($role->getRoleAuthorityByCategory('TEACHER'));
@@ -139,7 +140,6 @@ class RoleController extends Controller {
             $model->role_authoritys = array_keys($role->getRoleAuthorityByCategory('ROLE'));
             $model->authority_authoritys = array_keys($role->getRoleAuthorityByCategory('AUTHORITY'));
             $model->other_authoritys = array_keys($role->getRoleAuthorityByCategory('OTHER'));
-
 
             // 角色的权限更新处理
             if (isset($_POST['RoleForm'])) {

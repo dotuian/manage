@@ -33,6 +33,7 @@ $(document).ready(function(){
                 <tr>
                     <th>教工号</th>
                     <th>姓名</th>
+                    <th>担任科目</th>
                     <th>性别</th>
                     <th>地址</th>
                 </tr>
@@ -44,6 +45,9 @@ $(document).ready(function(){
                     </td>
                     <td>
                         <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
+                    </td>
+                    <td>
+                        <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'sex', StudentForm::getSexOption(true), array('class'=>'form-control')); ?>

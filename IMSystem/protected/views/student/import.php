@@ -8,13 +8,9 @@ Yii::app()->clientScript->registerScript('js', "
 $(document).ready(function(){
 
 
-
 });
 ", CClientScript::POS_END );
 ?>
-
-<script>
-</script>
 
 
 <div class="row">
@@ -29,7 +25,6 @@ $(document).ready(function(){
                 <div class="padd">
                     <h6>该页面，可以对学生信息批量添加。</h6>
                     <hr />
-
                     <?php
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'file-upload-form',
@@ -39,24 +34,25 @@ $(document).ready(function(){
                     ?>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">文件名</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->fileField($model,'filename', array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'filename'); ?>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->fileField($model, 'filename', array('class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'filename'); ?>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
 
                         <hr />
-                        <div class="col-lg-offset-2 col-lg-9">
-                            <?php echo CHtml::submitButton('批量导入', array('class'=>'btn btn-import')); ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-9">
+                                <?php echo CHtml::submitButton('批量导入', array('class'=>'btn btn-import')); ?>
+                            </div>
                         </div>
-
-                    
+                        <div class="clearfix"></div>
+                        
                     <?php $this->endWidget(); ?>
-                    
                 </div>
             </div>
-        </div>  
+        </div>
 
     </div>
 </div>
-

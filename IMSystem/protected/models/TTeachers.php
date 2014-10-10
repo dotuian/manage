@@ -20,14 +20,18 @@
  * The followings are the available model relations:
  * @property MCourses[] $mCourses
  * @property TClasses[] $tClasses
+ * @property TTeacherSubjects[] $tTeacherSubjects
  * @property TUsers $iD
  */
 class TTeachers extends CActiveRecord
 {
     // 教师角色
     public $roles = array();
-    
-	/**
+    // 担任科目
+    public $subjects = array();
+
+
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -43,15 +47,15 @@ class TTeachers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, name, sex, birthday, address, telephonoe, create_time, update_time', 'required'),
+			array('code, name, sex', 'required'),
 			array('code', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>12),
 			array('create_user, update_user', 'length', 'max'=>10),
 			array('status, sex', 'length', 'max'=>1),
 			array('address', 'length', 'max'=>100),
 			array('telephonoe', 'length', 'max'=>11),
-			array('birthday', 'safe'),
-			array('roles', 'safe'),
+            array('birthday', 'date', 'format'=>'yyyy-M-d', 'allowEmpty'=>true),
+			array('roles, subjects', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID, code, name, status, sex, birthday, address, telephonoe, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
@@ -68,6 +72,7 @@ class TTeachers extends CActiveRecord
 		return array(
 			'mCourses' => array(self::HAS_MANY, 'MCourses', 'teacher_id'),
 			'tClasses' => array(self::HAS_MANY, 'TClasses', 'teacher_id'),
+			'tTeacherSubjects' => array(self::HAS_MANY, 'TTeacherSubjects', 'teacher_id'),
 			'iD' => array(self::BELONGS_TO, 'TUsers', 'ID'),
 		);
 	}
@@ -140,6 +145,12 @@ class TTeachers extends CActiveRecord
 		return parent::model($className);
 	}
     
+    
+    /**
+     * 获取所有教师的信息
+     * @param type $flag
+     * @return string
+     */
     public function getAllTeacherOption($flag = true){
         $result = array();
         if ($flag === true) {
@@ -152,4 +163,66 @@ class TTeachers extends CActiveRecord
         }
         return $result;
     }
+    
+    /**
+     * 获取所有班主任的信息
+     * @param type $flag
+     * @return string
+     */
+    public function getAllHeadTeacherOption($flag = true){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $sql = "select DISTINCT b.* from t_classes a , t_teachers b where a.teacher_id=b.ID and a.status='1' and b.status='1'";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $data = $command->query();
+        
+        foreach ($data as $value) {
+            $result[$value['ID']] = $value['code'] . ' | ' . $value['name'];
+        }
+        return $result;
+    }
+    
+
+    /**
+     * 获取指定科目的所有教师信息
+     * @param type $flag
+     * @return string
+     */
+    public function getTeachersBySubjectIdOption($subject_id, $flag = true){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $sql = "select DISTINCT a.* from t_teachers a, t_teacher_subjects b, m_subjects c where a.ID=b.teacher_id and b.subject_id=c.ID and a.status='1' and c.status='1' and c.id=:subject_id";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $command->bindValue(":subject_id", $subject_id);
+        $data = $command->query();
+        
+        foreach ($data as $value) {
+            $result[$value['ID']] = $value['code'] . ' | ' . $value['name'];
+        }
+        return $result;
+    }
+    
+    
+    /**
+     * 获取该教师担任的所有科目的ID
+     * @return type
+     */
+    public function getTeacherSubjectIds(){
+        $result = array();
+        
+        foreach ($this->tTeacherSubjects as $teacherSubject) {
+            $result[] = $teacherSubject->subject_id;
+        }
+        
+        return $result;
+    }
+    
 }

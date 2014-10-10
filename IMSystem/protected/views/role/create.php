@@ -63,6 +63,14 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">科目管理权限</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'subject_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('SUBJECT'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'subject_authoritys'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">课程安排管理权限</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'course_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('COURSE'), array('separator'=>'　')); ?>

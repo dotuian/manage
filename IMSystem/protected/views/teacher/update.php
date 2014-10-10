@@ -56,6 +56,14 @@ $(document).ready(function(){
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">担任科目</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'subjects'); ?>
+                            </div>
+                        </div>
+                    
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
@@ -95,7 +103,15 @@ $(document).ready(function(){
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-reset" value='重置' />
+                                <?php 
+                                    echo CHtml::Button("删除", array(
+                                        'confirm'=>'确定要删除吗？',
+                                        'params'=>array('ID' => $model->ID),
+                                        'submit' => array('delete'),
+                                        'class'=>'btn btn-delete',
+                                        'encode'=>false,
+                                    ));
+                                ?>
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>

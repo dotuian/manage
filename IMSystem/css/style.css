@@ -96,6 +96,11 @@ outline: 0;
   outline:none;
 }
 
+.btn:hover{
+    color: #fff !important;
+    font-weight: bold;
+}
+
 .btn-search {
     color: #fff;
     background-color: #5bc0de;
@@ -106,6 +111,12 @@ outline: 0;
     color: #fff;
     background-color: #d9534f;
     border-color: #d43f3a;
+}
+
+.btn-create {
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
 }
 
 .btn-update {
@@ -120,6 +131,11 @@ outline: 0;
     border-color: #eea236;
 }
 
+.btn-import{
+    color: #fff;
+    background-color: #0044cc;
+    border-color: #0044cc #0044cc #002a80;
+}
 
 
 .form-control{
@@ -231,10 +247,16 @@ form input, form textarea{
 	font-size:13px !important;
 }
 
-form label{
+form .control-label{
 	font-size: 13px;
 	line-height: 20px;
-	font-weight:600;
+	font-weight:600 !important;
+}
+
+label {
+	font-size: 13px;
+	line-height: 20px;
+    font-weight : normal;
 }
 
 /* Modal */
@@ -1057,6 +1079,14 @@ header .nav.nav-pills > li > a:hover, header .nav.nav-pills > li > a:focus{
 
 .pagination > li > a:hover{
 	color: #333;
+}
+
+.pagination > li.selected > a{
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #428bca;
+    border-color: #428bca;
 }
 
 .content.enlarged .sidebar{
@@ -2139,3 +2169,4 @@ footer .copy{
 		display: none;
 	}
 }
+

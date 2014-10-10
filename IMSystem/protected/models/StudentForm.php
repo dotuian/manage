@@ -5,19 +5,19 @@ class StudentForm extends CFormModel
     public $ID;
     public $code;
     public $name;
-    public $status;
-    public $sex = 'M';
+    public $status = '1'; // 默认在校
+    public $sex = 'M'; // 默认男性
     public $id_card_no;
     public $birthday;
     public $class_id;
     public $old_class_id;
     public $accommodation;
-    public $payment1;
-    public $payment2;
-    public $payment3;
-    public $payment4;
-    public $payment5;
-    public $payment6;
+    public $payment1 = '0'; // 默认费用未缴
+    public $payment2 = '0'; // 默认费用未缴
+    public $payment3 = '0'; // 默认费用未缴
+    public $payment4 = '0'; // 默认费用未缴
+    public $payment5 = '0'; // 默认费用未缴
+    public $payment6 = '0'; // 默认费用未缴
     public $bonus_penalty;
     public $address;
     public $parents_tel;
@@ -38,11 +38,13 @@ class StudentForm extends CFormModel
 		// will receive user inputs.
 		return array(
 			array('code, name, sex, class_id, id_card_no', 'required'),
-			array('senior_score, school_year, college_score', 'numerical', 'integerOnly'=>true),
+			array('school_year', 'numerical', 'integerOnly'=>true),
+            array('senior_score, college_score', 'numerical'),
 			array('code, id_card_no', 'length', 'max'=>20),
 			array('name, class_id, old_class_id', 'length', 'max'=>10),
-			array('status, sex', 'length', 'max'=>1),
-			array('accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, school_of_graduation', 'length', 'max'=>50),
+			array('status, sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max'=>1),
+			array('accommodation, school_of_graduation', 'length', 'max'=>50),
+			array('bonus_penalty', 'length', 'max'=>200),
 			array('address, university', 'length', 'max'=>100),
 			array('parents_tel', 'length', 'max'=>11),
 			array('parents_qq', 'length', 'max'=>15),
@@ -98,14 +100,26 @@ class StudentForm extends CFormModel
 	}
     
     
+    public static function getStudentStatusOption($flag=true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+        
+        $result['1'] = '在校';
+        $result['2'] = '离校';
+
+        return $result;
+    }
+    
     public static function getPaymentOption($flag=true) {
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
+        $result['0'] = '未缴';
         $result['1'] = '已缴';
-        $result['2'] = '未缴';
 
         return $result;
     }

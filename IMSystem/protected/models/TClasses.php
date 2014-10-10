@@ -135,6 +135,12 @@ class TClasses extends CActiveRecord
 		return parent::model($className);
 	}
     
+    
+    /**
+     * 获取所有班级信息
+     * @param type $flag
+     * @return type
+     */
     public function getAllClassOption($flag = true) {
         $result = array();
         if ($flag === true) {

@@ -53,6 +53,14 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'sex'); ?>
                             </div>
                         </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">担任科目</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'subjects'); ?>
+                            </div>
+                        </div>
 
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
@@ -88,7 +96,6 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>
-                    
 
                         <hr />
                         <div class="form-group">

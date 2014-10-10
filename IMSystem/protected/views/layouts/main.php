@@ -135,7 +135,7 @@
             <?php if(in_array('STUDENT', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'student' ? 'open' : ''; ?>">
-                    <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span>
+                    <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'student' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span>
                 </a>
                 <ul>
                     <?php if(in_array('student/search', $authoritys)) { ?>
@@ -157,7 +157,7 @@
             <?php if(in_array('TEACHER', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'teacher' ? 'open' : ''; ?>">
-                <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'teacher' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('teacher/search', $authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息检索</a></li>
@@ -174,7 +174,7 @@
             <?php if(in_array('CLASS', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'class' ? 'open' : ''; ?>">
-                <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'class' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('class/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/search');?>">班级信息检索</a></li>
@@ -192,10 +192,27 @@
             <?php } ?>
           
           
+            <?php if(in_array('SUBJECT', $category)) { ?>
+            <li class="has_sub">
+                <a href="#" class="<?php echo $controller == 'subject' ? 'open' : ''; ?>">
+                <i class="fa fa-tasks"></i> <span>科目管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'subject' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
+                <ul>
+                    <?php if(in_array('subject/search', $authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('subject/search');?>">科目信息检索</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('subject/create', $authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('subject/create');?>">科目信息添加</a></li>
+                    <?php } ?>
+                </ul>
+            </li>
+            <?php } ?>
+          
+          
             <?php if(in_array('COURSE', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'course' ? 'open' : ''; ?>">
-                <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'course' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('course/search', $authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息检索</a></li>
@@ -216,7 +233,7 @@
             <?php if(in_array('SCORE', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'score' ? 'open' : ''; ?>">
-                <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'score' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('score/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/search');?>">成绩信息检索</a></li>
@@ -233,7 +250,7 @@
             <?php if(in_array('ROLE', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'role' ? 'open' : ''; ?>">
-                <i class="fa fa-users"></i> <span>角色管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-users"></i> <span>角色管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'role' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('role/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('role/search');?>">角色检索</a></li>
@@ -250,7 +267,7 @@
             <?php if(in_array('AUTHORITY', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'authority' ? 'open' : ''; ?>">
-                <i class="fa fa-wrench"></i> <span>权限管理</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-wrench"></i> <span>权限管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'authority' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('authority/search', $authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('authority/search');?>">权限检索</a></li>
@@ -271,7 +288,7 @@
             <!-- 个人设置 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'setting' ? 'open' : ''; ?>">
-                <i class="fa fa-cogs"></i> <span>个人设置</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+                <i class="fa fa-cogs"></i> <span>个人设置</span> <span class="pull-right"><i class="fa <?php echo $controller == 'setting' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <li><a href="<?php echo $this->createUrl('setting/profile');?>">个人信息</a></li>
                     <li><a href="<?php echo $this->createUrl('setting/password');?>">密码变更</a></li>
@@ -388,10 +405,10 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.cleditor.min.js"></script> <!-- CLEditor -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.zh-CN.js"></script> <!-- Date picker -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script>  jQuery SlimScroll 
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script>  Bootstrap Toggle 
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script>  jQuery Masked Input 
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script>  jQuery iCheck 
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script>  
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script>  
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script>
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/dropzone.js"></script>  jQuery Dropzone -->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/filter.js"></script>  Filter for support page -->
 

@@ -2,6 +2,36 @@
 
 class ExcelUtils {
     
+    public static function readExcel2Array($filename) {
+        spl_autoload_unregister(array('YiiBase', 'autoload'));
+
+        $phpExcelPath = Yii::getPathOfAlias('ext');
+        set_include_path($phpExcelPath);
+        include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel/IOFactory.php');
+
+        $objReader = new PHPExcel_Reader_Excel2007();
+        //  $objReader = new PHPExcel_Reader_Excel5();
+        //	$objReader = new PHPExcel_Reader_Excel2003XML();
+        //	$objReader = new PHPExcel_Reader_OOCalc();
+        //	$objReader = new PHPExcel_Reader_SYLK();
+        //	$objReader = new PHPExcel_Reader_Gnumeric();
+        //	$objReader = new PHPExcel_Reader_CSV();
+
+        $objPHPExcel = $objReader->load($filename);
+        $data = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+
+        spl_autoload_register(array('YiiBase', 'autoload'));
+
+        return $data;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     public function getExcelReader($filename) {
         // 默认用excel2007读取excel，若格式不对，则用之前的版本进行读取
         $PHPReader = new PHPExcel_Reader_Excel2007();
@@ -15,27 +45,17 @@ class ExcelUtils {
         }
         
         return null;
-        
-//$reader = PHPExcel_IOFactory::createReader('Excel2007'); // 读取 excel 文件 
-//$PHPExcel = $reader->load("test.xls"); //文件名称 
-
-//$reader = PHPExcel_IOFactory::createReader('Excel2007'); // 读取 excel 文件
-//$PHPExcel = PHPExcel_IOFactory::load("test.xls");
-
-        
     }
-    
     /**
      * 
      * @param type $filePath
      * @param type $startRow
      * @param type $column
      */
-    public function readExcel2Array($filename, $startRow, $column) {
+    public function _readExcel2Array($filename, $startRow, $column) {
         $result = array();
         
-        
-        $phpExcelPath = Yii::getPathOfAlias('ext.phpexcel.Classes');
+        $phpExcelPath = Yii::getPathOfAlias('ext');
         
         spl_autoload_unregister(array('YiiBase','autoload'));        
 

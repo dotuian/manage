@@ -40,7 +40,24 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">科目</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control',
+                                                'ajax'=>array(
+                                                        'type'=>'POST',
+                                                        'data' => array(
+                                                            'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                                            'subject_id'=> 'js:$(this).val()',
+                                                            'allowempty'=> true,
+                                                        ),
+                                                        'beforeSend'=>"function(){
+                                                                $.blockUI({ message: null }); 
+                                                            }",
+                                                        'url'=>Yii::app()->createUrl('ajax/getTeachersBySubjectId'),
+                                                        'success'=>'function(data){
+                                                                $.unblockUI();
+                                                                $("#teacher_id").html(data);
+                                                            }',
+                                                )
+                                    )); ?>
                                 <?php echo $form->error($model,'subject_id'); ?>
                             </div>
                         </div>
@@ -48,7 +65,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">任课教师</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('id'=>'teacher_id', 'class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>

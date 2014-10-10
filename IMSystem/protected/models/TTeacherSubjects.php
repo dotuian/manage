@@ -1,34 +1,29 @@
 <?php
 
 /**
- * This is the model class for table "m_subjects".
+ * This is the model class for table "t_teacher_subjects".
  *
- * The followings are the available columns in table 'm_subjects':
+ * The followings are the available columns in table 't_teacher_subjects':
  * @property string $ID
- * @property string $subject_code
- * @property string $subject_name
- * @property string $subject_short_name
- * @property string $subject_type
- * @property string $status
- * @property string $level
+ * @property string $teacher_id
+ * @property string $subject_id
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
  * @property string $update_time
  *
  * The followings are the available model relations:
- * @property MCourses[] $mCourses
- * @property TScores[] $tScores
- * @property TTeacherSubjects[] $tTeacherSubjects
+ * @property MSubjects $subject
+ * @property TTeachers $teacher
  */
-class MSubjects extends CActiveRecord
+class TTeacherSubjects extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'm_subjects';
+		return 't_teacher_subjects';
 	}
 
 	/**
@@ -39,14 +34,11 @@ class MSubjects extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('subject_code, subject_name, subject_short_name, level, create_time, update_time', 'required'),
-			array('subject_code, subject_name, create_user, update_user', 'length', 'max'=>10),
-			array('subject_short_name', 'length', 'max'=>4),
-			array('subject_type, status', 'length', 'max'=>1),
-			array('level', 'length', 'max'=>2),
+			array('teacher_id, subject_id, create_time, update_time', 'required'),
+			array('teacher_id, subject_id, create_user, update_user', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, teacher_id, subject_id, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,9 +50,8 @@ class MSubjects extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'mCourses' => array(self::HAS_MANY, 'MCourses', 'subject_id'),
-			'tScores' => array(self::HAS_MANY, 'TScores', 'subject_id'),
-			'tTeacherSubjects' => array(self::HAS_MANY, 'TTeacherSubjects', 'subject_id'),
+			'subject' => array(self::BELONGS_TO, 'MSubjects', 'subject_id'),
+			'teacher' => array(self::BELONGS_TO, 'TTeachers', 'teacher_id'),
 		);
 	}
 
@@ -71,12 +62,8 @@ class MSubjects extends CActiveRecord
 	{
 		return array(
 			'ID' => 'ID',
-			'subject_code' => '科目代号',
-			'subject_name' => '科目名称',
-			'subject_short_name' => '科目名称(简称)',
-			'subject_type' => '科目类型',
-			'status' => '状态(1:正常 2:异常)',
-			'level' => '显示排序用',
+			'teacher_id' => '教师ID',
+			'subject_id' => '科目ID',
 			'create_user' => 'Create User',
 			'create_time' => 'Create Time',
 			'update_user' => 'Update User',
@@ -103,12 +90,8 @@ class MSubjects extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('ID',$this->ID,true);
-		$criteria->compare('subject_code',$this->subject_code,true);
-		$criteria->compare('subject_name',$this->subject_name,true);
-		$criteria->compare('subject_short_name',$this->subject_short_name,true);
-		$criteria->compare('subject_type',$this->subject_type,true);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('level',$this->level,true);
+		$criteria->compare('teacher_id',$this->teacher_id,true);
+		$criteria->compare('subject_id',$this->subject_id,true);
 		$criteria->compare('create_user',$this->create_user,true);
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('update_user',$this->update_user,true);
@@ -123,29 +106,10 @@ class MSubjects extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return MSubjects the static model class
+	 * @return TTeacherSubjects the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-    
-    /**
-     * 获取所有的课程ID名称对
-     * @param type $flag
-     * @return type
-     */
-    public function getAllSubjectsOption($flag) {
-        $result = array();
-        if ($flag === true) {
-            $result[''] = Yii::app()->params['EmptySelectOption'];
-        }
-
-        $data = MSubjects::model()->findAll("status='1'");
-        foreach ($data as $value) {
-            $result[$value->ID] = $value->subject_name;
-        }
-        return $result;
-    }
-    
 }

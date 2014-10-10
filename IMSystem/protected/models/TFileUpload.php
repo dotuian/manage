@@ -42,7 +42,7 @@ class TFileUpload extends CActiveRecord
 			array('status', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, filename, realpath, category, status, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('ID, filename, realpath, category, status, create_user, create_time, update_user, update_time', 'safe'),
 		);
 	}
 
@@ -118,4 +118,22 @@ class TFileUpload extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    
+    /**
+     * 将文件中的数据导入到数据库中
+     * @return boolean
+     */
+    public function import2db(){
+        if(file_exists($this->realpath)){
+            $data = ExcelUtils::readExcel2Array($this->realpath);
+        }
+        
+        Yii::log(print_r($data, true));
+        
+        return true;
+    }
+    
+    
+    
 }

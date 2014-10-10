@@ -50,8 +50,8 @@ class ClassForm extends CFormModel
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
-        $result['1'] = '在校';
-        $result['2'] = '毕业';
+        $result['1'] = '正常';
+        $result['2'] = '暂停';
 
         return $result;
     }

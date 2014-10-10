@@ -25,6 +25,10 @@ div.error select {
     background-color: #fff8cc;
 }
 
+div.error input {
+    background-color: #fff8cc;
+}
+
 div.alert{
     padding : 10px 15px;
     margin-bottom : 0px !important;
@@ -123,4 +127,39 @@ table>tbody>tr:hover>td{
 /** 消除dataTables底部黑色横线 */
 table.dataTable.no-footer{
     border-bottom:0px !important;
+}
+
+
+
+
+.label-active {
+    background-color: #5cb85c;
+}
+
+.label-stop {
+    background-color: #d9534f;
+}
+
+
+
+/** dataTables关联 **/
+table.table {
+    clear: both;
+    margin-top: 0px !important; 
+}
+
+div.dataTables_length, div.dataTables_filter, div.dataTables_info, div.dataTables_paginate {
+    position: absolute;
+}
+
+/** 过滤 **/
+div.dataTables_filter {
+    top: -35px;
+    right: 30px;
+}
+
+
+div.dataTables_length{
+    top: -35px;
+    right: 120px;
 }

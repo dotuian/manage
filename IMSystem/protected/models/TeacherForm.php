@@ -10,7 +10,12 @@ class TeacherForm extends CFormModel
     public $birthday;
     public $address;
     public $telephonoe;
+    // 教师科目（检索用）
+    public $subject_id;
+    // 教师角色
     public $roles = array();
+    // 教师担任科目
+    public $subjects = array();
     
 	public function rules()
 	{
@@ -26,7 +31,7 @@ class TeacherForm extends CFormModel
 			array('birthday', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, code, name, status, sex, birthday, address, telephonoe,roles', 'safe'),
+			array('ID, code, name,subject_id, status, sex, birthday, address, telephonoe,roles,subjects', 'safe'),
 		);
 	}
 

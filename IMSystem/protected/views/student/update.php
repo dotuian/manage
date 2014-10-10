@@ -98,7 +98,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">缴费情况（第1学期）</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'payment1', StudentForm::getPaymentOption(true) , array('class'=>'form-control', 'placeholder'=>'缴费情况（第1学期）')); ?>
+                                <?php echo $form->radioButtonList($model,'payment1', StudentForm::getPaymentOption(false) , array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'payment1'); ?>
                             </div>
                         </div>
@@ -106,7 +106,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">缴费情况（第2学期）</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'payment2', StudentForm::getPaymentOption(true) , array('class'=>'form-control', 'placeholder'=>'缴费情况（第2学期）')); ?>
+                                <?php echo $form->radioButtonList($model,'payment2', StudentForm::getPaymentOption(false) , array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'payment2'); ?>
                             </div>
                         </div>
@@ -114,7 +114,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">缴费情况（第3学期）</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'payment3', StudentForm::getPaymentOption(true) , array('class'=>'form-control', 'placeholder'=>'缴费情况（第3学期）')); ?>
+                                <?php echo $form->radioButtonList($model,'payment3', StudentForm::getPaymentOption(false) , array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'payment3'); ?>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">缴费情况（第4学期）</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'payment4', StudentForm::getPaymentOption(true) , array('class'=>'form-control', 'placeholder'=>'缴费情况（第4学期）')); ?>
+                                <?php echo $form->radioButtonList($model,'payment4', StudentForm::getPaymentOption(false) , array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'payment4'); ?>
                             </div>
                         </div>
@@ -130,7 +130,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">缴费情况（第5学期）</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'payment5', StudentForm::getPaymentOption(true) , array('class'=>'form-control', 'placeholder'=>'缴费情况（第5学期）')); ?>
+                                <?php echo $form->radioButtonList($model,'payment5', StudentForm::getPaymentOption(false) , array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'payment5'); ?>
                             </div>
                         </div>
@@ -138,12 +138,10 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">缴费情况（第6学期）</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'payment6', StudentForm::getPaymentOption(true) , array('class'=>'form-control', 'placeholder'=>'缴费情况（第6学期）')); ?>
+                                <?php echo $form->radioButtonList($model,'payment6', StudentForm::getPaymentOption(false) , array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'payment6'); ?>
                             </div>
                         </div>
-                    
-                    
                     
                         <div class="form-group">
                             <label class="col-lg-2 control-label">奖惩情况</label>
@@ -164,7 +162,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长电话</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
+                                <?php echo $form->telField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
                                 <?php echo $form->error($model,'parents_tel'); ?>
                             </div>
                         </div>
@@ -172,7 +170,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长QQ</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
+                                <?php echo $form->numberField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
                                 <?php echo $form->error($model,'parents_qq'); ?>
                             </div>
                         </div>
@@ -188,7 +186,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">中考总分</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'senior_score', array('class'=>'form-control', 'placeholder'=>'中考总分')); ?>
+                                <?php echo $form->numberField($model,'senior_score', array('class'=>'form-control', 'placeholder'=>'中考总分')); ?>
                                 <?php echo $form->error($model,'senior_score'); ?>
                             </div>
                         </div>
@@ -197,7 +195,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">入学年份</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'school_year', array('class'=>'form-control', 'placeholder'=>'入学年份')); ?>
+                                <?php echo $form->numberField($model,'school_year', array('class'=>'form-control', 'placeholder'=>'入学年份')); ?>
                                 <?php echo $form->error($model,'school_year'); ?>
                             </div>
                         </div>
@@ -206,7 +204,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">高考总分</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'college_score', array('class'=>'form-control', 'placeholder'=>'高考总分')); ?>
+                                <?php echo $form->numberField($model,'college_score', array('class'=>'form-control', 'placeholder'=>'高考总分')); ?>
                                 <?php echo $form->error($model,'college_score'); ?>
                             </div>
                         </div>
@@ -231,7 +229,15 @@ $this->breadcrumbs = array(
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-reset" value='重置' />
+                                <?php 
+                                    echo CHtml::Button('删除', array(
+                                        'confirm'=>'确定要删除吗？',
+                                        'params'=>array('ID' => $model->ID),
+                                        'submit' => array('delete'),
+                                        'class'=>'btn btn-delete',
+                                        'encode'=>false,
+                                    ));
+                                ?>
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>

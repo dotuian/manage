@@ -98,4 +98,29 @@ class Controller extends CController {
     }
     
     
+    
+    /**
+     * 错误消息
+     * @param type $message
+     */
+    public function setErrorMessage($message) {
+        Yii::app()->user->setFlash('error', $message);
+    }
+
+    /**
+     * 警告消息
+     * @param type $message
+     */
+    public function setWarningMessage($message) {
+        Yii::app()->user->setFlash('warning', $message);
+    }
+
+    /**
+     * 成功消息
+     * @param type $message
+     */
+    public function setSuccessMessage($message) {
+        Yii::app()->user->setFlash('success', $message);
+    }
+
 }

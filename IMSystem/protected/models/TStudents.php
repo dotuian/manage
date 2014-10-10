@@ -25,9 +25,9 @@
  * @property string $parents_tel
  * @property string $parents_qq
  * @property string $school_of_graduation
- * @property integer $senior_score
+ * @property double $senior_score
  * @property integer $school_year
- * @property integer $college_score
+ * @property double $college_score
  * @property string $university
  * @property string $comment
  * @property string $create_user
@@ -60,12 +60,14 @@ class TStudents extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('code, name, sex, class_id, create_time, update_time', 'required'),
-			array('senior_score, school_year, college_score', 'numerical', 'integerOnly'=>true),
+            array('school_year', 'numerical', 'integerOnly'=>true),
+            array('senior_score, college_score', 'numerical'),
 			array('code, id_card_no', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>12),
-			array('name, class_id, old_class_id, create_user, update_user', 'length', 'max'=>10),
-			array('status, sex', 'length', 'max'=>1),
-			array('accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, school_of_graduation', 'length', 'max'=>50),
+			array('status, sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max'=>1),
+			array('class_id, old_class_id, create_user, update_user', 'length', 'max'=>10),
+			array('accommodation, school_of_graduation', 'length', 'max'=>50),
+			array('bonus_penalty', 'length', 'max'=>200),
 			array('address, university', 'length', 'max'=>100),
 			array('parents_tel', 'length', 'max'=>11),
 			array('parents_qq', 'length', 'max'=>15),

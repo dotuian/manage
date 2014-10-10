@@ -7,41 +7,43 @@ class StudentController extends Controller {
      */
     public function actionSearch() {
 
-        $sql = "select a.*, b.class_name as class_name from t_students a left join t_classes b on a.class_id=b.ID where 1=1 ";
-        $countSql = "select count(*) from t_students a left join t_classes b on a.class_id=b.ID where 1=1 ";
+        $sql = "select a.*, b.class_name as class_name from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
+        $countSql = "select count(*) from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
         $params = array();
+        $condition = '';
 
         $model = new StudentForm();
         $model->sex = null;
         if (isset($_GET['StudentForm'])) {
             $model->attributes = $_GET['StudentForm'];
-
+            // 学生CODE
             if (trim($model->code) !== '') {
-                $sql .= " and a.code like :code ";
-                $countSql .= " and a.code like :code ";
-                $params[':code'] = '%' . trim($model->code) . '%';
+                $condition .= " and a.code like :code ";
+                $params[':code'] = '%' . StringUtils::escape(trim($model->code)) . '%';
             }
+            // 学生姓名
             if (trim($model->name) !== '') {
-                $sql .= " and a.name like :name ";
-                $countSql .= " and a.name like :name ";
-                $params[':name'] = '%' . trim($model->name) . '%';
+                $condition .= " and a.name like :name ";
+                $params[':name'] = '%' . StringUtils::escape(trim($model->name)) . '%';
             }
+            // 性别
             if (trim($model->sex) !== '') {
-                $sql .= " and a.sex = :sex ";
-                $countSql .= " and a.sex = :sex ";
+                $condition .= " and a.sex = :sex ";
                 $params[':sex'] = trim($model->sex);
             }
+            // 身份证号
             if (trim($model->id_card_no) !== '') {
-                $sql .= " and a.id_card_no like :id_card_no ";
-                $countSql .= " and a.id_card_no like :id_card_no ";
-                $params[':id_card_no'] = '%' . trim($model->id_card_no) . '%';
+                $condition .= " and a.id_card_no like :id_card_no ";
+                $params[':id_card_no'] = '%' . StringUtils::escape(trim($model->id_card_no)) . '%';
             }
+            // 班级
             if (trim($model->class_id) !== '') {
-                $sql .= " and a.class_id = :class_id ";
-                $countSql .= " and a.class_id = :class_id ";
+                $condition .= " and a.class_id = :class_id ";
                 $params[':class_id'] = trim($model->class_id);
             }
         }
+        $sql .= $condition;
+        $countSql .= $condition;
 
         $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
         $dataProvider = new CSqlDataProvider($sql, array(
@@ -51,8 +53,8 @@ class StudentController extends Controller {
             'sort' => array(
                 'attributes' => array(
                     'user' => array(
-                        'asc' => 'a.code',
-                        'desc' => 'a.code desc',
+                        'asc' => 'a.ID',
+                        'desc' => 'a.ID desc',
                         'default' => 'desc',
                     )
                 ),
@@ -67,7 +69,7 @@ class StudentController extends Controller {
 
         // 没有数据
         if ($dataProvider->totalItemCount == 0) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+            $this->setWarningMessage('没有检索到相关数据！');
         }
 
         $this->render('search', array(
@@ -81,9 +83,11 @@ class StudentController extends Controller {
      */
     public function actionCreate() {
 
-        $model = new StudentForm('add');
+        $model = new StudentForm('create');
+        
         if (isset($_POST['StudentForm'])) {
             $model->attributes = $_POST['StudentForm'];
+            
             if ($model->validate()) {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
@@ -92,7 +96,6 @@ class StudentController extends Controller {
                     $user->username = $model->code;
                     $user->password = substr($model->id_card_no, -6); // 密码默认为身份证后六位
                     $user->status = '1';
-                    $user->roles = 'S';
                     $user->create_user = $this->getLoginUserId();
                     $user->update_user = $this->getLoginUserId();
                     $user->create_time = new CDbExpression('NOW()');
@@ -119,13 +122,13 @@ class StudentController extends Controller {
                         
                         if ($student->save() && $userRole->save()) {
                             $tran->commit();
-                            Yii::app()->user->setFlash('success', "学生信息添加成功！");
+                            $this->setSuccessMessage('学生信息添加成功！');
                             $this->redirect($this->createUrl('create'));
                         }
                     }
 
-                    Yii::log(print_r($user->errors, true));
-                    Yii::app()->user->setFlash('warning', "学生信息添加失败！");
+                    $this->setErrorMessage('学生信息添加失败！');
+                    
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
                 }
@@ -135,9 +138,14 @@ class StudentController extends Controller {
         $this->render('create', array('model' => $model));
     }
 
+    /**
+     * 
+     * @throws CHttpException
+     */
     public function actionUpdate() {
 
         if (isset($_GET['ID'])) {
+            
             $ID = trim($_GET['ID']);
             $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($student)) {
@@ -189,9 +197,58 @@ class StudentController extends Controller {
     }
     
     
+    /**
+     * 学生信息删除
+     * @throws CHttpException
+     */
+    public function actionDelete() {
+        if (isset($_POST['ID'])) {
+            $ID = trim($_POST['ID']);
+            
+            $user = TUsers::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            if (is_null($user)) {
+                throw new CHttpException(404, "该用户信息不存在！");
+            }
+            
+            $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            if (is_null($student)) {
+                throw new CHttpException(404, "该学生信息不存在！");
+            }
+            
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $user->status = '2';
+                $user->update_user = $this->getLoginUserId();
+                $user->update_time = new CDbExpression('NOW()');
+
+                $student->status = '2';
+                $student->update_user = $this->getLoginUserId();
+                $student->update_time = new CDbExpression('NOW()');
+
+                if ($user->save() && $student->save()) {
+                    $this->setSuccessMessage("学生信息删除成功！");
+
+                    $this->redirect($this->createUrl('search'));
+                } else {
+                    $this->setErrorMessage("学生信息删除失败！");
+                }
+            } catch (Exception $e) {
+                throw new CHttpException(404, "系统异常！");
+            }
+
+            $this->render('update', array(
+                'model' => $student,
+            ));
+        } else {
+            throw new CHttpException(404, "找不到该页面！");
+        }
+    }
+    
+    
+    
     public function actionImport() {
 
-        $model = new TFileUpload('import_student');
+        $model = new TFileUpload();
 
         if (isset($_POST['TFileUpload'])) {
             $model->attributes = $_POST['TFileUpload'];
@@ -207,8 +264,9 @@ class StudentController extends Controller {
             $model->update_time = new CDbExpression('NOW()');
 
             if ($model->validate()) {
-                if ($model->save()) {
-                    $model->filename->saveAs($model->realpath);
+                // 将文件保存在服务器端
+                $model->filename->saveAs($model->realpath);
+                if ($model->save() && $model->import2db()) {
                     Yii::app()->user->setFlash('success', "文件上传成功！");
                 } else {
                     Yii::app()->user->setFlash('warning', "文件上传失败！");

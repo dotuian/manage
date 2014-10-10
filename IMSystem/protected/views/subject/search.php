@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle = '班级信息检索';
+$this->pageTitle = '科目信息检索';
 $this->breadcrumbs = array(
     $this->pageTitle,
 );
@@ -31,33 +31,25 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>班级代号</th>
-                    <th>班级名称</th>
-                    <th>文理科</th>
-                    <th>状态</th>
-                     <th>届</th>
-                    <th>班主任</th>
+                    <th>科目代号</th>
+                    <th>科目名称</th>
+                    <th>科目名称(简称)</th>
+                    <th>科目类型</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->textField($model,'class_code', array('class'=>'form-control', 'placeholder'=>'班级代号')); ?>
+                        <?php echo $form->textField($model,'subject_code', array('class'=>'form-control', 'placeholder'=>'科目代号')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'class_name', array('class'=>'form-control', 'placeholder'=>'班级名称')); ?>
+                        <?php echo $form->textField($model,'subject_name', array('class'=>'form-control', 'placeholder'=>'科目名称')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->textField($model,'subject_short_name', array('class'=>'form-control', 'placeholder'=>'科目名称(简称)')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(true), array('class'=>'form-control')); ?>
-                    </td>
-                    <td>
-                        <?php echo $form->textField($model,'term_year', array('class'=>'form-control')); ?>
-                    </td>
-                    <td>
-                        <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllHeadTeacherOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'subject_type', SubjectForm::getSubjectTypeOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>
@@ -88,13 +80,11 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>班级代号</th>
-                    <th>班级名称</th>
-                    <th>文理科</th>
-                    <th>状态</th>
-                    <th>届</th>
-                    <th>班主任</th>
-                    <th>操作</th>
+                    <th>科目代号</th>
+                    <th>科目名称</th>
+                    <th>科目名称(简称)</th>
+                    <th>科目类型</th>
+                    <th>详细</th>
                 </tr>
             </thead>
 
@@ -103,6 +93,7 @@ $(document).ready(function(){
                     $listview = $this->widget('zii.widgets.CListView', array(
                         'dataProvider' => $dataProvider,
                         'itemView' => '_view',
+                        'viewData' => array('type'=>SubjectForm::getSubjectTypeOption(true)),
                         'summaryText' => '{start}条 - {end}条 / 共{count}条',
                         'template' => "{items}",
                         'pager' => array(
@@ -114,7 +105,7 @@ $(document).ready(function(){
                 ?>
                 <div class="clearfix"></div> 
                 <tr>
-                    <td colspan="7">
+                    <td colspan="5">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </tr>
