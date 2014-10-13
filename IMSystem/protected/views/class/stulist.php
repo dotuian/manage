@@ -1,8 +1,8 @@
 <?php
-$this->pageTitle = '班级学生信息一览表';
+$this->pageTitle = Yii::app()->name . '班级学生信息一览表';
 $this->breadcrumbs = array(
     '班级信息检索' => $this->createUrl('search'),
-    $this->pageTitle,
+    '班级学生信息一览表',
 );
 
 Yii::app()->clientScript->registerScript('js', "

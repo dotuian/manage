@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '角色添加';
+$this->pageTitle = Yii::app()->name . '角色添加';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '角色添加',
 );
 ?>
 <script>

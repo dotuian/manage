@@ -51,10 +51,14 @@ class Controller extends CController {
      */
     protected function beforeAction($action){
         if (parent::beforeAction($action)) {
+            if (Yii::app()->request->isAjaxRequest) {
+                // Ajax请求不进行权限检查
+                return true;
+            }
+
             if (!in_array($this->getRoute(), Yii::app()->user->getState('authoritys'))) {
                 throw new CHttpException(500,'没有权限！');
             }
-            return true;
         } else {
             return false;
         }

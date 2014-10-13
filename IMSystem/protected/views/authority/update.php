@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '权限信息变更';
+$this->pageTitle=Yii::app()->name . '权限信息变更';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '权限信息变更',
 );
 ?>
 <script>

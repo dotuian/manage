@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '班级升级';
+$this->pageTitle=Yii::app()->name . '班级升级';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '班级升级',
 );
 ?>
 <script>

@@ -49,6 +49,7 @@ class TeacherForm extends CFormModel
 			'birthday' => '出生年月日',
 			'address' => '地址',
 			'telephonoe' => '电话号码',
+			'roles' => '角色',
 		);
 	}
     

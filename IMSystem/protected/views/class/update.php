@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '班级信息变更';
+$this->pageTitle = Yii::app()->name . '班级信息变更';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '班级信息变更',
 );
 ?>
 <script>

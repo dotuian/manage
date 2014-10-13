@@ -71,7 +71,8 @@ class AuthorityForm extends CFormModel
         $result['TEACHER'] = '教师管理';
         $result['STUDENT'] = '学生管理';
         $result['SCORE'] = '成绩管理';
-        $result['SUBJECT'] = '课程管理';
+        $result['COURSE'] = '课程管理';
+        $result['SUBJECT'] = '科目管理';
         $result['CLASS'] = '班级管理';
         $result['ROLE'] = '角色管理';
         $result['AUTHORITY'] = '权限管理';

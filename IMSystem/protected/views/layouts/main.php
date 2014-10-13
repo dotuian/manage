@@ -71,7 +71,7 @@
             
 
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">XXXXXX</span>
+                 <span class="bold">孝感市综合高级中学</span><i>成绩管理系统</i>
             </a>
         </div>
 
@@ -305,7 +305,7 @@
       
 	    <!-- Page heading -->
 	    <div class="page-head">
-                <h2 class="pull-left"><?php echo $this->pageTitle; ?></h2>
+                <h2 class="pull-left"><?php echo substr($this->pageTitle, 46); ?></h2>
                 <div class="clearfix"></div>
 
                 <!-- Breadcrumb -->

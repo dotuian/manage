@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '科目信息添加';
+$this->pageTitle = Yii::app()->name . '科目信息添加';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '科目信息添加',
 );
 ?>
 <script>

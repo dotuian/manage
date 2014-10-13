@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle = '角色管理';
+$this->pageTitle = Yii::app()->name . '角色管理';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '角色管理',
 );
 
 Yii::app()->clientScript->registerScript('js', "

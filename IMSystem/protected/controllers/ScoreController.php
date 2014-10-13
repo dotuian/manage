@@ -267,16 +267,20 @@ class ScoreController extends Controller {
                     $score_info->update_user = $this->getLoginUserId();
                     $score_info->create_time = new CDbExpression('NOW()');
                     $score_info->update_time = new CDbExpression('NOW()');
+                    
+                    if ($score_info->save()) {
+                        $data['result'] = true;
+                        $data['message'] = '录入成功！';
+                    }
                 } else {
-                    // 不存在的情况下，新加一条数据                
+                    // 存在的情况下，更新
                     $score_info->score = $score;
                     $score_info->update_user = $this->getLoginUserId();
                     $score_info->update_time = new CDbExpression('NOW()');
-                }
-
-                if ($score_info->save()) {
-                    $data['result'] = true;
-                    $data['message'] = '操作成功！';
+                    if ($score_info->save()) {
+                        $data['result'] = true;
+                        $data['message'] = '变更成功！';
+                    }
                 }
                 
             }  catch (Exception $e) {
@@ -299,21 +303,26 @@ class ScoreController extends Controller {
                 throw new CHttpException(404, "该成绩信息不存在！");
             }
             
+            $student = TStudents::model()->find("ID=:ID and status='1'", array(':ID'=>$score->student_id));
+            
             if (isset($_POST['TScores'])) {
+                $score->scenario = 'update';
                 $score->score  = trim($_POST['TScores']['score']);
                 $score->update_user = $this->getLoginUserId();
                 $score->update_time = new CDbExpression('NOW()');
-                
-                if ($score->save()) {
-                    Yii::app()->user->setFlash('success', "成绩信息变更成功！");
-                } else {
-                    Yii::log(print_r($score->errors, true));
-                    Yii::app()->user->setFlash('warning', "成绩信息变更失败！");
+                if ($score->validate()) {
+                    if ($score->save()) {
+                        Yii::app()->user->setFlash('success', "成绩信息变更成功！");
+                    } else {
+                        Yii::log(print_r($score->errors, true));
+                        Yii::app()->user->setFlash('warning', "成绩信息变更失败！");
+                    }
                 }
             }
 
             $this->render('update', array(
                 'model' => $score,
+                'student' => $student,
             ));
         } else {
             throw new CHttpException(404, "找不到该页面！");

@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '成绩信息变更';
+$this->pageTitle = Yii::app()->name . '成绩信息变更';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '成绩信息变更',
 );
 ?>
 <script>
@@ -52,6 +52,22 @@ $(document).ready(function(){
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control', 'disabled'=>'disabled','separator'=>'　')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">学号</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($student,'code', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->error($student,'code'); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">姓名</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($student,'name', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->error($student,'name'); ?>
                             </div>
                         </div>
 

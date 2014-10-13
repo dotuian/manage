@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '角色变更';
+$this->pageTitle=Yii::app()->name . '角色变更';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '角色变更',
 );
 ?>
 <script>

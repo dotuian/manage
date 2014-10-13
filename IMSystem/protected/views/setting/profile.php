@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle = '用户信息';
+$this->pageTitle = Yii::app()->name . '用户信息';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '用户信息',
 );
 
 Yii::app()->clientScript->registerScript('js', "

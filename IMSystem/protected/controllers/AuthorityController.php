@@ -107,7 +107,6 @@ class AuthorityController extends Controller {
                     throw new CHttpException(404, "系统异常！");
                 }
             }
-            var_dump($model->errors);
         }
 
         $this->render('create', array('model' => $model));

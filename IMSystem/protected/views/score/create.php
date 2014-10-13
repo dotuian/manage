@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '成绩信息添加';
+$this->pageTitle = Yii::app()->name . '成绩信息添加';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '成绩信息添加',
 );
 
 
@@ -20,6 +20,10 @@ $(document).ready(function(){
 //        }        
 //    }
 
+});
+
+$(document).ready(function(){
+    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false});
 });
 
 ",CClientScript::POS_HEAD);

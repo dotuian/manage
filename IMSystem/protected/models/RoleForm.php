@@ -18,19 +18,18 @@ class RoleForm extends CFormModel
     public $other_authoritys = array();
     
 	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('role_name', 'required'),
-			array('role_code', 'length', 'max'=>10),
-			array('role_name', 'length', 'max'=>50),
-			array('role_id, role_code, role_name, level， authoritys, student_authoritys, teacher_authoritys, score_authoritys, class_authoritys, subject_authoritys, course_authoritys, role_authoritys, authority_authoritys, other_authoritys', 'safe'),
-		);
-	}
+     * @return array validation rules for model attributes.
+     */
+    public function rules() {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('role_name', 'required'),
+            array('role_code', 'length', 'max' => 10),
+            array('role_name', 'length', 'max' => 50),
+            array('role_id, role_code, role_name, level， authoritys, student_authoritys, teacher_authoritys, score_authoritys, class_authoritys, subject_authoritys, course_authoritys, role_authoritys, authority_authoritys, other_authoritys', 'safe'),
+        );
+    }
 
     public function afterValidate() {
         parent::afterValidate();
@@ -55,17 +54,16 @@ class RoleForm extends CFormModel
     
     
 	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'role_code' => '角色CODE',
-			'role_name' => '角色名',
-			'level' => '排序',
-		);
-	}
-    
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels() {
+        return array(
+            'role_code' => '角色CODE',
+            'role_name' => '角色名',
+            'level' => '排序',
+        );
+    }
+
     public function autoRoleCode() {
         $count = MRoles::model()->count();
         return 'R' . str_pad($count + 1, 3, '0', STR_PAD_LEFT);

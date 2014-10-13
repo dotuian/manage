@@ -1,7 +1,16 @@
 <?php
 /* @var $this SiteController */
 
-$this->pageTitle = Yii::app()->name;
+$this->pageTitle = Yii::app()->name. '密码变更';
+$this->breadcrumbs = array(
+    '密码变更',
+);
+
+Yii::app()->clientScript->registerScript('js', "
+$(document).ready(function(){
+    
+});
+", CClientScript::POS_HEAD);
 ?>
 
 <div class="row">

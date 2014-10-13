@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle= '教师信息添加';
+$this->pageTitle = Yii::app()->name . '教师信息添加';
 $this->breadcrumbs = array(
-    $this->pageTitle,
+    '教师信息添加',
 );
 ?>
 <script>
@@ -68,7 +68,7 @@ $this->breadcrumbs = array(
                                 <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
-                                <?php echo $form->error($model,'birthday'); ?>
+                                <br/><?php echo $form->error($model,'birthday'); ?>
                                 </span>
                             </div>
                         </div>
@@ -93,7 +93,7 @@ $this->breadcrumbs = array(
                             <label class="col-lg-2 control-label">角色</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getAllRolesOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'roles'); ?>
+                                <br/><?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>
 

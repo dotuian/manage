@@ -160,7 +160,7 @@ class SubjectController extends Controller {
             $subject->status = '2';
             $subject->update_user = $this->getLoginUserId();
             $subject->update_time = new CDbExpression('NOW()');
-            if ($subject->save()) {
+            if ($subject->save(false)) {
                 Yii::app()->user->setFlash('success', "科目信息删除成功！");
                 $this->redirect($this->createUrl('search'));
             } else {
