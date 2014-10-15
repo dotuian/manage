@@ -7,15 +7,17 @@ class StudentController extends Controller {
      */
     public function actionSearch() {
 
-        $sql = "select a.*, b.class_name as class_name from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
-        $countSql = "select count(*) from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
-        $params = array();
-        $condition = '';
-
         $model = new StudentForm();
         $model->sex = null;
         if (isset($_GET['StudentForm'])) {
             $model->attributes = $_GET['StudentForm'];
+            
+            // 查询SQL
+            $sql = "select a.*, b.class_name as class_name from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
+            $countSql = "select count(*) from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
+            $params = array();
+            $condition = '';
+            
             // 学生CODE
             if (trim($model->code) !== '') {
                 $condition .= " and a.code like :code ";
@@ -41,40 +43,41 @@ class StudentController extends Controller {
                 $condition .= " and a.class_id = :class_id ";
                 $params[':class_id'] = trim($model->class_id);
             }
-        }
-        $sql .= $condition;
-        $countSql .= $condition;
-
-        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-        $dataProvider = new CSqlDataProvider($sql, array(
-            'params' => $params,
-            'keyField' => 'ID',
-            'totalItemCount' => $count,
-            'sort' => array(
-                'attributes' => array(
-                    'user' => array(
-                        'asc' => 'a.ID',
-                        'desc' => 'a.ID desc',
-                        'default' => 'desc',
-                    )
+            
+            $sql .= $condition;
+            $countSql .= $condition;
+            
+            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+            $dataProvider = new CSqlDataProvider($sql, array(
+                'params' => $params,
+                'keyField' => 'ID',
+                'totalItemCount' => $count,
+                'sort' => array(
+                    'attributes' => array(
+                        'user' => array(
+                            'asc' => 'a.ID',
+                            'desc' => 'a.ID desc',
+                            'default' => 'desc',
+                        )
+                    ),
+                    'defaultOrder' => array(
+                        'user' => true,
+                    ),
                 ),
-                'defaultOrder' => array(
-                    'user' => true,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->params['PageSize'],
                 ),
-            ),
-            'pagination' => array(
-                'pageSize' => Yii::app()->params['PageSize'],
-            ),
-        ));
+            ));
 
-        // 没有数据
-        if ($dataProvider->totalItemCount == 0) {
-            $this->setWarningMessage('没有检索到相关数据！');
+            // 没有数据
+            if ($dataProvider->totalItemCount == 0) {
+                $this->setWarningMessage('没有检索到相关数据！');
+            }
         }
 
         $this->render('search', array(
             'model' => $model,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => isset($dataProvider) ? $dataProvider : null,
         ));
     }
 
@@ -137,7 +140,25 @@ class StudentController extends Controller {
 
         $this->render('create', array('model' => $model));
     }
+    
+    
+    public function actionView() {
+        if (isset($_GET['ID'])) {
 
+            $ID = trim($_GET['ID']);
+            $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            if (is_null($student)) {
+                throw new CHttpException(404, "该学生信息不存在！");
+            }
+
+            $this->render('update', array(
+                'model' => $student,
+            ));
+        } else {
+            throw new CHttpException(404, "找不到该页面！");
+        }
+    }
+    
     /**
      * 
      * @throws CHttpException

@@ -10,77 +10,75 @@ class ClassController extends Controller {
      */
     public function actionSearch() {
         
-        $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
-        $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
-        $params = array();
-        
         $model = new ClassForm();
         $model->term_year = date('Y');
         if (isset($_GET['ClassForm'])) {
             $model->attributes = $_GET['ClassForm'];
             
+            $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
+            $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
+            $params = array();
+            $condition = '';
+            
             if (trim($model->class_code) !== '') {
-                $sql .= " and a.class_code like :class_code ";
-                $countSql .= " and a.class_code like :class_code ";
+                $condition .= " and a.class_code like :class_code ";
                 $params[':class_code'] = '%' . trim($model->class_code) . '%';
             }
             if (trim($model->class_name) !== '') {
-                $sql .= " and a.class_name like :class_name ";
-                $countSql .= " and a.class_name like :class_name ";
+                $condition .= " and a.class_name like :class_name ";
                 $params[':class_name'] = '%' . trim($model->class_name) . '%';
             }
             if (trim($model->class_type) !== '') {
-                $sql .= " and a.class_type = :class_type ";
-                $countSql .= " and a.class_type = :class_type ";
+                $condition .= " and a.class_type = :class_type ";
                 $params[':class_type'] = trim($model->class_type);
             }
             if (trim($model->status) !== '') {
-                $sql .= " and a.status = :status ";
-                $countSql .= " and a.status = :status ";
+                $condition .= " and a.status = :status ";
                 $params[':status'] = trim($model->status);
             }
             if (trim($model->term_year) !== '') {
-                $sql .= " and a.term_year=:term_year ";
-                $countSql .= " and a.term_year=:term_year ";
+                $condition .= " and a.term_year=:term_year ";
                 $params[':term_year'] = trim($model->term_year);
             }
             if (trim($model->teacher_id) !== '') {
-                $sql .= " and a.teacher_id = :teacher_id ";
-                $countSql .= " and a.teacher_id = :teacher_id ";
+                $condition .= " and a.teacher_id = :teacher_id ";
                 $params[':teacher_id'] = trim($model->teacher_id);
             }
+            $sql .= $condition;
+            $countSql .= $condition;
+            
+            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+            $dataProvider = new CSqlDataProvider($sql, array(
+                'params' => $params,
+                'keyField' => 'ID',
+                'totalItemCount' => $count,
+                'sort' => array(
+                    'attributes' => array(
+                        'user' => array(
+                            'asc' => 'a.class_code',
+                            'desc' => 'a.class_code desc',
+                            'default' => 'desc',
+                        )
+                    ),
+                    'defaultOrder' => array(
+                        'user' => true,
+                    ),
+                ),
+                'pagination' => array(
+                    'pageSize' => Yii::app()->params['PageSize'],
+                ),
+            ));
+
+            // 没有数据
+            if($dataProvider->totalItemCount == 0 ) {
+                Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+            }
+
         }
 
-        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-        $dataProvider = new CSqlDataProvider($sql, array(
-            'params' => $params,
-            'keyField' => 'ID',
-            'totalItemCount' => $count,
-            'sort' => array(
-                'attributes' => array(
-                    'user' => array(
-                        'asc' => 'a.class_code',
-                        'desc' => 'a.class_code desc',
-                        'default' => 'desc',
-                    )
-                ),
-                'defaultOrder' => array(
-                    'user' => true,
-                ),
-            ),
-            'pagination' => array(
-                'pageSize' => Yii::app()->params['PageSize'],
-            ),
-        ));
-
-        // 没有数据
-        if($dataProvider->totalItemCount == 0 ) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
-        }
-        
         $this->render('search', array(
                     'model' => $model, 
-                    'dataProvider' => $dataProvider,
+                    'dataProvider' => isset($dataProvider) ? $dataProvider : null ,
                 ));
     }
     

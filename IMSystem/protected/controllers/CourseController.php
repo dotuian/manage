@@ -8,66 +8,66 @@ class CourseController extends Controller {
     // 未完了
     public function actionSearch() {
         
-        $sql = "select a.ID, a.status, b.subject_code, b.subject_name, b.subject_type, c.class_code, c.class_name, c.class_type, d.code as teacher_code, d.name as teacher_name from m_courses a left join m_subjects b on a.subject_id =b.ID and b.status='1' left join t_classes c  on a.class_id =c.ID and c.status='1' left join t_teachers d on a.teacher_id =d.ID and d.status='1' where a.status='1'";
-        $countSql = "select count(*) from m_courses a left join m_subjects b on a.subject_id =b.ID and b.status='1' left join t_classes c  on a.class_id =c.ID and c.status='1' left join t_teachers d on a.teacher_id =d.ID and d.status='1' where a.status='1'";
-        $params = array();
         
         $model = new CourseForm();
         if (isset($_GET['CourseForm'])) {
             $model->attributes = $_GET['CourseForm'];
             
+            $sql = "select a.ID, a.status, b.subject_code, b.subject_name, b.subject_type, c.class_code, c.class_name, c.class_type, d.code as teacher_code, d.name as teacher_name from m_courses a left join m_subjects b on a.subject_id =b.ID and b.status='1' left join t_classes c  on a.class_id =c.ID and c.status='1' left join t_teachers d on a.teacher_id =d.ID and d.status='1' where a.status='1'";
+            $countSql = "select count(*) from m_courses a left join m_subjects b on a.subject_id =b.ID and b.status='1' left join t_classes c  on a.class_id =c.ID and c.status='1' left join t_teachers d on a.teacher_id =d.ID and d.status='1' where a.status='1'";
+            $params = array();
+            $condition = '';
+            
             if (trim($model->subject_id) !== '') {
-                $sql .= " and a.subject_id = :subject_id ";
-                $countSql .= " and a.subject_id = :subject_id ";
+                $condition .= " and a.subject_id = :subject_id ";
                 $params[':subject_id'] = trim($model->subject_id);
             }
             if (trim($model->teacher_id) !== '') {
-                $sql .= " and d.code = :teacher_id ";
-                $countSql .= " and d.code = :teacher_id ";
+                $condition .= " and d.code = :teacher_id ";
                 $params[':teacher_id'] = trim($model->teacher_id);
             }
             if (trim($model->teacher_name) !== '') {
-                $sql .= " and d.name like :teacher_name ";
-                $countSql .= " and d.name like :teacher_name ";
+                $condition .= " and d.name like :teacher_name ";
                 $params[':teacher_name'] = '%' . trim($model->teacher_name) . '%';
             }
             if (trim($model->class_id) !== '') {
-                $sql .= " and a.class_id = :class_id ";
-                $countSql .= " and a.class_id = :class_id ";
+                $condition .= " and a.class_id = :class_id ";
                 $params[':class_id'] = trim($model->class_id);
+            }
+            $sql .= $condition;
+            $countSql .= $condition;
+            
+            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+            $dataProvider = new CSqlDataProvider($sql, array(
+                'params' => $params,
+                'keyField' => 'ID',
+                'totalItemCount' => $count,
+                'sort' => array(
+                    'attributes' => array(
+                        'user' => array(
+                            'asc' => 'a.subject_id',
+                            'desc' => 'a.subject_id desc',
+                            'default' => 'desc',
+                        )
+                    ),
+                    'defaultOrder' => array(
+                        'user' => true,
+                    ),
+                ),
+                'pagination' => array(
+                    'pageSize' => Yii::app()->params['PageSize'],
+                ),
+            ));
+
+            // 没有数据
+            if($dataProvider->totalItemCount == 0 ) {
+                $this->setWarningMessage('没有检索到相关数据！');
             }
         }
 
-        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-        $dataProvider = new CSqlDataProvider($sql, array(
-            'params' => $params,
-            'keyField' => 'ID',
-            'totalItemCount' => $count,
-            'sort' => array(
-                'attributes' => array(
-                    'user' => array(
-                        'asc' => 'a.subject_id',
-                        'desc' => 'a.subject_id desc',
-                        'default' => 'desc',
-                    )
-                ),
-                'defaultOrder' => array(
-                    'user' => true,
-                ),
-            ),
-            'pagination' => array(
-                'pageSize' => Yii::app()->params['PageSize'],
-            ),
-        ));
-
-        // 没有数据
-        if($dataProvider->totalItemCount == 0 ) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
-        }
-        
         $this->render('search', array(
                     'model' => $model, 
-                    'dataProvider' => $dataProvider,
+                    'dataProvider' => isset($dataProvider) ? $dataProvider : null,
                 ));
     }
     
@@ -80,21 +80,21 @@ class CourseController extends Controller {
         if (isset($_POST['CourseForm'])) {
             $model->attributes = $_POST['CourseForm'];
             
+            Yii::log(print_r($model->attributes, true));
+            
             $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
             if(is_null($class)){
                 throw new CHttpException('500', '该班级信息不存在！');
             }
             
-            if ($class->class_type == '1') {//文科
-                $subjects = MSubjects::model()->findAll("status='1' and subject_type in ('0', '1')");
-            } elseif ($class->class_type == '2') {// 理科
-                $subjects = MSubjects::model()->findAll("status='1' and subject_type in ('0', '2')");
-            } else { // 综合
-                $subjects = MSubjects::model()->findAll("status='1' and subject_type in ('0', '1', '2')");
-            }
+            $criteria = new CDbCriteria();
+            $criteria->addCondition("status='1'");
+            $criteria->addInCondition('ID', array_values($model->subjects));
+            $subjects = MSubjects::model()->findAll($criteria);
             
-            
+            // 所有的班级信息
             $classes = TClasses::model()->find("status='1'");
+            // 所有的教师信息
             $teachers = TTeachers::model()->findAll("status='1'");
             
             // 收集页面数据
@@ -102,10 +102,10 @@ class CourseController extends Controller {
             
             $this->render('createmore', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
             
-            Yii::app()->end();
+        } else {
+            $this->render('createmore', array('model' => $model));
         }
         
-        $this->render('createmore', array('model' => $model));
     }
     
     public function actionInsert() {
@@ -115,44 +115,46 @@ class CourseController extends Controller {
         
         $data = array('result' => false, 'message' => '操作失败！');
         
-        if (isset($_POST['class_id']) && $_POST['subject_id'] && $_POST['teacher_id']) {
+        if (isset($_POST['class_id']) && isset($_POST['subject_id']) && isset($_POST['teacher_id'])) {
             $class_id = trim($_POST['class_id']);
             $subject_id = trim($_POST['subject_id']);
             $teacher_id = trim($_POST['teacher_id']);
 
-//            if (!TClasses::model()->exists("ID=:ID and status='1'", array(":ID" => $class_id))) {
-//                $data['message'] ='班级信息不存在！';
-//            }
-//            if (!MSubjects::model()->exists("ID=:ID and status='1'", array(":ID" => $subject_id))) {
-//                $data['message'] ='科目信息不存在！';
-//            }
-//            if (!TTeachers::model()->exists("ID=:ID and status='1'", array(":ID" => $teacher_id))) {
-//                $data['message'] ='教师信息不存在！';
-//            }
-
             try {
                 // 判断该课程是否已经存在
                 $course = MCourses::model()->find("class_id=:class_id and subject_id=:subject_id and status='1'",array(':subject_id' => $subject_id, ':class_id' => $class_id));
-                if (is_null($course)) {
-                    $course = new MCourses();
-                    $course->class_id = $class_id;
-                    $course->subject_id = $subject_id;
-                    $course->teacher_id = $teacher_id;
-                    $course->status = '1';
-                    $course->create_user = $this->getLoginUserId();
-                    $course->update_user = $this->getLoginUserId();
-                    $course->create_time = new CDbExpression('NOW()');
-                    $course->update_time = new CDbExpression('NOW()');                    
-                } else {
-                    $course->teacher_id = $teacher_id;
-                    $course->update_user = $this->getLoginUserId();
-                    $course->update_time = new CDbExpression('NOW()');     
+                // 删除
+                if(empty($teacher_id)) {
+                    
+                    if (!is_null($course) && $course->delete()) {
+                        $data['result'] = true;
+                        $data['message'] = '删除成功！';
+                    }
+                }
+                // 添加/修改任课教师
+                else if ($teacher_id != '') {
+                    if (is_null($course)) {
+                        $course = new MCourses();
+                        $course->class_id = $class_id;
+                        $course->subject_id = $subject_id;
+                        $course->teacher_id = $teacher_id;
+                        $course->status = '1';
+                        $course->create_user = $this->getLoginUserId();
+                        $course->update_user = $this->getLoginUserId();
+                        $course->create_time = new CDbExpression('NOW()');
+                        $course->update_time = new CDbExpression('NOW()');                    
+                    } else {
+                        $course->teacher_id = $teacher_id;
+                        $course->update_user = $this->getLoginUserId();
+                        $course->update_time = new CDbExpression('NOW()');     
+                    }
+
+                    if ($course->save()) {
+                        $data['result'] = true;
+                        $data['message'] = '操作成功！';
+                    }
                 }
                 
-                if ($course->save()) {
-                    $data['result'] = true;
-                    $data['message'] = '操作成功！';
-                }
             } catch (Exception $e) {
                 $data['message'] = '系统异常！';
                 throw new CHttpException(404, "系统异常！");

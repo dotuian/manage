@@ -6,27 +6,7 @@ $this->breadcrumbs = array(
 ?>
 <script>
 $(document).ready(function(){
-    $("input[name='CourseForm[type]']").change(function(){
-        switch ($(this).val()){
-            case "1":
-                $("#class").show();
-                $("#subject").hide();
-                $("#teacher").hide();
-                break;
 
-            case "2":
-                $("#class").hide();
-                $("#subject").show();
-                $("#teacher").hide();
-                break;
-
-            case "3":
-                $("#class").hide();
-                $("#subject").hide();
-                $("#teacher").show();
-                break;
-        }
-    });
 });
 
 </script>
@@ -37,7 +17,7 @@ $(document).ready(function(){
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left"><?php echo $this->pageTitle;?></div>
+                <div class="pull-left">课程信息添加(批量)</div>
                 <div class="clearfix"></div>
             </div>
 
@@ -55,48 +35,29 @@ $(document).ready(function(){
                         先选定要添加课程的班级，然后添加该班级的课程信息。
                     </h6>
                     <hr/>
-                        
-                        <!--
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">添加方式</label>
-                            <div class="col-lg-10 inline-block">
-                                <?php echo $form->radioButtonList($model,'type', CourseForm::getCreateTypeOption(), array('separator'=>'　')); ?>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">班级</label>
+                        <div class="col-lg-10 inline-block">
+                            <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(false), array('class'=>'form-control')); ?>
+                            <?php echo $form->error($model,'class_id'); ?>
                         </div>
-                        -->
-
-                        <div class="form-group" id="class" style="display: <?php echo $model->type=='1' ? '' : 'none'; ?>">
-                            <label class="col-lg-2 control-label">班级</label>
-                            <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'class_id'); ?>
-                            </div>
-                        </div>
-
-                        <!--
-                        <div class="form-group" id="subject" style="display: <?php echo $model->type=='2' ? '' : 'none' ?>">
-                            <label class="col-lg-2 control-label">科目</label>
-                            <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'subject_id'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group" id="teacher" style="display: <?php echo $model->type=='3' ? '' : 'none' ?>">
-                            <label class="col-lg-2 control-label">教师</label>
-                            <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'teacher_id'); ?>
-                            </div>
-                        </div>
-                        -->
                     </div>
 
-                    <div class="widget-foot">
-                        <div class="pull-right">
-                            <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary')); ?>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">课程</label>
+                        <div class="col-lg-10 inline-block">
+                            <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
+                            <?php echo $form->error($model,'subjects'); ?>
                         </div>
-                        <div class="clearfix"></div> 
                     </div>
+                </div>
+
+                <div class="widget-foot">
+                    <div class="pull-right">
+                        <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary')); ?>
+                    </div>
+                    <div class="clearfix"></div> 
+                </div>
                     
                 <?php $this->endWidget(); ?>
                     
@@ -143,7 +104,9 @@ $(document).ready(function(){
                                 <td class="center"><?php echo $class->class_name; ?></td>
                                 <td class="center"><?php echo $subject->subject_name; ?></td>
                                 <td class="center">
-                                    <?php echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array(
+                                    <?php 
+                                    // 根据科目CODE，获取相应的科目教师
+                                    echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getAllTeacherGroupOption(true, $subject->subject_code), array(
                                         'class'=>'form-control',
                                         'id' => 'teacher_id' . $subject->ID ,
                                         'ajax'=>array(

@@ -75,7 +75,7 @@ $(document).ready(function(){
 </div>
 
 
-<?php if($dataProvider->totalItemCount > 0 ) { ?>
+<?php if(!is_null($dataProvider) && $dataProvider->totalItemCount > 0 ) { ?>
 <!-- 检索结果 -->
 <div class="widget">
 

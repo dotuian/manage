@@ -10,14 +10,15 @@ class SubjectController extends Controller {
      */
     public function actionSearch() {
 
-        $sql = "select a.* from m_subjects a where a.status='1' ";
-        $countSql = "select count(*) from m_subjects a where a.status='1' ";
-        $condition = '';
-        $params = array();
-
         $model = new SubjectForm();
+        
         if (isset($_GET['SubjectForm'])) {
             $model->attributes = $_GET['SubjectForm'];
+            
+            $sql = "select a.* from m_subjects a where a.status='1' ";
+            $countSql = "select count(*) from m_subjects a where a.status='1' ";
+            $condition = '';
+            $params = array();
 
             if (trim($model->subject_code) !== '') {
                 $condition .= " and a.subject_code like :subject_code ";
@@ -35,40 +36,40 @@ class SubjectController extends Controller {
                 $condition .= " and a.subject_type = :subject_type ";
                 $params[':subject_type'] = trim($model->subject_type);
             }
-        }
-        $sql .= $condition;
-        $countSql .= $condition;
+            $sql .= $condition;
+            $countSql .= $condition;
 
-        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-        $dataProvider = new CSqlDataProvider($sql, array(
-            'params' => $params,
-            'keyField' => 'ID',
-            'totalItemCount' => $count,
-            'sort' => array(
-                'attributes' => array(
-                    'user' => array(
-                        'asc' => 'a.ID',
-                        'desc' => 'a.ID desc',
-                        'default' => 'desc',
-                    )
+            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+            $dataProvider = new CSqlDataProvider($sql, array(
+                'params' => $params,
+                'keyField' => 'ID',
+                'totalItemCount' => $count,
+                'sort' => array(
+                    'attributes' => array(
+                        'user' => array(
+                            'asc' => 'a.ID',
+                            'desc' => 'a.ID desc',
+                            'default' => 'desc',
+                        )
+                    ),
+                    'defaultOrder' => array(
+                        'user' => true,
+                    ),
                 ),
-                'defaultOrder' => array(
-                    'user' => true,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->params['PageSize'],
                 ),
-            ),
-            'pagination' => array(
-                'pageSize' => Yii::app()->params['PageSize'],
-            ),
-        ));
+            ));
 
-        // 没有数据
-        if ($dataProvider->totalItemCount == 0) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+            // 没有数据
+            if ($dataProvider->totalItemCount == 0) {
+                Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+            }
         }
 
         $this->render('search', array(
             'model' => $model,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => isset($dataProvider) ? $dataProvider : null,
         ));
     }
     

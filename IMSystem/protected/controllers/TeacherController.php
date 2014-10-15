@@ -10,12 +10,13 @@ class TeacherController extends Controller {
         $model->sex = null;
         
         // SQL
-        $sql = "select DISTINCT a.* ";
-        $countSql = "select count(DISTINCT a.ID) ";
-        $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.status='1' ";
-        $params = array();
         if (isset($_GET['TeacherForm'])) {
             $model->attributes = $_GET['TeacherForm'];
+            
+            $sql = "select DISTINCT a.* ";
+            $countSql = "select count(DISTINCT a.ID) ";
+            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.status='1' ";
+            $params = array();
             
             if (trim($model->code) !== '') {
                 $condition .= " and a.code like :code ";
@@ -37,41 +38,40 @@ class TeacherController extends Controller {
                 $condition .= " and a.address like :address ";
                 $params[':address'] = '%' . StringUtils::escape(trim($model->address)) . '%';
             }
-        }
+            $sql .= $condition;
+            $countSql .= $condition;
 
-        $sql .= $condition;
-        $countSql .= $condition;
-        
-        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-        $dataProvider = new CSqlDataProvider($sql, array(
-            'params' => $params,
-            'keyField' => 'ID',
-            'totalItemCount' => $count,
-            'sort' => array(
-                'attributes' => array(
-                    'user' => array(
-                        'asc' => 'a.ID',
-                        'desc' => 'a.ID desc',
-                        'default' => 'desc',
-                    )
+            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+            $dataProvider = new CSqlDataProvider($sql, array(
+                'params' => $params,
+                'keyField' => 'ID',
+                'totalItemCount' => $count,
+                'sort' => array(
+                    'attributes' => array(
+                        'user' => array(
+                            'asc' => 'a.ID',
+                            'desc' => 'a.ID desc',
+                            'default' => 'desc',
+                        )
+                    ),
+                    'defaultOrder' => array(
+                        'user' => true,
+                    ),
                 ),
-                'defaultOrder' => array(
-                    'user' => true,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->params['PageSize'],
                 ),
-            ),
-            'pagination' => array(
-                'pageSize' => Yii::app()->params['PageSize'],
-            ),
-        ));
-
-        // 没有数据
-        if($dataProvider->totalItemCount == 0 ) {
-            $this->setWarningMessage("没有检索到相关数据！");
+            ));
+            
+            // 没有数据
+            if($dataProvider->totalItemCount == 0 ) {
+                $this->setWarningMessage("没有检索到相关数据！");
+            }
         }
         
         $this->render('search', array(
                     'model' => $model, 
-                    'dataProvider' => $dataProvider,
+                    'dataProvider' => isset($dataProvider) ? $dataProvider : null,
                 ));
     }
     
@@ -177,6 +177,7 @@ class TeacherController extends Controller {
             if (isset($_POST['TTeachers'])) {
                 $tran = Yii::app()->db->beginTransaction();
                 try{
+                    $teacher->name = trim($_POST['TTeachers']['name']);;
                     $teacher->birthday   = empty($_POST['TTeachers']['birthday']) ? null : trim($_POST['TTeachers']['birthday']);
                     $teacher->address    = trim($_POST['TTeachers']['address']);
                     $teacher->telephonoe = trim($_POST['TTeachers']['telephonoe']);

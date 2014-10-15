@@ -151,16 +151,51 @@ class TTeachers extends CActiveRecord
      * @param type $flag
      * @return string
      */
-    public function getAllTeacherOption($flag = true){
+    public function getAllTeacherGroupOption($flag = true, $subject_code=null){
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
+        
+        $sql = "select c.subject_name, a.ID, a.code, a.name from t_teachers a , t_teacher_subjects b , m_subjects c ";
+        $sql .= "where a.ID = b.teacher_id and b.subject_id=c.ID and a.`status`= '1' and c.`status`='1' ";
+        
+        $params = array();
+        if (!is_null($subject_code)) {
+            $sql .= " and c.subject_code=:subject_code";
+            $params[':subject_code'] = trim($subject_code);
+        }
 
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $data = $command->query($params);
+        
+        foreach ($data as $value) {
+            ///$result[$value['subject_name']][] = array($value['ID'] => $value['code'] .'|' . $value['name']);
+            $result[$value['subject_name']][$value['ID']] = $value['code'] . '|' . $value['name'];
+        }
+        
+        Yii::log(print_r($result, true));
+        
+        return $result;
+    }
+    
+    /**
+     * 
+     * @param type $flag
+     * @return string
+     */
+    public function getAllTeacherOption($flag){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+        
         $data = TTeachers::model()->findAll("status='1'");
         foreach ($data as $value) {
             $result[$value->ID] = $value->code . ' | ' . $value->name;
         }
+        
         return $result;
     }
     

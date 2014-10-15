@@ -71,7 +71,7 @@
             
 
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">孝感市综合高级中学</span><i>成绩管理系统</i>
+                 <span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>
             </a>
         </div>
 
@@ -222,8 +222,8 @@
                         <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('course/CreateMore', $authoritys)) { ?>
-                        <li><a href="<?php echo $this->createUrl('course/CreateMore');?>">课程信息添加(批量)</a></li>
+                    <?php if(in_array('course/createmore', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('course/createMore');?>">课程信息添加(批量)</a></li>
                     <?php } ?>
                 </ul>
             </li>

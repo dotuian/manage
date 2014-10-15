@@ -6,6 +6,11 @@
 // Yii::setPathOfAlias('local','path/to/local-folder');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+
+// set foreign_key_checks=off
+// set foreign_key_checks=on
+
+
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => '孝感市综合高级中学 成绩管理系统',
@@ -106,9 +111,9 @@ return array(
                     'levels' => 'error, warning, info',
                     'logFile' => 'application_' . date('Ymd') . '.log',
                 ),
-//                array(
-//                    'class' => 'CWebLogRoute',
-//                ),
+                array(
+                    'class' => 'CWebLogRoute',
+                ),
             ),
         ),
     ),

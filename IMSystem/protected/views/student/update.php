@@ -30,8 +30,10 @@ $this->breadcrumbs = array(
 
                     <?php
                         $form = $this->beginWidget('CActiveForm', array(
-                            'id' => 'add-student-form',
+                            'id' => 'update-student-form',
                             'enableClientValidation'=>true,
+                            'method' => 'post',
+                            'action' => $this->createUrl('update', array('ID' => $model->ID)),
                             'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                         ));
                     ?>

@@ -19,6 +19,8 @@ CHtml::$errorContainerTag = 'div';
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'login-form',
             'enableClientValidation' => false,
+            'method' => 'post',
+            'action' => $this->createUrl('login'),
             'htmlOptions' => array('class' => 'form-signin'),
         ));
     ?>
@@ -30,7 +32,7 @@ CHtml::$errorContainerTag = 'div';
         <?php echo $form->textField($model,'username', array('class'=>'form-control', 'placeholder'=>'用户名', 'required'=>'', 'autofocus'=>'')); ?>
         <?php echo $form->passwordField($model,'password', array('class'=>'form-control', 'placeholder'=>'密码', 'required'=>'')); ?>
       
-        <?php echo CHtml::submitButton('Login', array('class'=>'btn btn-lg btn-primary btn-block')); ?>
+        <?php echo CHtml::submitButton('登录', array('class'=>'btn btn-lg btn-primary btn-block')); ?>
 
     <?php $this->endWidget(); ?>
 </div>

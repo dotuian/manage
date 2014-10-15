@@ -8,6 +8,9 @@ class CourseForm extends CFormModel {
     public $class_id;
     public $status;
     public $teacher_name;
+    
+    // 需要添加的课程信息
+    public $subjects = array();
 
     public function rules() {
         // NOTE: you should only define rules for those attributes that
@@ -16,7 +19,7 @@ class CourseForm extends CFormModel {
 //			array('class_id', 'required'),
             array('subject_id, teacher_id, class_id', 'length', 'max' => 10),
             array('status, type', 'length', 'max' => 1),
-            array('type, subject_id, teacher_id, class_id, status, teacher_name', 'safe'),
+            array('type, subject_id, teacher_id, class_id, status, teacher_name, subjects', 'safe'),
             // 课程信息添加 create
             array('subject_id, teacher_id, class_id', 'required', 'on' => 'create'),
         );
@@ -34,6 +37,7 @@ class CourseForm extends CFormModel {
             'teacher_name' => '任课教师',
             'class_id' => '班级',
             'status' => '状态',
+            'subjects' => '课程信息',
         );
     }
 
