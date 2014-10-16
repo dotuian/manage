@@ -71,7 +71,7 @@
             
 
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>
+                 <!--<span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>-->
             </a>
         </div>
 
@@ -295,7 +295,10 @@
                     <li><a href="<?php echo $this->createUrl('site/logout');?>">退出登录</a></li>
                 </ul>
             </li>
-          
+            
+            
+            <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-book"></i> <span>系统配置</span></a></li> 
+            
         </ul>
     </div>
     <!-- Sidebar ends -->
@@ -379,6 +382,7 @@
 
 <!-- JS -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.js"></script> <!-- Bootstrap -->
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-ui-1.9.2.custom.min.js"></script> <!-- jQuery UI -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.rateit.min.js"></script> <!-- RateIt - Star rating -->

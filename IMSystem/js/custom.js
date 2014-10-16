@@ -358,7 +358,7 @@ $(document).ready(function(){
 $(function() {
     $('#datetimepicker1').datetimepicker({
         language:  'zh-CN',
-        autoclose: 1,
+        autoclose: true,
         pickTime: false
     });
 });
@@ -367,7 +367,7 @@ $(function() {
 $(function() {
     $('#datetimepicker2').datetimepicker({
         language:  'zh-CN',
-        autoclose: 1,
+        autoclose: true,
         pickDate: false
     });
 });
