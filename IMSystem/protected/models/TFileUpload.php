@@ -32,14 +32,15 @@ class TFileUpload extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            // 上传许可的文件类型
-            array('filename', 'file', 'types'=>'xlsx', 'maxSize' => 1024 * 1024 * 5, 
-                'tooLarge' => '文件 "{file}" 太大. 文件大小不能超过5MB！', 'on'=>'import_student'),
+			array('filename', 'required'),
             
-			array('filename, realpath', 'required'),
+            // 上传许可的文件类型
+            array('filename', 'file', 'types'=>'xlsx,xls', 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => '文件 "{file}" 太大. 文件大小不能超过5MB！', 'on'=>'import_student'),
+            
 			array('filename, category', 'length', 'max'=>50),
 			array('realpath', 'length', 'max'=>128),
 			array('status', 'length', 'max'=>1),
+            
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID, filename, realpath, category, status, create_user, create_time, update_user, update_time', 'safe'),
@@ -124,14 +125,36 @@ class TFileUpload extends CActiveRecord
      * 将文件中的数据导入到数据库中
      * @return boolean
      */
-    public function import2db(){
-        if(file_exists($this->realpath)){
+    public function importStduent2DB() {
+        $result = false;
+
+        if (file_exists($this->realpath)) {
+            // 将Excel数据读取到数组中
             $data = ExcelUtils::readExcel2Array($this->realpath);
+
+            Yii::log(print_r($data, true));
+
+            if (is_array($data)) {
+                for ($index = 0; $index < count($data); $index++) {
+                    // 第5行开始是数据
+                    if ($index < 5 ) {
+                        continue;
+                    }
+                    
+                    // 数据检查
+
+                    
+                    // 数据导入
+                    if (TUsers::model()->importStudent($data[$index])) {
+                        // 导入成功
+                    } else {
+                        // 导入失败
+                    }
+                }
+            }
         }
-        
-        Yii::log(print_r($data, true));
-        
-        return true;
+
+        return $result;
     }
     
     

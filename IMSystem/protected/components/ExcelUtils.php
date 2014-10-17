@@ -9,8 +9,16 @@ class ExcelUtils {
         set_include_path($phpExcelPath);
         include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel/IOFactory.php');
 
-        $objReader = new PHPExcel_Reader_Excel2007();
-        //  $objReader = new PHPExcel_Reader_Excel5();
+        if(strtolower(substr($filename, -3)) === 'xls') {
+            $objReader = new PHPExcel_Reader_Excel5();
+        } else if(strtolower(substr($filename, -3)) === 'xlsx') {
+            $objReader = new PHPExcel_Reader_Excel2007();
+        } else {
+            spl_autoload_register(array('YiiBase', 'autoload'));
+            return null;
+        }
+        
+//            $objReader = new PHPExcel_Reader_Excel2003XML();
         //	$objReader = new PHPExcel_Reader_Excel2003XML();
         //	$objReader = new PHPExcel_Reader_OOCalc();
         //	$objReader = new PHPExcel_Reader_SYLK();

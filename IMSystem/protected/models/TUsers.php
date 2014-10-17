@@ -170,5 +170,102 @@ class TUsers extends CActiveRecord
         return $result;
     }
     
+    
+    public function importStudent($value) {
+        $result = false;
+
+        $login_id = Yii::app()->user->getState('ID');
+        $code = trim($value['A']);
+        $student = TStudents::model()->find('code=:code', array(':code' => $code));
+        // 不存在的情况
+        if (is_null($student)) {
+            // 用户表
+            $user = new TUsers();
+            $user->username = $code;
+            $user->password = "";
+            $user->status = '1';
+            $user->create_user = $login_id;
+            $user->create_time = new CDbExpression('NOW()');
+            $user->update_user = $login_id;
+            $user->update_time = new CDbExpression('NOW()');
+            if ($user->save()) {
+                // 学生表
+                $student = new TStudents();
+                $student->code = trim($value['A']);
+                $student->name = trim($value['B']);
+                $student->status = '1';
+                $student->id_card_no = trim($value['C']);
+                $student->birthday = trim($value['B']);
+                $student->class_id = trim($value['B']);
+                $student->old_class_id = trim($value['B']);
+                $student->payment1 = trim($value['B']);
+                $student->payment2 = trim($value['B']);
+                $student->payment3 = trim($value['B']);
+                $student->payment4 = trim($value['B']);
+                $student->payment5 = trim($value['B']);
+                $student->payment6 = trim($value['B']);
+                $student->bonus_penalty = trim($value['B']); // 奖惩情况
+                $student->address = trim($value['B']);
+                $student->parents_tel = trim($value['B']);
+                $student->parents_qq = trim($value['B']);
+                $student->school_of_graduation = trim($value['B']);
+                $student->senior_score = trim($value['B']);
+                $student->school_year = trim($value['B']);
+                $student->college_score = trim($value['B']);
+                $student->university = trim($value['B']);
+                $student->comment = trim($value['B']);
+
+                $student->create_user = Yii::app()->user->getState('ID');
+                $student->create_time = new CDbExpression('NOW()');
+                $student->update_user = Yii::app()->user->getState('ID');
+                $student->update_time = new CDbExpression('NOW()');
+
+                // 用户角色表
+                $userRole = new TUserRoles();
+                $userRole->role_id = '1';
+                $userRole->user_id = $user->ID;
+                $userRole->create_user = $login_id;
+                $userRole->create_time = new CDbExpression('NOW()');
+                $userRole->update_user = $login_id;
+                $userRole->update_time = new CDbExpression('NOW()');
+
+                if ($student->save(false) && $userRole->save(false)) {
+                    $result = true;
+                }
+            }
+        } else {
+            // 存在的情况下，只需要更新学生表数据
+            $student->name = trim($value['B']);
+            $student->id_card_no = trim($value['C']);
+            $student->birthday = trim($value['B']);
+            $student->class_id = trim($value['B']);
+            $student->old_class_id = trim($value['B']);
+            $student->payment1 = trim($value['B']);
+            $student->payment2 = trim($value['B']);
+            $student->payment3 = trim($value['B']);
+            $student->payment4 = trim($value['B']);
+            $student->payment5 = trim($value['B']);
+            $student->payment6 = trim($value['B']);
+            $student->bonus_penalty = trim($value['B']); // 奖惩情况
+            $student->address = trim($value['B']);
+            $student->parents_tel = trim($value['B']);
+            $student->parents_qq = trim($value['B']);
+            $student->school_of_graduation = trim($value['B']);
+            $student->senior_score = trim($value['B']);
+            $student->school_year = trim($value['B']);
+            $student->college_score = trim($value['B']);
+            $student->university = trim($value['B']);
+            $student->comment = trim($value['B']);
+
+            $student->update_user = Yii::app()->user->getState('ID');
+            $student->update_time = new CDbExpression('NOW()');
+
+            if ($student->save(false)) {
+                $result = true;
+            }
+        }
+
+        return $result;
+    }
 
 }

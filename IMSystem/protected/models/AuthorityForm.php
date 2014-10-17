@@ -83,7 +83,7 @@ class AuthorityForm extends CFormModel
     
     
     public function autoAuthorityCode(){
-        $count = MAuthoritys::model()->count();
+        $count = MAuthoritys::model()->count('category=:category', array(':category' => $this->category));
         return substr($this->category, 0, 3) . str_pad($count + 1, 3, '0', STR_PAD_LEFT);   
     }
     

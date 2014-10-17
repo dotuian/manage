@@ -407,8 +407,6 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validationEngine.js"></script> <!-- jQuery Validation Engine -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sparklines.js"></script> <!-- Sparklines -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.cleditor.min.js"></script> <!-- CLEditor -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.zh-CN.js"></script> <!-- Date picker -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script>  
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script>  
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script>
@@ -420,6 +418,9 @@
 
 
 
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-datetimepicker.zh-CN.js"></script> <!-- Date picker -->
+
 
 <!-- blockUI -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.blockUI.js"></script>
@@ -429,6 +430,8 @@
 
 
 
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/moment.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/daterangepicker.js"></script>
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/custom.js"></script>
 

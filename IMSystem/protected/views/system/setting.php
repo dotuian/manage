@@ -5,12 +5,6 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<script>
-$(document).ready(function(){
-
-});
-</script>
-
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
@@ -31,45 +25,35 @@ $(document).ready(function(){
                             'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                         ));
                     ?>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">系统运行状态</label>
+
+                        <div class="form-group input-append" id="start_date" >
+                            <label class="col-lg-2 control-label">开始日期</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'import_student_end_date', array('class'=>'form-control form_datetime', 'placeholder'=>'结束日期')); ?>
-                                <?php echo $form->textField($model,'import_student_end_date', array('class'=>'form-control form_datetime', 'placeholder'=>'结束日期')); ?>
+                                <?php echo $form->textField($model,'import_student_start_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                <span class="add-on">
+                                    <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
+                                </span>
+                                <?php echo $form->error($model,'import_student_start_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group input-append" id="end_date" >
+                            <label class="col-lg-2 control-label">结束日期</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'import_student_end_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                <span class="add-on">
+                                    <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
+                                </span>
                                 <?php echo $form->error($model,'import_student_end_date'); ?>
                             </div>
                         </div>
-
-<script>
-$(document).ready(function(){
-    $('.form_datetime').datetimepicker({
-        language:  'zh-CN',
-        format: 'yyyy-mm-dd',
-        autoclose: 1,
-    });
-});
-</script>
-
-
-<div class="input-append date form_datetime">
-    <input size="16" type="text" value="" readonly>
-    <span class="add-on"><i class="icon-th"></i></span>
-</div>
- 
-<script type="text/javascript">
-    $(".form_datetime").datetimepicker({
-        format: "dd MM yyyy - hh:ii"
-    });
-</script>            
-
-
-
-
+                    
+                    
                         <div class="form-group">
                             <label class="col-lg-2 control-label">系统运行状态</label>
                             <div class="col-lg-10">
-                                <?php echo $form->radioButtonList($model,'maintenance', ConfigForm::getMaintenanceOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'maintenance'); ?>
+                                <?php echo $form->radioButtonList($model,'running', ConfigForm::getRunningOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'running'); ?>
                             </div>
                         </div>
                     
@@ -88,3 +72,19 @@ $(document).ready(function(){
 
     </div>
 </div>
+
+<script>
+$(document).ready(function(){
+    $('#start_date').datetimepicker({
+        language:  'zh-CN',
+        autoclose: true,
+        pickTime: false
+    });
+    $('#end_date').datetimepicker({
+        language:  'zh-CN',
+        autoclose: true,
+        pickTime: false
+    });
+    
+});
+</script>

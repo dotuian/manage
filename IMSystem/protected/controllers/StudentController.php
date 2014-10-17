@@ -269,29 +269,34 @@ class StudentController extends Controller {
     
     public function actionImport() {
 
-        $model = new TFileUpload();
+        $model = new TFileUpload('import_student');
 
         if (isset($_POST['TFileUpload'])) {
-            $model->attributes = $_POST['TFileUpload'];
-            // 上传文件名
-            $model->filename = CUploadedFile::getInstance($model, 'filename');
-            // 保存文件名
-            $model->realpath = Yii::app()->params['FilePath'] . time() . '.xlsx';
-            $model->category = 'import_student';
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $model->attributes = $_POST['TFileUpload'];
+                // 上传文件名
+                $model->filename = CUploadedFile::getInstance($model, 'filename');
+                // 保存文件名
+                $model->realpath = Yii::app()->params['FilePath'] . time() . '.' . $model->filename->extensionName;
+                $model->category = 'import_student';
+                $model->create_user = $this->getLoginUserId();
+                $model->update_user = $this->getLoginUserId();
+                $model->create_time = new CDbExpression('NOW()');
+                $model->update_time = new CDbExpression('NOW()');
 
-            $model->create_user = $this->getLoginUserId();
-            $model->update_user = $this->getLoginUserId();
-            $model->create_time = new CDbExpression('NOW()');
-            $model->update_time = new CDbExpression('NOW()');
-
-            if ($model->validate()) {
-                // 将文件保存在服务器端
-                $model->filename->saveAs($model->realpath);
-                if ($model->save() && $model->import2db()) {
-                    Yii::app()->user->setFlash('success', "文件上传成功！");
-                } else {
-                    Yii::app()->user->setFlash('warning', "文件上传失败！");
+                if ($model->validate()) {
+                    // 将文件保存在服务器端
+                    $model->filename->saveAs($model->realpath);
+                    if ($model->save() && $model->importStduent2DB()) {
+                        $tran->commit();
+                        $this->setSuccessMessage('success', "数据导入成功！");
+                    } else {
+                        $this->setErrorMessage('warning', "数据导入失败！");
+                    }
                 }
+            } catch (Exception $e) {
+                $this->setErrorMessage('数据导入失败！');
             }
         }
 
