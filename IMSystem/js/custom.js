@@ -1,5 +1,4 @@
 /* JS */
-
 var debounce = function(func, wait, immediate) {
   var timeout, result;
   return function() {
@@ -15,6 +14,8 @@ var debounce = function(func, wait, immediate) {
     return result;
   };
 }
+
+
 /* Navigation */
 function pagesize(){
     if($(window).width() >= 765){
@@ -88,26 +89,32 @@ $(document).ready(function(){
       }
   });
   
-  $(".sidebar-dropdown a").on('click',function(e){
-      e.preventDefault();
+  
+  /**  小屏幕时，菜单的展开收拢事件 **/
+    $(".sidebar-dropdown a").on('click', function (e) {
+        e.preventDefault();
 
-      if(!$(this).hasClass("open")) {
-        // hide any open menus and remove all other classes
-        $(".sidebar #nav").slideUp(350);
-        $(".sidebar-dropdown a").removeClass("open");
-        
-        $(".sidebar #nav a").removeClass("open");
-        
-        // open our new menu and add the open class
-        $(".sidebar #nav").slideDown(350);
-        $(this).addClass("open");
-      }
-      
-      else if($(this).hasClass("open")) {
-        $(this).removeClass("open");
-        $(".sidebar #nav").slideUp(350);
-      }
-  });
+        if (!$(this).hasClass("open")) {
+            // hide any open menus and remove all other classes
+            $(".sidebar #nav").slideUp(350);
+            $(".sidebar-dropdown a").removeClass("open");
+
+            $(".sidebar #nav a").removeClass("open");
+
+            // open our new menu and add the open class
+            $(".sidebar #nav").slideDown(350);
+            $(this).addClass("open");
+        }
+
+        else if ($(this).hasClass("open")) {
+            $(this).removeClass("open");
+            $(".sidebar #nav").slideUp(350);
+        }
+    });
+    
+    
+    
+    
   
   
   $('.sscroll').slimScroll({wheelStep: 1,opacity:0.3});
@@ -116,15 +123,14 @@ $(document).ready(function(){
 });
 
 /* Widget close */
-
 $('.wclose').click(function(e){
   e.preventDefault();
   var $wbox = $(this).parent().parent().parent();
   $wbox.hide(100);
 });
 
-/* Widget minimize */
 
+/* Widget minimize */
   $('.wminimize').click(function(e){
     e.preventDefault();
     var $wcontent = $(this).parent().parent().next('.widget-content');
@@ -141,8 +147,8 @@ $('.wclose').click(function(e){
     $wcontent.slideToggle(300);
   }); 
 
-/* Calendar */
 
+/* Calendar */
   $(document).ready(function() {
   
     var date = new Date();
@@ -382,12 +388,14 @@ $(".cleditor").cleditor({
     height: "auto"
 });
 
-/* Modal fix */
 
+
+/* Modal fix */
 $('.modal').appendTo($('body'));
 
-/* Pretty Photo for Gallery*/
 
+
+/* Pretty Photo for Gallery*/
 jQuery("a[class^='prettyPhoto']").prettyPhoto({
 overlay_gallery: false, social_tools: false
 });

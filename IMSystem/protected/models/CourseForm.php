@@ -40,5 +40,21 @@ class CourseForm extends CFormModel {
             'subjects' => '课程信息',
         );
     }
+    
+    public function afterValidate() {
+        parent::afterValidate();
+
+        if ($this->scenario === 'create') {
+            $result = MCourses::model()->exists("subject_id=:subject_id and teacher_id=:teacher_id and class_id=:class_id and status='1'",
+                    array(':subject_id'=>$this->subject_id, ':teacher_id'=>$this->teacher_id, ':class_id'=>$this->class_id));
+            if($result){
+                $this->addError('subject_id', '角色名称已经存在，请重新指定！');
+            }
+        }
+        
+        
+    }
+    
+    
 
 }

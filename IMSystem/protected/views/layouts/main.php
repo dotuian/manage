@@ -67,11 +67,14 @@
     <div class="container">
       <!-- Menu button for smallar screens -->
         <div class="navbar-header">
-            <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>个人设置</span></button>
+            <!--
+            <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span>个人设置</span>
+            </button>
+            -->
             
-
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <!--<span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>-->
+                 <span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>
             </a>
         </div>
 
@@ -221,10 +224,6 @@
                     <?php if(in_array('course/create', $authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
                     <?php } ?>
-                    
-                    <?php if(in_array('course/createmore', $authoritys)) { ?>
-                        <li><a href="<?php echo $this->createUrl('course/createMore');?>">课程信息添加(批量)</a></li>
-                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>
@@ -242,6 +241,10 @@
                     <?php if(in_array('score/create', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
                     <?php } ?>
+                    
+                    <?php // if(in_array('score/class', $authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('score/class');?>">班级学生成绩</a></li>
+                    <?php // } ?>
                 </ul>
             </li>
             <?php } ?>
@@ -429,9 +432,6 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/js/dataTables.bootstrap.js"></script>
 
 
-
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/moment.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/daterangepicker.js"></script>
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/custom.js"></script>
 

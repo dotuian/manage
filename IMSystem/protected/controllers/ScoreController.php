@@ -6,7 +6,7 @@
 class ScoreController extends Controller {
 
     /**
-     * 学生成绩查询
+     * 学生查询个人成绩
      * @throws CHttpException
      */
     public function actionQuery(){
@@ -292,8 +292,6 @@ class ScoreController extends Controller {
         }
     }
     
-    
-
     public function actionUpdate() {
 
         if (isset($_GET['ID'])) {
@@ -353,6 +351,15 @@ class ScoreController extends Controller {
         } else {
             throw new CHttpException(404, "找不到该页面！");
         }
+    }
+    
+    
+    public function actionClass(){
+        
+        $model = new ScoreForm();
+        
+        
+        $this->render('class', array('model' => $model, 'dataProvider'=>null));
     }
     
 }

@@ -47,9 +47,9 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">科目类型(简称)</label>
+                            <label class="col-lg-2 control-label">科目名称(简称)</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'subject_short_name', array('class'=>'form-control', 'placeholder'=>'科目类型(简称)')); ?>
+                                <?php echo $form->textField($model,'subject_short_name', array('class'=>'form-control', 'placeholder'=>'科目名称(简称)')); ?>
                                 <?php echo $form->error($model,'subject_short_name'); ?>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 <tr>
     <td class="center"><?php echo $data['class_code']; ?></td>
     <td class="center"><?php echo $data['class_name']; ?></td>
-    <td class="center"><?php if($data['class_type'] ==='0') echo '综合' ; if($data['class_type'] ==='1') echo '文科' ; if($data['class_type'] ==='2') echo '理科' ;; ?></td>
+    <td class="center"><?php if($data['class_type'] ==='0') echo '普通高中' ; if($data['class_type'] ==='1') echo '技能专业' ;  ?></td>
     <td class="center">
         <span class="label <?php echo $data['status'] === '1' ? 'label-active' : 'label-stop';?>"><?php echo $data['status'] === '1' ? '正常' : '暂停'; ?></span>
     </td>

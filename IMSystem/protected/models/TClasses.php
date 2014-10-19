@@ -155,5 +155,53 @@ class TClasses extends CActiveRecord
         return $result;
     }
     
+    /**
+     * 根据用户的角色，来获取具有访问权限的班级信息
+     */
+    public function getClassInfoByUserRole($user_id) {
+        $classes = array();
+        
+        $roles = TUserRoles::model()->findAll('user_id=:user_id', array(':user_id'=>$user_id));
+        foreach ($roles as $role) {
+            switch ($role->ID) {
+                case 0: // 系统管理员
+                case 4: // 教务处
+                case 5: // 校长
+                    // 可以获取所有班级的信息
+                    $classes = TClasses::model()->findAll();
+                    return $classes;
+                    break;
+                case 2: // 教师
+                    // 班主任可以担任班级的信息
+                    $c1 = TClasses::model()->findAll('teacher_id=:teacher_id', array(':teacher_id' => $user_id));
+                    // 任课教师可以获取任课班级的信息
+                    $criteria = new CDbCriteria();
+                    $criteria->join = "inner join m_courses ON m_courses.class_id= t.ID";
+                    $criteria->addCondition("m_courses.teacher_id=:teacher_id and status='1'");
+                    $criteria->params = array(':teacher_id' => $user_id);
+                    $c2 = TClasses::model()->findAll($criteria);
+                    
+                    // 数组合并
+                    foreach ($c1 as $value) {
+                        $classes[] = $value;
+                    }
+                    foreach ($c2 as $value) {
+                        $classes[] = $value;
+                    }
+
+                    break;
+                case 1: // 学生
+                case 3: // 学工科
+                    // 没有获取班级信息的权限
+                    $classes = array();
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        return $classes;
+    }
+
 }
 

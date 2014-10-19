@@ -146,6 +146,7 @@ table.dataTable.no-footer{
 table.table {
     clear: both;
     margin-top: 0px !important; 
+    margin-bottom: 0px !important;
 }
 
 div.dataTables_length, div.dataTables_filter, div.dataTables_info, div.dataTables_paginate {

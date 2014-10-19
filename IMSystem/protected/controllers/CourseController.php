@@ -72,7 +72,7 @@ class CourseController extends Controller {
     }
     
     
-    public function actionCreateMore() {
+    public function actionCreate() {
 
         $model = new CourseForm();
         $model->type = '1';
@@ -100,10 +100,10 @@ class CourseController extends Controller {
             // 收集页面数据
             $data = new MCourses();
             
-            $this->render('createmore', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
+            $this->render('create', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
             
         } else {
-            $this->render('createmore', array('model' => $model));
+            $this->render('create', array('model' => $model));
         }
         
     }
@@ -165,40 +165,40 @@ class CourseController extends Controller {
     }
     
     
-    public function actionCreate() {
-
-        $model = new CourseForm('create');
-        
-        if (isset($_POST['CourseForm'])) {
-            $model->attributes = $_POST['CourseForm'];
-            if ($model->validate()) {
-                try {
-                    $courses = new MCourses();
-                    $courses->class_id = $model->class_id;
-                    $courses->subject_id = $model->subject_id;
-                    $courses->teacher_id = $model->teacher_id;
-                    $courses->status = '1';
-                    $courses->create_user = $this->getLoginUserId();
-                    $courses->update_user = $this->getLoginUserId();
-                    $courses->create_time = new CDbExpression('NOW()');
-                    $courses->update_time = new CDbExpression('NOW()');
-                    
-                    if ($courses->save()) {
-                        Yii::app()->user->setFlash('success', "课程信息添加成功！");
-                        $this->redirect($this->createUrl('create'));
-                    } else {
-                        Yii::log(print_r($courses->errors, true));
-                        Yii::app()->user->setFlash('warning', "课程信息添加失败！");
-                    }
-                } catch (Exception $e) {
-                    throw new CHttpException(404, "系统异常！");
-                }
-            }
-        }
-
-        $this->render('create', array('model' => $model));
-    }
-    
+//    public function actionCreate() {
+//
+//        $model = new CourseForm('create');
+//        
+//        if (isset($_POST['CourseForm'])) {
+//            $model->attributes = $_POST['CourseForm'];
+//            if ($model->validate()) {
+//                try {
+//                    $courses = new MCourses();
+//                    $courses->class_id = $model->class_id;
+//                    $courses->subject_id = $model->subject_id;
+//                    $courses->teacher_id = $model->teacher_id;
+//                    $courses->status = '1';
+//                    $courses->create_user = $this->getLoginUserId();
+//                    $courses->update_user = $this->getLoginUserId();
+//                    $courses->create_time = new CDbExpression('NOW()');
+//                    $courses->update_time = new CDbExpression('NOW()');
+//                    
+//                    if ($courses->save()) {
+//                        Yii::app()->user->setFlash('success', "课程信息添加成功！");
+//                        $this->redirect($this->createUrl('create'));
+//                    } else {
+//                        Yii::log(print_r($courses->errors, true));
+//                        Yii::app()->user->setFlash('warning', "课程信息添加失败！");
+//                    }
+//                } catch (Exception $e) {
+//                    throw new CHttpException(404, "系统异常！");
+//                }
+//            }
+//        }
+//
+//        $this->render('create', array('model' => $model));
+//    }
+//    
     
     public function actionUpdate() {
 

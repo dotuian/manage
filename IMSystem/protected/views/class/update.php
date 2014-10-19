@@ -52,7 +52,7 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">文理科</label>
+                            <label class="col-lg-2 control-label">班级性质</label>
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_type'); ?>

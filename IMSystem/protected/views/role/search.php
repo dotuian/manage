@@ -36,7 +36,7 @@ $(document).ready(function(){
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->textField($model,'role_name', array('class'=>'form-control', 'placeholder'=>'角色管理')); ?>
+                        <?php echo $form->textField($model,'role_name', array('class'=>'form-control', 'placeholder'=>'角色名称')); ?>
                     </td>
                 </tr>
             </tbody>

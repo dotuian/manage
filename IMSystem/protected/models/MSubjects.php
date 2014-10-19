@@ -38,9 +38,9 @@ class MSubjects extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('subject_code, subject_name, subject_short_name, level, create_time, update_time', 'required'),
-            array('subject_code, subject_name, create_user, update_user', 'length', 'max' => 10),
-            array('subject_short_name', 'length', 'max' => 4),
+            array('subject_code, subject_name, subject_short_name, subject_type, level, create_time, update_time', 'required'),
+            array('subject_code, subject_short_name, create_user, update_user', 'length', 'max' => 10),
+            array('subject_name', 'length', 'max' => 20),
             array('subject_type, status', 'length', 'max' => 1),
             array('level', 'length', 'max' => 2),
             // The following rule is used by search().
@@ -81,7 +81,7 @@ class MSubjects extends CActiveRecord
         );
     }
 
-    /**
+    /** 
      * Retrieves a list of models based on the current search/filter conditions.
      *
      * Typical usecase:

@@ -33,7 +33,7 @@ $(document).ready(function(){
                 <tr>
                     <th>班级代号</th>
                     <th>班级名称</th>
-                    <th>文理科</th>
+                    <th>班级性质</th>
                     <th>状态</th>
                      <th>届</th>
                     <th>班主任</th>
@@ -90,7 +90,7 @@ $(document).ready(function(){
                 <tr>
                     <th>班级代号</th>
                     <th>班级名称</th>
-                    <th>文理科</th>
+                    <th>班级性质</th>
                     <th>状态</th>
                     <th>届</th>
                     <th>班主任</th>
