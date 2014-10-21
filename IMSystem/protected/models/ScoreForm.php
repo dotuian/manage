@@ -27,6 +27,9 @@ class ScoreForm extends CFormModel {
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_code, student_name, score, ', 'safe'),
+            
+            // 班级成绩查询时，班级信息必须输入
+            array('class_id, exam_id', 'required', 'on'=>'search_class_score'),
         );
     }
 
@@ -47,5 +50,10 @@ class ScoreForm extends CFormModel {
             'score' => '分数',
         );
     }
+    
+    
+    
+    
+    
 
 }

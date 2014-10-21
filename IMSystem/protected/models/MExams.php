@@ -111,7 +111,7 @@ class MExams extends CActiveRecord {
         return parent::model($className);
     }
 
-    public function getAllExamsOption($flag) {
+    public function getAllExamsOption($flag=true) {
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];
@@ -121,6 +121,25 @@ class MExams extends CActiveRecord {
         foreach ($data as $value) {
             $result[$value->ID] = $value->exam_name;
         }
+        return $result;
+    }
+    
+    /**
+     * 获取指定班级的所有考试类型
+     * @param type $class_id
+     * @return type
+     */
+    public function getExamOptionByClassId($class_id, $flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = Yii::app()->params['EmptySelectOption'];
+        }
+
+        $exams = MExams::model()->findAll('ID in (select DISTINCT a.exam_id from t_scores a where a.class_id=:class_id)', array(':class_id' => $class_id));
+        foreach ($exams as $value) {
+            $result[$value->ID] = $value->exam_name;
+        }
+        
         return $result;
     }
 

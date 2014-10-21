@@ -354,12 +354,67 @@ class ScoreController extends Controller {
     }
     
     
-    public function actionClass(){
+    public function actionClass() {
+        
         
         $model = new ScoreForm();
-        
-        
-        $this->render('class', array('model' => $model, 'dataProvider'=>null));
+        if (isset($_GET['ScoreForm'])) {
+            $model->attributes = $_GET['ScoreForm'];
+            $model->scenario = 'search_class_score';
+            
+            // 
+            if ($model->validate()) {
+                $sql = "select a.code, a.name , c.exam_name, d.subject_code, d.subject_name, d.subject_short_name, b.score ";
+                $sql .= "from t_students a  ";
+                $sql .= "left join t_scores b on b.student_id= a.ID ";
+                $sql .= "left join m_exams  c on c.ID =  b.exam_id  ";
+                $sql .= "left join m_subjects d on d.ID = b.subject_id ";
+                $sql .= "where 1=1 ";
+
+                $params = array();
+                if($model->class_id != '') {
+                    $sql .= " and a.class_id=:class_id ";
+                    $params[':class_id'] = trim($model->class_id);
+                }
+                if($model->subject_id != '') {
+                    $sql .= " and b.subject_id=:subject_id ";
+                    $params[':subject_id'] = trim($model->subject_id);
+                }
+                if($model->exam_id != '') {
+                    $sql .= " and b.exam_id=:exam_id ";
+                    $params[':exam_id'] = trim($model->exam_id);
+                }
+                // 排序（学号，考试名称，科目）
+                $sql .= "order by a.code, c.ID, d.level";
+
+                $data = Yii::app()->db->createCommand($sql)->queryAll(true,$params);
+
+                // 成绩表示，数据整形
+                $dataProvider = null;
+                foreach ($data as $value) {
+                    $dataProvider[$value['code'].'|'.$value['name']][$value['exam_name']][$value['subject_name']] = $value['score'];
+                }
+
+                Yii::log(print_R($dataProvider, true));
+
+                if($model->subject_id != '') {
+                    // 该班级全部的科目成绩
+                    $subjects = MCourses::model()->getCoursesByClassId($model->class_id);
+                } else {
+                    // 该班级指定科目的成绩
+                    $subjects = MSubjects::model()->findAll('ID=:ID', array(':ID'=>$model->subject_id));
+                }
+                $subjects = MCourses::model()->getCoursesByClassId($model->class_id);
+
+                $this->render('class', array('model' => $model, 'data' => $dataProvider, 'subjects' => $subjects));
+                
+            } else {
+                $this->render('class', array('model' => $model));
+            } 
+        } else {
+            $this->render('class', array('model' => $model));
+        }
+
     }
-    
+
 }

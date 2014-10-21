@@ -143,4 +143,68 @@ class MSubjects extends CActiveRecord
         return $result;
     }
     
+    /**
+     * 获取指定的用户，可以查看指定班级的科目信息
+     * @param type $user_id
+     * @param type $class_id
+     */
+    public function getSubjectInfoByUserIdAndClassId($user_id, $class_id){
+        $subjects = array();
+        
+        // 班级信息
+        $class = TClasses::model()->find('ID=:ID', array(':ID'=>$class_id));
+        
+        // 用户的角色
+        $userRoles = TUserRoles::model()->findAll('user_id=:user_id', array(':user_id'=>$user_id));
+        foreach ($userRoles as $userrole) {
+            switch ($userrole->role_id) {
+                case 0: // 系统管理员
+                case 4: // 教务处
+                case 5: // 校长
+                    // 可以获取这个班级所有的课程
+                    $subjects = MSubjects::model()->findAll('ID in (select DISTINCT a.subject_id from m_courses a where class_id=:class_id)', array(':class_id' => $class_id));
+                    return $subjects;
+                    break;
+                case 2: // 教师
+                    if($class->teacher_id == $user_id){
+                        // 班主任
+                        $subjects = MSubjects::model()->findAll('ID in (select DISTINCT a.subject_id from m_courses a where class_id=:class_id)', array(':class_id' => $class_id));
+                        return $subjects;
+                    } else {
+                        
+                        $subjects = MSubjects::model()->findAll("ID in (select a.subject_id from m_courses a where a.teacher_id=:teacher_id and a.class_id=:class_id and `status`='1')", 
+                                    array(':class_id' => $class_id, ':teacher_id' => $user_id)
+                                );
+                        
+                        // 任课教师
+//                        $sql = "select DISTINCT subject_id from m_courses where class_id=:class_id and teacher_id=:teacher_id and `status`='1'";
+//                        $connection = Yii::app()->db;
+//                        $command = $connection->createCommand($sql);
+//                        $command->bindValue(":teacher_id", $user_id);
+//                        $command->bindValue(":class_id", $class_id);
+//                        $data = $command->queryAll();
+//                        $result = array();
+//                        foreach ($data as $value) {
+//                            $result[] = $value['subject_id'];
+//                        }
+//
+//                        // 任课教师可以获取任课班级的信息
+//                        $criteria = new CDbCriteria();
+//                        $criteria->addInCondition("ID", $result);
+//                        $subject = MSubjects::model()->findAll($criteria);
+                    }
+                    break;
+                case 1: // 学生
+                case 3: // 学工科
+                    // 没有获取班级信息的权限
+                    $subject = array();
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        return $subjects;
+    }
+    
 }

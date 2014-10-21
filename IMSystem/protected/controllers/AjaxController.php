@@ -66,4 +66,40 @@ class AjaxController extends Controller {
         }
     }
 
+    /**
+     * 根据角色，来获取可以查询科目的列表
+     */
+    public function actionGetScoreSubjectOption() {
+        if (isset($_POST['class_id']) && is_numeric($_POST['class_id'])) {
+            $user_id = Yii::app()->user->getState('ID'); // 
+            $class_id = trim($_POST['class_id']);
+
+            $data = MSubjects::model()->getSubjectInfoByUserIdAndClassId($user_id, $class_id);
+
+            echo CHtml::tag('option', array('value'=> ''),CHtml::encode('所有科目'),true);
+            
+            foreach ($data as $value) {
+                echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['subject_name']), true);
+            }
+            
+        }
+    }
+    
+    /**
+     * 班级成绩查询页面，考试名称
+     */
+    public function actionGetExamOption() {
+        if (isset($_POST['class_id'])) {
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode(yii::app()->params['EmptySelectOption']), true);
+
+            if (is_numeric($_POST['class_id'])) {
+                $class_id = trim($_POST['class_id']);
+                $data = MExams::model()->findAll('ID in (select DISTINCT a.exam_id from t_scores a where a.class_id=:class_id)', array(':class_id' => $class_id));
+                foreach ($data as $value) {
+                    echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['exam_name']), true);
+                }
+            }
+        }
+    }
+
 }

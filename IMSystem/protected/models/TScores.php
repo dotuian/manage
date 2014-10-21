@@ -129,5 +129,6 @@ class TScores extends CActiveRecord {
             $this->addError('score', '请输入合理范围内的成绩！');
         }
     }
+    
 
 }

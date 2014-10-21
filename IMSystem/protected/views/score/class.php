@@ -6,10 +6,11 @@ $this->breadcrumbs = array(
 
 Yii::app()->clientScript->registerScript('js', "
 $(document).ready(function(){
-    
+    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false});
 });
 ", CClientScript::POS_HEAD);
 ?>
+
 
 
 <!-- 检索条件 -->
@@ -25,6 +26,7 @@ $(document).ready(function(){
                 <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'class-score-form',
+                        'method' => 'get',
                         'enableClientValidation'=>false,
                         'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                     ));
@@ -35,26 +37,36 @@ $(document).ready(function(){
                     </h6>
                     <hr/>
                         <div class="form-group" id="class">
-                            <label class="col-lg-2 control-label">考试名称</label>
-                            <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'exam_id'); ?>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassInfoByUserRole($this->getLoginUserId()), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOptionByUserRole($this->getLoginUserId()), array(
+                                        'class'=>'form-control',
+                                        'ajax'=>array(
+                                            'type'=>'POST',
+                                            'data' => array(
+                                                'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                                'class_id'=> 'js:$(this).val()',
+                                                'allowempty' => 'true'
+                                            ),
+                                            'url' => Yii::app()->createUrl('ajax/getExamOption'),
+                                            'beforeSend'=>"function(){
+                                                    $.blockUI({ message: null });
+                                                }",
+                                            'success'=>"function(data){
+                                                    $.unblockUI();
+                                                    $('#exam_id').html(data);
+                                                }",
+                                        )
+                                        )); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
-
-                        <div class="form-group" id="subject">
-                            <label class="col-lg-2 control-label">科目</label>
+                    
+                        <div class="form-group" id="class">
+                            <label class="col-lg-2 control-label">考试名称</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'subject_id'); ?>
+                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getExamOptionByClassId($model->class_id, true), array('id'=>'exam_id', 'class'=>'form-control')); ?>
+                                <?php echo $form->error($model,'exam_id'); ?>
                             </div>
                         </div>
                     </div>
@@ -75,7 +87,7 @@ $(document).ready(function(){
 
 
 
-<?php if(!is_null($dataProvider) && $dataProvider->totalItemCount > 0 ) { ?>
+<?php if(isset($data) &&  count($data)> 0 ) { ?>
 <!-- 检索结果 -->
 <div class="widget">
 
@@ -88,45 +100,44 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>考试名称</th>
-                    <th>班级</th>
-                    <th>科目</th>
                     <th>学号</th>
                     <th>姓名</th>
-                    <th>成绩</th>
-                    <th>操作</th>
+                    <?php foreach ($subjects as $subject) {?>
+                    <th><?php echo $subject->subject_name; ?></th>
+                    <?php }?>
+                    <th>总分</th>
                 </tr>
             </thead>
 
             <tbody>
-                <?php 
-                    $listview = $this->widget('zii.widgets.CListView', array(
-                        'dataProvider' => $dataProvider,
-                        'itemView' => '_view',
-                        'summaryText' => '{start}条 - {end}条 / 共{count}条',
-                        'template' => "{items}",
-                        'pager' => array(
-                            'header' => '',
-                            'htmlOptions' => array('class'=>'pagination pull-right')
-                        ),
-                    ));
-
+                <?php foreach ($data as $key => $value) { 
+                    list($code, $name) = explode('|', $key);
                 ?>
-                <div class="clearfix"></div> 
                 <tr>
-                    <td colspan="7">
-                        <center><?php $listview->renderSummary(); ?></center>
-                    </td>
+                    <!-- 学号 -->
+                    <td class="center"><?php echo $code; ?></td>
+                    <!-- 姓名 -->
+                    <td class="center"><?php echo $name; ?></td>
+                    
+                    <?php 
+                        foreach ($value as $score) {  // 按照考试名称循环
+                            $sum = 0 ;
+                            foreach ($subjects as $subject) { //按照科目名称循 环
+                                $sum += isset($score[$subject->subject_name]) ? $score[$subject->subject_name] : '0';
+                        ?>
+                            <td class="center"><?php echo isset($score[$subject->subject_name]) ? $score[$subject->subject_name] : '-'; ?></td>
+                        <?php } ?>
+                        
+                        <!-- 总分 -->
+                        <th><?php echo $sum; ?></th>   
+                    <?php } ?>
                 </tr>
+                <?php } ?>
+
+                <div class="clearfix"></div> 
             </tbody>
         </table>
-        
-        <?php if ($dataProvider->getPagination()->pageCount > 1) { ?>
-        <div class="widget-foot">
-            <?php $listview->renderPager(); ?>
-            <div class="clearfix"></div> 
-        </div>
-        <?php } ?>
+
     </div>
 </div>
 <?php } ?>

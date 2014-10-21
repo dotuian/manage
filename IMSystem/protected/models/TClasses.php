@@ -156,38 +156,59 @@ class TClasses extends CActiveRecord
     }
     
     /**
+     * 班主任或者任课教师所能查看的班级
+     * @param type $user_id
+     * @param type $flag
+     * @return string
+     */
+    public function getClassOptionByUserRole($user_id, $flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+        
+        $data = $this->getClassInfoByUserRole($user_id);
+
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->class_code . '| ' . $value->class_name;
+        }
+        
+        return $result;
+    }
+    
+    /**
      * 根据用户的角色，来获取具有访问权限的班级信息
      */
     public function getClassInfoByUserRole($user_id) {
         $classes = array();
         
-        $roles = TUserRoles::model()->findAll('user_id=:user_id', array(':user_id'=>$user_id));
-        foreach ($roles as $role) {
-            switch ($role->ID) {
+        $userRoles = TUserRoles::model()->findAll('user_id=:user_id', array(':user_id'=>$user_id));
+        foreach ($userRoles as $userrole) {
+            switch ($userrole->role_id) {
                 case 0: // 系统管理员
                 case 4: // 教务处
                 case 5: // 校长
                     // 可以获取所有班级的信息
-                    $classes = TClasses::model()->findAll();
-                    return $classes;
+                    //$classes = TClasses::model()->findAll();
+                    //return $classes;
                     break;
                 case 2: // 教师
-                    // 班主任可以担任班级的信息
-                    $c1 = TClasses::model()->findAll('teacher_id=:teacher_id', array(':teacher_id' => $user_id));
+                    // 班主任和任课教师的班级ID
+                    $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
+                    $connection = Yii::app()->db;
+                    $command = $connection->createCommand($sql);
+                    $command->bindValue(":teacher_id", $user_id);
+                    $data = $command->queryAll();
+                    
+                    $result = array();
+                    foreach ($data as $value) {
+                        $result[] = $value['class_id'];
+                    }
+
                     // 任课教师可以获取任课班级的信息
                     $criteria = new CDbCriteria();
-                    $criteria->join = "inner join m_courses ON m_courses.class_id= t.ID";
-                    $criteria->addCondition("m_courses.teacher_id=:teacher_id and status='1'");
-                    $criteria->params = array(':teacher_id' => $user_id);
-                    $c2 = TClasses::model()->findAll($criteria);
-                    
-                    // 数组合并
-                    foreach ($c1 as $value) {
-                        $classes[] = $value;
-                    }
-                    foreach ($c2 as $value) {
-                        $classes[] = $value;
-                    }
+                    $criteria->addInCondition("ID", $result);
+                    $classes = TClasses::model()->findAll($criteria);
 
                     break;
                 case 1: // 学生
@@ -203,5 +224,7 @@ class TClasses extends CActiveRecord
         return $classes;
     }
 
+    
+    
 }
 
