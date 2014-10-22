@@ -104,6 +104,14 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">系统设置权限</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'system_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('SYSTEM'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'system_authoritys'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">其他权限</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'other_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('OTHER'), array('separator'=>'　')); ?>

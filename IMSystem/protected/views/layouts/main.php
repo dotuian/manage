@@ -198,7 +198,7 @@
             <?php if(in_array('SUBJECT', $category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'subject' ? 'open' : ''; ?>">
-                <i class="fa fa-tasks"></i> <span>科目管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'subject' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
+                <i class="fa fa-bookmark"></i> <span>科目管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'subject' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
                     <?php if(in_array('subject/search', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('subject/search');?>">科目信息检索</a></li>
@@ -283,8 +283,8 @@
             </li>
             <?php } ?>
           
-            <!-- 学生成绩查询 -->
             <?php if(in_array('authority/create', $authoritys)) { ?>
+                <!-- 学生成绩查询 -->
                 <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
             <?php } ?>
           
@@ -299,8 +299,10 @@
                 </ul>
             </li>
             
-            
-            <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-book"></i> <span>系统配置</span></a></li> 
+            <?php if(in_array('system/setting', $authoritys)) { ?>
+                <!-- 系统设置 -->
+                <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-cog"></i> <span>系统配置</span></a></li> 
+            <?php } ?>
             
         </ul>
     </div>

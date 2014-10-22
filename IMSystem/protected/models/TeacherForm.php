@@ -22,13 +22,14 @@ class TeacherForm extends CFormModel
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, name, sex, birthday, roles, address, telephonoe', 'required'),
+			array('code, name, sex, birthday, roles', 'required'),
 			array('code', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>12),
 			array('status, sex', 'length', 'max'=>1),
 			array('address', 'length', 'max'=>100),
 			array('telephonoe', 'length', 'max'=>11),
-			array('birthday', 'safe'),
+            array('birthday', 'date', 'format' => 'yyyy-M-d', 'allowEmpty' => true),
+            
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID, code, name,subject_id, status, sex, birthday, address, telephonoe,roles,subjects', 'safe'),

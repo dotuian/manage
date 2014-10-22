@@ -97,7 +97,7 @@ class StudentController extends Controller {
                     // 登录用的用户信息
                     $user = new TUsers();
                     $user->username = $model->code;
-                    $user->password = substr($model->id_card_no, -6); // 密码默认为身份证后六位
+                    $user->password = str_replace('-', '', $model->birthday); // 密码默认为身份证后六位
                     $user->status = '1';
                     $user->create_user = $this->getLoginUserId();
                     $user->update_user = $this->getLoginUserId();

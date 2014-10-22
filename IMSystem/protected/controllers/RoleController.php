@@ -139,14 +139,13 @@ class RoleController extends Controller {
             $model->role_authoritys = array_keys($role->getRoleAuthorityByCategory('ROLE'));
             $model->authority_authoritys = array_keys($role->getRoleAuthorityByCategory('AUTHORITY'));
             $model->other_authoritys = array_keys($role->getRoleAuthorityByCategory('OTHER'));
+            $model->system_authoritys = array_keys($role->getRoleAuthorityByCategory('SYSTEM'));
 
             // 角色的权限更新处理
             if (isset($_POST['RoleForm'])) {
                 $model->attributes = $_POST['RoleForm'];
                 $model->initAuthoritys();
                 
-                Yii::log("aaa "  . print_R($model->attributes, true));
-
                 // 数据验证
                 if ($model->validate()) {
                     $tran = Yii::app()->db->beginTransaction();
@@ -158,8 +157,6 @@ class RoleController extends Controller {
                         if ($role->save()) {// 角色变更
                             // 权限信息删除
                             MRoleAuthoritys::model()->delete("role_id=:role_id", array(':role_id' => $role->ID));
-                            
-                            Yii::log(print_R($model->authoritys, true));
                             
                             // 权限添加
                             foreach ($model->authoritys as $value) {

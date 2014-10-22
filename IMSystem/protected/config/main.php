@@ -72,7 +72,7 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=score_db;port=3316',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'rootadmin',
@@ -82,7 +82,7 @@ return array(
             'enableSlave' => false,
             'slaves' => array(
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=score_db;port=3316',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
                     'username' => 'root',
                     'password' => 'rootadmin',
                     'charset' => 'utf8',
@@ -90,7 +90,7 @@ return array(
                     'enableParamLogging' => true,
                 ),
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=score_db;port=3316',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
                     'username' => 'root',
                     'password' => 'rootadmin',
                     'charset' => 'utf8',

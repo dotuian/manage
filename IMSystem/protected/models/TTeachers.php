@@ -45,7 +45,7 @@ class TTeachers extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('code, name, sex', 'required'),
+            array('code, name, sex, birthday', 'required'),
             array('code', 'length', 'max' => 20),
             array('name', 'length', 'max' => 12),
             array('create_user, update_user', 'length', 'max' => 10),
