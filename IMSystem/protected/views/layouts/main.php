@@ -73,6 +73,8 @@
             </button>
             -->
             
+            <a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
+            
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
                  <span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>
             </a>

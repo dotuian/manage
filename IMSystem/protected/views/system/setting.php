@@ -29,23 +29,27 @@ $this->breadcrumbs = array(
                     
                     <div class="form-group">
                         <label class="col-lg-2 control-label">时间设置</label>
-                        <div class="input-append inline" id="start_date" >
-                            <div class="col-lg-10">
-                                <?php echo $form->textField($model,'import_student_start_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
-                                <span class="add-on">
-                                    <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
-                                </span>
-                                <?php echo $form->error($model,'import_student_start_date'); ?>
+                        <div style="width: 18%">
+                            <div class="input-append" id="start_date" >
+                                <div>
+                                    <?php echo $form->textField($model,'import_student_start_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                    <span class="add-on">
+                                        <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
+                                    </span>
+                                    <?php echo $form->error($model,'import_student_start_date'); ?>
+                                </div>
                             </div>
                         </div>
-                    
-                        <div class="input-append inline" id="end_date" >
-                            <div class="col-lg-10 ">
-                                <?php echo $form->textField($model,'import_student_end_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
-                                <span class="add-on">
-                                    <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
-                                </span>
-                                <?php echo $form->error($model,'import_student_end_date'); ?>
+                        
+                        <div style="width: 18%">
+                            <div class="input-append" id="end_date" >
+                                <div>
+                                    <?php echo $form->textField($model,'import_student_end_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                    <span class="add-on">
+                                        <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
+                                    </span>
+                                    <?php echo $form->error($model,'import_student_end_date'); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -70,7 +74,7 @@ $this->breadcrumbs = array(
                     
                 </div>
             </div>
-        </div>  
+        </div>
 
     </div>
 </div>
