@@ -25,9 +25,11 @@ $this->breadcrumbs = array(
                             'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                         ));
                     ?>
-
-                        <div class="form-group input-append" id="start_date" >
-                            <label class="col-lg-2 control-label">开始日期</label>
+                    
+                    
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">时间设置</label>
+                        <div class="input-append inline" id="start_date" >
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'import_student_start_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
@@ -37,9 +39,8 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                     
-                        <div class="form-group input-append" id="end_date" >
-                            <label class="col-lg-2 control-label">结束日期</label>
-                            <div class="col-lg-10">
+                        <div class="input-append inline" id="end_date" >
+                            <div class="col-lg-10 ">
                                 <?php echo $form->textField($model,'import_student_end_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
@@ -47,6 +48,7 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'import_student_end_date'); ?>
                             </div>
                         </div>
+                    </div>
                     
                     
                         <div class="form-group">
