@@ -39,8 +39,9 @@ class MSubjects extends CActiveRecord
         // will receive user inputs.
         return array(
             array('subject_code, subject_name, subject_short_name, subject_type, level, create_time, update_time', 'required'),
-            array('subject_code, subject_short_name, create_user, update_user', 'length', 'max' => 10),
-            array('subject_name', 'length', 'max' => 20),
+            array('subject_code, create_user, update_user', 'length', 'max' => 10),
+            array('subject_short_name', 'length', 'max' => 10, 'encoding'=>'UTF-8'),
+            array('subject_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             array('subject_type, status', 'length', 'max' => 1),
             array('level', 'length', 'max' => 2),
             // The following rule is used by search().
@@ -206,5 +207,19 @@ class MSubjects extends CActiveRecord
         
         return $subjects;
     }
-    
+
+    /**
+     * 学生成绩查询页面，考试科目用
+     * 根据科目名称，获取对应的科目名称的数据集
+     * @param type $array
+     * @return type
+     */
+    public function getSubjectsBySubjectName($array) {
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('subject_name', $array);
+        $criteria->addCondition("status='1'");
+        $criteria->order = 'level';
+        return MSubjects::model()->findAll($criteria);
+    }
+
 }

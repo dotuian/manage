@@ -27,7 +27,7 @@ class RoleForm extends CFormModel
         return array(
             array('role_name', 'required'),
             array('role_code', 'length', 'max' => 10),
-            array('role_name', 'length', 'max' => 50),
+            array('role_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('role_id, role_code, role_name, level， authoritys, student_authoritys, teacher_authoritys, score_authoritys, class_authoritys, subject_authoritys, course_authoritys, role_authoritys, authority_authoritys, other_authoritys, system_authoritys', 'safe'),
         );
     }

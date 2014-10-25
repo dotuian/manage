@@ -47,7 +47,8 @@ class UserIdentity extends CUserIdentity {
                 $this->setState('authoritys',  $user->getAllUserAuthoritys());
                 // 用户所有的权限分类
                 $this->setState('auth_category', $user->getAllUserAuthorityCategory());
-                
+                // 用户所有的角色
+                $this->setState('roles', $user->getUserRoleIds());
                 
                 $this->setState('name',      $loginUser->name);
                 $this->setState('user',      $user);

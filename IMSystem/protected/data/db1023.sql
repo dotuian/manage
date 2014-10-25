@@ -694,3 +694,23 @@ INSERT INTO `t_user_roles` (`ID`, `user_id`, `role_id`, `create_user`, `create_t
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+
+CREATE TABLE `t_student_classes` (
+	`ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+	`student_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '学生ID',
+	`class_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '班级ID',
+	`status` CHAR(1) NOT NULL DEFAULT '0' COMMENT '1:正常 2:暂停' COLLATE 'utf8_bin',
+	`level` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '序号',
+	`create_user` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`update_user` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ID`),
+	INDEX `FK_t_student_classes_t_classes` (`class_id`),
+	INDEX `FK_t_student_classes_t_students` (`student_id`),
+	CONSTRAINT `FK_t_student_classes_t_classes` FOREIGN KEY (`class_id`) REFERENCES `t_classes` (`ID`),
+	CONSTRAINT `FK_t_student_classes_t_students` FOREIGN KEY (`student_id`) REFERENCES `t_students` (`ID`)
+)
+COLLATE='utf8_bin'
+ENGINE=InnoDB;

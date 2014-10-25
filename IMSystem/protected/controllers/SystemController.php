@@ -3,7 +3,7 @@
 class SystemController extends Controller {
 
     private static $KEY_IMPORT_STUDENT_DATA_RANGE = 'IMPORT_STUDENT_DATA_RANGE';
-    private static $KEY_IS_RUNNING = 'IS_RUNNING';
+//    private static $KEY_IS_RUNNING = 'IS_RUNNING';
     
     /**
      * 登录用户信息
@@ -18,21 +18,26 @@ class SystemController extends Controller {
                 // 学生数据导入开始结束时间
                 $daterange = MConfig::model()->find('`key`=:key', array(':key' => self::$KEY_IMPORT_STUDENT_DATA_RANGE));
                 if (is_null($daterange)) {
+                    // 设置不存在的情况，添加
                     $daterange = new MConfig();
                     $daterange->key = self::$KEY_IMPORT_STUDENT_DATA_RANGE;
+                    $daterange->value = $model->import_student_start_date . '|' . $model->import_student_end_date;
+                    $daterange->save();
+                } else {
+                    // 设置存在的情况下，更新
                     $daterange->value = $model->import_student_start_date . '|' . $model->import_student_end_date;
                     $daterange->save();
                 }
 
 
                 // 系统是否运行中
-                $running = MConfig::model()->find('`key`=:key', array(':key' => self::$KEY_IS_RUNNING));
-                if (is_null($running)) {
-                    $running = new MConfig();
-                    $running->key = self::$KEY_IS_RUNNING;
-                    $running->value = $model->running;
-                    $running->save();
-                }
+//                $running = MConfig::model()->find('`key`=:key', array(':key' => self::$KEY_IS_RUNNING));
+//                if (is_null($running)) {
+//                    $running = new MConfig();
+//                    $running->key = self::$KEY_IS_RUNNING;
+//                    $running->value = $model->running;
+//                    $running->save();
+//                }
 
                 Yii::app()->user->setFlash('success', "系统配置变更成功！");
             }
@@ -43,11 +48,13 @@ class SystemController extends Controller {
                 switch ($config->key) {
                     // 学生数据导入开始结束时间
                     case self::$KEY_IMPORT_STUDENT_DATA_RANGE:
-                        list($model->import_student_start_date, $model->import_student_end_date) = explode('|', $config->value);
+                        if (!empty($config->value)) {
+                            list($model->import_student_start_date, $model->import_student_end_date) = explode('|', $config->value);
+                        }
                         break;
                     // 系统是否运行中
-                    case self::$KEY_IS_RUNNING:
-                        $model->running = $config->value;
+//                    case self::$KEY_IS_RUNNING:
+//                        $model->running = $config->value;
                         break;
 
                     default:

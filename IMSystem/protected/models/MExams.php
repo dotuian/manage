@@ -34,7 +34,7 @@ class MExams extends CActiveRecord {
         return array(
             array('exam_code, exam_name, create_time, update_time', 'required'),
             array('exam_code', 'length', 'max' => 20),
-            array('exam_name', 'length', 'max' => 50),
+            array('exam_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('status', 'length', 'max' => 1),
             array('create_user, update_user', 'length', 'max' => 10),
             // The following rule is used by search().

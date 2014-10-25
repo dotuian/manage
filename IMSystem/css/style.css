@@ -704,7 +704,8 @@ a.navbar-brand span.bold{
 }
 
 .navbar i{
-	margin-right: 4px;
+    margin-right: 4px;
+    font-size: 20px;
 }
 
 .navbar-nav > li > .dropdown-menu{

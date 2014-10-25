@@ -4,20 +4,13 @@ $this->breadcrumbs = array(
     '学生信息批量添加',
 );
 
-Yii::app()->clientScript->registerScript('js', "
-$(document).ready(function(){
-
-
-});
-", CClientScript::POS_END );
 ?>
-
 
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left"><?php echo $this->pageTitle;?></div>
+                <div class="pull-left">学生信息批量添加</div>
                 <div class="clearfix"></div>
             </div>
 

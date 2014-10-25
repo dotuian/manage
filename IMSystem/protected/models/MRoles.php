@@ -35,7 +35,7 @@ class MRoles extends CActiveRecord {
         return array(
             array('role_code, role_name, create_time, update_time', 'required'),
             array('role_code', 'length', 'max' => 10),
-            array('role_name', 'length', 'max' => 50),
+            array('role_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('level', 'length', 'max' => 2),
             array('create_user, update_user', 'length', 'max' => 11),
             // The following rule is used by search().

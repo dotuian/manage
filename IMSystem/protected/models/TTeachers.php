@@ -47,10 +47,10 @@ class TTeachers extends CActiveRecord
         return array(
             array('code, name, sex, birthday', 'required'),
             array('code', 'length', 'max' => 20),
-            array('name', 'length', 'max' => 12),
+            array('name', 'length', 'max' => 12, 'encoding'=>'UTF-8'),
             array('create_user, update_user', 'length', 'max' => 10),
             array('status, sex', 'length', 'max' => 1),
-            array('address', 'length', 'max' => 100),
+            array('address', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             array('telephonoe', 'length', 'max' => 11),
             array('birthday', 'date', 'format' => 'yyyy-M-d', 'allowEmpty' => true),
             array('roles, subjects', 'safe'),

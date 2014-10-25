@@ -21,7 +21,7 @@ class AuthorityForm extends CFormModel
 			array('authority_name, category, access_path', 'required'),
 			array('level', 'numerical', 'integerOnly'=>true),
 			array('authority_code, category', 'length', 'max'=>10),
-			array('authority_name', 'length', 'max'=>50),
+			array('authority_name', 'length', 'max'=>50, 'encoding'=>'UTF-8'),
 			array('access_path', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

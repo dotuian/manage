@@ -53,7 +53,7 @@ class UserForm extends CFormModel {
     public function authenticate($attribute, $params) {
         if (!$this->hasErrors()) {
             $user = TUsers::model()->find('ID=:ID', array(':ID' => Yii::app()->user->getState('ID')));
-            if ($this->old_password !== $user->password) {
+            if ($this->old_password != $user->password) {
                 $this->addError('old_password', '密码不正确！');
             }
         }
@@ -62,8 +62,6 @@ class UserForm extends CFormModel {
     
     public function afterValidate() {
         parent::afterValidate();
-        
-
         
     }
         

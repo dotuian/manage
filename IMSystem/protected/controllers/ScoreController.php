@@ -16,36 +16,26 @@ class ScoreController extends Controller {
             throw new CHttpException('500', '当前用户信息不存在！');
         }
         
-        $subjects = MSubjects::model()->findAll("status='1' order by level");
-
-        $sql = "select d.exam_name, c.subject_name, b.code, b.name, ";
-        $sql .= " sum(case c.subject_name when '语文' then a.score else null end) as '语文',";
-        $sql .= " sum(case c.subject_name when '数学' then a.score else null end) as '数学',";
-        $sql .= " sum(case c.subject_name when '英语' then a.score else null end) as '英语',";
-        $sql .= " sum(case c.subject_name when '物理' then a.score else null end) as '物理',";
-        $sql .= " sum(case c.subject_name when '化学' then a.score else null end) as '化学',";
-        $sql .= " sum(case c.subject_name when '生物' then a.score else null end) as '生物',";
-        $sql .= " sum(case c.subject_name when '政治' then a.score else null end) as '政治',";
-        $sql .= " sum(case c.subject_name when '历史' then a.score else null end) as '历史',";
-        $sql .= " sum(case c.subject_name when '地理' then a.score else null end) as '地理' ";
-        $sql .= "from t_scores a ";
-        $sql .= "left join t_students b on a.student_id = b.ID ";
-        $sql .= "left join m_subjects c on a.subject_id = c.ID ";
-        $sql .= "left join m_exams d on a.exam_id = d.ID ";
-        $sql .= "where a.student_id=:student_id ";
+        $sql = "SELECT b.code, b.name, e.class_code, e.class_name, a.exam_id, d.exam_name, c.subject_name, a.score ";
+        $sql .= "FROM t_scores a ";
+        $sql .= "LEFT JOIN t_students b ON a.student_id = b.ID ";
+        $sql .= "LEFT JOIN m_subjects c ON a.subject_id = c.ID ";
+        $sql .= "LEFT JOIN m_exams d ON a.exam_id = d.ID ";
+        $sql .= "LEFT JOIN t_classes e ON a.class_id=e.id ";
+        $sql .= "WHERE a.student_id=:student_id ";
         $params = array(':student_id' => $this->getLoginUserId());
         
         $model = new ScoreForm();
         if (isset($_GET['ScoreForm'])) {
             $model->attributes = $_GET['ScoreForm'];
-            
+
             if (trim($model->exam_id) !== '') {
                 $sql .= " and a.exam_id = :exam_id ";
                 $params[':exam_id'] = trim($model->exam_id);
             }
         }
 
-        $sql .= "group by a.student_id, a.exam_id ";
+        $sql .= "order by a.exam_id, a.create_time desc";
         
         $data = Yii::app()->db->createCommand($sql)->queryAll(true, $params);
         
@@ -53,10 +43,26 @@ class ScoreController extends Controller {
         if(count($data) === 0) {
             Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
         }
+
+        // 为了页面横排表示，数据整形
+        $result = array();
+        foreach ($data as $value) {
+            $result[$value["exam_name"]][$value["subject_name"]] = $value['score'];
+        }
         
+        // 从成绩信息中获取又成绩的所有科目名称，用于页面的显示
+        $temp = array();
+        foreach ($result as $value) {
+            $temp = array_merge($temp, array_keys($value));
+        }
+        $temp = array_unique(array_values($temp));
+        
+        // 用于页面显示的所有科目
+        $subjects = MSubjects::model()->getSubjectsBySubjectName($temp);
+                
         $this->render('query', array(
                     'model' => $model, 
-                    'data' => $data,
+                    'data' => $result,
                     'subjects' => $subjects,
                 ));
     }
@@ -183,7 +189,7 @@ class ScoreController extends Controller {
                 }
 
                 //  获取这个班级上的所有学生
-                $students = TStudents::model()->findAll("class_id=:class_id and status='1'", array(':class_id'=>$class->ID));
+                $students = TStudents::model()->getAllStudentsByClassId($class->ID);
                 
                 // 获取已经录入的成绩信息
                 $scores = array();
@@ -356,16 +362,16 @@ class ScoreController extends Controller {
     
     public function actionClass() {
         
-        
         $model = new ScoreForm();
         if (isset($_GET['ScoreForm'])) {
             $model->attributes = $_GET['ScoreForm'];
             $model->scenario = 'search_class_score';
             
-            // 
             if ($model->validate()) {
-                $sql = "select a.code, a.name , c.exam_name, d.subject_code, d.subject_name, d.subject_short_name, b.score ";
-                $sql .= "from t_students a  ";
+                $sql = "select a.code, a.name, c.exam_name, d.subject_code, d.subject_name, d.subject_short_name, b.score ";
+                $sql .= "from t_students a ";
+                $sql .= "inner join t_student_classes e on e.student_id= a.ID ";
+                $sql .= "inner join t_classes f on f.ID= e.class_id ";
                 $sql .= "left join t_scores b on b.student_id= a.ID ";
                 $sql .= "left join m_exams  c on c.ID =  b.exam_id  ";
                 $sql .= "left join m_subjects d on d.ID = b.subject_id ";
@@ -373,7 +379,7 @@ class ScoreController extends Controller {
 
                 $params = array();
                 if($model->class_id != '') {
-                    $sql .= " and a.class_id=:class_id ";
+                    $sql .= " and e.class_id=:class_id ";
                     $params[':class_id'] = trim($model->class_id);
                 }
                 if($model->subject_id != '') {

@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle = Yii::app()->name . '用户信息';
+$this->pageTitle = Yii::app()->name . '用户信息变更';
 $this->breadcrumbs = array(
-    '用户信息',
+    '用户信息变更',
 );
 
 Yii::app()->clientScript->registerScript('js', "
@@ -18,7 +18,7 @@ $(document).ready(function(){
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left"><?php echo $this->pageTitle;?></div>
+                <div class="pull-left">用户信息变更</div>
                 <div class="clearfix"></div>
             </div>
 

@@ -14,7 +14,7 @@ $this->breadcrumbs = array(
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left"><?php echo $this->pageTitle;?></div>
+                <div class="pull-left">班级信息添加</div>
                 <div class="clearfix"></div>
             </div>
 
@@ -53,19 +53,19 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'class_type'); ?>
                             </div>
                         </div>
-                    
+
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">状态</label>
+                            <label class="col-lg-2 control-label">专业名称</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'status'); ?>
+                                <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control','placeholder'=>'专业名称')); ?>
+                                <?php echo $form->error($model,'specialty_name'); ?>
                             </div>
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">届</label>
+                            <label class="col-lg-2 control-label">入学年份</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_year', ClassForm::getTermYearOption(1, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'term_year', ClassForm::getTermYearOption(3, false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'term_year'); ?>
                             </div>
                         </div>

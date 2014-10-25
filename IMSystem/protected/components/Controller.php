@@ -101,8 +101,76 @@ class Controller extends CController {
         return Yii::app()->user->getState('ID');
     }
     
+    /**
+     * 判断该登录用户是否为教师
+     * @return boolean
+     */
+    public function isStudent() {
+        $data = Yii::app()->user->getState('roles');
+        foreach ($data as $value) {
+            if (in_array($value, array('1'))) {
+                return true;
+            }
+        }
+        return false;
+    }
     
+    /**
+     * 判断该登录用户是否为教师
+     * @return boolean
+     */
+    public function isTeacher() {
+        $data = Yii::app()->user->getState('roles');
+        foreach ($data as $value) {
+            if (in_array($value, array('2', '3', '4', '5'))) {
+                return true;
+            }
+        }
+        return false;
+    }
     
+    /**
+     * 判断该登录用户是否为教务处
+     * @return boolean
+     */
+    public function isXueGongKe() {
+        $data = Yii::app()->user->getState('roles');
+        foreach ($data as $value) {
+            if (in_array($value, array('3'))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 判断该登录用户是否为教务处
+     * @return boolean
+     */
+    public function isJiaoWuChu() {
+        $data = Yii::app()->user->getState('roles');
+        foreach ($data as $value) {
+            if (in_array($value, array('4'))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 判断该登录用户是否为教务处
+     * @return boolean
+     */
+    public function isHeaderTeacher() {
+        $data = Yii::app()->user->getState('roles');
+        foreach ($data as $value) {
+            if (in_array($value, array('5'))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 错误消息
      * @param type $message

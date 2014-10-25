@@ -73,16 +73,25 @@ $(document).ready(function(){
                     <?php foreach ($subjects as $subject) { ?>
                     <th><?php echo $subject->subject_name;?></td>
                     <?php }?>
+                    <th>总分</th>
                 </tr>
             </thead>
 
             <tbody>
-                <?php foreach ($data as $value) { ?>
+                <?php foreach ($data as $key => $value) { $count=0; ?>
                     <tr>
-                        <td class="center"><?php echo $value['exam_name'];?></td>
+                        <td class="center"><?php echo $key;?></td>
                         <?php foreach ($subjects as $subject) { ?>
-                        <td class="center"><?php echo empty($value[$subject->subject_name]) ? '--' : $value[$subject->subject_name]; ?></td>
+                        <td class="center">
+                            <?php 
+                                // 分数表示
+                                echo empty($value[$subject->subject_name])?'--':$value[$subject->subject_name];
+                                // 求总分
+                                $count += empty($value[$subject->subject_name])?'0':$value[$subject->subject_name];
+                            ?>
+                        </td>
                         <?php }?>
+                        <td class="center"><?php echo $count; ?></td>
                     </tr>
                 <?php }?>
             </tbody>

@@ -16,7 +16,7 @@ class CourseForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-//			array('class_id', 'required'),
+            array('class_id, subjects', 'required'),
             array('subject_id, teacher_id, class_id', 'length', 'max' => 10),
             array('status, type', 'length', 'max' => 1),
             array('type, subject_id, teacher_id, class_id, status, teacher_name, subjects', 'safe'),
@@ -50,6 +50,12 @@ class CourseForm extends CFormModel {
             if($result){
                 $this->addError('subject_id', '角色名称已经存在，请重新指定！');
             }
+            
+            if(empty($this->subjects) || count($this->subjects) == 0 ){
+                $this->addError('subjects', '请指定要录入课程对应的科目信息！');
+            }
+            
+            
         }
         
         

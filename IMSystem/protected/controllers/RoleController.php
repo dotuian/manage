@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 角色权限管理
  */
@@ -156,7 +155,7 @@ class RoleController extends Controller {
                         $role->update_time = new CDbExpression('NOW()');
                         if ($role->save()) {// 角色变更
                             // 权限信息删除
-                            MRoleAuthoritys::model()->delete("role_id=:role_id", array(':role_id' => $role->ID));
+                            MRoleAuthoritys::model()->deleteAll("role_id=:role_id", array(':role_id' => $role->ID));
                             
                             // 权限添加
                             foreach ($model->authoritys as $value) {
@@ -199,7 +198,7 @@ class RoleController extends Controller {
         if (isset($_POST['ID'])) {
             $ID = trim($_POST['ID']);
             
-            if(in_array($ID , array('1','2','3','4', '5'))) {
+            if(in_array($ID , array('1','2','3','4', '5', '6'))) {
                 throw new CHttpException(404, "该信息为系统运行所必须的数据，不能删除！");
             }
             

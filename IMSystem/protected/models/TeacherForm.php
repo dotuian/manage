@@ -1,10 +1,10 @@
 <?php
 
-class TeacherForm extends CFormModel
-{
+class TeacherForm extends CFormModel {
+
     public $ID;
     public $code;
-    public $name; 
+    public $name;
     public $status;
     public $sex;
     public $birthday;
@@ -16,44 +16,55 @@ class TeacherForm extends CFormModel
     public $roles = array();
     // 教师担任科目
     public $subjects = array();
-    
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('code, name, sex, birthday, roles', 'required'),
-			array('code', 'length', 'max'=>20),
-			array('name', 'length', 'max'=>12),
-			array('status, sex', 'length', 'max'=>1),
-			array('address', 'length', 'max'=>100),
-			array('telephonoe', 'length', 'max'=>11),
-            array('birthday', 'date', 'format' => 'yyyy-M-d', 'allowEmpty' => true),
-            
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('ID, code, name,subject_id, status, sex, birthday, address, telephonoe,roles,subjects', 'safe'),
-		);
-	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'ID' => 'ID',
-			'code' => '教工号',
-			'name' => '教师姓名',
-			'status' => '状态',
-			'sex' => '性别',
-			'birthday' => '出生年月日',
-			'address' => '地址',
-			'telephonoe' => '电话号码',
-			'roles' => '角色',
-		);
-	}
+    public function rules() {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('code, name, sex, birthday, roles', 'required'),
+            array('code', 'length', 'max' => 20),
+            array('name', 'length', 'max' => 12, 'encoding'=>'UTF-8'),
+            array('status, sex', 'length', 'max' => 1),
+            array('address', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
+            array('telephonoe', 'length', 'max' => 11),
+            array('birthday', 'date', 'format' => 'yyyy-M-d', 'allowEmpty' => true),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('ID, code, name,subject_id, status, sex, birthday, address, telephonoe,roles,subjects', 'safe'),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels() {
+        return array(
+            'ID' => 'ID',
+            'code' => '教工号',
+            'name' => '教师姓名',
+            'status' => '状态',
+            'sex' => '性别',
+            'birthday' => '出生年月日',
+            'address' => '地址',
+            'telephonoe' => '电话号码',
+            'roles' => '角色',
+        );
+    }
     
+    public function afterValidate() {
+        parent::afterValidate();
+        // 角色添加
+        if ($this->scenario === 'create') {
+            if (TTeachers::model()->exists("code=:code", array(':code' => $this->code))) {
+                $this->addError('code', '教师编号已经存在，请重新指定！');
+            }
+
+        }
+        
+        // 角色变更
+        if ($this->scenario === 'update') {
+
+        }
+    }
 
 }
-

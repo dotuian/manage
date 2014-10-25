@@ -97,11 +97,13 @@ class ClassController extends Controller {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     $class = new TClasses();
-                    $class->class_code = $model->class_code;
-                    $class->class_name = $model->class_name;
-                    $class->status = $model->status;
-                    $class->term_year = $model->term_year;
-                    $class->teacher_id = $model->teacher_id;
+                    $class->class_code = trim($model->class_code);
+                    $class->class_name = trim($model->class_name);
+                    $class->class_type = trim($model->class_type); // 班级类型(0:普通高中 1:技能专业)
+                    $class->specialty_name = trim($model->specialty_name); // 专业名称
+                    $class->status = '1'; // 新建正常状态的班级信息
+                    $class->term_year = intval($model->term_year);
+                    $class->teacher_id = intval($model->teacher_id);
                     
                     $class->create_user = $this->getLoginUserId();
                     $class->update_user = $this->getLoginUserId();
@@ -110,11 +112,11 @@ class ClassController extends Controller {
                     
                     if ($class->save()) {
                         $tran->commit();
-                        Yii::app()->user->setFlash('success', "班级信息添加成功！");
+                        $this->setSuccessMessage("班级信息添加成功！");
                         $this->redirect($this->createUrl('create'));
                     } else {
                         Yii::log(print_r($class->errors, true));
-                        Yii::app()->user->setFlash('warning', "班级信息添加失败！");
+                        $this->setErrorMessage("班级信息添加失败！");
                     }
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");

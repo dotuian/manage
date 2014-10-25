@@ -1,7 +1,7 @@
 <?php
 
 class StringUtils {
-
+    
     public static function escape($keyword) {
         $keyword = strtr($keyword, array('%' => '\%', '_' => '\_'));
         return $keyword;
@@ -15,11 +15,9 @@ class StringUtils {
         return preg_match('/[A-Za-z0-9]+/', $value);
     }
     
-    /**
-     * 字符的个数是否在范围内
-     */
-    public static function isLengthInRange($value, $min, $max) {
-        
+    
+    public static function uft8_strlen($str) {
+        return mb_strlen($str, 'UTF-8');
     }
 
 }

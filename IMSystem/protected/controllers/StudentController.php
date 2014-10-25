@@ -11,13 +11,14 @@ class StudentController extends Controller {
         $model->sex = null;
         if (isset($_GET['StudentForm'])) {
             $model->attributes = $_GET['StudentForm'];
-            
+
+
             // 查询SQL
-            $sql = "select a.*, b.class_name as class_name from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
-            $countSql = "select count(*) from t_students a left join t_classes b on a.class_id=b.ID where a.status='1' ";
+            $sql = "select a.*, c.class_code, c.class_name, c.class_type ";
+            $countSql = "select count(*) ";
+            $condition = " FROM t_students a, t_student_classes b, t_classes c WHERE a.ID=b.student_id AND b.class_id=c.ID AND b.`status`='1' AND c.`status`='1' AND a.`status`='1' ";
+
             $params = array();
-            $condition = '';
-            
             // 学生CODE
             if (trim($model->code) !== '') {
                 $condition .= " and a.code like :code ";
@@ -40,13 +41,13 @@ class StudentController extends Controller {
             }
             // 班级
             if (trim($model->class_id) !== '') {
-                $condition .= " and a.class_id = :class_id ";
+                $condition .= " and c.ID = :class_id ";
                 $params[':class_id'] = trim($model->class_id);
             }
-            
+
             $sql .= $condition;
             $countSql .= $condition;
-            
+
             $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
             $dataProvider = new CSqlDataProvider($sql, array(
                 'params' => $params,
@@ -87,10 +88,10 @@ class StudentController extends Controller {
     public function actionCreate() {
 
         $model = new StudentForm('create');
-        
+
         if (isset($_POST['StudentForm'])) {
             $model->attributes = $_POST['StudentForm'];
-            
+
             if ($model->validate()) {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
@@ -113,7 +114,7 @@ class StudentController extends Controller {
                         $student->update_user = $this->getLoginUserId();
                         $student->create_time = new CDbExpression('NOW()');
                         $student->update_time = new CDbExpression('NOW()');
-                        
+
                         // 学生权限用户信息
                         $userRole = new TUserRoles();
                         $userRole->user_id = $user->ID;
@@ -122,8 +123,18 @@ class StudentController extends Controller {
                         $userRole->update_user = $this->getLoginUserId();
                         $userRole->create_time = new CDbExpression('NOW()');
                         $userRole->update_time = new CDbExpression('NOW()');
-                        
-                        if ($student->save() && $userRole->save()) {
+
+                        // 学生班级信息
+                        $studentClass = new TStudentClasses();
+                        $studentClass->class_id = $model->class_id;
+                        $studentClass->student_id = $student->ID;
+                        $studentClass->status = '1';
+                        $studentClass->create_user = $this->getLoginUserId();
+                        $studentClass->update_user = $this->getLoginUserId();
+                        $studentClass->create_time = new CDbExpression('NOW()');
+                        $studentClass->update_time = new CDbExpression('NOW()');
+
+                        if ($student->save() && $userRole->save() && $studentClass->save()) {
                             $tran->commit();
                             $this->setSuccessMessage('学生信息添加成功！');
                             $this->redirect($this->createUrl('create'));
@@ -131,7 +142,6 @@ class StudentController extends Controller {
                     }
 
                     $this->setErrorMessage('学生信息添加失败！');
-                    
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
                 }
@@ -140,8 +150,7 @@ class StudentController extends Controller {
 
         $this->render('create', array('model' => $model));
     }
-    
-    
+
     public function actionView() {
         if (isset($_GET['ID'])) {
 
@@ -149,6 +158,11 @@ class StudentController extends Controller {
             $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($student)) {
                 throw new CHttpException(404, "该学生信息不存在！");
+            }
+            
+            $oldClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
+            if (!is_null($oldClass)) {
+                $student->class_id = $oldClass->class_id;
             }
 
             $this->render('update', array(
@@ -158,27 +172,30 @@ class StudentController extends Controller {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
-    
+
     /**
      * 
      * @throws CHttpException
      */
     public function actionUpdate() {
-
+        
         if (isset($_GET['ID'])) {
-            
+
             $ID = trim($_GET['ID']);
             $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($student)) {
                 throw new CHttpException(404, "该学生信息不存在！");
+            }
+            // 班级信息
+            $oldClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
+            if (!is_null($oldClass)) {
+                $student->class_id = $oldClass->class_id;
             }
 
             if (isset($_POST['TStudents'])) {
                 $student->name = trim($_POST['TStudents']['name']);
                 $student->id_card_no = trim($_POST['TStudents']['id_card_no']);
                 $student->birthday = trim($_POST['TStudents']['birthday']);
-                $student->old_class_id = $student->class_id;
-                $student->class_id = trim($_POST['TStudents']['class_id']);
                 $student->accommodation = trim($_POST['TStudents']['accommodation']);
                 $student->payment1 = trim($_POST['TStudents']['payment1']);
                 $student->payment2 = trim($_POST['TStudents']['payment2']);
@@ -186,7 +203,6 @@ class StudentController extends Controller {
                 $student->payment4 = trim($_POST['TStudents']['payment4']);
                 $student->payment5 = trim($_POST['TStudents']['payment5']);
                 $student->payment6 = trim($_POST['TStudents']['payment6']);
-
                 $student->bonus_penalty = trim($_POST['TStudents']['bonus_penalty']);
                 $student->address = trim($_POST['TStudents']['address']);
                 $student->parents_tel = trim($_POST['TStudents']['parents_tel']);
@@ -200,6 +216,39 @@ class StudentController extends Controller {
 
                 $student->update_user = $this->getLoginUserId();
                 $student->update_time = new CDbExpression('NOW()');
+                
+                // 最新的学生班级信息
+                $student->class_id = trim($_POST['TStudents']['class_id']);
+
+                if (is_null($oldClass)) {
+                    // 学生班级信息不存在，新建班级信息
+                    $studentClass = new TStudentClasses();
+                    $studentClass->class_id = $model->class_id;
+                    $studentClass->student_id = $student->ID;
+                    $studentClass->status = '1';
+                    $studentClass->create_user = $this->getLoginUserId();
+                    $studentClass->update_user = $this->getLoginUserId();
+                    $studentClass->create_time = new CDbExpression('NOW()');
+                    $studentClass->update_time = new CDbExpression('NOW()');
+                    $studentClass->save(false);
+                } else {
+                    // 存在，并且修改了班级信息时
+                    $new_class_id = trim($_POST['TStudents']['class_id']);
+                    if ($oldClass->class_id != $new_class_id) {
+                        $oldClass->status = '0';
+                        $oldClass->save(false);
+
+                        $newClass = new TStudentClasses();
+                        $newClass->class_id = $new_class_id;
+                        $newClass->student_id = $student->ID;
+                        $newClass->status = '1';
+                        $newClass->create_user = $this->getLoginUserId();
+                        $newClass->update_user = $this->getLoginUserId();
+                        $newClass->create_time = new CDbExpression('NOW()');
+                        $newClass->update_time = new CDbExpression('NOW()');
+                        $newClass->save(false);
+                    }
+                }
 
                 if ($student->save()) {
                     Yii::app()->user->setFlash('success', "学生信息变更成功！");
@@ -216,8 +265,7 @@ class StudentController extends Controller {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
-    
-    
+
     /**
      * 学生信息删除
      * @throws CHttpException
@@ -225,17 +273,17 @@ class StudentController extends Controller {
     public function actionDelete() {
         if (isset($_POST['ID'])) {
             $ID = trim($_POST['ID']);
-            
+
             $user = TUsers::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($user)) {
                 throw new CHttpException(404, "该用户信息不存在！");
             }
-            
+
             $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($student)) {
                 throw new CHttpException(404, "该学生信息不存在！");
             }
-            
+
             $tran = Yii::app()->db->beginTransaction();
             try {
                 $user->status = '2';
@@ -264,10 +312,22 @@ class StudentController extends Controller {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
-    
-    
-    
+
     public function actionImport() {
+        // 导入时间的检查
+        // 校长，学工科以外的用户导入学生信息有时间限制
+        if (!$this->isHeaderTeacher() && !$this->isXueGongKe()) {
+            $config = MConfig::model()->getConfigByKey('IMPORT_STUDENT_DATA_RANGE');
+            if (is_null($config) || (!is_null($config) && empty($config->value))) {
+                throw new CHttpException(500, "批量导入时间没有设置！");
+            }
+
+            list($start_date, $end_date) = explode('|', $config->value);
+            $today = date('Y-m-d');
+            if (!($start_date <= $today && $today <= $end_date)) {
+                throw new CHttpException(500, "当前日期不能导入学生信息！");
+            }
+        }
 
         $model = new TFileUpload('import_student');
 
@@ -304,6 +364,5 @@ class StudentController extends Controller {
             'model' => $model,
         ));
     }
-    
-}
 
+}

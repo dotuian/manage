@@ -20,9 +20,9 @@ class SubjectForm extends CFormModel {
             //array('qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,11}$/','message' => '请输入正确的QQ号码.'),
             
             array('subject_code, subject_name, subject_short_name,subject_type', 'required'),
-            array('subject_name', 'length', 'max' => 20),
+            array('subject_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             array('subject_code', 'length', 'max' => 10),
-            array('subject_short_name', 'length', 'max' => 10),
+            array('subject_short_name', 'length', 'max' => 10, 'encoding'=>'UTF-8'),
             array('subject_type, status', 'length', 'max' => 1),
             array('level', 'length', 'max' => 2),
             // The following rule is used by search().

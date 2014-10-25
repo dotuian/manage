@@ -50,8 +50,6 @@
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/css/jquery.dataTables.min.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/css/dataTables.bootstrap.css" />
         
-        
-        
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
         
@@ -71,12 +69,12 @@
             <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
                 <span>个人设置</span>
             </button>
+            <a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
             -->
             
-            <a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
-            
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">XXXXXXXXXXX</span><i>zzzzzzzzzzzz</i>
+                 <span class="bold">孝感市综合高级中学</span>
+                 <!--<i>学生成绩管理系统</i> -->
             </a>
         </div>
 
@@ -94,9 +92,9 @@
 
                 <!-- Dropdown menu -->
                 <ul class="dropdown-menu">
-                    <li><a href="<?php echo $this->createUrl('setting/profile');?>"><i class="fa fa-user"></i> 个人信息</a></li>
-                    <li><a href="<?php echo $this->createurl('setting/password');?>"><i class="fa fa-cogs"></i> 密码变更</a></li>
-                    <li><a href="<?php echo $this->createurl('site/logout');?>"><i class="fa fa-key"></i>退出</a></li>
+                    <li><a href="<?php echo $this->createUrl('setting/profile');?>"> 个人信息</a></li>
+                    <li><a href="<?php echo $this->createurl('setting/password');?>">密码变更</a></li>
+                    <li><a href="<?php echo $this->createurl('site/logout');?>">退出</a></li>
                 </ul>
             </li>
             
@@ -244,9 +242,14 @@
                     <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
                     <?php } ?>
                     
-                    <?php // if(in_array('score/class', $authoritys)) { ?>
+                    <?php if(in_array('score/class', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/class');?>">班级学生成绩</a></li>
-                    <?php // } ?>
+                    <?php } ?>
+                    
+                    <?php if(in_array('score/query', $authoritys)) { ?>
+                    <!-- 学生成绩查询 -->
+                    <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>
@@ -285,11 +288,6 @@
             </li>
             <?php } ?>
           
-            <?php if(in_array('authority/create', $authoritys)) { ?>
-                <!-- 学生成绩查询 -->
-                <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
-            <?php } ?>
-          
             <!-- 个人设置 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'setting' ? 'open' : ''; ?>">
@@ -315,7 +313,7 @@
       
 	    <!-- Page heading -->
 	    <div class="page-head">
-                <h2 class="pull-left"><?php echo substr($this->pageTitle, 46); ?></h2>
+                <h2 class="pull-left">学生成绩管理系统</h2>
                 <div class="clearfix"></div>
 
                 <!-- Breadcrumb -->

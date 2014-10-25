@@ -19,7 +19,7 @@ $this->breadcrumbs = array(
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left"><?php echo $this->pageTitle;?></div>
+                <div class="pull-left">班级信息变更</div>
                 <div class="clearfix"></div>
             </div>
 
@@ -60,6 +60,14 @@ $this->breadcrumbs = array(
                         </div>
 
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">专业名称</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control','placeholder'=>'专业名称')); ?>
+                                <?php echo $form->error($model,'specialty_name'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">状态</label>
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(false), array('class'=>'form-control')); ?>
@@ -70,7 +78,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">届</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_year', ClassForm::getTermYearOption(1, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'term_year', ClassForm::getTermYearOption(3, false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'term_year'); ?>
                             </div>
                         </div>

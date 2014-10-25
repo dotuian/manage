@@ -61,3 +61,7 @@ span.errorMessage, div.errorMessage{
     color: #F00000;
     margin-bottom: 1px;
 }
+
+input.error, select.error{
+    background-color: #fff8cc;
+}
