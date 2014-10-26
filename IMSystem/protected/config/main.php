@@ -13,7 +13,7 @@
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'XGZG',
+    'name' => '孝感市综合高级中学 - ',
     'language' => 'zh_cn',
     // preloading 'log' component
     'preload' => array('log'),
@@ -72,27 +72,29 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'rootadmin',
+//            'username' => 'root',
+//            'password' => 'rootadmin',
+            'username' => 'xsglxtsql',
+            'password' => 'p5FtKwWmEWb95pKH',
             'charset' => 'utf8',
             'enableProfiling' => true,
             'enableParamLogging' => true,
             'enableSlave' => false,
             'slaves' => array(
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
-                    'username' => 'root',
-                    'password' => 'rootadmin',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+                    'username' => 'xsglxtsql',
+                    'password' => 'p5FtKwWmEWb95pKH',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
                 ),
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
-                    'username' => 'root',
-                    'password' => 'rootadmin',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+                    'username' => 'xsglxtsql',
+                    'password' => 'p5FtKwWmEWb95pKH',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,

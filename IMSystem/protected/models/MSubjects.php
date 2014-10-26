@@ -38,15 +38,24 @@ class MSubjects extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            // 共同
             array('subject_code, subject_name, subject_short_name, subject_type, level, create_time, update_time', 'required'),
-            array('subject_code, create_user, update_user', 'length', 'max' => 10),
-            array('subject_short_name', 'length', 'max' => 10, 'encoding'=>'UTF-8'),
-            array('subject_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
-            array('subject_type, status', 'length', 'max' => 1),
-            array('level', 'length', 'max' => 2),
+            
+            //========================================================================
+            // 科目代号
+            array('subject_code', 'length', 'max' => 10),
+            // 科目名称
+            array('subject_name', 'length', 'max' => 10, 'encoding' => 'UTF-8'),
+            // 科目简称
+            array('subject_short_name', 'length', 'max' => 4, 'encoding' => 'UTF-8'),
+            // 科目类型(0:普高 1:技能)
+            array('subject_type', 'length', 'max' => 1),
+            array('subject_type','in','range'=>array('0','1'),'allowEmpty'=>false),
+            //========================================================================
+
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+            array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 

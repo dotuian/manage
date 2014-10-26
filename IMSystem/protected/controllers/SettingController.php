@@ -1,6 +1,6 @@
 <?php
 
-class SettingController extends Controller {
+class SettingController extends BaseController {
 
     /**
      * 登录用户信息

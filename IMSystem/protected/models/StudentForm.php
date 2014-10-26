@@ -54,19 +54,45 @@ class StudentForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('code, name, sex, class_id, id_card_no', 'required'),
+            array('code, name, sex, class_id, birthday, id_card_no', 'required'),
             array('school_year', 'numerical', 'integerOnly' => true),
-            array('senior_score, college_score', 'numerical'),
-            array('code, id_card_no', 'length', 'max' => 20),
-            array(' class_id, old_class_id', 'length', 'max' => 10),
-            array('name', 'length', 'max'=>'10', 'encoding'=>'UTF-8'),
-            array('status, sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
+            array('senior_score, college_score', 'numerical', 'integerOnly' => false),
+            array('senior_score, college_score', 'length', 'max' => 5),
+            array('id_card_no', 'length', 'max' => 20),
+            array('class_id, old_class_id', 'length', 'max' => 10),
+            
+            array('sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
             array('accommodation, school_of_graduation', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('bonus_penalty', 'length', 'max' => 200, 'encoding'=>'UTF-8'),
             array('address, university', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
+            
+            // 学号
+            array('code', 'length', 'max' => 10),
+            // 姓名
+            array('name', 'length', 'max' => '10', 'encoding' => 'UTF-8'),
+            // 性别
+            array('sex','in','range'=>array('F', 'M'),'allowEmpty'=>false),
+            // 出生年月日
+            array('birthday', 'date', 'format'=>'yyyy-M-d'),
+            
+            // 缴费情况(0: 未缴 1:已缴)
+            array('payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
+            array('payment1, payment2, payment3, payment4, payment5, payment6','in','range'=>array('0','1'),'allowEmpty'=>false),
+            // 家庭住址
+            array('address', 'length', 'max' => 80, 'encoding'=>'UTF-8'),
+            // 电话号码
+            array('parents_tel', 'numerical'),
             array('parents_tel', 'length', 'max' => 11),
+            // QQ号码
             array('parents_qq', 'length', 'max' => 15),
-            array('birthday, comment', 'safe'),
+            array('parents_qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,15}$/','message' => '请输入正确的QQ号码！'),
+            // 毕业学校
+            array('university', 'length', 'max' => 30, 'encoding'=>'UTF-8'),
+            
+            // 入学年份
+            array('school_year', 'numerical'),
+            array('school_year', 'length', 'max' => 4),
+            
             array('ID, code, name, status, sex, id_card_no, birthday, class_id, old_class_id, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment', 'safe'),
         );
     }

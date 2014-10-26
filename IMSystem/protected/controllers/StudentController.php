@@ -1,6 +1,6 @@
 <?php
 
-class StudentController extends Controller {
+class StudentController extends BaseController {
 
     /**
      * 查询学生信息
@@ -11,7 +11,6 @@ class StudentController extends Controller {
         $model->sex = null;
         if (isset($_GET['StudentForm'])) {
             $model->attributes = $_GET['StudentForm'];
-
 
             // 查询SQL
             $sql = "select a.*, c.class_code, c.class_name, c.class_type ";

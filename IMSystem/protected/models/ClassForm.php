@@ -17,25 +17,27 @@ class ClassForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            // 共同
             array('class_code, class_name, class_type, term_year, teacher_id', 'required'),
             array('class_code, term_year', 'numerical', 'integerOnly' => true),
-            array('class_name, specialty_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
+            array('class_name, specialty_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             
-            array('ID, class_code, class_name, class_type, specialty_name, status, term_year, teacher_id', 'safe'),
-            
+            //========================================================================
             // 班级代号
             array('class_code', 'length', 'max' => 3, 'encoding'=>'UTF-8'),
-            
             // 班级名称
+            array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             // 班级性质
             array('class_type','in','range'=>array('0','1'),'allowEmpty'=>false),
-            
             // 专业名称
-            
+            array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             // 入学年份
-            
+            array('term_year', 'length', 'max' => 4),
             // 班主任
             array('teacher_id', 'length', 'max' => 10),
+            //========================================================================
+            
+            array('ID, class_code, class_name, class_type, specialty_name, status, term_year, teacher_id', 'safe'),
         );
     }
     

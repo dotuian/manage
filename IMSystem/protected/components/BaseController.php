@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Controller is the customized base controller class.
+ * BaseController is the customized base controller class.
  * All controller classes for this application should extend from this base class.
  */
-class Controller extends CController {
+class BaseController extends CController {
 
     /**
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
@@ -30,9 +30,6 @@ class Controller extends CController {
     public $role = '';
     
     public function init() {
-        Yii::log('POST DATA ' . print_r($_POST, true));
-        Yii::log('GET DATA ' . print_r($_GET, true));
-        
         // 错误标签的设定
         CHtml::$errorContainerTag = 'span';
         
@@ -50,22 +47,21 @@ class Controller extends CController {
      * @throws CHttpException
      */
     protected function beforeAction($action){
-//        if (parent::beforeAction($action)) {
-//            if (Yii::app()->request->isAjaxRequest) {
-//                // Ajax请求不进行权限检查
-//                return true;
-//            }
-//
-//            if (!in_array($this->getRoute(), Yii::app()->user->getState('authoritys'))) {
-//                throw new CHttpException(500,'没有权限！');
-//            }
-//        } else {
-//            return false;
-//        }
+        if (parent::beforeAction($action)) {
+            if (Yii::app()->request->isAjaxRequest) {
+                // Ajax请求不进行权限检查
+                return true;
+            }
+
+            if (!in_array($this->getRoute(), Yii::app()->user->getState('authoritys'))) {
+                throw new CHttpException(500,'没有权限！');
+            }
+        } else {
+            return false;
+        }
         
         return true;
     }
-    
     
     /**
      * 基于角色访问控制（role-based access (RBAC)）
@@ -97,6 +93,10 @@ class Controller extends CController {
         );
     }
     
+    /**
+     * 获取登录用户ID
+     * @return type
+     */
     public function getLoginUserId() {
         return Yii::app()->user->getState('ID');
     }

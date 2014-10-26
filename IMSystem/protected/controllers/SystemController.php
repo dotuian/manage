@@ -1,6 +1,6 @@
 <?php
 
-class SystemController extends Controller {
+class SystemController extends BaseController {
 
     private static $KEY_IMPORT_STUDENT_DATA_RANGE = 'IMPORT_STUDENT_DATA_RANGE';
 //    private static $KEY_IS_RUNNING = 'IS_RUNNING';

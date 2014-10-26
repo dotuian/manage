@@ -1,6 +1,6 @@
 <?php
 
-class AjaxController extends Controller {
+class AjaxController extends BaseController {
     
 	/**
      * Declares class-based actions.

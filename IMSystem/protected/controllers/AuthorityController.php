@@ -3,7 +3,7 @@
 /**
  * 权限控制器
  */
-class AuthorityController extends Controller {
+class AuthorityController extends BaseController {
 
     /**
      * 查询班级信息

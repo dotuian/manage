@@ -3,7 +3,7 @@
 /**
  * 成绩控制器
  */
-class ScoreController extends Controller {
+class ScoreController extends BaseController {
 
     /**
      * 学生查询个人成绩

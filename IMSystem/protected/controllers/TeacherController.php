@@ -1,6 +1,6 @@
 <?php
 
-class TeacherController extends Controller {
+class TeacherController extends BaseController {
 
     /**
      * 查询教师信息

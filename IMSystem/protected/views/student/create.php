@@ -74,11 +74,11 @@ $this->breadcrumbs = array(
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
-                                
-                                <?php echo $form->error($model,'birthday'); ?>
+                                <?php echo '<br/>' . $form->error($model,'birthday'); ?>
                             </div>
                         </div>
-
+                        
+                        <!--
                         <div class="form-group">
                             <label class="col-lg-2 control-label">状态</label>
                             <div class="col-lg-10">
@@ -86,6 +86,7 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'status'); ?>
                             </div>
                         </div>
+                        -->
                     
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级</label>
@@ -170,7 +171,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长电话</label>
                             <div class="col-lg-10">
-                                <?php echo $form->telField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
+                                <?php echo $form->textField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
                                 <?php echo $form->error($model,'parents_tel'); ?>
                             </div>
                         </div>
@@ -194,7 +195,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">中考总分</label>
                             <div class="col-lg-10">
-                                <?php echo $form->numberField($model,'senior_score', array('class'=>'form-control', 'placeholder'=>'中考总分')); ?>
+                                <?php echo $form->textField($model,'senior_score', array('class'=>'form-control', 'placeholder'=>'中考总分')); ?>
                                 <?php echo $form->error($model,'senior_score'); ?>
                             </div>
                         </div>
@@ -203,7 +204,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">入学年份</label>
                             <div class="col-lg-10">
-                                <?php echo $form->numberField($model,'school_year', array('class'=>'form-control', 'placeholder'=>'入学年份')); ?>
+                                <?php echo $form->textField($model,'school_year', array('class'=>'form-control', 'placeholder'=>'入学年份')); ?>
                                 <?php echo $form->error($model,'school_year'); ?>
                             </div>
                         </div>

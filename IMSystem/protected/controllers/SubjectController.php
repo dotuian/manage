@@ -3,7 +3,7 @@
 /**
  * 科目控制器
  */
-class SubjectController extends Controller {
+class SubjectController extends BaseController {
     
     /**
      * 查询科目信息
@@ -90,15 +90,15 @@ class SubjectController extends Controller {
                 $subject->subject_name = $model->subject_name;
                 $subject->subject_short_name = $model->subject_short_name;
                 $subject->subject_type = $model->subject_type;
-                $subject->status = '1';
-                $subject->level = 0;
+                $subject->status = '1'; //状态正常
+                $subject->level = 0;    // 
                 
                 $subject->create_user = $this->getLoginUserId();
                 $subject->update_user = $this->getLoginUserId();
                 $subject->create_time = new CDbExpression('NOW()');
                 $subject->update_time = new CDbExpression('NOW()');
 
-                if ($subject->save()) {
+                if ($subject->save(false)) {
                     Yii::app()->user->setFlash('success', "科目信息添加成功！");
                     $this->redirect($this->createUrl('create'));
                 } else {

@@ -9,6 +9,6 @@
     <td class="center"><?php echo $data['teacher_name']; ?></td>
     <td class="center">
         <a href="<?php echo $this->createUrl('class/update', array('ID' => $data['ID'])) ?>">详细</a> &nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $this->createUrl('class/stulist', array('ID' => $data['ID'])) ?>">学生一览</a>
+        <a href="<?php echo $this->createUrl('class/student', array('ID' => $data['ID'])) ?>">学生一览</a>
     </td>
 </tr>

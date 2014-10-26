@@ -128,7 +128,7 @@ $(document).ready(function(){
                         <?php } ?>
                         
                         <!-- 总分 -->
-                        <th><?php echo $sum; ?></th>   
+                        <td class="center"><b><?php echo $sum; ?></b></td>   
                     <?php } ?>
                 </tr>
                 <?php } ?>

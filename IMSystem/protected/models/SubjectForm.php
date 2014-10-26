@@ -17,16 +17,19 @@ class SubjectForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            //array('qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,11}$/','message' => '请输入正确的QQ号码.'),
-            
+            // 共同
             array('subject_code, subject_name, subject_short_name,subject_type', 'required'),
-            array('subject_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            
+            // 科目代号
             array('subject_code', 'length', 'max' => 10),
-            array('subject_short_name', 'length', 'max' => 10, 'encoding'=>'UTF-8'),
-            array('subject_type, status', 'length', 'max' => 1),
-            array('level', 'length', 'max' => 2),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
+            // 科目名称
+            array('subject_name', 'length', 'max' => 10, 'encoding' => 'UTF-8'),
+            // 科目简称
+            array('subject_short_name', 'length', 'max' => 4, 'encoding' => 'UTF-8'),
+            // 科目类型(0:普高 1:技能)
+            array('subject_type', 'length', 'max' => 1),
+            array('subject_type','in','range'=>array('0','1'),'allowEmpty'=>false),
+
             array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level', 'safe'),
         );
     }
@@ -37,12 +40,8 @@ class SubjectForm extends CFormModel {
         if ($this->scenario === 'create') {
 //                $this->addError('role_name', '角色名称已经存在，请重新指定！');
         }
-        
-        
-        
-        
     }
-    
+
     /**
      * @return array customized attribute labels (name=>label)
      */

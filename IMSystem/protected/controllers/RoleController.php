@@ -2,7 +2,7 @@
 /**
  * 角色权限管理
  */
-class RoleController extends Controller {
+class RoleController extends BaseController {
     /**
      * 角色信息添加
      * @throws CHttpException

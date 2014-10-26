@@ -3,7 +3,7 @@
 /**
  * 班级控制器
  */
-class ClassController extends Controller {
+class ClassController extends BaseController {
     
     /**
      * 查询班级信息
@@ -11,7 +11,7 @@ class ClassController extends Controller {
     public function actionSearch() {
         
         $model = new ClassForm();
-        $model->term_year = date('Y');
+        $model->status = '1';
         if (isset($_GET['ClassForm'])) {
             $model->attributes = $_GET['ClassForm'];
             
@@ -147,12 +147,14 @@ class ClassController extends Controller {
 
                 $class->update_user = $this->getLoginUserId();
                 $class->update_time = new CDbExpression('NOW()');
-
-                if ($class->save()) {
-                    Yii::app()->user->setFlash('success', "班级信息变更成功！");
-                } else {
-                    Yii::log(print_r($class->errors, true));
-                    Yii::app()->user->setFlash('warning', "班级信息变更失败！");
+                
+                if ($class->validate()) {
+                    if ($class->save()) {
+                        Yii::app()->user->setFlash('success', "班级信息变更成功！");
+                    } else {
+                        Yii::log(print_r($class->errors, true));
+                        Yii::app()->user->setFlash('warning', "班级信息变更失败！");
+                    }
                 }
             }
 
@@ -169,39 +171,49 @@ class ClassController extends Controller {
      * 新学年的开始，学生的班级信息批量变更
      */
     public function actionUpgrade() {
-        
+
         $model = new ClassUpgradeForm();
-        
+
         if (isset($_POST['ClassUpgradeForm'])) {
             $model->attributes = $_POST['ClassUpgradeForm'];
-            
-            if($model->validate()){
+
+            if ($model->validate()) {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
-                    $sql = "update t_students set class_id=:new_class_id, old_class_id=:old_class_id, update_user=:update_user, update_time=now() where class_id=:old_class_id and status='1'";
-                    $command = Yii::app()->db->createCommand($sql);
-                    $command->bindValue(":new_class_id", $model->new_class_id);
-                    $command->bindValue(":old_class_id", $model->old_class_id);
-                    $command->bindValue(":update_user", $this->getLoginUserId());
-                    $count = $command->execute();
-                    if($count > 0 ) {
-                        $tran->commit();
-                        Yii::app()->user->setFlash('success', "升级处理成功！一共{$count}个学生班级信息变更成功！");
-                    } else {
-                        Yii::app()->user->setFlash('success', "升级处理成功！");
+                    $count = 0;
+                    // 获取旧班级中所有学生班级的信息
+                    $studentClass = TStudentClasses::model()->findAll("class_id=:class_id and `status`='1'", array(':class_id'=>$model->old_class_id));
+                    foreach ($studentClass as $value) {
+                        $value->status = '2'; //暂停状态
+                        $value->update_user = $this->getLoginUserId();
+                        $value->update_time = new CDbExpression('NOW()');
+
+                        $new = new TStudentClasses();
+                        $new->student_id = $value->student_id;
+                        $new->class_id = $model->new_class_id;
+                        $new->status = '1'; // 正常状态
+                        $new->create_user = $this->getLoginUserId();
+                        $new->update_user = $this->getLoginUserId();
+                        $new->create_time = new CDbExpression('NOW()');
+                        $new->update_time = new CDbExpression('NOW()');
+
+                        if ($value->save(false) && $new->save(false)) {
+                            $count++;
+                        }
                     }
+
+                    $tran->commit();
+                    Yii::app()->user->setFlash('success', "升级处理成功！一共{$count}个学生班级信息变更成功！");
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
                 }
             }
         }
-        
+
         $this->render('upgrade', array('model' => $model));
-        
     }
-    
-    
-    public function actionStulist(){
+
+    public function actionStudent(){
         if (isset($_GET['ID'])) {
             $ID = trim($_GET['ID']);
             
@@ -210,9 +222,9 @@ class ClassController extends Controller {
                 throw new CHttpException(404, "该班级信息不存在！");
             }
 
-            $students = TStudents::model()->findAll("class_id=:class_id and status='1'", array(':class_id'=>$class->ID));
+            $students = TStudents::model()->findAllBySQL("select DISTINCT a.* from t_students a, t_student_classes b where a.ID=b.student_id and b.class_id=:class_id", array(':class_id'=>$class->ID));
 
-            $this->render('stulist', array(
+            $this->render('student', array(
                 'students' => $students,
             ));
         } else {

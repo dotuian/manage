@@ -41,18 +41,27 @@ class TClasses extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('class_code, create_time, update_time', 'required'),
-            array('term_year', 'numerical', 'integerOnly' => true),
-            array('class_code', 'length', 'max' => 20),
-            array('class_name, specialty_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
-            array('class_type, status', 'length', 'max' => 1),
-
-            array('status', 'in', 'range'=>array('1','2'),'allowEmpty'=>false),
-
-            array('teacher_id, create_user, update_user', 'length', 'max' => 10),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, class_code, class_name, class_type, specialty_name, status, term_year, teacher_id, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+            // 共同
+            array('class_code, class_name, class_type, term_year, teacher_id', 'required'),
+            array('class_code, term_year', 'numerical', 'integerOnly' => true),
+            array('class_name, specialty_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            
+            //========================================================================
+            // 班级代号
+            array('class_code', 'length', 'max' => 3, 'encoding'=>'UTF-8'),
+            // 班级名称
+            array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            // 班级性质
+            array('class_type','in','range'=>array('0','1'),'allowEmpty'=>false),
+            // 专业名称
+            array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            // 入学年份
+            array('term_year', 'length', 'max' => 4),
+            // 班主任
+            array('teacher_id', 'length', 'max' => 10),
+            //========================================================================
+            
+            array('ID, class_code, class_name, class_type, specialty_name, status, term_year, teacher_id, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -136,6 +145,25 @@ class TClasses extends CActiveRecord
     }
 
     /**
+     * 获取所有已经暂停班级信息
+     * @param type $flag
+     * @return type
+     */
+    public function getAllStopClassOption($flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $data = self::model()->findAll("status='2'");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->class_name;
+        }
+
+        return $result;
+    }
+    
+    /**
      * 获取所有班级信息
      * @param type $flag
      * @return type
@@ -169,7 +197,7 @@ class TClasses extends CActiveRecord
         $data = $this->getClassInfoByUserRole($user_id);
 
         foreach ($data as $value) {
-            $result[$value->ID] = $value->class_code . '| ' . $value->class_name;
+            $result[$value->ID] = $value->term_year . ' | ' . $value->class_code . '| ' . $value->class_name;
         }
         
         return $result;
@@ -193,7 +221,7 @@ class TClasses extends CActiveRecord
                     break;
                 case 2: // 教师
                     // 班主任和任课教师的班级ID
-                    $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
+                    $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
                     $connection = Yii::app()->db;
                     $command = $connection->createCommand($sql);
                     $command->bindValue(":teacher_id", $user_id);

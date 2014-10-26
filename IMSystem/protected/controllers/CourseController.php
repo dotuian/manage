@@ -3,7 +3,7 @@
 /**
  * 课程控制器
  */
-class CourseController extends Controller {
+class CourseController extends BaseController {
 
     // 未完了
     public function actionSearch() {
@@ -80,26 +80,27 @@ class CourseController extends Controller {
         if (isset($_POST['CourseForm'])) {
             $model->attributes = $_POST['CourseForm'];
             
-            $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
-            if(is_null($class)){
-                throw new CHttpException('500', '该班级信息不存在！');
+            if($model->validate()){
+                $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
+                if(is_null($class)){
+                    throw new CHttpException('500', '该班级信息不存在！');
+                }
+
+                $criteria = new CDbCriteria();
+                $criteria->addCondition("status='1'");
+                $criteria->addInCondition('ID', array_values($model->subjects));
+                $subjects = MSubjects::model()->findAll($criteria);
+
+                // 所有的教师信息
+                $teachers = TTeachers::model()->findAll("status='1'");
+
+                // 收集页面数据
+                $data = new MCourses();
+
+                $this->render('create', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
+            } else {
+                $this->render('create', array('model' => $model));
             }
-            
-            $criteria = new CDbCriteria();
-            $criteria->addCondition("status='1'");
-            $criteria->addInCondition('ID', array_values($model->subjects));
-            $subjects = MSubjects::model()->findAll($criteria);
-            
-            // 所有的班级信息
-            $classes = TClasses::model()->find("status='1'");
-            // 所有的教师信息
-            $teachers = TTeachers::model()->findAll("status='1'");
-            
-            // 收集页面数据
-            $data = new MCourses();
-            
-            $this->render('create', array('model' => $model, 'data'=>$data, 'class'=>$class, 'subjects'=>$subjects, 'teachers'=>$teachers));
-            
         } else {
             $this->render('create', array('model' => $model));
         }

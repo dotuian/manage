@@ -37,7 +37,7 @@ class CourseForm extends CFormModel {
             'teacher_name' => '任课教师',
             'class_id' => '班级',
             'status' => '状态',
-            'subjects' => '课程信息',
+            'subjects' => '科目',
         );
     }
     
@@ -48,13 +48,18 @@ class CourseForm extends CFormModel {
             $result = MCourses::model()->exists("subject_id=:subject_id and teacher_id=:teacher_id and class_id=:class_id and status='1'",
                     array(':subject_id'=>$this->subject_id, ':teacher_id'=>$this->teacher_id, ':class_id'=>$this->class_id));
             if($result){
-                $this->addError('subject_id', '角色名称已经存在，请重新指定！');
+//                $this->addError('subject_id', '课程安排已经存在，请重新指定！');
             }
             
             if(empty($this->subjects) || count($this->subjects) == 0 ){
                 $this->addError('subjects', '请指定要录入课程对应的科目信息！');
             }
             
+            
+            $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$this->class_id));
+            if(is_null($class)){
+                $this->addError('class_id','该班级信息不存在！');
+            }
             
         }
         

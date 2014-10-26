@@ -47,7 +47,7 @@ $(document).ready(function(){
                         <label class="col-lg-2 control-label">科目</label>
                         <div class="col-lg-10 inline-block">
                             <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
-                            <?php echo $form->error($model,'subjects'); ?>
+                            <br/><?php echo $form->error($model,'subjects'); ?>
                         </div>
                     </div>
                 </div>

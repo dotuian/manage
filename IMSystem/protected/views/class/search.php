@@ -35,7 +35,7 @@ $(document).ready(function(){
                     <th>班级名称</th>
                     <th>班级性质</th>
                     <th>状态</th>
-                     <th>届</th>
+                    <th>入学年份</th>
                     <th>班主任</th>
                 </tr>
             </thead>
@@ -92,7 +92,7 @@ $(document).ready(function(){
                     <th>班级名称</th>
                     <th>班级性质</th>
                     <th>状态</th>
-                    <th>届</th>
+                    <th>入学年份</th>
                     <th>班主任</th>
                     <th>操作</th>
                 </tr>
