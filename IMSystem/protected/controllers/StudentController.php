@@ -250,10 +250,10 @@ class StudentController extends BaseController {
                 }
 
                 if ($student->save()) {
-                    Yii::app()->user->setFlash('success', "学生信息变更成功！");
+                    $this->setSuccessMessage("学生信息变更成功！");
                 } else {
                     Yii::log(print_r($student->errors, true));
-                    Yii::app()->user->setFlash('warning', "学生信息变更失败！");
+                    $this->setErrorMessage("学生信息变更失败！");
                 }
             }
 

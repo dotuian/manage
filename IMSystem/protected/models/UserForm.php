@@ -54,6 +54,7 @@ class UserForm extends CFormModel {
         if (!$this->hasErrors()) {
             $user = TUsers::model()->find('ID=:ID', array(':ID' => Yii::app()->user->getState('ID')));
             if ($this->old_password != $user->password) {
+                $this->old_password = null;
                 $this->addError('old_password', '密码不正确！');
             }
         }

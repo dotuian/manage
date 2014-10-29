@@ -8,6 +8,7 @@
  * @property string $username
  * @property string $password
  * @property string $status
+ * @property string $last_login_time
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
@@ -38,9 +39,10 @@ class TUsers extends CActiveRecord
             array('username, password', 'length', 'max' => 20),
             array('status', 'length', 'max' => 1),
             array('create_user, update_user', 'length', 'max' => 10),
+            array('last_login_time, update_time', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('ID, username, password, status, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+            array('ID, username, password, status, last_login_time, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
         );
     }
 
@@ -65,11 +67,12 @@ class TUsers extends CActiveRecord
             'ID' => 'ID',
             'username' => '用户名',
             'password' => '密码',
-            'status' => '状态(1:正常 2:异常)',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'status' => '状态', // (1:正常 2:异常)
+            'last_login_time' => '上次登录时间',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 
@@ -94,6 +97,7 @@ class TUsers extends CActiveRecord
         $criteria->compare('username', $this->username, true);
         $criteria->compare('password', $this->password, true);
         $criteria->compare('status', $this->status, true);
+        $criteria->compare('last_login_time',$this->last_login_time,true);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_user', $this->update_user, true);
@@ -166,6 +170,8 @@ class TUsers extends CActiveRecord
     public function importStudent($value) {
         $result = false;
 
+        MSubjects::model()->getSubjectsBySubjectIds(array());
+        
         $login_id = Yii::app()->user->getState('ID');
         $code = trim($value['A']);
         $student = TStudents::model()->find('code=:code', array(':code' => $code));

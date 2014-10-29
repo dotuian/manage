@@ -214,10 +214,10 @@ class CourseController extends BaseController {
                 $course->update_time = new CDbExpression('NOW()');
                 
                 if ($course->save()) {
-                    Yii::app()->user->setFlash('success', "课程信息变更成功！");
+                    $this->setSuccessMessage("课程信息变更成功！");
                 } else {
                     Yii::log(print_r($course->errors, true));
-                    Yii::app()->user->setFlash('warning', "课程信息变更失败！");
+                    $this->setErrorMessage("课程信息变更失败！");
                 }
             }
 
@@ -243,11 +243,11 @@ class CourseController extends BaseController {
             $course->update_user = $this->getLoginUserId();
             $course->update_time = new CDbExpression('NOW()');
             if ($course->save()) {
-                Yii::app()->user->setFlash('success', "课程信息删除成功！");
+                $this->setSuccessMessage("课程信息删除成功！");
                 $this->redirect($this->createUrl('search'));
             } else {
                 Yii::log(print_r($course->errors, true));
-                Yii::app()->user->setFlash('warning', "课程信息删除失败！");
+                $this->setErrorMessage("课程信息删除失败！");
             }
 
             $this->render('update', array(

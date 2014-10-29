@@ -10,6 +10,8 @@
 // set foreign_key_checks=off
 // set foreign_key_checks=on
 
+// 
+
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
@@ -72,39 +74,39 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
             'emulatePrepare' => true,
-//            'username' => 'root',
-//            'password' => 'rootadmin',
-            'username' => 'xsglxtsql',
-            'password' => 'p5FtKwWmEWb95pKH',
+            'username' => 'root',
+            'password' => 'rootadmin',
             'charset' => 'utf8',
             'enableProfiling' => true,
             'enableParamLogging' => true,
             'enableSlave' => false,
             'slaves' => array(
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
-                    'username' => 'xsglxtsql',
-                    'password' => 'p5FtKwWmEWb95pKH',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+                    'username' => 'root',
+                    'password' => 'rootadmin',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
                 ),
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
-                    'username' => 'xsglxtsql',
-                    'password' => 'p5FtKwWmEWb95pKH',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+                    'username' => 'root',
+                    'password' => 'rootadmin',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
                 ),
             ),
         ),
+        
         'errorHandler' => array(
             // use 'site/error' action to display errors
             'errorAction' => 'site/error',
         ),
+        
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
@@ -113,11 +115,13 @@ return array(
                     'levels' => 'error, warning, info',
                     'logFile' => 'application_' . date('Ymd') . '.log',
                 ),
-                array(
-                    'class' => 'CWebLogRoute',
+               array(
+                    'class'=>'CWebLogRoute',
+                    //'levels' => 'trace,info,error,warning,debug',
                 ),
             ),
         ),
+        
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
@@ -126,6 +130,6 @@ return array(
         'adminEmail' => 'webmaster@example.com',
         'EmptySelectOption' => '--------',
         'PageSize' => 10,
-        'FilePath' => "E:\\file\\",
+        'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\uploadfile\\',
     ),
 );

@@ -62,10 +62,10 @@ class TFileUpload extends CActiveRecord {
             'realpath' => '保存文件路径',
             'category' => '用途',
             'status' => '状态(0:未处理  1:处理正常  2:处理异常)',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 
@@ -122,7 +122,7 @@ class TFileUpload extends CActiveRecord {
             // 将Excel数据读取到数组中
             $data = ExcelUtils::readExcel2Array($this->realpath);
 
-            Yii::log(print_r($data, true));
+            Yii::log(print_r(count($data), true));
 
             if (is_array($data)) {
                 for ($index = 0; $index < count($data); $index++) {
@@ -131,6 +131,11 @@ class TFileUpload extends CActiveRecord {
                         continue;
                     }
 
+                    $student = TUsers::model()->find('ID=:ID', array(':ID' => '1'));
+                    
+                    
+                    MSubjects::model()->getSubjectsBySubjectIds(array());
+                    
                     // 数据检查
                     // 数据导入
                     if (TUsers::model()->importStudent($data[$index])) {

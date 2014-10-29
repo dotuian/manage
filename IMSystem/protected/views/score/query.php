@@ -5,9 +5,16 @@ $this->breadcrumbs = array(
 );
 
 Yii::app()->clientScript->registerScript('js', "
-$(document).ready(function(){
-    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false});
-});
+//$(document).ready(function(){
+//$('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false, 'aaSorting': [],});
+//});
+
+//$(window).resize(function() {
+//  // console.log('width = ' + document.body.scrollWidth + '  height= ' + document.body.scrollHeight);
+//    if(document.body.scrollWidth >= 768){
+//        $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false, 'aaSorting': [],});
+//    }
+//});
 ", CClientScript::POS_HEAD);
 ?>
 
@@ -37,7 +44,7 @@ $(document).ready(function(){
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getStudentExamsOption($this->getLoginUserId(), true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>

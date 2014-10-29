@@ -63,7 +63,7 @@ class SubjectController extends BaseController {
 
             // 没有数据
             if ($dataProvider->totalItemCount == 0) {
-                Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+                $this->setWarningMessage("没有检索到相关数据！");
             }
         }
 
@@ -99,11 +99,11 @@ class SubjectController extends BaseController {
                 $subject->update_time = new CDbExpression('NOW()');
 
                 if ($subject->save(false)) {
-                    Yii::app()->user->setFlash('success', "科目信息添加成功！");
+                    $this->setSuccessMessage("科目信息添加成功！");
                     $this->redirect($this->createUrl('create'));
                 } else {
                     Yii::log(print_r($subject->errors, true));
-                    Yii::app()->user->setFlash('warning', "科目信息添加失败！");
+                    $this->setErrorMessage("科目信息添加失败！");
                 }
             }
         }
@@ -131,10 +131,10 @@ class SubjectController extends BaseController {
                 $subject->update_time = new CDbExpression('NOW()');
                 if($subject->validate()) {
                     if ($subject->save()) {
-                        Yii::app()->user->setFlash('success', "科目信息变更成功！");
+                        $this->setSuccessMessage("科目信息变更成功！");
                     } else {
                         Yii::log(print_r($subject->errors, true));
-                        Yii::app()->user->setFlash('warning', "科目信息变更失败！");
+                        $this->setErrorMessage("科目信息变更失败！");
                     }
                 }
             }
@@ -162,11 +162,11 @@ class SubjectController extends BaseController {
             $subject->update_user = $this->getLoginUserId();
             $subject->update_time = new CDbExpression('NOW()');
             if ($subject->save(false)) {
-                Yii::app()->user->setFlash('success', "科目信息删除成功！");
+                $this->setSuccessMessage("科目信息删除成功！");
                 $this->redirect($this->createUrl('search'));
             } else {
                 Yii::log(print_r($subject->errors, true));
-                Yii::app()->user->setFlash('warning', "科目信息删除失败！");
+                $this->setErrorMessage("科目信息删除失败！");
             }
 
             $this->render('update', array(

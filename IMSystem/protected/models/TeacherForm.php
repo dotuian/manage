@@ -27,7 +27,7 @@ class TeacherForm extends CFormModel {
             array('status, sex', 'length', 'max' => 1),
             array('address', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             array('telephonoe', 'length', 'max' => 11),
-            array('birthday', 'date', 'format' => 'yyyy-M-d', 'allowEmpty' => true),
+            array('birthday', 'date', 'format' => 'yyyy-MM-dd', 'allowEmpty' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('ID, code, name,subject_id, status, sex, birthday, address, telephonoe,roles,subjects', 'safe'),

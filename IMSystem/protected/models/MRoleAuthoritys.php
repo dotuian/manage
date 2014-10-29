@@ -60,10 +60,10 @@ class MRoleAuthoritys extends CActiveRecord {
             'ID' => 'ID',
             'role_id' => '角色ID',
             'authority_id' => '权限ID',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 

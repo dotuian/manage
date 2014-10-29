@@ -60,7 +60,7 @@ $(document).ready(function(){
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-reset" value='重置' />
+                                <?php echo CHtml::resetButton('重置', array('class'=>'btn btn-reset')); ?>
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>

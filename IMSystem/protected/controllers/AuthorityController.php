@@ -60,7 +60,7 @@ class AuthorityController extends BaseController {
 
         // 没有数据
         if($dataProvider->totalItemCount == 0 ) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+            $this->setWarningMessage("没有检索到相关数据！");
         }
         
         $this->render('search', array(
@@ -97,11 +97,11 @@ class AuthorityController extends BaseController {
                     
                     if ($authority->save()) {
                         $tran->commit();
-                        Yii::app()->user->setFlash('success', "权限信息添加成功！");
+                        $this->setSuccessMessage("权限信息添加成功！");
                         $this->redirect($this->createUrl('create'));
                     } else {
                         Yii::log(print_r($authority->errors, true));
-                        Yii::app()->user->setFlash('warning', "权限信息添加失败！");
+                        $this->setErrorMessage("权限信息添加失败！");
                     }
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
@@ -132,10 +132,10 @@ class AuthorityController extends BaseController {
                 $authority->update_time = new CDbExpression('NOW()');
 
                 if ($authority->save()) {
-                    Yii::app()->user->setFlash('success', "权限信息变更成功！");
+                    $this->setSuccessMessage("权限信息变更成功！");
                 } else {
                     Yii::log(print_r($authority->errors, true));
-                    Yii::app()->user->setFlash('warning', "权限信息变更失败！");
+                    $this->setErrorMessage("权限信息变更失败！");
                 }
             }
 
@@ -164,12 +164,12 @@ class AuthorityController extends BaseController {
                 MRoleAuthoritys::model()->deleteAll('authority_id=:authority_id', array(':authority_id'=>$authority->ID));
                 if ($authority->delete()) {
                     $tran->commit();
-                    Yii::app()->user->setFlash('success', "权限信息删除成功！");
+                    $this->setSuccessMessage("权限信息删除成功！");
                     
                     // 删除成功之后，跳转检索页面
                     $this->redirect($this->createUrl('search'));
                 } else {
-                    Yii::app()->user->setFlash('warning', "权限信息删除失败！");
+                    $this->setErrorMessage("权限信息删除失败！");
                 }
                 
             } catch (Exception $e){

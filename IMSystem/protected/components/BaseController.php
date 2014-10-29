@@ -102,7 +102,7 @@ class BaseController extends CController {
     }
     
     /**
-     * 判断该登录用户是否为教师
+     * 判断该登录用户是否为学生
      * @return boolean
      */
     public function isStudent() {

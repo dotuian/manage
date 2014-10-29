@@ -41,11 +41,11 @@ class RoleController extends BaseController {
                         }
 
                         $tran->commit();
-                        Yii::app()->user->setFlash('success', "角色信息添加成功！");
+                        $this->setSuccessMessage("角色信息添加成功！");
                         $this->redirect($this->createUrl('create'));
                     } else {
                         $tran->rollback();
-                        Yii::app()->user->setFlash('warning', "角色信息添加失败！");
+                        $this->setErrorMessage("角色信息添加失败！");
                     }
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
@@ -102,7 +102,7 @@ class RoleController extends BaseController {
 
         // 没有数据
         if($dataProvider->totalItemCount == 0 ) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+            $this->setWarningMessage("没有检索到相关数据！");
         }
         
         $this->render('search', array(
@@ -170,10 +170,10 @@ class RoleController extends BaseController {
                             }
 
                             $tran->commit();
-                            Yii::app()->user->setFlash('success', "角色信息变更成功！");
+                            $this->setSuccessMessage("角色信息变更成功！");
                         } else {
                             $tran->rollback();
-                            Yii::app()->user->setFlash('warning', "角色信息变更失败！");
+                            $this->setErrorMessage("角色信息变更失败！");
                         }
                     } catch (Exception $e) {
                         $tran->rollback();
@@ -211,11 +211,11 @@ class RoleController extends BaseController {
             $role->update_user = $this->getLoginUserId();
             $role->create_time = new CDbExpression('NOW()');
             if ($role->save()) {
-                Yii::app()->user->setFlash('success', "角色信息删除成功！");
+                $this->setSuccessMessage("角色信息删除成功！");
                 $this->redirect($this->createUrl('search'));
             } else {
                 Yii::log(print_r($role->errors, true));
-                Yii::app()->user->setFlash('warning', "角色信息删除失败！");
+                $this->setErrorMessage("角色信息删除失败！");
             }
 
             $this->render('update', array(

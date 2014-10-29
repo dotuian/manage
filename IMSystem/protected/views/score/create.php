@@ -23,7 +23,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false});
+    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false, 'aaSorting': [],});
 });
 
 ",CClientScript::POS_HEAD);

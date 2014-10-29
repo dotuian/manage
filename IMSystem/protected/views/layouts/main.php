@@ -73,7 +73,7 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">孝感市综合高级中学</span>
+                 <!--<span class="bold">孝感市综合高级中学</span>-->
                  <!--<i>学生成绩管理系统</i> -->
             </a>
         </div>
@@ -115,27 +115,24 @@
             <a href="#">导航栏</a>
         </div>
 
-        <!--- Sidebar navigation -->
-        <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
+        <!--- 导航菜单栏 -->
         <ul id="nav">
-          <!-- Main menu with font awesome icon -->
-            <li>
-                <a href="<?php echo Yii::app()->homeUrl; ?>">
-                    <i class="fa fa-home"></i> <span>首页</span>
-                </a>
-            </li>
+            <!-- 首页 -->
+            <li><a href="<?php echo Yii::app()->homeUrl; ?>"><i class="fa fa-home"></i> <span>首页</span></a></li>
             
-          <?php
+            <?php
                 $controller = Yii::app()->controller->id;  // controller
-                $action = $this->getAction()->getId(); // action
-                $route =$this->getRoute(); // route 
-                
+                //$action = $this->getAction()->getId(); // action
+                //$route =$this->getRoute(); // route 
+
+                // 权限列表
                 $authoritys = Yii::app()->user->getState('authoritys');
                 // 权限分类
                 $category = Yii::app()->user->getState('auth_category');
-          ?>
+            ?>
           
             <?php if(in_array('STUDENT', $category)) { ?>
+            <!-- 学生管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'student' ? 'open' : ''; ?>">
                     <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'student' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span>
@@ -158,6 +155,7 @@
           
           
             <?php if(in_array('TEACHER', $category)) { ?>
+            <!-- 教师管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'teacher' ? 'open' : ''; ?>">
                 <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'teacher' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
@@ -175,6 +173,7 @@
           
           
             <?php if(in_array('CLASS', $category)) { ?>
+            <!-- 班级管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'class' ? 'open' : ''; ?>">
                 <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'class' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
@@ -196,6 +195,7 @@
           
           
             <?php if(in_array('SUBJECT', $category)) { ?>
+            <!-- 科目管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'subject' ? 'open' : ''; ?>">
                 <i class="fa fa-bookmark"></i> <span>科目管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'subject' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
@@ -213,6 +213,7 @@
           
           
             <?php if(in_array('COURSE', $category)) { ?>
+            <!-- 课程管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'course' ? 'open' : ''; ?>">
                 <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'course' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
@@ -229,7 +230,8 @@
             <?php } ?>
           
           
-            <?php if(in_array('SCORE', $category)) { ?>
+            <?php if(in_array('SCORE', $category)  && !$this->isStudent()) { ?>
+            <!-- 成绩管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'score' ? 'open' : ''; ?>">
                 <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'score' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
@@ -245,17 +247,19 @@
                     <?php if(in_array('score/class', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/class');?>">班级学生成绩</a></li>
                     <?php } ?>
-                    
-                    <?php if(in_array('score/query', $authoritys)) { ?>
-                    <!-- 学生成绩查询 -->
-                    <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
-                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>
           
           
+            <?php if(in_array('score/query', $authoritys)  && $this->isStudent()) { ?>
+                <!-- 学生成绩查询 -->
+                <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
+            <?php } ?>
+          
+          
             <?php if(in_array('ROLE', $category)) { ?>
+            <!-- 角色管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'role' ? 'open' : ''; ?>">
                 <i class="fa fa-users"></i> <span>角色管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'role' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
@@ -288,6 +292,7 @@
             </li>
             <?php } ?>
           
+            
             <!-- 个人设置 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'setting' ? 'open' : ''; ?>">
@@ -357,7 +362,7 @@
     </div>
 
    <!-- Mainbar ends -->
-   <div class="clearfix"></div>
+   <div class="clearfix"></div>/
 
 </div>
 <!-- Content ends -->
@@ -401,7 +406,7 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.stack.js"></script>
 
 <!-- jQuery Notification - Noty -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.noty.js"></script> <!-- jQuery Notify -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.noty.js"></script> <1    !-- jQuery Notify -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/default.js"></script> <!-- jQuery Notify -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bottom.js"></script> <!-- jQuery Notify -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/topRight.js"></script> <!-- jQuery Notify -->
@@ -418,8 +423,6 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script>
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/dropzone.js"></script>  jQuery Dropzone -->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/filter.js"></script>  Filter for support page -->
-
-
 
 
 

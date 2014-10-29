@@ -67,10 +67,10 @@ class MCourses extends CActiveRecord {
             'teacher_id' => '任课教师',
             'class_id' => '上课班级',
             'status' => '状态(1:正常 2:异常)',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 

@@ -93,7 +93,8 @@ outline: 0;
 }
 
 .btn:focus{
-  outline:none;
+    color: #fff !important;
+    outline:none;
 }
 
 .btn:hover{

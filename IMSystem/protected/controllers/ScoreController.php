@@ -9,65 +9,61 @@ class ScoreController extends BaseController {
      * 学生查询个人成绩
      * @throws CHttpException
      */
-    public function actionQuery(){
-        
+    public function actionQuery() {
+
         $student = TStudents::model()->find("ID=:ID and status='1'", array(':ID' => $this->getLoginUserId()));
         if (is_null($student)) {
-            throw new CHttpException('500', '当前用户信息不存在！');
+            throw new CHttpException(500, '当前用户信息不存在！');
         }
-        
-        $sql = "SELECT b.code, b.name, e.class_code, e.class_name, a.exam_id, d.exam_name, c.subject_name, a.score ";
-        $sql .= "FROM t_scores a ";
-        $sql .= "LEFT JOIN t_students b ON a.student_id = b.ID ";
-        $sql .= "LEFT JOIN m_subjects c ON a.subject_id = c.ID ";
-        $sql .= "LEFT JOIN m_exams d ON a.exam_id = d.ID ";
-        $sql .= "LEFT JOIN t_classes e ON a.class_id=e.id ";
-        $sql .= "WHERE a.student_id=:student_id ";
-        $params = array(':student_id' => $this->getLoginUserId());
         
         $model = new ScoreForm();
         if (isset($_GET['ScoreForm'])) {
             $model->attributes = $_GET['ScoreForm'];
 
+            $sql = "SELECT b.code, b.name, e.class_code, e.class_name, a.exam_id, d.exam_name, a.subject_id, c.subject_name, a.score ";
+            $sql .= "FROM t_scores a ";
+            $sql .= "LEFT JOIN t_students b ON a.student_id = b.ID ";
+            $sql .= "LEFT JOIN m_subjects c ON a.subject_id = c.ID ";
+            $sql .= "LEFT JOIN m_exams d ON a.exam_id = d.ID ";
+            $sql .= "LEFT JOIN t_classes e ON a.class_id=e.id ";
+            $sql .= "WHERE a.student_id=:student_id ";
+            $params = array(':student_id' => $this->getLoginUserId());
+
             if (trim($model->exam_id) !== '') {
                 $sql .= " and a.exam_id = :exam_id ";
                 $params[':exam_id'] = trim($model->exam_id);
             }
+            $sql .= "order by a.create_time desc";
+
+            $data = Yii::app()->db->createCommand($sql)->queryAll(true, $params);
+
+            // 没有数据
+            if (count($data) === 0) {
+                $this->setWarningMessage("没有检索到相关数据！");
+            }
+
+            // 参加过的所有考试的科目
+            $subject_ids = array();
+
+            // 为了页面横排表示，数据整形
+            $result = array();
+            foreach ($data as $value) {
+                $result[$value["exam_name"]][$value["subject_name"]] = $value['score'];
+
+                $subject_ids[$value['subject_id']] = $value['subject_name'];
+            }
+
+            // 用于页面显示的所有科目
+            $subjects = MSubjects::model()->getSubjectsBySubjectIds($subject_ids);
         }
 
-        $sql .= "order by a.exam_id, a.create_time desc";
-        
-        $data = Yii::app()->db->createCommand($sql)->queryAll(true, $params);
-        
-        // 没有数据
-        if(count($data) === 0) {
-            Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
-        }
-
-        // 为了页面横排表示，数据整形
-        $result = array();
-        foreach ($data as $value) {
-            $result[$value["exam_name"]][$value["subject_name"]] = $value['score'];
-        }
-        
-        // 从成绩信息中获取又成绩的所有科目名称，用于页面的显示
-        $temp = array();
-        foreach ($result as $value) {
-            $temp = array_merge($temp, array_keys($value));
-        }
-        $temp = array_unique(array_values($temp));
-        
-        // 用于页面显示的所有科目
-        $subjects = MSubjects::model()->getSubjectsBySubjectName($temp);
-                
         $this->render('query', array(
-                    'model' => $model, 
-                    'data' => $result,
-                    'subjects' => $subjects,
-                ));
+            'model' => $model,
+            'data' => isset($result) ? $result : null,
+            'subjects' => isset($subjects) ? $subjects : null,
+        ));
     }
-    
-    
+
     /**
      * 查询班级信息
      */
@@ -143,7 +139,7 @@ class ScoreController extends BaseController {
 
             // 没有数据
             if($dataProvider->totalItemCount == 0 ) {
-                Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+                $this->setWarningMessage("没有检索到相关数据！");
             }
         }
 
@@ -316,10 +312,10 @@ class ScoreController extends BaseController {
                 $score->update_time = new CDbExpression('NOW()');
                 if ($score->validate()) {
                     if ($score->save()) {
-                        Yii::app()->user->setFlash('success', "成绩信息变更成功！");
+                        $this->setSuccessMessage("成绩信息变更成功！");
                     } else {
                         Yii::log(print_r($score->errors, true));
-                        Yii::app()->user->setFlash('warning', "成绩信息变更失败！");
+                        $this->setErrorMessage("成绩信息变更失败！");
                     }
                 }
             }
@@ -344,11 +340,11 @@ class ScoreController extends BaseController {
             }
             
             if ($score->delete()) {
-                Yii::app()->user->setFlash('success', "成绩信息删除成功！");
+                $this->setSuccessMessage("成绩信息删除成功！");
                 $this->redirect($this->createUrl('search'));
             } else {
                 Yii::log(print_r($score->errors, true));
-                Yii::app()->user->setFlash('warning', "成绩信息删除失败！");
+                $this->setErrorMessage("成绩信息删除失败！");
             }
 
             $this->render('update', array(

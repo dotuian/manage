@@ -96,7 +96,7 @@ class TStudents extends CActiveRecord {
             'ID' => 'ID',
             'code' => '学号',
             'name' => '姓名',
-            'status' => '状态(1:在校 2:离校)',
+            'status' => '状态', // (1:在校 2:离校)
             'sex' => '性别',
             'id_card_no' => '身份证号码',
             'birthday' => '出生年月日',
@@ -117,10 +117,10 @@ class TStudents extends CActiveRecord {
             'college_score' => '高考总分',
             'university' => '录取学校',
             'comment' => '备注',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 

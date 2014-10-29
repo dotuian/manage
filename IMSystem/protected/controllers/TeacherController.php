@@ -136,13 +136,13 @@ class TeacherController extends BaseController {
                             }
                         
                             $tran->commit();
-                            Yii::app()->user->setFlash('success', "教师信息添加成功！");
+                            $this->setSuccessMessage("教师信息添加成功！");
                             $this->redirect($this->createUrl('create'));
                         }
                     }
                     
                     Yii::log(print_r($user->errors, true));
-                    Yii::app()->user->setFlash('warning', "教师信息添加失败！");
+                    $this->setErrorMessage("教师信息添加失败！");
 
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
@@ -217,10 +217,10 @@ class TeacherController extends BaseController {
                         }
                     
                         $tran->commit();
-                        Yii::app()->user->setFlash('success', "教师信息变更成功！");
+                        $this->setSuccessMessage("教师信息变更成功！");
                     } else {
                         Yii::log(print_r($teacher->errors, true));
-                        Yii::app()->user->setFlash('warning', "教师信息变更失败！");
+                        $this->setErrorMessage("教师信息变更失败！");
                     }
                 }  catch (Exception $e){
                     throw new CHttpException(500, "系统异常！");

@@ -39,7 +39,7 @@ class SystemController extends BaseController {
 //                    $running->save();
 //                }
 
-                Yii::app()->user->setFlash('success', "系统配置变更成功！");
+                $this->setSuccessMessage("系统配置变更成功！");
             }
         } else {
             // 页面数据表示用

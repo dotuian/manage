@@ -63,10 +63,10 @@ class MExams extends CActiveRecord {
             'exam_code' => '考试CODE',
             'exam_name' => '考试名称',
             'status' => '状态(1:正常 2:异常)',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 
@@ -110,7 +110,28 @@ class MExams extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    /**
+     * 获取学生所有参加过的考试
+     */
+    public function getStudentExamsOption($student_id, $flag = true){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
 
+        $data = MExams::model()->findAllBySql("select DISTINCT a.* from m_exams a ,t_scores b where a.ID=b.exam_id and b.student_id=:student_id order by b.create_time desc ", array(':student_id'=>$student_id));
+        
+        Yii::log(print_r($data, true));
+        
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->exam_name;
+        }
+        return $result;
+        
+    }
+    
+    
     public function getAllExamsOption($flag=true) {
         $result = array();
         if ($flag === true) {

@@ -17,7 +17,6 @@ class UserIdentity extends CUserIdentity {
      */
     public function authenticate() {
         $user = TUsers::model()->find("username=:username and status='1'", array(':username' => $this->username));
-
         if (is_null($user)) {
             // 用户不存在
             $this->errorCode = self::ERROR_USERNAME_INVALID;
@@ -29,8 +28,11 @@ class UserIdentity extends CUserIdentity {
             if (is_null($loginUser)) {
                 $loginUser = TTeachers::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
             }
-
+            
             if (!is_null($loginUser)) {
+                $user->last_login_time = new CDbExpression('NOW()');
+                $user->save(false);
+                
                 $this->errorCode = self::ERROR_NONE;
                 $this->setState('ID',        $user->ID);
                 $this->setState('username',  $user->username);
@@ -56,10 +58,9 @@ class UserIdentity extends CUserIdentity {
             } else {
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
             }
-            
         }
-
-        return !$this->errorCode;
+        
+        return $this->errorCode == self::ERROR_NONE;
     }
 
 }

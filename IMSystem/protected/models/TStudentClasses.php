@@ -66,11 +66,11 @@ class TStudentClasses extends CActiveRecord
 			'ID' => 'ID',
 			'student_id' => '学生ID',
 			'class_id' => '班级ID',
-			'status' => '0:暂停 1:正常',
-			'create_user' => 'Create User',
-			'create_time' => 'Create Time',
-			'update_user' => 'Update User',
-			'update_time' => 'Update Time',
+			'status' => '状态', // 0:暂停 1:正常
+			'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
 		);
 	}
 

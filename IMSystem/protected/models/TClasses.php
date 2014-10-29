@@ -93,10 +93,10 @@ class TClasses extends CActiveRecord
             'status' => '状态', // (1:在校 2:毕业)
             'term_year' => '届',
             'teacher_id' => '班主任',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user' => '创建用户',
+            'create_time' => '创建时间',
+            'update_user' => '更新用户',
+            'update_time' => '更新时间',
         );
     }
 

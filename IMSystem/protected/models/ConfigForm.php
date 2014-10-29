@@ -13,12 +13,26 @@ class ConfigForm extends CFormModel {
         return array(
             // name, email, subject and body are required
             array('import_student_start_date, import_student_end_date', 'required'),
-            array('import_student_start_date, import_student_end_date', 'date', 'format'=>'yyyy-M-d'),
-            
+            array('import_student_start_date, import_student_end_date', 'date', 'format'=>'yyyy-MM-dd'),
+
             array('import_student_start_date, import_student_end_date', 'safe'),
         );
     }
 
+    public function afterValidate() {
+        parent::afterValidate();
+        
+        // 开始日期和结束日期的前后范围检查
+        $format = 'yyyy-MM-dd';
+        $start = CDateTimeParser::parse($this->import_student_start_date, $format);
+        $end = CDateTimeParser::parse($this->import_student_end_date, $format);
+        if ($end < $start) {
+            $this->addError('import_student_end_date', '结束日期不能早于开始日期！');
+        }
+        
+    }
+    
+    
     /**
      * Declares customized attribute labels.
      * If not declared here, an attribute would have a label that is

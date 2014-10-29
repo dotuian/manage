@@ -71,7 +71,7 @@ class ClassController extends BaseController {
 
             // 没有数据
             if($dataProvider->totalItemCount == 0 ) {
-                Yii::app()->user->setFlash('warning', "没有检索到相关数据！");
+                $this->setWarningMessage("没有检索到相关数据！");
             }
 
         }
@@ -150,10 +150,10 @@ class ClassController extends BaseController {
                 
                 if ($class->validate()) {
                     if ($class->save()) {
-                        Yii::app()->user->setFlash('success', "班级信息变更成功！");
+                        $this->setSuccessMessage("班级信息变更成功！");
                     } else {
                         Yii::log(print_r($class->errors, true));
-                        Yii::app()->user->setFlash('warning', "班级信息变更失败！");
+                        $this->setErrorMessage("班级信息变更失败！");
                     }
                 }
             }

@@ -3,37 +3,35 @@
 class ExcelUtils {
     
     public static function readExcel2Array($filename) {
+        $data = null;
+
         spl_autoload_unregister(array('YiiBase', 'autoload'));
+        try {
 
-        $phpExcelPath = Yii::getPathOfAlias('ext');
-        set_include_path($phpExcelPath);
-        include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel/IOFactory.php');
+            $phpExcelPath = Yii::getPathOfAlias('ext.phpexcel');
+            
+            //include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel/IOFactory.php');
+            include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+            
+            if (strtolower(substr($filename, -3)) === 'xls') {
+                $objReader = new PHPExcel_Reader_Excel5();
+            } else if (strtolower(substr($filename, -4)) === 'xlsx') {
+                $objReader = new PHPExcel_Reader_Excel2007();
+            }
 
-        if(strtolower(substr($filename, -3)) === 'xls') {
-            $objReader = new PHPExcel_Reader_Excel5();
-        } else if(strtolower(substr($filename, -3)) === 'xlsx') {
-            $objReader = new PHPExcel_Reader_Excel2007();
-        } else {
-            spl_autoload_register(array('YiiBase', 'autoload'));
-            return null;
+            if (isset($objReader)) {
+                $objPHPExcel = $objReader->load($filename);
+                $data = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+            }
+        } catch (Exception $exc) {
+            Yii::log(print_r($exc->getTraceAsString(), true));
         }
-        
-//            $objReader = new PHPExcel_Reader_Excel2003XML();
-        //	$objReader = new PHPExcel_Reader_Excel2003XML();
-        //	$objReader = new PHPExcel_Reader_OOCalc();
-        //	$objReader = new PHPExcel_Reader_SYLK();
-        //	$objReader = new PHPExcel_Reader_Gnumeric();
-        //	$objReader = new PHPExcel_Reader_CSV();
-
-        $objPHPExcel = $objReader->load($filename);
-        $data = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
 
         spl_autoload_register(array('YiiBase', 'autoload'));
 
         return $data;
     }
-    
-    
+
     
     
     
