@@ -121,22 +121,16 @@ class TFileUpload extends CActiveRecord {
         if (file_exists($this->realpath)) {
             // 将Excel数据读取到数组中
             $data = ExcelUtils::readExcel2Array($this->realpath);
-
-            Yii::log(print_r(count($data), true));
-
             if (is_array($data)) {
                 for ($index = 0; $index < count($data); $index++) {
                     // 第5行开始是数据
                     if ($index < 5) {
                         continue;
                     }
-
-                    $student = TUsers::model()->find('ID=:ID', array(':ID' => '1'));
-                    
-                    
-                    MSubjects::model()->getSubjectsBySubjectIds(array());
-                    
                     // 数据检查
+
+                    
+                    
                     // 数据导入
                     if (TUsers::model()->importStudent($data[$index])) {
                         // 导入成功

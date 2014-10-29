@@ -170,8 +170,6 @@ class TUsers extends CActiveRecord
     public function importStudent($value) {
         $result = false;
 
-        MSubjects::model()->getSubjectsBySubjectIds(array());
-        
         $login_id = Yii::app()->user->getState('ID');
         $code = trim($value['A']);
         $student = TStudents::model()->find('code=:code', array(':code' => $code));
@@ -180,8 +178,9 @@ class TUsers extends CActiveRecord
             // 用户表
             $user = new TUsers();
             $user->username = $code;
-            $user->password = "";
+            $user->password = "";  // 生日做密码
             $user->status = '1';
+            $user->last_login_time = null;
             $user->create_user = $login_id;
             $user->create_time = new CDbExpression('NOW()');
             $user->update_user = $login_id;
@@ -226,7 +225,10 @@ class TUsers extends CActiveRecord
                 $userRole->create_time = new CDbExpression('NOW()');
                 $userRole->update_user = $login_id;
                 $userRole->update_time = new CDbExpression('NOW()');
-
+                
+                // 用户班级表
+                $class = new TStudentClasses();
+                
                 if ($student->save(false) && $userRole->save(false)) {
                     $result = true;
                 }
