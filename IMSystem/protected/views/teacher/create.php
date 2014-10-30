@@ -31,9 +31,9 @@ $this->breadcrumbs = array(
                         ));
                     ?>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">教工号</label>
+                            <label class="col-lg-2 control-label">教工编号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'code',array('class'=>'form-control','placeholder'=>'教工号')); ?>
+                                <?php echo $form->textField($model,'code',array('class'=>'form-control','placeholder'=>'教工编号')); ?>
                                 <?php echo $form->error($model,'code'); ?>
                             </div>
                         </div>
@@ -54,14 +54,6 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                     
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">担任科目</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'subjects'); ?>
-                            </div>
-                        </div>
-
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
@@ -72,15 +64,31 @@ $this->breadcrumbs = array(
                                 </span>
                             </div>
                         </div>
-
+                    
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">地址</label>
+                            <label class="col-lg-2 control-label">身份证号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'address', array('class'=>'form-control','placeholder'=>'地址')); ?>
-                                <?php echo $form->error($model,'address'); ?>
+                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
+                                <?php echo $form->error($model,'id_card_no'); ?>
                             </div>
                         </div>
-                        
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">家庭住址</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'home_address', array('class'=>'form-control','placeholder'=>'家庭住址')); ?>
+                                <?php echo $form->error($model,'home_address'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">担任科目</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'subjects'); ?>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="col-lg-2 control-label">电话号码</label>
                             <div class="col-lg-10">
@@ -88,7 +96,308 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'telephonoe'); ?>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">民族</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'nation', array('class'=>'form-control','placeholder'=>'民族')); ?>
+                                <?php echo $form->error($model,'nation'); ?>
+                            </div>
+                        </div>
                     
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">籍贯</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'birthplace', array('class'=>'form-control','placeholder'=>'籍贯')); ?>
+                                <?php echo $form->error($model,'birthplace'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">工作年月</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'working_date', array('class'=>'form-control','placeholder'=>'工作年月')); ?>
+                                <?php echo $form->error($model,'working_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">入党年月</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'party_date', array('class'=>'form-control','placeholder'=>'入党年月')); ?>
+                                <?php echo $form->error($model,'party_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">职前学历</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'before_degree', array('class'=>'form-control','placeholder'=>'职前学历')); ?>
+                                <?php echo $form->error($model,'before_degree'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">职前毕业时间</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'before_graduate_date', array('class'=>'form-control','placeholder'=>'职前毕业时间')); ?>
+                                <?php echo $form->error($model,'before_graduate_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">职前毕业院校</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'before_graduate_school', array('class'=>'form-control','placeholder'=>'职前毕业院校')); ?>
+                                <?php echo $form->error($model,'before_graduate_school'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">职前毕业专业</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'before_graduate_major', array('class'=>'form-control','placeholder'=>'职前毕业专业')); ?>
+                                <?php echo $form->error($model,'before_graduate_major'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">现在学历</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_degree', array('class'=>'form-control','placeholder'=>'现在学历')); ?>
+                                <?php echo $form->error($model,'current_degree'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">现学历毕业时间</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_graduate_date', array('class'=>'form-control','placeholder'=>'现学历毕业时间')); ?>
+                                <?php echo $form->error($model,'current_graduate_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">现学历毕业院校</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_graduate_school', array('class'=>'form-control','placeholder'=>'现学历毕业院校')); ?>
+                                <?php echo $form->error($model,'current_graduate_school'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">现学历毕业专业</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_graduate_major', array('class'=>'form-control','placeholder'=>'现学历毕业专业')); ?>
+                                <?php echo $form->error($model,'current_graduate_major'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">专业技术职务</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'professional_technical_position', array('class'=>'form-control','placeholder'=>'专业技术职务')); ?>
+                                <?php echo $form->error($model,'professional_technical_position'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">工作科室及职务</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'work_departments_postion', array('class'=>'form-control','placeholder'=>'工作科室及职务')); ?>
+                                <?php echo $form->error($model,'work_departments_postion'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">现在职级</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_position_rank', array('class'=>'form-control','placeholder'=>'现在职级')); ?>
+                                <?php echo $form->error($model,'current_position_rank'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">任现职年月</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_position_date', array('class'=>'form-control','placeholder'=>'任现职年月')); ?>
+                                <?php echo $form->error($model,'current_position_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">任现级年月</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'current_level_date', array('class'=>'form-control','placeholder'=>'任现级年月')); ?>
+                                <?php echo $form->error($model,'current_level_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">基本情况备注</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'basic_memo', array('class'=>'form-control','placeholder'=>'基本情况备注')); ?>
+                                <?php echo $form->error($model,'basic_memo'); ?>
+                            </div>
+                        </div>
+                    
+                    <hr />
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">继续教育地址</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'continue_education_address', array('class'=>'form-control','placeholder'=>'继续教育地址')); ?>
+                                <?php echo $form->error($model,'continue_education_address'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">继续教育时间</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'continue_education_date', array('class'=>'form-control','placeholder'=>'继续教育时间')); ?>
+                                <?php echo $form->error($model,'continue_education_date'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">获得学分</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'continue_education_credit', array('class'=>'form-control','placeholder'=>'获得学分')); ?>
+                                <?php echo $form->error($model,'continue_education_credit'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">证明人</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'continue_education_prove_people', array('class'=>'form-control','placeholder'=>'证明人')); ?>
+                                <?php echo $form->error($model,'continue_education_prove_people'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">表彰情况</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'moral_praise', array('class'=>'form-control','placeholder'=>'表彰情况')); ?>
+                                <?php echo $form->error($model,'moral_praise'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">学生测评</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'moral_student_evaluation', array('class'=>'form-control','placeholder'=>'学生测评')); ?>
+                                <?php echo $form->error($model,'moral_student_evaluation'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">目标考核</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'moral_target_check', array('class'=>'form-control','placeholder'=>'目标考核')); ?>
+                                <?php echo $form->error($model,'moral_target_check'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">师德备注</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'moral_memo', array('class'=>'form-control','placeholder'=>'师德备注')); ?>
+                                <?php echo $form->error($model,'moral_memo'); ?>
+                            </div>
+                        </div>
+                    
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">任教年级</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'teach_grades', array('class'=>'form-control','placeholder'=>'任教年级')); ?>
+                                <?php echo $form->error($model,'teach_grades'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">教研职务</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'teaching_research_postion', array('class'=>'form-control','placeholder'=>'教研职务')); ?>
+                                <?php echo $form->error($model,'teaching_research_postion'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">招生情况</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'recruit_students', array('class'=>'form-control','placeholder'=>'招生情况')); ?>
+                                <?php echo $form->error($model,'recruit_students'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">考勤情况</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'attendance', array('class'=>'form-control','placeholder'=>'考勤情况')); ?>
+                                <?php echo $form->error($model,'attendance'); ?>
+                            </div>
+                        </div>
+                    
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">履职备注</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'working_memo', array('class'=>'form-control','placeholder'=>'履职备注')); ?>
+                                <?php echo $form->error($model,'working_memo'); ?>
+                            </div>
+                        </div>
+                    
+                        <hr />
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">辅导获奖</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'tutorship_award', array('class'=>'form-control','placeholder'=>'辅导获奖')); ?>
+                                <?php echo $form->error($model,'tutorship_award'); ?>
+                            </div>
+                        </div>
+                    
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">参赛获奖</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'competition_award', array('class'=>'form-control','placeholder'=>'参赛获奖')); ?>
+                                <?php echo $form->error($model,'competition_award'); ?>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">论文著作</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'paper_work', array('class'=>'form-control','placeholder'=>'论文著作')); ?>
+                                <?php echo $form->error($model,'paper_work'); ?>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">参赛项目情况</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'competition_item', array('class'=>'form-control','placeholder'=>'参赛项目情况')); ?>
+                                <?php echo $form->error($model,'competition_item'); ?>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">业务备注</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textArea($model,'business_memo', array('class'=>'form-control','placeholder'=>'业务备注')); ?>
+                                <?php echo $form->error($model,'business_memo'); ?>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <label class="col-lg-2 control-label">角色</label>
                             <div class="col-lg-10">
