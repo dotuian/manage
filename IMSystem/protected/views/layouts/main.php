@@ -362,7 +362,7 @@
     </div>
 
    <!-- Mainbar ends -->
-   <div class="clearfix"></div>/
+   <div class="clearfix"></div>
 
 </div>
 <!-- Content ends -->
@@ -406,7 +406,7 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.stack.js"></script>
 
 <!-- jQuery Notification - Noty -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.noty.js"></script> <1    !-- jQuery Notify -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.noty.js"></script> <!-- jQuery Notify -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/default.js"></script> <!-- jQuery Notify -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bottom.js"></script> <!-- jQuery Notify -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/topRight.js"></script> <!-- jQuery Notify -->

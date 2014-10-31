@@ -229,7 +229,7 @@ $(document).ready(function(){
 
 
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">教工号</label>
+                            <label class="col-lg-2 control-label">教工编号</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->textField($model,'code',array('class'=>'form-control','disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'code'); ?>
