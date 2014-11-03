@@ -34,9 +34,9 @@ class TeacherController extends BaseController {
                 $condition .= " and a.sex = :sex ";
                 $params[':sex'] = trim($model->sex);
             }
-            if (trim($model->address) !== '') {
-                $condition .= " and a.address like :address ";
-                $params[':address'] = '%' . StringUtils::escape(trim($model->address)) . '%';
+            if (trim($model->home_address) !== '') {
+                $condition .= " and a.home_address like :home_address ";
+                $params[':home_address'] = '%' . StringUtils::escape(trim($model->home_address)) . '%';
             }
             $sql .= $condition;
             $countSql .= $condition;

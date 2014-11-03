@@ -11,6 +11,9 @@ class LoginForm extends CFormModel {
     public $password;
     public $rememberMe;
     private $_identity;
+    
+    // 是否为第一次登陆
+    public $isFirstLogin;
 
     /**
      * Declares the validation rules.
@@ -63,12 +66,11 @@ class LoginForm extends CFormModel {
         }
         if ($this->_identity->errorCode === UserIdentity::ERROR_NONE) {
             $duration = $this->rememberMe ? 3600 * 24 * 30 : 0; // 30 days
-
+            $this->isFirstLogin = $this->_identity->isFirstLogin;
             Yii::app()->user->login($this->_identity, $duration);
             return true;
         } else {
             return false;
         }
     }
-
 }

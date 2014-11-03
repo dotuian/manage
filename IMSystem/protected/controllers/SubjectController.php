@@ -9,17 +9,15 @@ class SubjectController extends BaseController {
      * 查询科目信息
      */
     public function actionSearch() {
+        $sql = "select a.* from m_subjects a where a.status='1' ";
+        $countSql = "select count(*) from m_subjects a where a.status='1' ";
+        $condition = '';
+        $params = array();
 
         $model = new SubjectForm();
-        
         if (isset($_GET['SubjectForm'])) {
             $model->attributes = $_GET['SubjectForm'];
             
-            $sql = "select a.* from m_subjects a where a.status='1' ";
-            $countSql = "select count(*) from m_subjects a where a.status='1' ";
-            $condition = '';
-            $params = array();
-
             if (trim($model->subject_code) !== '') {
                 $condition .= " and a.subject_code like :subject_code ";
                 $params[':subject_code'] = '%' . StringUtils::escape(trim($model->subject_code)) . '%';
@@ -36,37 +34,38 @@ class SubjectController extends BaseController {
                 $condition .= " and a.subject_type = :subject_type ";
                 $params[':subject_type'] = trim($model->subject_type);
             }
-            $sql .= $condition;
-            $countSql .= $condition;
-
-            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-            $dataProvider = new CSqlDataProvider($sql, array(
-                'params' => $params,
-                'keyField' => 'ID',
-                'totalItemCount' => $count,
-                'sort' => array(
-                    'attributes' => array(
-                        'user' => array(
-                            'asc' => 'a.ID',
-                            'desc' => 'a.ID desc',
-                            'default' => 'desc',
-                        )
-                    ),
-                    'defaultOrder' => array(
-                        'user' => true,
-                    ),
-                ),
-                'pagination' => array(
-                    'pageSize' => Yii::app()->params['PageSize'],
-                ),
-            ));
-
-            // 没有数据
-            if ($dataProvider->totalItemCount == 0) {
-                $this->setWarningMessage("没有检索到相关数据！");
-            }
         }
 
+        $sql .= $condition;
+        $countSql .= $condition;
+
+        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+        $dataProvider = new CSqlDataProvider($sql, array(
+            'params' => $params,
+            'keyField' => 'ID',
+            'totalItemCount' => $count,
+            'sort' => array(
+                'attributes' => array(
+                    'user' => array(
+                        'asc' => 'a.ID',
+                        'desc' => 'a.ID desc',
+                        'default' => 'desc',
+                    )
+                ),
+                'defaultOrder' => array(
+                    'user' => true,
+                ),
+            ),
+            'pagination' => array(
+                'pageSize' => Yii::app()->params['PageSize'],
+            ),
+        ));
+
+        // 没有数据
+        if ($dataProvider->totalItemCount == 0) {
+            $this->setWarningMessage("没有检索到相关数据！");
+        }
+        
         $this->render('search', array(
             'model' => $model,
             'dataProvider' => isset($dataProvider) ? $dataProvider : null,
@@ -92,6 +91,8 @@ class SubjectController extends BaseController {
                 $subject->subject_type = $model->subject_type;
                 $subject->status = '1'; //状态正常
                 $subject->level = 0;    // 
+                $subject->total_score = $model->total_score;    // 
+                $subject->pass_score = $model->pass_score;    // 
                 
                 $subject->create_user = $this->getLoginUserId();
                 $subject->update_user = $this->getLoginUserId();
@@ -127,6 +128,10 @@ class SubjectController extends BaseController {
                 $subject->subject_name       = trim($_POST['MSubjects']['subject_name']);
                 $subject->subject_short_name = trim($_POST['MSubjects']['subject_short_name']);
                 $subject->subject_type       = trim($_POST['MSubjects']['subject_type']);
+                $subject->total_score        = trim($_POST['MSubjects']['total_score']);
+                $subject->pass_score         = trim($_POST['MSubjects']['pass_score']);
+                $subject->status             = trim($_POST['MSubjects']['status']);
+                
                 $subject->update_user = $this->getLoginUserId();
                 $subject->update_time = new CDbExpression('NOW()');
                 if($subject->validate()) {

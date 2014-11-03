@@ -8,8 +8,6 @@ $this->breadcrumbs = array(
 
 </script>
 
-
-
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
@@ -60,8 +58,24 @@ $this->breadcrumbs = array(
                                 <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
-                                <br/><?php echo $form->error($model,'birthday'); ?>
                                 </span>
+                                <br/><?php echo $form->error($model,'birthday'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">担任科目</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'subjects'); ?>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">角色</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getAllRolesOption(false), array('separator'=>'　')); ?>
+                                <br/><?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>
                     
@@ -78,14 +92,6 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'home_address', array('class'=>'form-control','placeholder'=>'家庭住址')); ?>
                                 <?php echo $form->error($model,'home_address'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">担任科目</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'subjects'); ?>
                             </div>
                         </div>
 
@@ -397,14 +403,7 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'business_memo'); ?>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">角色</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getAllRolesOption(false), array('separator'=>'　')); ?>
-                                <br/><?php echo $form->error($model,'roles'); ?>
-                            </div>
-                        </div>
+
 
                         <hr />
                         <div class="form-group">

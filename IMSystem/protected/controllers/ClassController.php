@@ -10,70 +10,90 @@ class ClassController extends BaseController {
      */
     public function actionSearch() {
         
+        $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where a.status=:status ";
+        $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where a.status=:status ";
+        $condition = '';
+        
         $model = new ClassForm();
         $model->status = '1';
+        
+        $params = array();
+        $params[':status'] = trim($model->status);
+        
         if (isset($_GET['ClassForm'])) {
             $model->attributes = $_GET['ClassForm'];
-            
-            $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
-            $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
-            $params = array();
-            $condition = '';
-            
+            // 检索条件
             if (trim($model->class_code) !== '') {
                 $condition .= " and a.class_code like :class_code ";
                 $params[':class_code'] = '%' . trim($model->class_code) . '%';
             }
+            // 
             if (trim($model->class_name) !== '') {
                 $condition .= " and a.class_name like :class_name ";
                 $params[':class_name'] = '%' . trim($model->class_name) . '%';
             }
+            // 年级
+            if (trim($model->grade) !== '') {
+                $condition .= " and a.grade = :grade ";
+                $params[':grade'] = trim($model->grade);
+            }
+            // 入学年份
+            if (trim($model->entry_year) !== '') {
+                $condition .= " and a.entry_year = :entry_year ";
+                $params[':entry_year'] = trim($model->entry_year);
+            }
+            // 学期
+            if (trim($model->term_type) !== '') {
+                $condition .= " and a.term_type = :term_type ";
+                $params[':term_type'] = trim($model->term_type);
+            }
+            // 班级性质
             if (trim($model->class_type) !== '') {
                 $condition .= " and a.class_type = :class_type ";
                 $params[':class_type'] = trim($model->class_type);
+            }
+            // 专业名称
+            if (trim($model->specialty_name) !== '') {
+                $condition .= " and a.specialty_name like :specialty_name ";
+                $params[':specialty_name'] = '%' . trim($model->specialty_name) . '%';
             }
             if (trim($model->status) !== '') {
                 $condition .= " and a.status = :status ";
                 $params[':status'] = trim($model->status);
             }
-            if (trim($model->term_year) !== '') {
-                $condition .= " and a.term_year=:term_year ";
-                $params[':term_year'] = trim($model->term_year);
-            }
             if (trim($model->teacher_id) !== '') {
                 $condition .= " and a.teacher_id = :teacher_id ";
                 $params[':teacher_id'] = trim($model->teacher_id);
             }
-            $sql .= $condition;
-            $countSql .= $condition;
-            
-            $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
-            $dataProvider = new CSqlDataProvider($sql, array(
-                'params' => $params,
-                'keyField' => 'ID',
-                'totalItemCount' => $count,
-                'sort' => array(
-                    'attributes' => array(
-                        'user' => array(
-                            'asc' => 'a.class_code',
-                            'desc' => 'a.class_code desc',
-                            'default' => 'desc',
-                        )
-                    ),
-                    'defaultOrder' => array(
-                        'user' => true,
-                    ),
-                ),
-                'pagination' => array(
-                    'pageSize' => Yii::app()->params['PageSize'],
-                ),
-            ));
+        }
+        $sql .= $condition;
+        $countSql .= $condition;
 
-            // 没有数据
-            if($dataProvider->totalItemCount == 0 ) {
-                $this->setWarningMessage("没有检索到相关数据！");
-            }
+        $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
+        $dataProvider = new CSqlDataProvider($sql, array(
+            'params' => $params,
+            'keyField' => 'ID',
+            'totalItemCount' => $count,
+            'sort' => array(
+                'attributes' => array(
+                    'user' => array(
+                        'asc' => 'a.class_code',
+                        'desc' => 'a.class_code desc',
+                        'default' => 'desc',
+                    )
+                ),
+                'defaultOrder' => array(
+                    'user' => true,
+                ),
+            ),
+            'pagination' => array(
+                'pageSize' => Yii::app()->params['PageSize'],
+            ),
+        ));
 
+        // 没有数据
+        if($dataProvider->totalItemCount == 0 ) {
+            $this->setWarningMessage("没有检索到相关数据！");
         }
 
         $this->render('search', array(
@@ -89,7 +109,7 @@ class ClassController extends BaseController {
     public function actionCreate() {
 
         $model = new ClassForm('create');
-        $model->term_year = date('Y');
+        $model->entry_year = date('Y');
         
         if (isset($_POST['ClassForm'])) {
             $model->attributes = $_POST['ClassForm'];
@@ -99,10 +119,11 @@ class ClassController extends BaseController {
                     $class = new TClasses();
                     $class->class_code = trim($model->class_code);
                     $class->class_name = trim($model->class_name);
+                    $class->entry_year = intval($model->entry_year);
+                    $class->term_type = trim($model->term_type);
                     $class->class_type = trim($model->class_type); // 班级类型(0:普通高中 1:技能专业)
                     $class->specialty_name = trim($model->specialty_name); // 专业名称
                     $class->status = '1'; // 新建正常状态的班级信息
-                    $class->term_year = intval($model->term_year);
                     $class->teacher_id = intval($model->teacher_id);
                     
                     $class->create_user = $this->getLoginUserId();
@@ -142,7 +163,7 @@ class ClassController extends BaseController {
                 $class->class_name = trim($_POST['TClasses']['class_name']);
                 $class->class_type = trim($_POST['TClasses']['class_type']);
                 $class->status = trim($_POST['TClasses']['status']);
-                $class->term_year = trim($_POST['TClasses']['term_year']);
+                $class->entry_year = trim($_POST['TClasses']['entry_year']);
                 $class->teacher_id = trim($_POST['TClasses']['teacher_id']);
 
                 $class->update_user = $this->getLoginUserId();

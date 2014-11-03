@@ -38,6 +38,9 @@ class BaseController extends CController {
         
         // 登录用户角色
         $this->role = Yii::app()->user->getState('role');
+        
+        Yii::log('__GET___ ' . print_r($_GET, true));
+        Yii::log('__POST___ ' . print_r($_POST, true));
     }
     
     /**

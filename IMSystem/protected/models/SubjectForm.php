@@ -9,7 +9,9 @@ class SubjectForm extends CFormModel {
     public $subject_type;
     public $status;
     public $level;
-
+    public $total_score;
+    public $pass_score;
+    
     /**
      * @return array validation rules for model attributes.
      */
@@ -18,7 +20,7 @@ class SubjectForm extends CFormModel {
         // will receive user inputs.
         return array(
             // 共同
-            array('subject_code, subject_name, subject_short_name,subject_type', 'required'),
+            array('subject_code, subject_name, subject_short_name,subject_type, total_score, pass_score', 'required'),
             
             // 科目代号
             array('subject_code', 'length', 'max' => 10),
@@ -30,6 +32,10 @@ class SubjectForm extends CFormModel {
             array('subject_type', 'length', 'max' => 1),
             array('subject_type','in','range'=>array('0','1'),'allowEmpty'=>false),
 
+            array('total_score, pass_score', 'length', 'max' => 3),
+            array('total_score, pass_score', 'numerical', 'integerOnly' => true),
+
+            
             array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level', 'safe'),
         );
     }
@@ -54,6 +60,8 @@ class SubjectForm extends CFormModel {
             'subject_type' => '科目类型',
             'status' => '状态',
             'level' => '显示排序用',
+            'total_score' => '总分',
+            'pass_score' => '及格分数',
         );
     }
 
@@ -65,6 +73,18 @@ class SubjectForm extends CFormModel {
 
         $result['0'] = '普通高中';
         $result['1'] = '技能专业';
+
+        return $result;
+    }
+
+    public static function getSubjectStatusOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = Yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['1'] = '使用中';
+        $result['2'] = '停止中';
 
         return $result;
     }

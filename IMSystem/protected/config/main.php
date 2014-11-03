@@ -44,6 +44,7 @@ return array(
         'user' => array(
             // enable cookie-based authentication
             'allowAutoLogin' => false,
+            'loginUrl'=>array('site/login'),
         ),
         // uncomment the following to enable URLs in path-format
         /*
@@ -74,7 +75,7 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'rootadmin',
@@ -84,7 +85,7 @@ return array(
             'enableSlave' => false,
             'slaves' => array(
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
                     'username' => 'root',
                     'password' => 'rootadmin',
                     'charset' => 'utf8',
@@ -92,7 +93,7 @@ return array(
                     'enableParamLogging' => true,
                 ),
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
                     'username' => 'root',
                     'password' => 'rootadmin',
                     'charset' => 'utf8',
@@ -117,7 +118,7 @@ return array(
                 ),
                array(
                     'class'=>'CWebLogRoute',
-                    //'levels' => 'trace,info,error,warning,debug',
+//                    'levels' => 'trace,info,error,warning,debug',
                 ),
             ),
         ),
@@ -129,7 +130,7 @@ return array(
         // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
         'EmptySelectOption' => '--------',
-        'PageSize' => 10,
+        'PageSize' => 20,
         'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\uploadfile\\',
     ),
 );

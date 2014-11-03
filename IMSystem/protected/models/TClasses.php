@@ -7,10 +7,12 @@
  * @property string $ID
  * @property string $class_code
  * @property string $class_name
+ * @property integer $grade
+ * @property integer $entry_year
+ * @property string $term_type
  * @property string $class_type
  * @property string $specialty_name
  * @property string $status
- * @property integer $term_year
  * @property string $teacher_id
  * @property string $create_user
  * @property string $create_time
@@ -21,8 +23,7 @@
  * @property MCourses[] $mCourses
  * @property TTeachers $teacher
  * @property TScores[] $tScores
- * @property TStudents[] $tStudents
- * @property TStudents[] $tStudents1
+ * @property TStudentClasses[] $tStudentClasses
  */
 class TClasses extends CActiveRecord
 {
@@ -42,26 +43,26 @@ class TClasses extends CActiveRecord
         // will receive user inputs.
         return array(
             // 共同
-            array('class_code, class_name, class_type, term_year, teacher_id', 'required'),
-            array('class_code, term_year', 'numerical', 'integerOnly' => true),
-            array('class_name, specialty_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
-            
+            array('class_code, class_name, class_type, entry_year, teacher_id, grade', 'required'),
+            array('entry_year', 'numerical', 'integerOnly' => true),
+            array('class_name, specialty_name, term_type', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
             //========================================================================
             // 班级代号
-            array('class_code', 'length', 'max' => 3, 'encoding'=>'UTF-8'),
+            array('class_code', 'length', 'max' => 10, 'encoding' => 'UTF-8'),
             // 班级名称
-            array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            array('class_name', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
             // 班级性质
-            array('class_type','in','range'=>array('0','1'),'allowEmpty'=>false),
+            array('class_type', 'in', 'range' => array('0', '1'), 'allowEmpty' => false),
             // 专业名称
-            array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            array('class_code', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
+            // 年级
+            array('grade', 'length', 'max' => 1),
             // 入学年份
-            array('term_year', 'length', 'max' => 4),
+            array('entry_year', 'length', 'max' => 4),
             // 班主任
             array('teacher_id', 'length', 'max' => 10),
             //========================================================================
-            
-            array('ID, class_code, class_name, class_type, specialty_name, status, term_year, teacher_id, create_user, create_time, update_user, update_time', 'safe'),
+            array('ID, class_code, class_name, class_type, grade, specialty_name, status, entry_year, term_type, teacher_id, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -76,7 +77,6 @@ class TClasses extends CActiveRecord
             'teacher' => array(self::BELONGS_TO, 'TTeachers', 'teacher_id'),
             'tScores' => array(self::HAS_MANY, 'TScores', 'class_id'),
             'tStudents' => array(self::HAS_MANY, 'TStudents', 'class_id'),
-            'tStudents1' => array(self::HAS_MANY, 'TStudents', 'old_class_id'),
         );
     }
 
@@ -88,10 +88,12 @@ class TClasses extends CActiveRecord
             'ID' => 'ID',
             'class_code' => '班级代号',
             'class_name' => '班级名称',
+            'grade' => '年级',
+            'entry_year' => '入学年份',
+            'term_type' => '学期',
             'class_type' => '班级类型',
             'specialty_name' => '专业名称', // 班级类型(0:普通高中 1:技能专业)
             'status' => '状态', // (1:在校 2:毕业)
-            'term_year' => '届',
             'teacher_id' => '班主任',
             'create_user' => '创建用户',
             'create_time' => '创建时间',
@@ -120,9 +122,12 @@ class TClasses extends CActiveRecord
         $criteria->compare('ID', $this->ID, true);
         $criteria->compare('class_code', $this->class_code, true);
         $criteria->compare('class_name', $this->class_name, true);
+        $criteria->compare('grade', $this->grade);
+        $criteria->compare('entry_year', $this->entry_year);
+        $criteria->compare('term_type', $this->term_type, true);
         $criteria->compare('class_type', $this->class_type, true);
+        $criteria->compare('specialty_name', $this->specialty_name, true);
         $criteria->compare('status', $this->status, true);
-        $criteria->compare('term_year', $this->term_year);
         $criteria->compare('teacher_id', $this->teacher_id, true);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);
@@ -155,9 +160,10 @@ class TClasses extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
 
-        $data = self::model()->findAll("status='2'");
+        $data = self::model()->findAll("status='2' order by create_time desc, grade asc, class_code asc");
         foreach ($data as $value) {
-            $result[$value->ID] = $value->class_name;
+            $term_name = $value->term_type == '1' ? '上学期' : '下学期';
+            $result[$value->ID] = "{$value->entry_year} | {$value->class_code} | {$value->class_name} | {$term_name}";
         }
 
         return $result;
@@ -176,7 +182,8 @@ class TClasses extends CActiveRecord
 
         $data = self::model()->findAll("status='1'");
         foreach ($data as $value) {
-            $result[$value->ID] = $value->class_name;
+            $term_name = $value->term_type == '1' ? '上学期' : '下学期';
+            $result[$value->ID] = "{$value->class_code} | {$value->class_name} | {$term_name}";
         }
 
         return $result;
@@ -197,7 +204,7 @@ class TClasses extends CActiveRecord
         $data = $this->getClassInfoByUserRole($user_id);
 
         foreach ($data as $value) {
-            $result[$value->ID] = $value->term_year . ' | ' . $value->class_code . '| ' . $value->class_name;
+            $result[$value->ID] = $value->class_code . ' | ' . $value->class_name;
         }
         
         return $result;

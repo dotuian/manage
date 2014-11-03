@@ -6,6 +6,7 @@
  * data can identity the user.
  */
 class UserIdentity extends CUserIdentity {
+    public $isFirstLogin = false;
 
     /**
      * Authenticates a user.
@@ -24,6 +25,11 @@ class UserIdentity extends CUserIdentity {
             // 密码错误
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
+            // 是否为第一次登陆
+            if(is_null($user->last_login_time)){
+                $this->isFirstLogin = true;
+            }
+            
             $loginUser = TStudents::model()->find("ID=:id and status='1'", array(':id' => $user->ID));
             if (is_null($loginUser)) {
                 $loginUser = TTeachers::model()->find("ID=:id and status='1'", array(':id' => $user->ID));

@@ -47,6 +47,30 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">入学年份</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->dropDownList($model,'entry_year', ClassForm::getEntryYearOption(3, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->error($model,'entry_year'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">年级</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(3, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->error($model,'grade'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">学期</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->error($model,'term_type'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">班级性质</label>
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(false), array('class'=>'form-control')); ?>
@@ -59,14 +83,6 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control','placeholder'=>'专业名称')); ?>
                                 <?php echo $form->error($model,'specialty_name'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">入学年份</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_year', ClassForm::getTermYearOption(3, false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'term_year'); ?>
                             </div>
                         </div>
 

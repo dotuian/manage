@@ -1,0 +1,15 @@
+﻿ALTER TABLE `t_classes`
+	CHANGE COLUMN `term_year` `entry_year` INT(4) NULL DEFAULT NULL COMMENT '入学年份' AFTER `class_name`,
+	ADD COLUMN `term_type` ENUM('上学期','下学期') NULL DEFAULT NULL COMMENT '学期' AFTER `entry_year`;
+
+ALTER TABLE `t_classes`
+	CHANGE COLUMN `term_type` `term_type` ENUM('1','2') NULL DEFAULT NULL COMMENT '学期(1:上学期 2:下学期)' COLLATE 'utf8_bin' AFTER `entry_year`;
+	
+	
+ALTER TABLE `m_subjects`
+	ADD COLUMN `total_score` INT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '总分' AFTER `subject_type`,
+	ADD COLUMN `pass_score` INT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '及格分数' AFTER `total_score`;
+
+	
+ALTER TABLE `t_classes`
+	ADD COLUMN `grade` INT(1) NULL DEFAULT NULL COMMENT '年级' AFTER `class_name`;

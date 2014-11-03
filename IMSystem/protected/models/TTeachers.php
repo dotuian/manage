@@ -105,7 +105,7 @@ class TTeachers extends CActiveRecord
             array('status, sex', 'length', 'max' => 1),
             array('home_address', 'length', 'max' => 50, 'encoding' => 'UTF-8'),
             array('telephonoe', 'length', 'max' => 11),
-            array('birthday', 'date', 'format' => 'yyyy-M-d', 'allowEmpty' => true),
+            array('birthday', 'date', 'format' => 'yyyy-MM-dd', 'allowEmpty' => true),
             array('roles, subjects', 'safe'),
         );
     }
@@ -175,7 +175,7 @@ class TTeachers extends CActiveRecord
             'paper_work' => '论文著作',
             'competition_item' => '参赛项目情况',
             'business_memo' => '业务备注',
-			'create_user' => '创建用户',
+            'create_user' => '创建用户',
             'create_time' => '创建时间',
             'update_user' => '更新用户',
             'update_time' => '更新时间',
@@ -372,7 +372,7 @@ class TTeachers extends CActiveRecord
      */
     public function getTeacherSubjectIds(){
         $result = array();
-        
+        Yii::log(print_r($this->tTeacherSubjects, true));
         foreach ($this->tTeacherSubjects as $teacherSubject) {
             $result[] = $teacherSubject->subject_id;
         }

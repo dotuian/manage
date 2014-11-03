@@ -53,7 +53,7 @@ $(document).ready(function(){
                         <?php echo $form->dropDownList($model,'sex', StudentForm::getSexOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'address', array('class'=>'form-control', 'placeholder'=>'地址')); ?>
+                        <?php echo $form->textField($model,'home_address', array('class'=>'form-control', 'placeholder'=>'地址')); ?>
                     </td>
                 </tr>
             </tbody>

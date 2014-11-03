@@ -61,19 +61,44 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'subject_type'); ?>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">总分</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'total_score', array('class'=>'form-control', 'placeholder'=>'总分')); ?>
+                                <?php echo $form->error($model,'total_score'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">及格分数</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'pass_score', array('class'=>'form-control', 'placeholder'=>'及格分数')); ?>
+                                <?php echo $form->error($model,'pass_score'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">状态</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->dropDownList($model,'status', SubjectForm::getSubjectStatusOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->error($model,'status'); ?>
+                            </div>
+                        </div>
                     
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
                                 <?php 
-                                    echo CHtml::Button("删除", array(
-                                        'confirm'=>'确定要删除吗？',
-                                        'params'=>array('ID' => $model->ID),
-                                        'submit' => array('delete'),
-                                        'class'=>'btn btn-delete',
-                                        'encode'=>false,
-                                    ));
+//                                    echo CHtml::Button("删除", array(
+//                                        'confirm'=>'确定要删除吗？',
+//                                        'params'=>array('ID' => $model->ID),
+//                                        'submit' => array('delete'),
+//                                        'class'=>'btn btn-delete',
+//                                        'encode'=>false,
+//                                    ));
                                 ?>
+                                <input type="reset" class="btn btn-reset" value='重置' />
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>

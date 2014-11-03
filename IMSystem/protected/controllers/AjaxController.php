@@ -102,4 +102,21 @@ class AjaxController extends BaseController {
         }
     }
 
+    /***
+     * 根据年级获取改年级说对应的所有班级
+     */
+    public function actionGetClassOptionByGrade(){
+        if (isset($_POST['grade'])) {
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode(yii::app()->params['EmptySelectOption']), true);
+
+            if (is_numeric($_POST['grade'])) {
+                $grade = trim($_POST['grade']);
+                $data = TClasses::model()->findAll("grade=:grade and status='1'", array(':grade'=>$grade));
+                foreach ($data as $value) {
+                    echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['class_name']), true);
+                }
+            }
+        }
+        
+    }
 }

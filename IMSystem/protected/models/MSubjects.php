@@ -9,6 +9,8 @@
  * @property string $subject_name
  * @property string $subject_short_name
  * @property string $subject_type
+ * @property string $total_score
+ * @property string $pass_score
  * @property string $status
  * @property string $level
  * @property string $create_user
@@ -39,7 +41,7 @@ class MSubjects extends CActiveRecord
         // will receive user inputs.
         return array(
             // 共同
-            array('subject_code, subject_name, subject_short_name, subject_type, level, create_time, update_time', 'required'),
+            array('subject_code, subject_name, subject_short_name, subject_type, total_score, pass_score', 'required'),
             
             //========================================================================
             // 科目代号
@@ -51,8 +53,10 @@ class MSubjects extends CActiveRecord
             // 科目类型(0:普高 1:技能)
             array('subject_type', 'length', 'max' => 1),
             array('subject_type','in','range'=>array('0','1'),'allowEmpty'=>false),
+	    
+            array('total_score, pass_score', 'length', 'max' => 3),
+            array('total_score, pass_score', 'numerical', 'integerOnly' => true),
             //========================================================================
-
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level, create_user, create_time, update_user, update_time', 'safe'),
@@ -81,7 +85,9 @@ class MSubjects extends CActiveRecord
             'subject_code' => '科目代号',
             'subject_name' => '科目名称',
             'subject_short_name' => '科目名称(简称)',
-            'subject_type' => '科目类型',
+            'subject_type' => '科目类型', //(0:普高 1:技能)
+            'total_score' => '总分',
+            'pass_score' => '及格分数',
             'status' => '状态(1:正常 2:异常)',
             'level' => '显示排序用',
             'create_user' => '创建用户',
@@ -113,6 +119,8 @@ class MSubjects extends CActiveRecord
         $criteria->compare('subject_name', $this->subject_name, true);
         $criteria->compare('subject_short_name', $this->subject_short_name, true);
         $criteria->compare('subject_type', $this->subject_type, true);
+        $criteria->compare('total_score', $this->total_score, true);
+        $criteria->compare('pass_score', $this->pass_score, true);
         $criteria->compare('status', $this->status, true);
         $criteria->compare('level', $this->level, true);
         $criteria->compare('create_user', $this->create_user, true);

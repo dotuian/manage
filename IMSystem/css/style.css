@@ -2002,6 +2002,12 @@ footer a:hover{
 
 footer .copy{
 	font-size: 11px;
+        color: #fff;
+}
+
+footer .copy a{
+	font-size: 11px;
+        color: #fff;
 }
 
 /* Noty Style */

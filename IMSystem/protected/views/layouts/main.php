@@ -6,9 +6,10 @@
         <meta charset="utf-8">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="keywords" content="">
-        <meta name="author" content="">
+        <meta name="description" content="孝感综合高级中学">
+        <meta name="description" content="成绩管理">
+        <meta name="keywords" content="孝感综合高级中学,成绩管理">
+        <meta name="author" content="孝感综合高级中学">
 
         <!-- MoodStrap CSS framework -->
         <!-- Stylesheets -->
@@ -73,7 +74,7 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <!--<span class="bold">孝感市综合高级中学</span>-->
+                 <span class="bold">孝感市综合高级中学</span>
                  <!--<i>学生成绩管理系统</i> -->
             </a>
         </div>
@@ -247,6 +248,10 @@
                     <?php if(in_array('score/class', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/class');?>">班级学生成绩</a></li>
                     <?php } ?>
+                    
+                    <?php if(in_array('score/analysis', $authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('score/analysis');?>">成绩统计分析</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>
@@ -318,7 +323,7 @@
       
 	    <!-- Page heading -->
 	    <div class="page-head">
-                <h2 class="pull-left">学生成绩管理系统</h2>
+                <h2 class="pull-left">成绩管理系统</h2>
                 <div class="clearfix"></div>
 
                 <!-- Breadcrumb -->
@@ -371,11 +376,18 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <!-- Copyright info -->
                 <p class="copy">
                     Copyright &copy; 2014 -- <?php echo date('Y')?> | 
-                    <a href="http://xgzhgz.com">孝感市综合高级中学</a> 
+                    <a href="http://xgzhgz.com" target="_blank">孝感市综合高级中学</a> 
+                </p>
+            </div>
+            <div class="col-md-2">
+                <!-- Copyright info -->
+                <p class="copy">
+                    技术支持QQ：254557578 <br/>
+                    邮箱：<email>dotuian@outlook.com</email>
                 </p>
             </div>
         </div>

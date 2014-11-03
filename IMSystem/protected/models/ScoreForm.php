@@ -13,6 +13,9 @@ class ScoreForm extends CFormModel {
     public $student_code;
     public $student_name;
     public $score;
+    
+    public $class_type; // 班级类型 普高还是中专
+    public $grade; //年级
 
     /**
      * @return array validation rules for model attributes.
@@ -26,10 +29,16 @@ class ScoreForm extends CFormModel {
             array('exam_id, subject_id, class_id, student_id', 'length', 'max' => 10),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_code, student_name, score, ', 'safe'),
+            array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_code, student_name, score, grade', 'safe'),
+            
+            
+            
             
             // 班级成绩查询时，班级信息必须输入
             array('class_id, exam_id', 'required', 'on'=>'search_class_score'),
+            
+            // 学生成绩分析
+            array('exam_id, grade', 'required', 'on'=>'analysis'),
         );
     }
 
@@ -48,6 +57,7 @@ class ScoreForm extends CFormModel {
             'student_id' => '学生',
             'student_name' => '学生',
             'score' => '分数',
+            'grade' => '年级',
         );
     }
     

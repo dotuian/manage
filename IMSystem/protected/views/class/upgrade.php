@@ -44,7 +44,7 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">班级(新年)</label>
+                            <label class="col-lg-2 control-label">班级(新)</label>
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'new_class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'new_class_id'); ?>

@@ -4,10 +4,12 @@ class ClassForm extends CFormModel {
     public $ID;
     public $class_code;
     public $class_name;
-    public $class_type;
-    public $specialty_name;
+    public $grade; // 年级
+    public $entry_year; // 入学年份
+    public $term_type; // 学期类型
+    public $class_type; // 
+    public $specialty_name; // 专业名称
     public $status;
-    public $term_year;
     public $teacher_id;
 
     /**
@@ -18,26 +20,28 @@ class ClassForm extends CFormModel {
         // will receive user inputs.
         return array(
             // 共同
-            array('class_code, class_name, class_type, term_year, teacher_id', 'required'),
-            array('class_code, term_year', 'numerical', 'integerOnly' => true),
+            array('class_code, class_name, class_type, entry_year, term_type, teacher_id, grade', 'required'),
+            array('entry_year', 'numerical', 'integerOnly' => true),
             array('class_name, specialty_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             
             //========================================================================
             // 班级代号
-            array('class_code', 'length', 'max' => 3, 'encoding'=>'UTF-8'),
+            array('class_code', 'length', 'max' => 10, 'encoding' => 'UTF-8'),
             // 班级名称
             array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             // 班级性质
             array('class_type','in','range'=>array('0','1'),'allowEmpty'=>false),
             // 专业名称
             array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
+            // 年级
+            array('grade', 'length', 'max' => 1),
             // 入学年份
-            array('term_year', 'length', 'max' => 4),
+            array('entry_year', 'length', 'max' => 4),
             // 班主任
             array('teacher_id', 'length', 'max' => 10),
             //========================================================================
             
-            array('ID, class_code, class_name, class_type, specialty_name, status, term_year, teacher_id', 'safe'),
+            array('ID, class_code, class_name, grade, class_type, specialty_name, status, entry_year, teacher_id', 'safe'),
         );
     }
     
@@ -56,7 +60,6 @@ class ClassForm extends CFormModel {
         }
     }
     
-
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -65,12 +68,39 @@ class ClassForm extends CFormModel {
             'ID' => 'ID',
             'class_code' => '班级代号',
             'class_name' => '班级名称',
+            'grade' => '年级',
             'class_type' => '班级性质',
             'specialty_name' => '专业名称',
             'status' => '状态',
-            'term_year' => '入学年份',
+            'entry_year' => '入学年份',
             'teacher_id' => '班主任',
         );
+    }
+    
+    public static function getGradeOption($flag){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['1'] = '一年级';
+        $result['2'] = '二年级';
+        $result['3'] = '三年级';
+
+        return $result;
+    }
+    
+    
+    public static function getTermTypeOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['1'] = '上学期';
+        $result['2'] = '下学期';
+
+        return $result;
     }
 
     public static function getClassStatusOption($flag) {
@@ -97,7 +127,7 @@ class ClassForm extends CFormModel {
         return $result;
     }
 
-    public static function getTermYearOption($range = 1, $flag = true) {
+    public static function getEntryYearOption($range = 1, $flag = true) {
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];

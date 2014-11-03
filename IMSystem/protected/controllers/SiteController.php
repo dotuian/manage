@@ -80,7 +80,13 @@ class SiteController extends BaseController {
             $model->attributes = $_POST['LoginForm'];
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()) {
-                $this->redirect(Yii::app()->user->returnUrl);
+                if ($model->isFirstLogin) {
+                    // 第一次登陆的情况下，修改密码
+                    $this->setWarningMessage('第一次登陆，请修改密码！');
+                    $this->redirect($this->createUrl('setting/password'));
+                } else {
+                    $this->redirect(Yii::app()->user->returnUrl);
+                }
             }
         }
         // display the login form

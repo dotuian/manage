@@ -76,7 +76,7 @@ class ScoreController extends BaseController {
                left join m_exams e on a.exam_id = e.ID
                where 1=1 ";
         
-        $sql = "select a.*, b.class_code, b.class_name, b.class_type,b.term_year, c.code, c.name, d.subject_code,d.subject_name,d.subject_type, e.exam_code, e.exam_name $from ";
+        $sql = "select a.*, b.class_code, b.class_name, b.class_type,b.entry_year, c.code, c.name, d.subject_code,d.subject_name,d.subject_type, e.exam_code, e.exam_name $from ";
         $countSql = "select count(*) $from ";
         $params = array();
         
@@ -418,5 +418,84 @@ class ScoreController extends BaseController {
         }
 
     }
-
+    
+    
+    
+    
+    public function actionAnalysis(){
+        $model = new ScoreForm();
+        
+        $subjects = array();
+        if (isset($_GET['ScoreForm'])) {
+            $model->attributes = $_GET['ScoreForm'];
+            $model->scenario = 'analysis';
+            
+            if($model->validate()){
+                
+                $sql = "SELECT ";
+                $sql .= "a.exam_id, d.exam_name, ";
+                $sql .= "a.class_id,   c.class_name,  ";
+                $sql .= "a.subject_id, b.subject_name,  ";
+                $sql .= "count(a.score) as '考试人数', ";
+                $sql .= "count(case a.score >= b.pass_score when 1 then 0 end) as '及格人数' ";
+                $sql .= "FROM t_scores a ";
+                $sql .= "inner JOIN m_subjects b ON a.subject_id=b.ID ";
+                $sql .= "inner JOIN t_classes c ON a.class_id=c.ID and c.`status`='1' ";
+                $sql .= "inner join m_exams d   on a.exam_id=d.ID ";
+                $sql .= "INNER join t_students e on e.`status`='1' and a.student_id=e.ID ";
+                
+                $where = "where a.exam_id=:exam_id and c.grade=:grade ";
+                $group = "group by a.exam_id, a.subject_id, a.class_id  ";
+                
+                $params = array();
+                $params[':exam_id'] = trim($model->exam_id);
+                $params[':grade'] = trim($model->grade);
+                
+                if($model->class_id != ''){
+                    $where .= "and a.class_id=:class_id ";
+                    //$group .= ", a.class_id";
+                    $params[':class_id'] = trim($model->class_id);
+                }
+                if($model->subject_id != ''){
+                    $where .= "and a.subject_id=:subject_id ";
+                    $group .= ", a.subject_id";
+                    $params[':subject_id'] = trim($model->subject_id);
+                }
+                
+                $sql .= $where . $group;
+                
+                $data = Yii::app()->db->createCommand($sql)->queryAll(true, $params);
+                Yii::log(print_r($data, true));
+                // 没有数据
+                if (count($data) == 0) {
+                    $this->setWarningMessage("没有检索到相关数据！");
+                } else {
+//                    // 该考试，班级下，所有的考试科目
+//                    $sql = "select DISTINCT b.* from t_scores a , m_subjects b, t_classes c , m_exams d
+//                            where a.subject_id=b.ID and a.class_id=C.ID and c.grade=:grade and a.exam_id=:exam_id ";
+//                    $params = array();
+//                    $params[':exam_id'] = trim($model->exam_id);
+//                    $params[':grade'] = trim($model->grade);
+//                    
+//                    $subjects = MSubjects::model()->findAllBySql($sql, $params);
+                }
+                
+                
+                $result = array();
+                foreach ($data as $value) {
+                    $result[$value['exam_name'] . '|' . $value['class_name']][$value['subject_name']] = array("考试人数"=>$value["考试人数"], "及格人数"=>$value["及格人数"]);
+                    $subjects[$value['subject_id']] = $value['subject_name'];
+                }
+                Yii::log(print_r($result, true));
+            }
+            
+        }
+        
+        $this->render('analysis', array(
+                    'model' => $model,
+                    'data' => isset($result) ? $result : null,
+                    'subjects' => $subjects,
+                ));
+    }
+    
 }

@@ -227,7 +227,6 @@ $(document).ready(function(){
                     
                     <?php } else { // 教师个人信息 ?>
 
-
                         <div class="form-group">
                             <label class="col-lg-2 control-label">教工编号</label>
                             <div class="col-lg-10 inline-block">
@@ -264,6 +263,14 @@ $(document).ready(function(){
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">担任科目</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'subjects'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">身份证号码</label>
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
@@ -276,14 +283,6 @@ $(document).ready(function(){
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'home_address', array('class'=>'form-control','placeholder'=>'家庭住址')); ?>
                                 <?php echo $form->error($model,'home_address'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">担任科目</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'subjects'); ?>
                             </div>
                         </div>
 

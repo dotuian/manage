@@ -58,6 +58,22 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">总分</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'total_score', array('class'=>'form-control', 'placeholder'=>'总分')); ?>
+                                <?php echo $form->error($model,'total_score'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">及格分数</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'pass_score', array('class'=>'form-control', 'placeholder'=>'及格分数')); ?>
+                                <?php echo $form->error($model,'pass_score'); ?>
+                            </div>
+                        </div>
+                    
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
