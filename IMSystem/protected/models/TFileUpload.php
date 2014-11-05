@@ -36,8 +36,9 @@ class TFileUpload extends CActiveRecord {
             array('filename, category', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('realpath', 'length', 'max' => 128),
             array('status', 'length', 'max' => 1),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
+			array('update_time', 'safe'),
+            
+            // safe
             array('ID, filename, realpath, category, status, create_user, create_time, update_user, update_time', 'safe'),
         );
     }

@@ -257,6 +257,19 @@ class TClasses extends CActiveRecord
         
         return $classes;
     }
-
+    
+    public function getClassDisplayName(){
+        $str = $this->class_code;
+        $str .= ' | ';
+        $str .= $this->class_name;
+        $str .= ' | ';
+        if($this->term_type == 1){
+            $str .= '上学期';
+        } else {
+            $str .= '下学期';
+        }
+        
+        return $str;
+    }
 }
 

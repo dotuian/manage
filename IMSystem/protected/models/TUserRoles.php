@@ -34,12 +34,12 @@ class TUserRoles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, role_id, create_time, update_time', 'required'),
+			array('user_id, role_id, create_time', 'required'),
 			array('create_user, update_user', 'numerical', 'integerOnly'=>true),
 			array('user_id, role_id', 'length', 'max'=>10),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('ID, user_id, role_id, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+
+			// safe
+			array('ID, user_id, role_id, create_user, create_time, update_user, update_time', 'safe'),
 		);
 	}
 

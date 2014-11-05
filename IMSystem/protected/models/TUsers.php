@@ -9,6 +9,7 @@
  * @property string $password
  * @property string $status
  * @property string $last_login_time
+ * @property string $last_password_time
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
@@ -35,14 +36,14 @@ class TUsers extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('username, password, create_time, update_time', 'required'),
+			array('username, password, create_time', 'required'),
             array('username, password', 'length', 'max' => 20),
             array('status', 'length', 'max' => 1),
             array('create_user, update_user', 'length', 'max' => 10),
-            array('last_login_time, update_time', 'safe'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, username, password, status, last_login_time, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+			array('last_login_time, last_password_time, update_time', 'safe'),
+            
+            // safe
+			array('ID, username, password, status, last_login_time, last_password_time, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -69,6 +70,7 @@ class TUsers extends CActiveRecord
             'password' => '密码',
             'status' => '状态', // (1:正常 2:异常)
             'last_login_time' => '上次登录时间',
+			'last_password_time' => '上次密码修改时间',
             'create_user' => '创建用户',
             'create_time' => '创建时间',
             'update_user' => '更新用户',
@@ -98,6 +100,7 @@ class TUsers extends CActiveRecord
         $criteria->compare('password', $this->password, true);
         $criteria->compare('status', $this->status, true);
         $criteria->compare('last_login_time',$this->last_login_time,true);
+		$criteria->compare('last_password_time',$this->last_password_time,true);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_user', $this->update_user, true);

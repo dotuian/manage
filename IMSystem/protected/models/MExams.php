@@ -32,14 +32,14 @@ class MExams extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('exam_code, exam_name, create_time, update_time', 'required'),
+            array('exam_code, exam_name, create_time', 'required'),
             array('exam_code', 'length', 'max' => 20),
             array('exam_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('status', 'length', 'max' => 1),
             array('create_user, update_user', 'length', 'max' => 10),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, exam_code, exam_name, status, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+            
+            // safe
+            array('ID, exam_code, exam_name, status, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 

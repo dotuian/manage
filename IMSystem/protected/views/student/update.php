@@ -38,10 +38,10 @@ $this->breadcrumbs = array(
                         ));
                     ?>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">学号</label>
+                            <label class="col-lg-2 control-label">省内编号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'code',array('class'=>'form-control','disabled'=>'disabled')); ?>
-                                <?php echo $form->error($model,'code'); ?>
+                                <?php echo $form->textField($model,'province_code',array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->error($model,'province_code'); ?>
                             </div>
                         </div>
 
@@ -82,7 +82,30 @@ $this->breadcrumbs = array(
                         </div>
 
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">班级</label>
+                            <label class="col-lg-2 control-label">班级履历</label>
+                            <div class="col-lg-10">
+                                <?php $classes = $model->getStudentAllClassInfo(); ?>
+                                <?php if(count($classes) > 0) {  ?>
+                                <table>
+                                    <th>年级</th>
+                                    <th>班级代号</th>
+                                    <th>班级名称</th>
+                                    <th>班主任</th>
+                                    <?php foreach ($classes as $class) { ?>
+                                    <tr>
+                                        <td><?php echo $class['grade']; ?></td>
+                                        <td><?php echo $class['class_code']; ?></td>
+                                        <td><?php echo $class['class_name']; ?></td>
+                                        <td><?php echo $class['name']; ?></td>
+                                    </tr>
+                                    <?php }?>
+                                </table>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">目前所在班级</label>
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>

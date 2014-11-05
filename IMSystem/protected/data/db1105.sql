@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `m_authoritys` (
   `access_path` char(100) COLLATE utf8_bin DEFAULT NULL COMMENT '访问路径',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `authority_code` (`authority_code`)
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `m_config` (
 DELETE FROM `m_config`;
 /*!40000 ALTER TABLE `m_config` DISABLE KEYS */;
 INSERT INTO `m_config` (`ID`, `key`, `value`, `comment`) VALUES
-	(1, 'IMPORT_STUDENT_DATA_RANGE', '2014-09-09|2014-10-29', NULL),
+	(1, 'IMPORT_STUDENT_DATA_RANGE', '2014-10-07|2014-10-30', NULL),
 	(2, 'IS_RUNNING', '1', NULL);
 /*!40000 ALTER TABLE `m_config` ENABLE KEYS */;
 
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `m_courses` (
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:正常 2:异常)',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_m_courses_m_subjects` (`subject_id`),
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `m_exams` (
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:正常 2:异常)',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='考试类型';
@@ -181,9 +181,9 @@ CREATE TABLE IF NOT EXISTS `m_roles` (
   `role_name` char(50) COLLATE utf8_bin NOT NULL COMMENT '角色名',
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:正常 2：删除)',
   `level` bigint(2) unsigned DEFAULT NULL COMMENT '排序用',
-  `create_user` int(11) unsigned NOT NULL DEFAULT '0',
+  `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(11) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `role_code` (`role_code`)
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `m_role_authoritys` (
   `authority_id` int(10) unsigned NOT NULL COMMENT '权限ID',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `role_id_authority_id` (`role_id`,`authority_id`),
@@ -342,11 +342,13 @@ CREATE TABLE IF NOT EXISTS `m_subjects` (
   `subject_name` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '科目名称',
   `subject_short_name` varchar(4) COLLATE utf8_bin NOT NULL COMMENT '科目名称(简称)',
   `subject_type` char(1) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '科目类型(0:普高 1:技能)',
+  `total_score` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '总分',
+  `pass_score` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '及格分数',
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:正常 2:异常)',
   `level` int(2) unsigned NOT NULL COMMENT '显示排序用',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='课程科目表';
@@ -354,16 +356,16 @@ CREATE TABLE IF NOT EXISTS `m_subjects` (
 -- Dumping data for table xsglxtsql.m_subjects: ~9 rows (approximately)
 DELETE FROM `m_subjects`;
 /*!40000 ALTER TABLE `m_subjects` DISABLE KEYS */;
-INSERT INTO `m_subjects` (`ID`, `subject_code`, `subject_name`, `subject_short_name`, `subject_type`, `status`, `level`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
-	(1, 'YX', '语文', '语', '0', '1', 1, 0, '2014-09-23 10:47:15', 0, '2014-09-23 10:47:15'),
-	(2, 'SX', '数学', '数', '0', '1', 2, 0, '2014-09-23 10:48:58', 0, '2014-09-23 10:48:58'),
-	(3, 'YY', '英语', '英', '0', '1', 3, 0, '2014-09-23 10:49:07', 0, '2014-09-23 10:49:07'),
-	(4, 'WL', '物理', '物', '1', '1', 4, 0, '2014-09-23 10:49:14', 0, '2014-09-23 10:49:14'),
-	(5, 'HX', '化学', '化', '1', '1', 5, 0, '2014-09-23 10:49:18', 0, '2014-09-23 10:49:18'),
-	(6, 'SW', '生物', '生', '1', '1', 6, 0, '2014-09-23 10:49:44', 1526, '2014-10-15 17:39:55'),
-	(7, 'ZZ', '政治', '政', '1', '1', 7, 0, '2014-09-23 10:49:29', 0, '2014-09-23 10:49:29'),
-	(8, 'LS', '历史', '史', '1', '1', 8, 0, '2014-09-23 10:49:34', 0, '2014-09-23 10:49:34'),
-	(9, 'DL', '地理', '地', '1', '1', 9, 0, '2014-09-23 10:49:44', 0, '2014-09-23 10:49:44');
+INSERT INTO `m_subjects` (`ID`, `subject_code`, `subject_name`, `subject_short_name`, `subject_type`, `total_score`, `pass_score`, `status`, `level`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
+	(1, 'YX', '语文', '语', '0', 0, 0, '1', 1, 0, '2014-09-23 10:47:15', 0, '2014-09-23 10:47:15'),
+	(2, 'SX', '数学', '数', '0', 0, 0, '1', 2, 0, '2014-09-23 10:48:58', 0, '2014-09-23 10:48:58'),
+	(3, 'YY', '英语', '英', '0', 0, 0, '1', 3, 0, '2014-09-23 10:49:07', 0, '2014-09-23 10:49:07'),
+	(4, 'WL', '物理', '物', '1', 0, 0, '1', 4, 0, '2014-09-23 10:49:14', 0, '2014-09-23 10:49:14'),
+	(5, 'HX', '化学', '化', '1', 0, 0, '1', 5, 0, '2014-09-23 10:49:18', 0, '2014-09-23 10:49:18'),
+	(6, 'SW', '生物', '生', '1', 0, 0, '1', 6, 0, '2014-09-23 10:49:44', 1526, '2014-10-15 17:39:55'),
+	(7, 'ZZ', '政治', '政', '1', 0, 0, '1', 7, 0, '2014-09-23 10:49:29', 0, '2014-09-23 10:49:29'),
+	(8, 'LS', '历史', '史', '1', 0, 0, '1', 8, 0, '2014-09-23 10:49:34', 0, '2014-09-23 10:49:34'),
+	(9, 'DL', '地理', '地', '1', 0, 0, '1', 9, 0, '2014-09-23 10:49:44', 0, '2014-09-23 10:49:44');
 /*!40000 ALTER TABLE `m_subjects` ENABLE KEYS */;
 
 
@@ -373,30 +375,66 @@ CREATE TABLE IF NOT EXISTS `t_classes` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `class_code` char(20) COLLATE utf8_bin NOT NULL COMMENT '班级CODE',
   `class_name` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '班级名称',
+  `grade` int(1) DEFAULT NULL COMMENT '年级',
+  `entry_year` int(4) DEFAULT NULL COMMENT '入学年份',
+  `term_type` enum('1','2') COLLATE utf8_bin DEFAULT NULL COMMENT '学期(1:上学期 2:下学期)',
   `class_type` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '班级类型(0:普通高中 1:技能专业)',
   `specialty_name` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '专业名称',
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:使用中 2:未使用)',
-  `term_year` int(4) DEFAULT NULL COMMENT '入学年份',
   `teacher_id` int(10) unsigned DEFAULT NULL COMMENT '班主任ID',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_t_classes_t_teachers` (`teacher_id`),
   CONSTRAINT `FK_t_classes_t_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `t_teachers` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='班级表';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='班级表';
 
--- Dumping data for table xsglxtsql.t_classes: ~6 rows (approximately)
+-- Dumping data for table xsglxtsql.t_classes: ~40 rows (approximately)
 DELETE FROM `t_classes`;
 /*!40000 ALTER TABLE `t_classes` DISABLE KEYS */;
-INSERT INTO `t_classes` (`ID`, `class_code`, `class_name`, `class_type`, `specialty_name`, `status`, `term_year`, `teacher_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
-	(1, 'C0001', '高一(1)', '0', NULL, '1', 2014, NULL, 0, '2014-09-23 17:17:22', 0, '2014-09-23 17:17:22'),
-	(2, 'C0002', '高一(2)', '0', NULL, '1', 2014, NULL, 0, '2014-09-23 17:17:22', 0, '2014-09-23 17:17:22'),
-	(3, 'C0003', '高二(1)', '1', NULL, '1', 2013, NULL, 0, '2014-09-23 17:17:22', 0, '2014-09-23 17:17:22'),
-	(4, 'C0004', '高二(2)', '2', NULL, '1', 2013, NULL, 0, '2014-09-23 17:17:22', 0, '2014-09-23 17:17:22'),
-	(5, 'C0005', '高三(1)', '1', NULL, '2', 2012, NULL, 0, '2014-09-23 17:17:22', 0, '2014-10-17 23:19:03'),
-	(6, 'C0006', '高三(2)', '2', NULL, '1', 2012, NULL, 0, '2014-09-23 17:17:22', 0, '2014-10-02 15:33:09');
+INSERT INTO `t_classes` (`ID`, `class_code`, `class_name`, `grade`, `entry_year`, `term_type`, `class_type`, `specialty_name`, `status`, `teacher_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
+	(1, '101', '高一(1)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(2, '102', '高一(2)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(3, '103', '高一(3)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(4, '104', '高一(4)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(5, '105', '高一(5)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(6, '106', '高一(6)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(7, '107', '高一(7)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(8, '108', '高一(8)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(9, '109', '高一(9)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(10, '110', '高一(10)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(11, '111', '高一(11)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(12, '112', '高一(12)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(13, '113', '高一(13)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(14, '114', '高一(14)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(15, '115', '高一(15)', 1, 2014, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(16, '201', '高二(1)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(17, '202', '高二(2)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(18, '203', '高二(3)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-09-23 17:17:22', 0, NULL),
+	(19, '204', '高二(4)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(20, '205', '高二(5)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(21, '206', '高二(6)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(22, '207', '高二(7)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(23, '208', '高二(8)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(24, '209', '高二(9)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(25, '210', '高二(10)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(26, '211', '高二(11)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(27, '212', '高二(12)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(28, '213', '高二(13)', 2, 2013, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(29, '301', '高三(1)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(30, '302', '高三(2)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(31, '303', '高三(3)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(32, '304', '高三(4)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(33, '305', '高三(5)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(34, '306', '高三(6)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(35, '307', '高三(7)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(36, '308', '高三(8)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(37, '309', '高三(9)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(38, '310', '高三(10)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(39, '311', '高三(11)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL),
+	(40, '312', '高三(12)', 3, 2012, '1', '0', NULL, '1', NULL, 0, '2014-11-04 17:06:41', 0, NULL);
 /*!40000 ALTER TABLE `t_classes` ENABLE KEYS */;
 
 
@@ -408,14 +446,14 @@ CREATE TABLE IF NOT EXISTS `t_file_upload` (
   `realpath` char(128) COLLATE utf8_bin NOT NULL COMMENT '保存文件路径',
   `category` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '用途',
   `status` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT '状态(0:未处理  1:处理正常  2:处理异常)',
-  `create_user` int(11) NOT NULL DEFAULT '0',
+  `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- Dumping data for table xsglxtsql.t_file_upload: ~1 rows (approximately)
+-- Dumping data for table xsglxtsql.t_file_upload: ~0 rows (approximately)
 DELETE FROM `t_file_upload`;
 /*!40000 ALTER TABLE `t_file_upload` DISABLE KEYS */;
 /*!40000 ALTER TABLE `t_file_upload` ENABLE KEYS */;
@@ -432,7 +470,7 @@ CREATE TABLE IF NOT EXISTS `t_scores` (
   `score` float NOT NULL COMMENT '分数',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_t_scores_m_exams` (`exam_id`),
@@ -474,7 +512,7 @@ INSERT INTO `t_scores` (`ID`, `exam_id`, `subject_id`, `class_id`, `student_id`,
 DROP TABLE IF EXISTS `t_students`;
 CREATE TABLE IF NOT EXISTS `t_students` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `code` char(20) COLLATE utf8_bin NOT NULL COMMENT '学号',
+  `province_code` char(20) COLLATE utf8_bin DEFAULT NULL COMMENT '省内编号',
   `name` char(12) COLLATE utf8_bin NOT NULL COMMENT '姓名',
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:在校 2:离校)',
   `sex` enum('F','M') COLLATE utf8_bin NOT NULL COMMENT '性别(F: 女 M:男)',
@@ -499,17 +537,16 @@ CREATE TABLE IF NOT EXISTS `t_students` (
   `comment` text COLLATE utf8_bin COMMENT '备注',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `student_code` (`code`),
   CONSTRAINT `FK_t_students_t_users` FOREIGN KEY (`ID`) REFERENCES `t_users` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='学生信息表';
 
--- Dumping data for table xsglxtsql.t_students: ~0 rows (approximately)
+-- Dumping data for table xsglxtsql.t_students: ~1 rows (approximately)
 DELETE FROM `t_students`;
 /*!40000 ALTER TABLE `t_students` DISABLE KEYS */;
-INSERT INTO `t_students` (`ID`, `code`, `name`, `status`, `sex`, `id_card_no`, `birthday`, `accommodation`, `payment1`, `payment2`, `payment3`, `payment4`, `payment5`, `payment6`, `bonus_penalty`, `address`, `parents_tel`, `parents_qq`, `school_of_graduation`, `senior_score`, `school_year`, `college_score`, `university`, `comment`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
+INSERT INTO `t_students` (`ID`, `province_code`, `name`, `status`, `sex`, `id_card_no`, `birthday`, `accommodation`, `payment1`, `payment2`, `payment3`, `payment4`, `payment5`, `payment6`, `bonus_penalty`, `address`, `parents_tel`, `parents_qq`, `school_of_graduation`, `senior_score`, `school_year`, `college_score`, `university`, `comment`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
 	(9, '20140001', '20140001', '1', 'M', '420984198605252712', '2014-09-16', '', '1', '1', '1', '1', '1', '1', '', '', '', '', '', NULL, NULL, NULL, '', '', 1, '2014-10-24 14:29:02', 1, '2014-10-25 08:30:29');
 /*!40000 ALTER TABLE `t_students` ENABLE KEYS */;
 
@@ -518,14 +555,16 @@ INSERT INTO `t_students` (`ID`, `code`, `name`, `status`, `sex`, `id_card_no`, `
 DROP TABLE IF EXISTS `t_student_classes`;
 CREATE TABLE IF NOT EXISTS `t_student_classes` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `student_number` char(10) COLLATE utf8_bin DEFAULT NULL COMMENT '学号',
   `student_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '学生ID',
   `class_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '班级ID',
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '0:暂停 1:正常',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
+  UNIQUE KEY `student_number` (`student_number`),
   KEY `FK_t_student_classes_t_classes` (`class_id`),
   KEY `FK_t_student_classes_t_students` (`student_id`),
   CONSTRAINT `FK_t_student_classes_t_classes` FOREIGN KEY (`class_id`) REFERENCES `t_classes` (`ID`),
@@ -535,11 +574,11 @@ CREATE TABLE IF NOT EXISTS `t_student_classes` (
 -- Dumping data for table xsglxtsql.t_student_classes: ~4 rows (approximately)
 DELETE FROM `t_student_classes`;
 /*!40000 ALTER TABLE `t_student_classes` DISABLE KEYS */;
-INSERT INTO `t_student_classes` (`ID`, `student_id`, `class_id`, `status`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
-	(1, 9, 1, '0', 1, '2014-10-24 14:29:02', 1, '2014-10-24 14:29:02'),
-	(2, 9, 4, '0', 1, '2014-10-24 14:51:17', 1, '2014-10-24 14:51:17'),
-	(3, 9, 6, '0', 1, '2014-10-24 14:53:36', 1, '2014-10-24 14:53:36'),
-	(4, 9, 1, '1', 1, '2014-10-24 14:57:03', 1, '2014-10-24 14:57:03');
+INSERT INTO `t_student_classes` (`ID`, `student_number`, `student_id`, `class_id`, `status`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
+	(1, '20120114', 9, 1, '0', 1, '2014-10-24 14:29:02', 1, '2014-10-24 14:29:02'),
+	(2, '20120414', 9, 4, '0', 1, '2014-10-24 14:51:17', 1, '2014-10-24 14:51:17'),
+	(3, '20120650', 9, 6, '0', 1, '2014-10-24 14:53:36', 1, '2014-10-24 14:53:36'),
+	(4, '20120117', 9, 1, '1', 1, '2014-10-24 14:57:03', 1, '2014-10-24 14:57:03');
 /*!40000 ALTER TABLE `t_student_classes` ENABLE KEYS */;
 
 
@@ -552,11 +591,49 @@ CREATE TABLE IF NOT EXISTS `t_teachers` (
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:正常 2:异常)',
   `sex` enum('F','M') COLLATE utf8_bin NOT NULL COMMENT '性别(F: 女 M:男)',
   `birthday` date DEFAULT NULL COMMENT '出生年月日',
-  `address` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '地址',
+  `id_card_no` char(18) COLLATE utf8_bin DEFAULT NULL COMMENT '身份证号码',
+  `home_address` char(100) COLLATE utf8_bin DEFAULT NULL COMMENT '家庭住址',
   `telephonoe` char(11) COLLATE utf8_bin DEFAULT NULL COMMENT '电话号码',
+  `nation` char(10) COLLATE utf8_bin DEFAULT NULL COMMENT '民族',
+  `birthplace` char(10) COLLATE utf8_bin DEFAULT NULL COMMENT '籍贯',
+  `working_date` char(7) COLLATE utf8_bin DEFAULT NULL COMMENT '工作年月',
+  `party_date` char(7) COLLATE utf8_bin DEFAULT NULL COMMENT '入党年月',
+  `before_degree` char(10) COLLATE utf8_bin DEFAULT NULL COMMENT '职前学历',
+  `before_graduate_date` char(7) COLLATE utf8_bin DEFAULT NULL COMMENT '职前毕业时间',
+  `before_graduate_school` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '职前毕业院校',
+  `before_graduate_major` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '职前毕业专业',
+  `current_degree` char(10) COLLATE utf8_bin DEFAULT NULL COMMENT '现学历',
+  `current_graduate_date` char(7) COLLATE utf8_bin DEFAULT NULL COMMENT '现学历毕业时间',
+  `current_graduate_school` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '现学历毕业院校',
+  `current_graduate_major` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '现学历毕业专业',
+  `professional_technical_position` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '专业技术职务',
+  `work_departments_postion` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '工作科室及职务',
+  `current_position_rank` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '现职级',
+  `current_position_date` char(7) COLLATE utf8_bin DEFAULT NULL COMMENT '任现职年月',
+  `current_level_date` char(7) COLLATE utf8_bin DEFAULT NULL COMMENT '任现级年月',
+  `basic_memo` text COLLATE utf8_bin COMMENT '基本情况备注',
+  `continue_education_address` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '继续教育地址',
+  `continue_education_date` char(20) COLLATE utf8_bin DEFAULT NULL COMMENT '继续教育时间',
+  `continue_education_credit` int(4) DEFAULT NULL COMMENT '获得学分',
+  `continue_education_prove_people` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '证明人',
+  `moral_praise` text COLLATE utf8_bin COMMENT '表彰情况',
+  `moral_student_evaluation` text COLLATE utf8_bin COMMENT '学生测评',
+  `moral_target_check` text COLLATE utf8_bin COMMENT '目标考核',
+  `moral_memo` text COLLATE utf8_bin COMMENT '师德备注',
+  `teach_grades` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '任教年级',
+  `teach_subjects` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '课程',
+  `teaching_research_postion` char(50) COLLATE utf8_bin DEFAULT NULL COMMENT '教研职务',
+  `recruit_students` text COLLATE utf8_bin COMMENT '招生情况',
+  `attendance` text COLLATE utf8_bin COMMENT '考勤情况',
+  `working_memo` text COLLATE utf8_bin COMMENT '履职备注',
+  `tutorship_award` text COLLATE utf8_bin COMMENT '辅导获奖',
+  `competition_award` text COLLATE utf8_bin COMMENT '参赛获奖',
+  `paper_work` text COLLATE utf8_bin COMMENT '论文著作',
+  `competition_item` text COLLATE utf8_bin COMMENT '参赛项目情况',
+  `business_memo` text COLLATE utf8_bin COMMENT '业务备注',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `teacher_code` (`code`),
@@ -566,23 +643,23 @@ CREATE TABLE IF NOT EXISTS `t_teachers` (
 -- Dumping data for table xsglxtsql.t_teachers: ~16 rows (approximately)
 DELETE FROM `t_teachers`;
 /*!40000 ALTER TABLE `t_teachers` DISABLE KEYS */;
-INSERT INTO `t_teachers` (`ID`, `code`, `name`, `status`, `sex`, `birthday`, `address`, `telephonoe`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
-	(1, 'ROOT', '管理员', '1', 'F', '2014-10-22', '', '', 0, '2014-10-22 15:02:30', 1, '2014-10-24 18:30:41'),
-	(5, 'jwc', '教务处', '1', 'M', '2014-10-22', NULL, NULL, 1, '2014-10-22 17:12:55', 1, '2014-10-22 17:12:55'),
-	(6, 'xgc', '学工科', '1', 'M', '2014-10-22', NULL, NULL, 1, '2014-10-22 17:13:53', 1, '2014-10-22 17:13:53'),
-	(7, 'xz', '校长', '1', 'M', '2014-10-22', NULL, NULL, 1, '2014-10-22 17:14:42', 1, '2014-10-22 17:14:42'),
-	(8, 'js001', '语文教师001', '1', 'M', '2014-10-08', '地址不', '电话号', 1, '2014-10-22 17:19:59', 1, '2014-10-22 17:19:59'),
-	(10, 'sx001', '数学01', '1', 'M', '2014-10-01', '地址不能为空！', '1500712', 1, '2014-10-24 15:01:47', 10, '2014-10-24 15:04:30'),
-	(11, 'sw001', '生物01', '1', 'M', '2014-10-21', '', '', 1, '2014-10-24 15:02:15', 1, '2014-10-24 15:02:15'),
-	(12, 'yy001', '英语01', '1', 'F', '2014-10-21', '', '', 1, '2014-10-24 15:02:44', 1, '2014-10-24 15:02:44'),
-	(13, 'wl001', '物理01', '1', 'M', '2014-10-07', '', '', 1, '2014-10-24 15:28:23', 1, '2014-10-24 15:28:23'),
-	(14, 'hx01', '化学01', '1', 'M', '2014-10-19', '', '', 1, '2014-10-24 15:28:43', 1, '2014-10-24 15:28:43'),
-	(15, 'zz01', '政治01', '1', 'M', '2014-10-08', '', '', 1, '2014-10-24 15:29:07', 1, '2014-10-24 15:29:07'),
-	(16, 'ls01', '历史01', '1', 'M', '2014-10-13', '', '', 1, '2014-10-24 15:29:50', 1, '2014-10-24 15:29:50'),
-	(17, 'dl01', '地理01', '1', 'M', '2014-10-09', '', '', 1, '2014-10-24 15:30:11', 1, '2014-10-24 15:30:11'),
-	(20, 'dl02', '地理02', '1', 'M', '2014-10-09', '', '', 1, '2014-10-24 15:38:09', 1, '2014-10-24 15:38:09'),
-	(21, 'qn01', '全能01', '1', 'M', '2014-10-06', '', '', 1, '2014-10-24 15:38:45', 1, '2014-10-24 15:38:45'),
-	(22, '0236', '刘耀', '1', 'M', '1982-11-23', '湖北十堰', '15971224636', 1, '2014-10-25 15:15:46', 1, '2014-10-25 15:15:46');
+INSERT INTO `t_teachers` (`ID`, `code`, `name`, `status`, `sex`, `birthday`, `id_card_no`, `home_address`, `telephonoe`, `nation`, `birthplace`, `working_date`, `party_date`, `before_degree`, `before_graduate_date`, `before_graduate_school`, `before_graduate_major`, `current_degree`, `current_graduate_date`, `current_graduate_school`, `current_graduate_major`, `professional_technical_position`, `work_departments_postion`, `current_position_rank`, `current_position_date`, `current_level_date`, `basic_memo`, `continue_education_address`, `continue_education_date`, `continue_education_credit`, `continue_education_prove_people`, `moral_praise`, `moral_student_evaluation`, `moral_target_check`, `moral_memo`, `teach_grades`, `teach_subjects`, `teaching_research_postion`, `recruit_students`, `attendance`, `working_memo`, `tutorship_award`, `competition_award`, `paper_work`, `competition_item`, `business_memo`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
+	(1, 'ROOT', '管理员', '1', 'F', '2014-10-22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2014-10-22 15:02:30', 1, '2014-10-24 18:30:41'),
+	(5, 'jwc', '教务处', '1', 'M', '2014-10-22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-22 17:12:55', 1, '2014-10-22 17:12:55'),
+	(6, 'xgc', '学工科', '1', 'M', '2014-10-22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-22 17:13:53', 1, '2014-10-22 17:13:53'),
+	(7, 'xz', '校长', '1', 'M', '2014-10-22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-22 17:14:42', 1, '2014-10-22 17:14:42'),
+	(8, 'js001', '语文教师001', '1', 'M', '2014-10-08', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-22 17:19:59', 1, '2014-10-22 17:19:59'),
+	(10, 'sx001', '数学01', '1', 'M', '2014-10-01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:01:47', 10, '2014-10-24 15:04:30'),
+	(11, 'sw001', '生物01', '1', 'M', '2014-10-21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:02:15', 1, '2014-10-24 15:02:15'),
+	(12, 'yy001', '英语01', '1', 'F', '2014-10-21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:02:44', 1, '2014-10-24 15:02:44'),
+	(13, 'wl001', '物理01', '1', 'M', '2014-10-07', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:28:23', 1, '2014-10-24 15:28:23'),
+	(14, 'hx01', '化学01', '1', 'M', '2014-10-19', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:28:43', 1, '2014-10-24 15:28:43'),
+	(15, 'zz01', '政治01', '1', 'M', '2014-10-08', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:29:07', 1, '2014-10-24 15:29:07'),
+	(16, 'ls01', '历史01', '1', 'M', '2014-10-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:29:50', 1, '2014-10-24 15:29:50'),
+	(17, 'dl01', '地理01', '1', 'M', '2014-10-09', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:30:11', 1, '2014-10-24 15:30:11'),
+	(20, 'dl02', '地理02', '1', 'M', '2014-10-09', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:38:09', 1, '2014-10-24 15:38:09'),
+	(21, 'qn01', '全能01', '1', 'M', '2014-10-06', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-24 15:38:45', 1, '2014-10-24 15:38:45'),
+	(22, '0236', '刘耀', '1', 'M', '1982-11-23', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2014-10-25 15:15:46', 1, '2014-10-25 15:15:46');
 /*!40000 ALTER TABLE `t_teachers` ENABLE KEYS */;
 
 
@@ -594,7 +671,7 @@ CREATE TABLE IF NOT EXISTS `t_teacher_subjects` (
   `subject_id` int(10) unsigned NOT NULL COMMENT '科目ID',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_t_teacher_subjects_t_teachers` (`teacher_id`),
@@ -638,9 +715,10 @@ CREATE TABLE IF NOT EXISTS `t_users` (
   `password` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '密码',
   `status` char(1) COLLATE utf8_bin NOT NULL DEFAULT '1' COMMENT '状态(1:正常 2:异常)',
   `last_login_time` timestamp NULL DEFAULT NULL COMMENT '上次登录时间',
+  `last_password_time` timestamp NULL DEFAULT NULL COMMENT '上次密码修改时间',
   `create_user` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_user` int(10) unsigned NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `username` (`username`)
@@ -649,24 +727,24 @@ CREATE TABLE IF NOT EXISTS `t_users` (
 -- Dumping data for table xsglxtsql.t_users: ~17 rows (approximately)
 DELETE FROM `t_users`;
 /*!40000 ALTER TABLE `t_users` DISABLE KEYS */;
-INSERT INTO `t_users` (`ID`, `username`, `password`, `status`, `last_login_time`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
-	(1, 'root', 'rootadmin', '1', '2014-10-29 10:38:37', 0, '2014-10-22 15:01:57', 0, '2014-10-22 15:01:57'),
-	(5, 'jwc', 'test1234', '1', NULL, 1, '2014-10-22 17:12:54', 1, '2014-10-22 17:12:54'),
-	(6, 'xgc', 'test1234', '1', NULL, 1, '2014-10-22 17:13:53', 1, '2014-10-22 17:13:53'),
-	(7, 'xz', 'test1234', '1', NULL, 1, '2014-10-22 17:14:42', 1, '2014-10-22 17:14:42'),
-	(8, 'js001', 'test1234', '1', NULL, 1, '2014-10-22 17:19:59', 1, '2014-10-22 17:19:59'),
-	(9, 'test', 'test1234', '1', '2014-10-28 16:45:35', 1, '2014-10-24 14:29:02', 9, '2014-10-28 16:37:34'),
-	(10, 'sx001', 'test1234', '1', NULL, 1, '2014-10-24 15:01:47', 10, '2014-10-24 15:22:35'),
-	(11, 'sw001', '20141021', '1', NULL, 1, '2014-10-24 15:02:15', 1, '2014-10-24 15:02:15'),
-	(12, 'yy001', '20141021', '1', NULL, 1, '2014-10-24 15:02:44', 1, '2014-10-24 15:02:44'),
-	(13, 'wl001', '20141007', '1', NULL, 1, '2014-10-24 15:28:23', 1, '2014-10-24 15:28:23'),
-	(14, 'hx01', '20141019', '1', NULL, 1, '2014-10-24 15:28:43', 1, '2014-10-24 15:28:43'),
-	(15, 'zz01', '20141008', '1', NULL, 1, '2014-10-24 15:29:07', 1, '2014-10-24 15:29:07'),
-	(16, 'ls01', '20141013', '1', NULL, 1, '2014-10-24 15:29:50', 1, '2014-10-24 15:29:50'),
-	(17, 'dl01', '20141009', '1', NULL, 1, '2014-10-24 15:30:11', 1, '2014-10-24 15:30:11'),
-	(20, 'dl02', '20141009', '1', NULL, 1, '2014-10-24 15:38:09', 1, '2014-10-24 15:38:09'),
-	(21, 'qn01', '20141006', '1', NULL, 1, '2014-10-24 15:38:45', 1, '2014-10-24 15:38:45'),
-	(22, '0236', '19821123', '1', NULL, 1, '2014-10-25 15:15:46', 1, '2014-10-25 15:15:46');
+INSERT INTO `t_users` (`ID`, `username`, `password`, `status`, `last_login_time`, `last_password_time`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES
+	(1, 'root', 'rootadmin1', '1', '2014-11-05 12:07:56', '2014-11-05 12:08:13', 0, '2014-10-22 15:01:57', 1, '2014-11-05 12:08:13'),
+	(5, 'jwc', 'test1234', '1', NULL, NULL, 1, '2014-10-22 17:12:54', 1, '2014-10-22 17:12:54'),
+	(6, 'xgc', 'test1234', '1', NULL, NULL, 1, '2014-10-22 17:13:53', 1, '2014-10-22 17:13:53'),
+	(7, 'xz', 'test1234', '1', NULL, NULL, 1, '2014-10-22 17:14:42', 1, '2014-10-22 17:14:42'),
+	(8, 'js001', 'test1234', '1', NULL, NULL, 1, '2014-10-22 17:19:59', 1, '2014-10-22 17:19:59'),
+	(9, '20140001', 'test1234', '1', NULL, NULL, 1, '2014-10-24 14:29:02', 1, '2014-10-24 14:29:02'),
+	(10, 'sx001', 'test1234', '1', NULL, NULL, 1, '2014-10-24 15:01:47', 10, '2014-10-24 15:22:35'),
+	(11, 'sw001', '20141021', '1', NULL, NULL, 1, '2014-10-24 15:02:15', 1, '2014-10-24 15:02:15'),
+	(12, 'yy001', '20141021', '1', NULL, NULL, 1, '2014-10-24 15:02:44', 1, '2014-10-24 15:02:44'),
+	(13, 'wl001', '20141007', '1', NULL, NULL, 1, '2014-10-24 15:28:23', 1, '2014-10-24 15:28:23'),
+	(14, 'hx01', '20141019', '1', NULL, NULL, 1, '2014-10-24 15:28:43', 1, '2014-10-24 15:28:43'),
+	(15, 'zz01', '20141008', '1', NULL, NULL, 1, '2014-10-24 15:29:07', 1, '2014-10-24 15:29:07'),
+	(16, 'ls01', '20141013', '1', NULL, NULL, 1, '2014-10-24 15:29:50', 1, '2014-10-24 15:29:50'),
+	(17, 'dl01', '20141009', '1', NULL, NULL, 1, '2014-10-24 15:30:11', 1, '2014-10-24 15:30:11'),
+	(20, 'dl02', '20141009', '1', NULL, NULL, 1, '2014-10-24 15:38:09', 1, '2014-10-24 15:38:09'),
+	(21, 'qn01', '20141006', '1', NULL, NULL, 1, '2014-10-24 15:38:45', 1, '2014-10-24 15:38:45'),
+	(22, '0236', '19821123', '1', NULL, NULL, 1, '2014-10-25 15:15:46', 1, '2014-10-25 15:15:46');
 /*!40000 ALTER TABLE `t_users` ENABLE KEYS */;
 
 
@@ -678,7 +756,7 @@ CREATE TABLE IF NOT EXISTS `t_user_roles` (
   `role_id` int(10) unsigned NOT NULL COMMENT '角色ID',
   `create_user` int(10) NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `update_user` int(10) NOT NULL DEFAULT '0',
+  `update_user` int(10) unsigned DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_t_user_roles_m_roles` (`role_id`),

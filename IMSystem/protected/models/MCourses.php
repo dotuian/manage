@@ -35,12 +35,12 @@ class MCourses extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('subject_id, teacher_id, class_id, create_time, update_time', 'required'),
+            array('subject_id, teacher_id, class_id, create_time', 'required'),
             array('subject_id, teacher_id, class_id, create_user, update_user', 'length', 'max' => 10),
             array('status', 'length', 'max' => 1),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, subject_id, teacher_id, class_id, status, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+
+            // safe
+            array('ID, subject_id, teacher_id, class_id, status, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 

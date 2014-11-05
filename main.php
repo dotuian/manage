@@ -10,8 +10,7 @@
 // set foreign_key_checks=off
 // set foreign_key_checks=on
 
-// 20140001 学号 = 入学年月 + 普高(01)/技能(02) + 校内编号(4位)
-
+// 
 
 
 return array(
@@ -76,27 +75,27 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'rootadmin',
+            'username' => 'xsglxtsql',
+            'password' => 'p5FtKwWmEWb95pKH',
             'charset' => 'utf8',
             'enableProfiling' => true,
             'enableParamLogging' => true,
             'enableSlave' => false,
             'slaves' => array(
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
-                    'username' => 'root',
-                    'password' => 'rootadmin',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+                    'username' => 'xsglxtsql',
+                    'password' => 'p5FtKwWmEWb95pKH',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
                 ),
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
-                    'username' => 'root',
-                    'password' => 'rootadmin',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+                    'username' => 'xsglxtsql',
+                    'password' => 'p5FtKwWmEWb95pKH',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
@@ -117,10 +116,10 @@ return array(
                     'levels' => 'error, warning, info',
                     'logFile' => 'application_' . date('Ymd') . '.log',
                 ),
-               array(
-                    'class'=>'CWebLogRoute',
+//               array(
+//                    'class'=>'CWebLogRoute',
 //                    'levels' => 'trace,info,error,warning,debug',
-                ),
+//                ),
             ),
         ),
         

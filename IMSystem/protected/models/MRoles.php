@@ -7,6 +7,7 @@
  * @property string $ID
  * @property string $role_code
  * @property string $role_name
+ * @property string $status
  * @property string $level
  * @property string $create_user
  * @property string $create_time
@@ -33,14 +34,14 @@ class MRoles extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('role_code, role_name, create_time, update_time', 'required'),
+            array('role_code, role_name, create_time', 'required'),
             array('role_code', 'length', 'max' => 10),
             array('role_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('level', 'length', 'max' => 2),
-            array('create_user, update_user', 'length', 'max' => 11),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, role_code, role_name, level, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+            array('create_user, update_user', 'length', 'max' => 10),
+
+            // safe
+            array('ID, role_code, role_name, status, level, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -64,6 +65,7 @@ class MRoles extends CActiveRecord {
             'ID' => 'ID',
             'role_code' => '角色CODE',
             'role_name' => '角色名',
+            'status' => '状态', // (1:正常 2：删除)
             'level' => '排序用',
             'create_user' => '创建用户',
             'create_time' => '创建时间',
@@ -92,6 +94,7 @@ class MRoles extends CActiveRecord {
         $criteria->compare('ID', $this->ID, true);
         $criteria->compare('role_code', $this->role_code, true);
         $criteria->compare('role_name', $this->role_name, true);
+		$criteria->compare('status',$this->status,true);
         $criteria->compare('level', $this->level, true);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);

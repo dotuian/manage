@@ -57,8 +57,8 @@ class MSubjects extends CActiveRecord
             array('total_score, pass_score', 'length', 'max' => 3),
             array('total_score, pass_score', 'numerical', 'integerOnly' => true),
             //========================================================================
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
+            
+            // safe
             array('ID, subject_code, subject_name, subject_short_name, subject_type, status, level, create_user, create_time, update_user, update_time', 'safe'),
         );
     }

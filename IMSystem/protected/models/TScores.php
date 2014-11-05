@@ -9,7 +9,7 @@
  * @property string $subject_id
  * @property string $class_id
  * @property string $student_id
- * @property integer $score
+ * @property double $score
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
@@ -41,9 +41,10 @@ class TScores extends CActiveRecord {
             array('score', 'numerical'),
             array('score', 'length', 'max' => 5),
             array('exam_id, subject_id, class_id, student_id, create_user, update_user', 'length', 'max' => 10),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, exam_id, subject_id, class_id, student_id, score, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+			array('update_time', 'safe'),
+            
+            // safe
+            array('ID, exam_id, subject_id, class_id, student_id, score, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 

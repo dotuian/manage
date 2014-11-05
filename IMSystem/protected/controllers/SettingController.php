@@ -118,6 +118,7 @@ class SettingController extends BaseController {
 
             if ($model->validate()) {
                 $user->password = $model->new_password;
+                $user->last_password_time = new CDbExpression('NOW()');
                 $user->update_user = $this->getLoginUserId();
                 $user->update_time = new CDbExpression('NOW()');
 

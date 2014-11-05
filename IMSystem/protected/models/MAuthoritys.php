@@ -34,14 +34,14 @@ class MAuthoritys extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('authority_code, authority_name, create_time, update_time', 'required'),
+            array('authority_code, authority_name, create_time', 'required'),
             array('level', 'numerical', 'integerOnly' => true),
             array('authority_code, category, create_user, update_user', 'length', 'max' => 10),
             array('authority_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
             array('access_path', 'length', 'max' => 100),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, authority_code, authority_name, category, level, access_path, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+
+            // safe
+            array('ID, authority_code, authority_name, category, level, access_path, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 

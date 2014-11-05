@@ -28,9 +28,9 @@ class MConfig extends CActiveRecord {
             array('key', 'required'),
             array('key', 'length', 'max' => 50),
             array('value, comment', 'safe'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, key, value, comment', 'safe', 'on' => 'search'),
+
+            // safe
+            array('ID, key, value, comment', 'safe'),
         );
     }
 

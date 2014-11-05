@@ -36,17 +36,21 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>省内编号</th>
                     <th>学号</th>
                     <th>姓名</th>
                     <th>性别</th>
                     <th>身份证号码</th>
-                    <th>班级</th>
+                    <th>入学年份</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->textField($model,'code', array('class'=>'form-control', 'placeholder'=>'学号')); ?>
+                        <?php echo $form->textField($model,'province_code', array('class'=>'form-control', 'placeholder'=>'省内编号')); ?>
+                    </td>
+                    <td>
+                        <?php echo $form->textField($model,'student_number', array('class'=>'form-control', 'placeholder'=>'学号')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
@@ -58,9 +62,8 @@ $(document).ready(function(){
                         <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control', 'placeholder'=>'身份证号码')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->textField($model,'school_year', array('class'=>'form-control', 'placeholder'=>'入学年份')); ?>
                     </td>
-
                 </tr>
             </tbody>
         </table>
@@ -92,12 +95,11 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>学号</th>
+                    <th>省内编号</th>
                     <th>姓名</th>
                     <th>性别</th>
                     <th>身份证号码</th>
                     <th>出生日期</th>
-                    <th>所在班级</th>
                     <th>操作</th>
                 </tr>
             </thead>

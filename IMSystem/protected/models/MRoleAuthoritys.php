@@ -32,11 +32,11 @@ class MRoleAuthoritys extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('role_id, authority_id, create_time, update_time', 'required'),
+            array('role_id, authority_id, create_time', 'required'),
             array('role_id, authority_id, create_user, update_user', 'length', 'max' => 10),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('ID, role_id, authority_id, create_user, create_time, update_user, update_time', 'safe', 'on' => 'search'),
+            
+            // safe
+            array('ID, role_id, authority_id, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 

@@ -65,8 +65,12 @@ class SiteController extends BaseController {
      * Displays the login page
      */
     public function actionLogin() {
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(Yii::app()->homeUrl);
+        }
+        
         $this->layout = '//layouts/empty';
-
+        
         $model = new LoginForm;
 
         // if it is ajax validation request
@@ -80,7 +84,9 @@ class SiteController extends BaseController {
             $model->attributes = $_POST['LoginForm'];
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()) {
-                if ($model->isFirstLogin) {
+                
+                $user = TUsers::model()->find("username=:username and status='1'", array(':username' => $model->username));
+                if (empty($user->last_password_time)) {
                     // 第一次登陆的情况下，修改密码
                     $this->setWarningMessage('第一次登陆，请修改密码！');
                     $this->redirect($this->createUrl('setting/password'));

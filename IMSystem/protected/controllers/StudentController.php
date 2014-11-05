@@ -13,15 +13,20 @@ class StudentController extends BaseController {
             $model->attributes = $_GET['StudentForm'];
 
             // 查询SQL
-            $sql = "select a.*, c.class_code, c.class_name, c.class_type ";
-            $countSql = "select count(*) ";
-            $condition = " FROM t_students a, t_student_classes b, t_classes c WHERE a.ID=b.student_id AND b.class_id=c.ID AND b.`status`='1' AND c.`status`='1' AND a.`status`='1' ";
+            $sql = "select DISTINCT a.* ";
+            $countSql = "select count(DISTINCT a.ID ) ";
+            $condition = "FROM t_students a inner join t_student_classes b on a.ID = b.student_id inner join t_classes c on c.ID = b.class_id ";
 
             $params = array();
-            // 学生CODE
-            if (trim($model->code) !== '') {
-                $condition .= " and a.code like :code ";
-                $params[':code'] = '%' . StringUtils::escape(trim($model->code)) . '%';
+            // 省内编号
+            if (trim($model->province_code) !== '') {
+                $condition .= " and a.province_code like :province_code ";
+                $params[':province_code'] = '%' . StringUtils::escape(trim($model->province_code)) . '%';
+            }
+            // 学号
+            if (trim($model->student_number) !== '') {
+                $condition .= " and b.student_number like :student_number ";
+                $params[':student_number'] = '%' . StringUtils::escape(trim($model->student_number)) . '%';
             }
             // 学生姓名
             if (trim($model->name) !== '') {
@@ -38,12 +43,12 @@ class StudentController extends BaseController {
                 $condition .= " and a.id_card_no like :id_card_no ";
                 $params[':id_card_no'] = '%' . StringUtils::escape(trim($model->id_card_no)) . '%';
             }
-            // 班级
-            if (trim($model->class_id) !== '') {
-                $condition .= " and c.ID = :class_id ";
-                $params[':class_id'] = trim($model->class_id);
+            // 入学年份
+            if (trim($model->school_year) !== '') {
+                $condition .= " and a.school_year = :school_year ";
+                $params[':school_year'] = '%' . StringUtils::escape(trim($model->school_year)) . '%';
             }
-
+            
             $sql .= $condition;
             $countSql .= $condition;
 
@@ -185,7 +190,8 @@ class StudentController extends BaseController {
             if (is_null($student)) {
                 throw new CHttpException(404, "该学生信息不存在！");
             }
-            // 班级信息
+            
+            // 当前所在班级信息
             $oldClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
             if (!is_null($oldClass)) {
                 $student->class_id = $oldClass->class_id;

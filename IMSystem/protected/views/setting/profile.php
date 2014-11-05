@@ -13,7 +13,6 @@ $(document).ready(function(){
 ?>
 
 
-
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
@@ -594,8 +593,6 @@ $(document).ready(function(){
                                 <?php echo $form->error($model,'business_memo'); ?>
                             </div>
                         </div>
-                    
-                    
                     
                     <?php } ?>
 

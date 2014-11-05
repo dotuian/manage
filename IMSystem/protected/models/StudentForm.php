@@ -21,7 +21,8 @@
 class StudentForm extends CFormModel {
 
     public $ID;
-    public $code;
+    public $province_code; //省内编号
+    public $student_number; //学号
     public $name;
     public $status = '1'; // 默认在校
     public $sex = 'M'; // 默认男性
@@ -54,7 +55,7 @@ class StudentForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('code, name, sex, class_id, birthday, id_card_no', 'required'),
+            array('student_number, name, sex, class_id, birthday, id_card_no', 'required'),
             array('school_year', 'numerical', 'integerOnly' => true),
             array('senior_score, college_score', 'numerical', 'integerOnly' => false),
             array('senior_score, college_score', 'length', 'max' => 5),
@@ -67,7 +68,7 @@ class StudentForm extends CFormModel {
             array('address, university', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             
             // 学号
-            array('code', 'length', 'max' => 10),
+            array('province_code, student_number', 'length', 'max' => 10),
             // 姓名
             array('name', 'length', 'max' => '10', 'encoding' => 'UTF-8'),
             // 性别
@@ -93,16 +94,16 @@ class StudentForm extends CFormModel {
             array('school_year', 'numerical'),
             array('school_year', 'length', 'max' => 4),
             
-            array('ID, code, name, status, sex, id_card_no, birthday, class_id, old_class_id, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment', 'safe'),
+            array('ID, province_code,student_number, name, status, sex, id_card_no, birthday, class_id, old_class_id, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment', 'safe'),
         );
     }
 
     public function afterValidate() {
         parent::afterValidate();
 
-        $count = TStudents::model()->count("code=:code", array(':code' => $this->code));
+        $count = TStudentClasses::model()->count("student_number=:student_number", array(':student_number' => $this->student_number));
         if ($count > 0) {
-            $this->addError("code", '已经存在相同的学号！');
+            $this->addError("student_number", '已经存在相同的学号！');
         }
     }
 
@@ -112,7 +113,8 @@ class StudentForm extends CFormModel {
     public function attributeLabels() {
         return array(
             'ID' => 'ID',
-            'code' => '学号',
+            'province_code' => '省内编号',
+            'student_number' => '学号',
             'name' => '姓名',
             'status' => '状态',
             'sex' => '性别',

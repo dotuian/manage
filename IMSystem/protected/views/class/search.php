@@ -120,6 +120,7 @@ $(document).ready(function(){
                         'itemView' => '_view',
                         'summaryText' => '{start}条 - {end}条 / 共{count}条',
                         'template' => "{items}",
+                        'viewData' => array('grade' => ClassForm::getGradeOption(false)),
                         'pager' => array(
                             'header' => '',
                             'htmlOptions' => array('class'=>'pagination pull-right')

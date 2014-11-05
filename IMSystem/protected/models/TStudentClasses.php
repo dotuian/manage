@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 't_student_classes':
  * @property string $ID
+ * @property string $student_number
  * @property string $student_id
  * @property string $class_id
  * @property string $status
@@ -35,12 +36,13 @@ class TStudentClasses extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('create_time, update_time', 'required'),
-			array('student_id, class_id, create_user, update_user', 'length', 'max'=>10),
+			array('create_time', 'required'),
+			array('student_number, student_id, class_id, create_user, update_user', 'length', 'max'=>10),
 			array('status', 'length', 'max'=>1),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('ID, student_id, class_id, status, create_user, create_time, update_user, update_time', 'safe', 'on'=>'search'),
+			array('update_time', 'safe'),
+			
+            // safe
+			array('ID, student_number, student_id, class_id, status, create_user, create_time, update_user, update_time', 'safe'),
 		);
 	}
 
@@ -64,6 +66,7 @@ class TStudentClasses extends CActiveRecord
 	{
 		return array(
 			'ID' => 'ID',
+			'student_number' => '学号',
 			'student_id' => '学生ID',
 			'class_id' => '班级ID',
 			'status' => '状态', // 0:暂停 1:正常
@@ -93,6 +96,7 @@ class TStudentClasses extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('ID',$this->ID,true);
+		$criteria->compare('student_number',$this->student_number,true);
 		$criteria->compare('student_id',$this->student_id,true);
 		$criteria->compare('class_id',$this->class_id,true);
 		$criteria->compare('status',$this->status,true);

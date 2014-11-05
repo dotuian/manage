@@ -1,9 +1,9 @@
 <tr>
     <td class="center"><?php echo $data['class_code']; ?></td>
     <td class="center"><?php echo $data['class_name']; ?></td>
-    <td class="center"><?php echo ClassForm::getGradeOption(false)[$data['grade']]; ?></td>
+    <td class="center"><?php echo isset($grade[$data['grade']]) ? $grade[$data['grade']] : ''; ?></td>
     <td class="center"><?php echo $data['entry_year']; ?></td>
-    <td class="center"><?php if($data['term_type'] ==='1') echo '上学期' ; if($data['term_type'] ==='1') echo '下学期' ;  ?></td>
+    <td class="center"><?php if($data['term_type'] ==='1') echo '上学期' ; if($data['term_type'] ==='2') echo '下学期' ;  ?></td>
     <td class="center"><?php if($data['class_type'] ==='0') echo '普通高中' ; if($data['class_type'] ==='1') echo '技能专业' ;  ?></td>
     <td class="center"><?php echo $data['specialty_name']; ?></td>
     <td class="center"><?php echo $data['teacher_name']; ?></td>
