@@ -33,7 +33,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">角色名称</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'role_name', array('class'=>'form-control','placeholder'=>'角色名称')); ?>
+                                <?php echo $form->textField($model,'role_name', array('class'=>'form-control required','placeholder'=>'角色名称')); ?>
                                 <?php echo $form->error($model,'role_name'); ?>
                             </div>
                         </div>

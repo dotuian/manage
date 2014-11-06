@@ -127,15 +127,16 @@ class AuthorityController extends BaseController {
                 $authority->authority_name = trim($_POST['MAuthoritys']['authority_name']);
                 $authority->category = trim($_POST['MAuthoritys']['category']);
                 $authority->access_path = trim($_POST['MAuthoritys']['access_path']);
-
                 $authority->update_user = $this->getLoginUserId();
                 $authority->update_time = new CDbExpression('NOW()');
-
-                if ($authority->save()) {
-                    $this->setSuccessMessage("权限信息变更成功！");
-                } else {
-                    Yii::log(print_r($authority->errors, true));
-                    $this->setErrorMessage("权限信息变更失败！");
+                
+                if ($authority->validate()) {
+                    if ($authority->save()) {
+                        $this->setSuccessMessage("权限信息变更成功！");
+                    } else {
+                        Yii::log(print_r($authority->errors, true));
+                        $this->setErrorMessage("权限信息变更失败！");
+                    }
                 }
             }
 

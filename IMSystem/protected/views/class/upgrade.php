@@ -44,7 +44,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级(旧)</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'old_class_id', TClasses::model()->getAllStopClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'old_class_id', TClasses::model()->getAllStopClassOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'old_class_id'); ?>
                             </div>
                         </div>
@@ -52,7 +52,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级(新)</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'new_class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'new_class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'new_class_id'); ?>
                             </div>
                         </div>

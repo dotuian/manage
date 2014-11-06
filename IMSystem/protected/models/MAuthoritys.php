@@ -34,7 +34,7 @@ class MAuthoritys extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('authority_code, authority_name, create_time', 'required'),
+            array('authority_code, authority_name, category', 'required'),
             array('level', 'numerical', 'integerOnly' => true),
             array('authority_code, category, create_user, update_user', 'length', 'max' => 10),
             array('authority_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),

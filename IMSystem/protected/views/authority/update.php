@@ -38,7 +38,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">权限名称</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'authority_name', array('class'=>'form-control','placeholder'=>'权限名称')); ?>
+                                <?php echo $form->textField($model,'authority_name', array('class'=>'form-control required','placeholder'=>'权限名称')); ?>
                                 <?php echo $form->error($model,'authority_name'); ?>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">分类</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'category', AuthorityForm::getCategoryOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'category', AuthorityForm::getCategoryOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'category'); ?>
                             </div>
                         </div>
@@ -54,7 +54,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">访问路径</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'access_path', array('class'=>'form-control','placeholder'=>'访问路径')); ?>
+                                <?php echo $form->textField($model,'access_path', array('class'=>'form-control required','placeholder'=>'访问路径')); ?>
                                 <?php echo $form->error($model,'access_path'); ?>
                             </div>
                         </div>
