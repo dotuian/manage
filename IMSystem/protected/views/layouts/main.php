@@ -188,7 +188,7 @@
                     <?php } ?>
                     
                     <?php if(in_array('class/upgrade', $authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('class/upgrade');?>">班级升级</a></li>
+                    <li><a href="<?php echo $this->createUrl('class/upgrade');?>">班级学生迁移</a></li>
                     <?php } ?>
                 </ul>
             </li>

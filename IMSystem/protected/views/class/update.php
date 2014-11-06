@@ -38,7 +38,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级代号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'class_code',array('class'=>'form-control')); ?>
+                                <?php echo $form->textField($model,'class_code',array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'class_code'); ?>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级名称</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'class_name', array('class'=>'form-control','placeholder'=>'班级名称')); ?>
+                                <?php echo $form->textField($model,'class_name', array('class'=>'form-control required','placeholder'=>'班级名称')); ?>
                                 <?php echo $form->error($model,'class_name'); ?>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">学期</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-')); ?>
                                 <?php echo $form->error($model,'term_type'); ?>
                             </div>
                         </div>
@@ -94,7 +94,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班主任</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>

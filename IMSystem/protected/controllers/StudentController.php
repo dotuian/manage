@@ -20,13 +20,13 @@ class StudentController extends BaseController {
             $params = array();
             // 省内编号
             if (trim($model->province_code) !== '') {
-                $condition .= " and a.province_code like :province_code ";
-                $params[':province_code'] = '%' . StringUtils::escape(trim($model->province_code)) . '%';
+                $condition .= " and a.province_code = :province_code ";
+                $params[':province_code'] = trim($model->province_code);
             }
             // 学号
             if (trim($model->student_number) !== '') {
-                $condition .= " and b.student_number like :student_number ";
-                $params[':student_number'] = '%' . StringUtils::escape(trim($model->student_number)) . '%';
+                $condition .= " and b.student_number = :student_number ";
+                $params[':student_number'] = trim($model->student_number);
             }
             // 学生姓名
             if (trim($model->name) !== '') {
@@ -46,7 +46,7 @@ class StudentController extends BaseController {
             // 入学年份
             if (trim($model->school_year) !== '') {
                 $condition .= " and a.school_year = :school_year ";
-                $params[':school_year'] = '%' . StringUtils::escape(trim($model->school_year)) . '%';
+                $params[':school_year'] = trim($model->school_year);
             }
             
             $sql .= $condition;
@@ -101,13 +101,11 @@ class StudentController extends BaseController {
                 try {
                     // 登录用的用户信息
                     $user = new TUsers();
-                    $user->username = $model->code;
+                    $user->username = trim($model->student_number);
                     $user->password = str_replace('-', '', $model->birthday); // 密码默认为身份证后六位
                     $user->status = '1';
                     $user->create_user = $this->getLoginUserId();
-                    $user->update_user = $this->getLoginUserId();
                     $user->create_time = new CDbExpression('NOW()');
-                    $user->update_time = new CDbExpression('NOW()');
 
                     if ($user->save()) {
                         // 学生用户信息
@@ -115,37 +113,35 @@ class StudentController extends BaseController {
                         $student->attributes = $model->attributes;
                         $student->ID = $user->ID;
                         $student->create_user = $this->getLoginUserId();
-                        $student->update_user = $this->getLoginUserId();
                         $student->create_time = new CDbExpression('NOW()');
-                        $student->update_time = new CDbExpression('NOW()');
 
                         // 学生权限用户信息
                         $userRole = new TUserRoles();
                         $userRole->user_id = $user->ID;
                         $userRole->role_id = '1'; //学生角色(固定值)
                         $userRole->create_user = $this->getLoginUserId();
-                        $userRole->update_user = $this->getLoginUserId();
                         $userRole->create_time = new CDbExpression('NOW()');
-                        $userRole->update_time = new CDbExpression('NOW()');
 
                         // 学生班级信息
                         $studentClass = new TStudentClasses();
+                        $studentClass->student_number = trim($model->student_number);  // 学号
                         $studentClass->class_id = $model->class_id;
                         $studentClass->student_id = $student->ID;
                         $studentClass->status = '1';
                         $studentClass->create_user = $this->getLoginUserId();
-                        $studentClass->update_user = $this->getLoginUserId();
                         $studentClass->create_time = new CDbExpression('NOW()');
-                        $studentClass->update_time = new CDbExpression('NOW()');
 
                         if ($student->save() && $userRole->save() && $studentClass->save()) {
                             $tran->commit();
+                            // 清空页面的值
+                            $model->unsetAttributes();
+                            // 成功消息
                             $this->setSuccessMessage('学生信息添加成功！');
-                            $this->redirect($this->createUrl('create'));
+                        } else {
+                            $this->setErrorMessage('学生信息添加失败！');
                         }
                     }
 
-                    $this->setErrorMessage('学生信息添加失败！');
                 } catch (Exception $e) {
                     throw new CHttpException(404, "系统异常！");
                 }
@@ -192,12 +188,16 @@ class StudentController extends BaseController {
             }
             
             // 当前所在班级信息
-            $oldClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
-            if (!is_null($oldClass)) {
-                $student->class_id = $oldClass->class_id;
+            $currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
+            if (!is_null($currentClass)) {
+                // 目前所在班级学号
+                $student->student_number = $currentClass->student_number;
+                // 目前所在班级
+                $student->class_id = $currentClass->class_id;
             }
 
             if (isset($_POST['TStudents'])) {
+                $student->scenario = 'update';
                 $student->name = trim($_POST['TStudents']['name']);
                 $student->id_card_no = trim($_POST['TStudents']['id_card_no']);
                 $student->birthday = trim($_POST['TStudents']['birthday']);
@@ -224,42 +224,61 @@ class StudentController extends BaseController {
                 
                 // 最新的学生班级信息
                 $student->class_id = trim($_POST['TStudents']['class_id']);
+                // 最新的学生班级学号
+                $student->student_number = trim($_POST['TStudents']['student_number']);
+                
+                $tran = Yii::app()->db->beginTransaction();
+                try {
+                    if($student->validate()) {
+                        //$currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
 
-                if (is_null($oldClass)) {
-                    // 学生班级信息不存在，新建班级信息
-                    $studentClass = new TStudentClasses();
-                    $studentClass->class_id = $model->class_id;
-                    $studentClass->student_id = $student->ID;
-                    $studentClass->status = '1';
-                    $studentClass->create_user = $this->getLoginUserId();
-                    $studentClass->update_user = $this->getLoginUserId();
-                    $studentClass->create_time = new CDbExpression('NOW()');
-                    $studentClass->update_time = new CDbExpression('NOW()');
-                    $studentClass->save(false);
-                } else {
-                    // 存在，并且修改了班级信息时
-                    $new_class_id = trim($_POST['TStudents']['class_id']);
-                    if ($oldClass->class_id != $new_class_id) {
-                        $oldClass->status = '0';
-                        $oldClass->save(false);
+                        if (is_null($currentClass)) {
+                            // 学生班级信息不存在，新建班级信息
+                            $newClass = new TStudentClasses();
+                            $newClass->student_number = $student->student_number; // 学号
+                            $newClass->class_id = $student->class_id;
+                            $newClass->student_id = $student->ID;
+                            $newClass->status = '1';
+                            $newClass->create_user = $this->getLoginUserId();
+                            $newClass->update_user = $this->getLoginUserId();
+                            $newClass->create_time = new CDbExpression('NOW()');
+                            $newClass->update_time = new CDbExpression('NOW()');
+                            $newClass->save(false);
+                        } else {
+                            // 存在，并且修改了班级信息时
+                            $new_class_id = trim($_POST['TStudents']['class_id']);
+                            if ($currentClass->class_id != $new_class_id) {
+                                $currentClass->status = '0';
+                                $currentClass->save(false);
 
-                        $newClass = new TStudentClasses();
-                        $newClass->class_id = $new_class_id;
-                        $newClass->student_id = $student->ID;
-                        $newClass->status = '1';
-                        $newClass->create_user = $this->getLoginUserId();
-                        $newClass->update_user = $this->getLoginUserId();
-                        $newClass->create_time = new CDbExpression('NOW()');
-                        $newClass->update_time = new CDbExpression('NOW()');
-                        $newClass->save(false);
+                                $newClass = new TStudentClasses();
+                                $newClass->student_number = $student->student_number; // 学号
+                                $newClass->class_id = $new_class_id;
+                                $newClass->student_id = $student->ID;
+                                $newClass->status = '1';
+                                $newClass->create_user = $this->getLoginUserId();
+                                $newClass->update_user = $this->getLoginUserId();
+                                $newClass->create_time = new CDbExpression('NOW()');
+                                $newClass->update_time = new CDbExpression('NOW()');
+                                $newClass->save(false);
+                            }
+                            // 学号发生了修改的情况
+                            if ($currentClass->student_number != $student->student_number) {
+                                $currentClass->student_number = $student->student_number;
+                                $currentClass->save(false);
+                            }
+                        }
+
+                        if ($student->save()) {
+                            $tran->commit();
+                            $this->setSuccessMessage("学生信息变更成功！");
+                        } else {
+                            Yii::log(print_r($student->errors, true));
+                            $this->setErrorMessage("学生信息变更失败！");
+                        }
                     }
-                }
-
-                if ($student->save()) {
-                    $this->setSuccessMessage("学生信息变更成功！");
-                } else {
-                    Yii::log(print_r($student->errors, true));
-                    $this->setErrorMessage("学生信息变更失败！");
+                } catch (Exception $e) {
+                    throw new CHttpException(404, "系统异常！");
                 }
             }
 
@@ -301,22 +320,23 @@ class StudentController extends BaseController {
 
                 if ($user->save() && $student->save()) {
                     $this->setSuccessMessage("学生信息删除成功！");
-
+                    $tran->commit;
+                    
                     $this->redirect($this->createUrl('search'));
                 } else {
                     $this->setErrorMessage("学生信息删除失败！");
+                    $this->redirect($this->createUrl('update', array('ID'=>$ID)));
                 }
             } catch (Exception $e) {
                 throw new CHttpException(404, "系统异常！");
             }
-
-            $this->render('update', array(
-                'model' => $student,
-            ));
         } else {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
+    
+    
+    
 
     public function actionImport() {
         // 导入时间的检查

@@ -199,6 +199,8 @@ class ClassController extends BaseController {
             $model->attributes = $_POST['ClassUpgradeForm'];
 
             if ($model->validate()) {
+                $new_class = TClasses::model()->exists("ID=:ID and status='1'", array(":ID" => $this->new_class_id));
+                
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     $count = 0;

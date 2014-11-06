@@ -43,7 +43,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'name', array('class'=>'form-control','placeholder'=>'姓名')); ?>
+                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
@@ -59,7 +59,7 @@ $(document).ready(function(){
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 <br/><?php echo $form->error($model,'birthday'); ?>

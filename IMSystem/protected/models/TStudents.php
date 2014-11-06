@@ -39,8 +39,10 @@
  * @property TUsers $iD
  */
 class TStudents extends CActiveRecord {
-
+    // 目前所在班级
     public $class_id;
+    // 目前所在班级学号
+    public $student_number;
 
     /**
      * @return string the associated database table name
@@ -56,10 +58,10 @@ class TStudents extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, sex, class_id', 'required'),
-            array('school_year', 'numerical', 'integerOnly' => true),
+            array('name, sex, class_id, student_number', 'required'),
+            array('id_card_no, school_year, student_number', 'numerical', 'integerOnly' => true),
             array('senior_score, college_score', 'numerical'),
-			array('province_code, id_card_no', 'length', 'max'=>20),
+			array('province_code, id_card_no', 'length', 'max'=>18),
             array('name', 'length', 'max' => 12, 'encoding'=>'UTF-8'),
             array('status, sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
             array('accommodation, school_of_graduation', 'length', 'max' => 50),
@@ -67,7 +69,7 @@ class TStudents extends CActiveRecord {
             array('address, university', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             array('parents_tel', 'length', 'max' => 11),
             array('parents_qq', 'length', 'max' => 15),
-            array('create_user, update_user, class_id', 'length', 'max' => 10),
+            array('create_user, update_user, class_id, student_number', 'length', 'max' => 10),
             
             // safe
             array('ID, province_code, name, status, sex, id_card_no, birthday, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment, create_user, create_time, update_user, update_time', 'safe'),
@@ -100,6 +102,7 @@ class TStudents extends CActiveRecord {
             'id_card_no' => '身份证号码',
             'birthday' => '出生年月日',
             'class_id' => '目前所在班级',
+            'student_number' => '目前所在班级学号',
             'accommodation' => '住宿情况',
             'payment1' => '缴费情况（第1学期）',
             'payment2' => '缴费情况（第2学期）',
@@ -185,6 +188,18 @@ class TStudents extends CActiveRecord {
         return parent::model($className);
     }
 
+    public function afterValidate() {
+        parent::afterValidate();
+
+        if ($this->scenario === 'update') {
+            $count = TStudentClasses::model()->count("student_number=:student_number and class_id<>:class_id", array(':student_number' => $this->student_number, ':class_id'=>$this->class_id));
+            if ($count > 0) {
+                $this->addError("student_number", '已经存在相同的学号！');
+            }
+        }
+    }
+
+    
     /**
      * 根据class_id获取该班级所有学生
      * @param type $class_id

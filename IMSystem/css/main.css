@@ -2,7 +2,6 @@ body {
     font-size: 14px;
     color: #4f4f4f;
     font-family: Microsoft Yahei, Helvetica, Simsun !important ;
-    background: #fff;
 }
 
 h1, h2, h3, h4, h5, h6, input, label, div, span, p {
@@ -12,10 +11,11 @@ h1, h2, h3, h4, h5, h6, input, label, div, span, p {
 /** 调整主页面左右两边的距离 */
 .container {
     padding-right: 5px !important;
-    padding-left: 5px  !important;
+    padding-left: 5px !important;
 }
 
 
+/** =================================== */
 /** 错误消息自定义样式 */
 span.errorMessage, div.errorMessage{
     padding: 1px;
@@ -23,17 +23,29 @@ span.errorMessage, div.errorMessage{
     margin-bottom: 1px;
 }
 
-input.error, select.error{
+/** ajax验证错误式样 **/
+input.error, select.error {
+    border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+/** 表单提交验证错误式样 **/
+div.error select, div.error input {
+    border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+
+
+/** =================================== */
+
+/** 必须输入的项目背景色 */
+input.required, select.required {
     background-color: #fff8cc;
 }
 
-div.error select {
-    background-color: #fff8cc;
-}
-
-div.error input {
-    background-color: #fff8cc;
-}
 
 div.alert{
     padding : 10px 15px;
@@ -86,6 +98,11 @@ table#result tr th {
     text-align: center;
 }
 
+/* 输入提示信息式样 */
+div.tip {
+    font-size: 11px;
+    color: #3a87ad;
+}
 
 
 /** 顶端导航栏 */

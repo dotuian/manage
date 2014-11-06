@@ -48,7 +48,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'name', array('class'=>'form-control','placeholder'=>'姓名')); ?>
+                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
@@ -64,7 +64,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">身份证号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
+                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
                                 <?php echo $form->error($model,'id_card_no'); ?>
                             </div>
                         </div>
@@ -72,7 +72,7 @@ $this->breadcrumbs = array(
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
@@ -86,17 +86,19 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php $classes = $model->getStudentAllClassInfo(); ?>
                                 <?php if(count($classes) > 0) {  ?>
-                                <table>
-                                    <th>年级</th>
-                                    <th>班级代号</th>
-                                    <th>班级名称</th>
-                                    <th>班主任</th>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <th class="center">学号</th>
+                                    <th class="center">班级代号</th>
+                                    <th class="center">班级名称</th>
+                                    <th class="center">学期</th>
+                                    <th class="center">班主任</th>
                                     <?php foreach ($classes as $class) { ?>
                                     <tr>
-                                        <td><?php echo $class['grade']; ?></td>
-                                        <td><?php echo $class['class_code']; ?></td>
-                                        <td><?php echo $class['class_name']; ?></td>
-                                        <td><?php echo $class['name']; ?></td>
+                                        <td class="center"><?php echo $class['student_number']; ?></td>
+                                        <td class="center"><?php echo $class['class_code']; ?></td>
+                                        <td class="center"><?php echo $class['class_name']; ?></td>
+                                        <td class="center"><?php echo $class['term_type'] == '1' ? '上学期' : '下学期'; ?></td>
+                                        <td class="center"><?php echo $class['name']; ?></td>
                                     </tr>
                                     <?php }?>
                                 </table>
@@ -107,8 +109,16 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">目前所在班级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">目前所在班级学号</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'student_number', array('class'=>'form-control required', 'placeholder'=>'目前所在班级学号')); ?>
+                                <?php echo $form->error($model,'student_number'); ?>
                             </div>
                         </div>
                     
@@ -249,7 +259,6 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'comment'); ?>
                             </div>
                         </div>
-                    
 
                         <hr />
                         <div class="form-group">
@@ -263,7 +272,7 @@ $this->breadcrumbs = array(
                                         'encode'=>false,
                                     ));
                                 ?>
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
+                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); ?>
                             </div>
                         </div>
                     

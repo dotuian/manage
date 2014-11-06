@@ -36,17 +36,34 @@ $this->breadcrumbs = array(
                         ));
                     ?>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">学号</label>
+                            <label class="col-lg-2 control-label">省内编号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'code',array('class'=>'form-control','placeholder'=>'学号')); ?>
-                                <?php echo $form->error($model,'code'); ?>
+                                <?php echo $form->textField($model,'province_code',array('class'=>'form-control','placeholder'=>'省内编号')); ?>
+                                <?php echo $form->error($model,'province_code'); ?>
                             </div>
                         </div>
 
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">班级</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control required')); ?>
+                                <?php echo $form->error($model,'class_id'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">学号</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->textField($model,'student_number',array('class'=>'form-control required','placeholder'=>'学号')); ?>
+                                <?php echo $form->error($model,'student_number'); ?>
+                                <div class="tip">登录用户名</div>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'name', array('class'=>'form-control','placeholder'=>'姓名')); ?>
+                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
@@ -62,7 +79,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">身份证号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
+                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
                                 <?php echo $form->error($model,'id_card_no'); ?>
                             </div>
                         </div>
@@ -70,29 +87,12 @@ $this->breadcrumbs = array(
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
                                 <?php echo '<br/>' . $form->error($model,'birthday'); ?>
-                            </div>
-                        </div>
-                        
-                        <!--
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">状态</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->radioButtonList($model,'status', StudentForm::getStudentStatusOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'status'); ?>
-                            </div>
-                        </div>
-                        -->
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">班级</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'class_id'); ?>
+                                <div class="tip">登录密码（如出生年月为：1998-10-24，则登录密码为：19981024）</div>
                             </div>
                         </div>
                     

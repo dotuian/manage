@@ -56,10 +56,10 @@ class StudentForm extends CFormModel {
         // will receive user inputs.
         return array(
             array('student_number, name, sex, class_id, birthday, id_card_no', 'required'),
-            array('school_year', 'numerical', 'integerOnly' => true),
+            array('id_card_no, school_year, student_number', 'numerical', 'integerOnly' => true),
             array('senior_score, college_score', 'numerical', 'integerOnly' => false),
             array('senior_score, college_score', 'length', 'max' => 5),
-            array('id_card_no', 'length', 'max' => 20),
+            array('id_card_no', 'length', 'max' => 18),
             array('class_id, old_class_id', 'length', 'max' => 10),
             
             array('sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),

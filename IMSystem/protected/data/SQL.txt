@@ -13,6 +13,9 @@ ALTER TABLE `m_roles`
 	CHANGE COLUMN `create_user` `create_user` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `level`;
 
 
+ALTER TABLE `t_student_classes`
+	DROP INDEX `student_number`,
+	ADD UNIQUE INDEX `student_number_student_id_class_id` (`student_number`, `student_id`, `class_id`);
 
 
 
