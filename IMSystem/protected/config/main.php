@@ -76,7 +76,7 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'rootadmin',

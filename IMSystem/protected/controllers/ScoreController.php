@@ -69,14 +69,15 @@ class ScoreController extends BaseController {
      */
     public function actionSearch() {
         
-        $from = " from t_scores a 
-               left join t_classes b on a.class_id = b.ID
-               left join t_students c on a.student_id = c.ID
-               left join m_subjects d on a.subject_id = d.ID
-               left join m_exams e on a.exam_id = e.ID
+        $from = " from t_scores a  
+               inner join t_classes b on a.class_id = b.ID 
+               inner join t_students c on a.student_id = c.ID 
+               inner join m_subjects d on a.subject_id = d.ID 
+               inner join m_exams e on a.exam_id = e.ID 
+               inner join t_student_classes f on a.class_id=f.class_id and a.student_id=a.student_id 
                where 1=1 ";
         
-        $sql = "select a.*, b.class_code, b.class_name, b.class_type,b.entry_year, c.code, c.name, d.subject_code,d.subject_name,d.subject_type, e.exam_code, e.exam_name $from ";
+        $sql = "select a.*, b.class_code, b.class_name, b.class_type,b.entry_year, c.province_code, c.name, d.subject_code,d.subject_name,d.subject_type, e.exam_code, e.exam_name $from ";
         $countSql = "select count(*) $from ";
         $params = array();
         
@@ -99,10 +100,10 @@ class ScoreController extends BaseController {
                 $countSql .= " and a.subject_id = :subject_id ";
                 $params[':subject_id'] = trim($model->subject_id);
             }
-            if (trim($model->student_code) !== '') {
-                $sql .= " and d.code like :code ";
-                $countSql .= " and d.code like :code ";
-                $params[':code'] = '%' . trim($model->student_code) . '%';
+            if (trim($model->student_number) !== '') {
+                $sql .= " and f.student_number = :student_number ";
+                $countSql .= " and f.student_number = :student_number ";
+                $params[':school_number'] = trim($model->student_number);
             }
             if (trim($model->student_name) !== '') {
                 $sql .= " and d.name like :name ";
@@ -123,8 +124,8 @@ class ScoreController extends BaseController {
                 'sort' => array(
                     'attributes' => array(
                         'user' => array(
-                            'asc' => 'c.code',
-                            'desc' => 'c.code desc',
+                            'asc' => 'a.create_time',
+                            'desc' => 'a.create_time desc',
                             'default' => 'desc',
                         )
                     ),

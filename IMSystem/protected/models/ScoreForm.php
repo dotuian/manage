@@ -10,7 +10,7 @@ class ScoreForm extends CFormModel {
     public $class_id;
     public $class_name;
     public $student_id;
-    public $student_code;
+    public $student_number;
     public $student_name;
     public $score;
     
@@ -29,7 +29,7 @@ class ScoreForm extends CFormModel {
             array('exam_id, subject_id, class_id, student_id', 'length', 'max' => 10),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_code, student_name, score, grade', 'safe'),
+            array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_number, student_name, score, grade', 'safe'),
             
             
             

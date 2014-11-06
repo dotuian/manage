@@ -51,7 +51,7 @@ $(document).ready(function(){
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'student_code', array('class'=>'form-control', 'placeholder'=>'学号')); ?>
+                        <?php echo $form->textField($model,'student_number', array('class'=>'form-control', 'placeholder'=>'学号')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'student_name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
