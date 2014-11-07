@@ -1,26 +1,12 @@
 <?php
-$this->pageTitle = Yii::app()->name . '成绩信息添加';
+$this->pageTitle = Yii::app()->name . '学生成绩录入';
 $this->breadcrumbs = array(
-    '成绩信息添加',
+    '学生成绩录入',
 );
 
 
 
-Yii::app()->clientScript->registerScript('search', "
-$(document).ready(function(){
-    
-//    $('input[name=\'TScores[score]]\').blur(function(){
-//        alert();
-//    });
-    
-//    function beforeSend(data){
-//        if(!data.val().match(/^[0-9]+[.]?[0-9]+$/)){
-//            alert('输入正确的数字!');
-//            data.focus();
-//        }        
-//    }
-
-});
+Yii::app()->clientScript->registerScript('create', "
 
 $(document).ready(function(){
     $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false, 'aaSorting': [],});
@@ -30,19 +16,13 @@ $(document).ready(function(){
 
 ?>
 
-<script>
-$(document).ready(function(){
-    
-});
-</script>
-
 
 <!-- 检索条件 -->
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left">成绩信息添加</div>
+                <div class="pull-left">学生成绩录入</div>
                 <div class="clearfix"></div>
             </div>
 
@@ -100,7 +80,7 @@ $(document).ready(function(){
 
 
 <!-- 检索结果 -->
-<?php if(isset($data)) { ?>
+<?php if(isset($data) && count($students) > 0 ) { ?>
 <div class="widget">
 
     <div class="widget-head">
@@ -116,9 +96,7 @@ $(document).ready(function(){
                     <th>班级</th>
                     <th>学号</th>
                     <th>姓名</th>
-                    <?php foreach ($subjects as $subject) {?>
-                        <th><?php echo $subject->subject_name; ?></th>
-                    <?php } ?>
+                    <th><?php echo $subject->subject_name; ?></th>
                     <th>操作结果</th>
                 </tr>
             </thead>
@@ -127,16 +105,16 @@ $(document).ready(function(){
                 <tr>
                     <td class="center"><?php echo ++$i; ?></td>
                     <td class="center"><?php echo $class->class_name; ?></td>
-                    <td class="center"><?php echo $student->code; ?></td>
+                    <td class="center"><?php echo $student->student_number; ?></td>
                     <td class="center"><?php echo $student->name; ?></td>
-                    <?php foreach ($subjects as $subject) {?>
+                    <!-- 成绩录入列 --->
                     <td style="width: 80px">
                         <?php
                             $form = $this->beginWidget('CActiveForm', array(
-                                'id' => 'add-score-form' . $subject->ID . $student->code,
+                                'id' => 'add-score-form' . $subject->ID . $student->student_number,
                                 'enableClientValidation' => false,
                                 'method' => 'post',
-                                'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
+                                'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form', 'onsubmit'=>'return false;'), // 阻止在录入成绩过程中，回车提交表单，导致整个页面重新刷新
                             ));
                                 // 显示已经登录的成绩信息
                                 $key = "$student->ID|$exam->ID|$subject->ID|$class->ID";
@@ -148,7 +126,7 @@ $(document).ready(function(){
 
                                 echo $form->textField($data,'score', array(
                                     'class'=>'form-control',
-                                    'id' => 'text' . $student->code . $subject->ID ,
+                                    'id' => 'text' . $student->student_number . $subject->ID ,
                                     'ajax'=>array(
                                         'type'=>'POST',
                                         'data' => array(
@@ -157,13 +135,14 @@ $(document).ready(function(){
                                             'student_id'=> $student->ID,
                                             'subject_id'=> $subject->ID,
                                             'exam_id'=> $exam->ID,
+                                            'student_number'=> $student->student_number,
                                             'score'=> 'js:$(this).val()',
                                         ),
-                                        'url' => Yii::app()->createUrl('score/insert'),
+                                        'url' => Yii::app()->createUrl('ajax/insertScore'),
                                         //'update'=>"#$student->code",
                                         'beforeSend'=>"function(xhr, opts){
-                                                var data = $('#text$student->code$subject->ID');
-                                                var show = $('#$student->code');
+                                                var data = $('#text$student->student_number$subject->ID');
+                                                var show = $('#$student->student_number');
                                                 if(data.val().match(/^[0-9]+[.]?[0-9]+$/) && data.val() >= 0 && data.val() <=150) {
                                                     show.text('');
                                                     $.blockUI({ message: null }); 
@@ -178,7 +157,7 @@ $(document).ready(function(){
                                         'success'=>"function(data){
                                                 $.unblockUI();
                                                 data = JSON.parse(data);
-                                                var show = $('#$student->code');
+                                                var show = $('#$student->student_number');
 
                                                 show.removeClass();
                                                 if(data.result) {
@@ -194,9 +173,8 @@ $(document).ready(function(){
                         ?>
                     </td>
                     <td>
-                        <span id="<?php echo $student->code?>"></span>
+                        <span id="<?php echo $student->student_number; ?>"></span>
                     </td>
-                    <?php } ?>
                 </tr>
             <?php } ?>
             </tbody>

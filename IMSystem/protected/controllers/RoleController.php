@@ -19,24 +19,18 @@ class RoleController extends BaseController {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     $role = new MRoles();
-                    $role->role_code = $model->autoRoleCode();
                     $role->role_name = $model->role_name;
-                    $role->level = 0;
                     $role->create_user = $this->getLoginUserId();
-                    $role->update_user = $this->getLoginUserId();
                     $role->create_time = new CDbExpression('NOW()');
-                    $role->update_time = new CDbExpression('NOW()');
+
                     if ($role->save()) { // 角色添加
-                        
                         // 角色权限添加
                         foreach ($model->authoritys as $value) {
                             $roleAuthoritys = new MRoleAuthoritys();
                             $roleAuthoritys->authority_id = trim($value);
                             $roleAuthoritys->role_id = $role->ID;
                             $roleAuthoritys->create_user = $this->getLoginUserId();
-                            $roleAuthoritys->update_user = $this->getLoginUserId();
                             $roleAuthoritys->create_time = new CDbExpression('NOW()');
-                            $roleAuthoritys->update_time = new CDbExpression('NOW()');
                             $roleAuthoritys->save();
                         }
 
@@ -127,18 +121,17 @@ class RoleController extends BaseController {
             // 页面初始化
             $model = new RoleForm('update');
             $model->role_id = $role->ID;
-            $model->role_code = $role->role_code;
             $model->role_name = $role->role_name;
-            $model->class_authoritys = array_keys($role->getRoleAuthorityByCategory('CLASS'));
-            $model->subject_authoritys = array_keys($role->getRoleAuthorityByCategory('SUBJECT'));
-            $model->course_authoritys = array_keys($role->getRoleAuthorityByCategory('COURSE'));
-            $model->student_authoritys = array_keys($role->getRoleAuthorityByCategory('STUDENT'));
-            $model->teacher_authoritys = array_keys($role->getRoleAuthorityByCategory('TEACHER'));
-            $model->score_authoritys = array_keys($role->getRoleAuthorityByCategory('SCORE'));
-            $model->role_authoritys = array_keys($role->getRoleAuthorityByCategory('ROLE'));
-            $model->authority_authoritys = array_keys($role->getRoleAuthorityByCategory('AUTHORITY'));
-            $model->other_authoritys = array_keys($role->getRoleAuthorityByCategory('OTHER'));
-            $model->system_authoritys = array_keys($role->getRoleAuthorityByCategory('SYSTEM'));
+            $model->class_authoritys    = array_keys($role->getRoleAuthorityByCategory('CLASS'));
+            $model->subject_authoritys  = array_keys($role->getRoleAuthorityByCategory('SUBJECT'));
+            $model->course_authoritys   = array_keys($role->getRoleAuthorityByCategory('COURSE'));
+            $model->student_authoritys  = array_keys($role->getRoleAuthorityByCategory('STUDENT'));
+            $model->teacher_authoritys  = array_keys($role->getRoleAuthorityByCategory('TEACHER'));
+            $model->score_authoritys    = array_keys($role->getRoleAuthorityByCategory('SCORE'));
+            $model->role_authoritys     = array_keys($role->getRoleAuthorityByCategory('ROLE'));
+            $model->authority_authoritys= array_keys($role->getRoleAuthorityByCategory('AUTHORITY'));
+            $model->other_authoritys    = array_keys($role->getRoleAuthorityByCategory('OTHER'));
+            $model->system_authoritys   = array_keys($role->getRoleAuthorityByCategory('SYSTEM'));
 
             // 角色的权限更新处理
             if (isset($_POST['RoleForm'])) {
@@ -163,9 +156,7 @@ class RoleController extends BaseController {
                                 $roleAuthoritys->authority_id = trim($value);
                                 $roleAuthoritys->role_id = $role->ID;
                                 $roleAuthoritys->create_user = $this->getLoginUserId();
-                                $roleAuthoritys->update_user = $this->getLoginUserId();
                                 $roleAuthoritys->create_time = new CDbExpression('NOW()');
-                                $roleAuthoritys->update_time = new CDbExpression('NOW()');
                                 $roleAuthoritys->save();
                             }
 
@@ -198,7 +189,7 @@ class RoleController extends BaseController {
         if (isset($_POST['ID'])) {
             $ID = trim($_POST['ID']);
             
-            if(in_array($ID , array('1','2','3','4', '5', '6'))) {
+            if(in_array($ID , array('1','2','3','4', '5'))) {
                 throw new CHttpException(404, "该信息为系统运行所必须的数据，不能删除！");
             }
             
@@ -209,7 +200,8 @@ class RoleController extends BaseController {
             
             $role->status = '2'; //删除状态
             $role->update_user = $this->getLoginUserId();
-            $role->create_time = new CDbExpression('NOW()');
+            $role->update_time = new CDbExpression('NOW()');
+            
             if ($role->save()) {
                 $this->setSuccessMessage("角色信息删除成功！");
                 $this->redirect($this->createUrl('search'));

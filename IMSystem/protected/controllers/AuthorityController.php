@@ -84,21 +84,18 @@ class AuthorityController extends BaseController {
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     $authority = new MAuthoritys();
-                    $authority->authority_code = $model->autoAuthorityCode();
-                    $authority->authority_name = $model->authority_name;
-                    $authority->category = $model->category;
-                    $authority->access_path = $model->access_path;
+                    $authority->authority_name = trim($model->authority_name);
+                    $authority->category = trim($model->category);
+                    $authority->access_path = trim($model->access_path);
                     $authority->level = '0';
                     
                     $authority->create_user = $this->getLoginUserId();
-                    $authority->update_user = $this->getLoginUserId();
                     $authority->create_time = new CDbExpression('NOW()');
-                    $authority->update_time = new CDbExpression('NOW()');
-                    
                     if ($authority->save()) {
                         $tran->commit();
+                        // 清空页面的值
+                        $model->unsetAttributes();
                         $this->setSuccessMessage("权限信息添加成功！");
-                        $this->redirect($this->createUrl('create'));
                     } else {
                         Yii::log(print_r($authority->errors, true));
                         $this->setErrorMessage("权限信息添加失败！");

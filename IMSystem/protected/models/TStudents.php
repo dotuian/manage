@@ -199,16 +199,6 @@ class TStudents extends CActiveRecord {
         }
     }
 
-    
-    /**
-     * 根据class_id获取该班级所有学生
-     * @param type $class_id
-     */
-    public function getAllStudentsByClassId($class_id) {
-        $sql = "select DISTINCT a.* from t_students a , t_student_classes b where a.ID=b.student_id and b.class_id=:class_id";
-        return TStudents::model()->findAllBySql($sql, array(':class_id' => $class_id));
-    }
-    
     /**
      * 获取该学生的所有班级信息
      * @param type $student_id

@@ -18,6 +18,14 @@ class CourseController extends BaseController {
             $params = array();
             $condition = '';
             
+            if (trim($model->class_code) !== '') {
+                $condition .= " and c.class_code = :class_code ";
+                $params[':class_code'] = trim($model->class_code);
+            }
+            if (trim($model->class_id) !== '') {
+                $condition .= " and a.class_id = :class_id ";
+                $params[':class_id'] = trim($model->class_id);
+            }
             if (trim($model->subject_id) !== '') {
                 $condition .= " and a.subject_id = :subject_id ";
                 $params[':subject_id'] = trim($model->subject_id);
@@ -29,10 +37,6 @@ class CourseController extends BaseController {
             if (trim($model->teacher_name) !== '') {
                 $condition .= " and d.name like :teacher_name ";
                 $params[':teacher_name'] = '%' . trim($model->teacher_name) . '%';
-            }
-            if (trim($model->class_id) !== '') {
-                $condition .= " and a.class_id = :class_id ";
-                $params[':class_id'] = trim($model->class_id);
             }
             $sql .= $condition;
             $countSql .= $condition;

@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'm_authoritys':
  * @property string $ID
- * @property string $authority_code
  * @property string $authority_name
  * @property string $category
  * @property integer $level
@@ -34,14 +33,15 @@ class MAuthoritys extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('authority_code, authority_name, category', 'required'),
-            array('level', 'numerical', 'integerOnly' => true),
-            array('authority_code, category, create_user, update_user', 'length', 'max' => 10),
+            array('authority_name, category', 'required'),
             array('authority_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
+
+            array('level', 'numerical', 'integerOnly' => true),
+            array('category, create_user, update_user', 'length', 'max' => 10),
             array('access_path', 'length', 'max' => 100),
 
             // safe
-            array('ID, authority_code, authority_name, category, level, access_path, create_user, create_time, update_user, update_time', 'safe'),
+            array('ID, authority_name, category, level, access_path, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -62,7 +62,6 @@ class MAuthoritys extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID' => 'ID',
-            'authority_code' => '权限CODE',
             'authority_name' => '权限名称',
             'category' => '权限分类',
             'level' => '排序用',
@@ -92,7 +91,6 @@ class MAuthoritys extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('ID', $this->ID, true);
-        $criteria->compare('authority_code', $this->authority_code, true);
         $criteria->compare('authority_name', $this->authority_name, true);
         $criteria->compare('category', $this->category, true);
         $criteria->compare('level', $this->level);

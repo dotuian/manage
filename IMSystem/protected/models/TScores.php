@@ -9,6 +9,7 @@
  * @property string $subject_id
  * @property string $class_id
  * @property string $student_id
+ * @property string $student_number
  * @property double $score
  * @property string $create_user
  * @property string $create_time
@@ -37,14 +38,14 @@ class TScores extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('exam_id, subject_id, class_id, student_id, score, create_time, update_time', 'required'),
+            array('exam_id, subject_id, class_id, student_id, score', 'required'),
             array('score', 'numerical'),
             array('score', 'length', 'max' => 5),
-            array('exam_id, subject_id, class_id, student_id, create_user, update_user', 'length', 'max' => 10),
+			array('exam_id, subject_id, class_id, student_id, student_number, create_user, update_user', 'length', 'max'=>10),
 			array('update_time', 'safe'),
             
             // safe
-            array('ID, exam_id, subject_id, class_id, student_id, score, create_user, create_time, update_user, update_time', 'safe'),
+			array('ID, exam_id, subject_id, class_id, student_id, student_number, score, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -72,6 +73,7 @@ class TScores extends CActiveRecord {
             'subject_id' => '科目ID',
             'class_id' => '班级ID',
             'student_id' => '学生ID',
+			'student_number' => '当前学生学号',
             'score' => '分数',
             'create_user' => '创建用户',
             'create_time' => '创建时间',
@@ -102,6 +104,7 @@ class TScores extends CActiveRecord {
         $criteria->compare('subject_id', $this->subject_id, true);
         $criteria->compare('class_id', $this->class_id, true);
         $criteria->compare('student_id', $this->student_id, true);
+		$criteria->compare('student_number',$this->student_number,true);
         $criteria->compare('score', $this->score);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);

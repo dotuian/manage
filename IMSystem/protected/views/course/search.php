@@ -31,14 +31,21 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>班级代号</th>
+                    <th>班级名称</th>
                     <th>科目</th>
                     <th>教工号</th>
                     <th>任课教师姓名</th>
-                    <th>班级</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td>
+                        <?php echo $form->textField($model,'class_code', array('class'=>'form-control')); ?>
+                    </td>
+                    <td>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                    </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control', 'placeholder'=>'教工号')); ?>
                     </td>
@@ -47,9 +54,6 @@ $(document).ready(function(){
                     </td>
                     <td>
                         <?php echo $form->textField($model,'teacher_name', array('class'=>'form-control', 'placeholder'=>'任课教师姓名')); ?>
-                    </td>
-                    <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>
@@ -80,10 +84,11 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
+                    <th>班级代号</th>
+                    <th>班级名称</th>
                     <th>科目</th>
                     <th>教工号</th>
                     <th>任课教师姓名</th>
-                    <th>班级</th>
                     <th>操作</th>
                 </tr>
             </thead>

@@ -271,5 +271,62 @@ class TClasses extends CActiveRecord
         
         return $str;
     }
+    
+    /**
+     * 获取该班级所修的所有科目信息
+     */
+    public function getClassAllSubjects() {
+        $sql = "select c.* from ";
+        $sql .= " t_classes a ";
+        $sql .= " inner join m_courses b on a.ID=b.class_id and b.`status`='1' ";
+        $sql .= " inner join m_subjects c on c.ID=b.subject_id and c.`status`='1' ";
+        $sql .= "where a.ID=:class_id";
+
+        $param = array(':class_id' => $this->ID);
+        return MSubjects::model()->findAllBySql($sql, $param);
+    }
+    
+    /**
+     * 获取该班级所有学生
+     */
+    public function getClassAllStudents() {
+        $sql = "select a.*, b.student_number from ";
+        $sql .= "t_students a ";
+        $sql .= "inner join t_student_classes b on a.ID=b.student_id ";
+        $sql .= "inner join t_classes c on c.ID= b.class_id ";
+        $sql .= "where ";
+        $sql .= "a.`status`='1' and c.ID=:class_id";
+        
+        return TStudents::model()->findAllBySql($sql, array(':class_id' => $this->ID));
+    }
+    
+    /**
+     * 获取该班级所有学生为了登录学生成绩
+     */
+    public function getClassAllStudentsForInsertScore() {
+        $sql = "select a.*, b.student_number from ";
+        $sql .= "t_students a ";
+        $sql .= "inner join t_student_classes b on a.ID=b.student_id ";
+        $sql .= "inner join t_classes c on c.ID= b.class_id ";
+        $sql .= "where ";
+        $sql .= "a.`status`='1' and b.`status`='1' and c.ID=:class_id";
+        
+        return TStudents::model()->findAllBySql($sql, array(':class_id' => $this->ID));
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

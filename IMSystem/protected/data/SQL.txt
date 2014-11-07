@@ -18,10 +18,18 @@ ALTER TABLE `t_student_classes`
 	ADD UNIQUE INDEX `student_number_student_id_class_id` (`student_number`, `student_id`, `class_id`);
 
 
+ALTER TABLE `t_scores`
+	ADD COLUMN `student_number` CHAR(10) NULL COMMENT '当前学生学号' COLLATE 'utf8_bin' AFTER `student_id`;
 
 
+ALTER TABLE `m_authoritys`
+	DROP COLUMN `authority_code`,
+	ADD INDEX `access_path` (`access_path`);
 
-
+ALTER TABLE `m_roles`
+	DROP COLUMN `role_code`,
+	DROP COLUMN `level`,
+	ADD INDEX `role_name` (`role_name`);
 
 
 

@@ -4,7 +4,6 @@ class AuthorityForm extends CFormModel
 {
 
     public $ID;
-    public $authority_code;
     public $authority_name;
     public $category;
     public $access_path;
@@ -20,12 +19,12 @@ class AuthorityForm extends CFormModel
 		return array(
 			array('authority_name, category, access_path', 'required'),
 			array('level', 'numerical', 'integerOnly'=>true),
-			array('authority_code, category', 'length', 'max'=>10),
+			array('category', 'length', 'max'=>10),
 			array('authority_name', 'length', 'max'=>50, 'encoding'=>'UTF-8'),
 			array('access_path', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ID, authority_code, authority_name, category, level, access_path', 'safe'),
+			array('ID, authority_name, category, level, access_path', 'safe'),
 		);
 	}
 
@@ -53,7 +52,6 @@ class AuthorityForm extends CFormModel
 	{
 		return array(
 			'ID' => 'ID',
-			'authority_code' => '权限CODE',
 			'authority_name' => '权限名称',
 			'category' => '权限分类',
 			'level' => '排序用',
@@ -81,10 +79,5 @@ class AuthorityForm extends CFormModel
         return $result;
     }
     
-    
-    public function autoAuthorityCode(){
-        $count = MAuthoritys::model()->count('category=:category', array(':category' => $this->category));
-        return substr($this->category, 0, 3) . str_pad($count + 1, 3, '0', STR_PAD_LEFT);   
-    }
     
 }

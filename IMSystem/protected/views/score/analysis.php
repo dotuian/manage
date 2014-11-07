@@ -39,7 +39,7 @@ $(document).ready(function(){
                             <label class="col-lg-2 control-label">年级</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(true), array(
-                                        'class'=>'form-control',
+                                        'class'=>'form-control required',
                                         'ajax'=>array(
                                             'type'=>'POST',
                                             'data' => array(
@@ -65,7 +65,7 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">考试名称</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('id'=>'exam_id', 'class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('id'=>'exam_id', 'class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'exam_id'); ?>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ $(document).ready(function(){
 
 
 
-<?php if(isset($data) && count($data)> 0 ) { ?>
+<?php if(isset($data) && count($data)> 0 && isset($subjects) && count($subjects) > 0) { ?>
 <!-- 统计结果 -->
 <div class="widget">
 

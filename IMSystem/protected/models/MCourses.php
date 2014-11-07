@@ -115,10 +115,4 @@ class MCourses extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-
-    
-    public function getCoursesByClassId($class_id) {
-        $subject = MSubjects::model()->findAll("ID in (select a.subject_id from m_courses a where a.class_id=:class_id and a.`status`='1')", array(':class_id' => $class_id));
-        return $subject;
-    }
 }

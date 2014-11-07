@@ -5,10 +5,8 @@
  *
  * The followings are the available columns in table 'm_roles':
  * @property string $ID
- * @property string $role_code
  * @property string $role_name
  * @property string $status
- * @property string $level
  * @property string $create_user
  * @property string $create_time
  * @property string $update_user
@@ -34,14 +32,13 @@ class MRoles extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('role_code, role_name, create_time', 'required'),
-            array('role_code', 'length', 'max' => 10),
+            array('role_name, create_time', 'required'),
             array('role_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
-            array('level', 'length', 'max' => 2),
+
             array('create_user, update_user', 'length', 'max' => 10),
 
             // safe
-            array('ID, role_code, role_name, status, level, create_user, create_time, update_user, update_time', 'safe'),
+            array('ID, role_name, status, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -63,10 +60,8 @@ class MRoles extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID' => 'ID',
-            'role_code' => '角色CODE',
             'role_name' => '角色名',
             'status' => '状态', // (1:正常 2：删除)
-            'level' => '排序用',
             'create_user' => '创建用户',
             'create_time' => '创建时间',
             'update_user' => '更新用户',
@@ -92,10 +87,8 @@ class MRoles extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('ID', $this->ID, true);
-        $criteria->compare('role_code', $this->role_code, true);
         $criteria->compare('role_name', $this->role_name, true);
 		$criteria->compare('status',$this->status,true);
-        $criteria->compare('level', $this->level, true);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_user', $this->update_user, true);
@@ -120,7 +113,7 @@ class MRoles extends CActiveRecord {
         $result = array();
 
         // 
-        $sql = "select a.ID, a.authority_code, a.authority_name from m_authoritys a , m_role_authoritys b where a.category=:category and a.ID=b.authority_id and role_id=:role_id order by a.ID";
+        $sql = "select a.ID, a.authority_name from m_authoritys a , m_role_authoritys b where a.category=:category and a.ID=b.authority_id and role_id=:role_id order by a.ID";
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $command->bindValue(":role_id", $this->ID);

@@ -123,7 +123,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
                                 <?php 
-                                if (!in_array($model->role_id, array('1', '2', '3', '4', '5', '6'))) {
+                                if (!in_array($model->role_id, array('1', '2', '3', '4', '5'))) {
                                     echo CHtml::Button("删除", array(
                                         'confirm' => '确定要删除吗？',
                                         'params' => array('ID' => $model->role_id),

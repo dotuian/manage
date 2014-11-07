@@ -35,7 +35,7 @@ class ScoreForm extends CFormModel {
             
             
             // 班级成绩查询时，班级信息必须输入
-            array('class_id, exam_id', 'required', 'on'=>'search_class_score'),
+            array('class_id, exam_id', 'required', 'on'=>'class'),
             
             // 学生成绩分析
             array('exam_id, grade', 'required', 'on'=>'analysis'),
@@ -62,6 +62,24 @@ class ScoreForm extends CFormModel {
     }
     
     
+    public function afterValidate() {
+        parent::afterValidate();
+
+        if ($this->scenario === 'class') {
+            $class = TClasses::model()->find("ID=:ID", array(":ID" => $this->class_id));
+            if (is_null($class)) {
+                $this->addError('class_id', '所选班级信息不存在！');
+            }
+
+            $exam = MExams::model()->find("status='1' and ID=:ID", array(":ID" => $this->exam_id));
+            if (is_null($class)) {
+                $this->addError('exam_id', '所选考试信息不存在！');
+            }
+        }
+    }
+    
+
+
     
     
     
