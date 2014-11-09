@@ -61,7 +61,7 @@ class TStudents extends CActiveRecord {
             array('name, sex, class_id, student_number', 'required'),
             array('id_card_no, school_year, student_number', 'numerical', 'integerOnly' => true),
             array('senior_score, college_score', 'numerical'),
-			array('province_code, id_card_no', 'length', 'max'=>18),
+            array('province_code, id_card_no', 'length', 'max'=>18),
             array('name', 'length', 'max' => 12, 'encoding'=>'UTF-8'),
             array('status, sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
             array('accommodation, school_of_graduation', 'length', 'max' => 50),

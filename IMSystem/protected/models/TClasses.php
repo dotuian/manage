@@ -287,6 +287,31 @@ class TClasses extends CActiveRecord
     }
     
     /**
+     * 获取所有使用中的班级的CODE
+     * 学生信息批量导入用
+     */
+    public function getAllClassCode() {
+        $code = array();
+        $classes = TClasses::model()->findAll("status='1'");
+        foreach ($classes as $class) {
+            $code[] = $class->class_code;
+        }
+        return $code;
+    }
+    /**
+     * 获取所有使用中的班级的CODE
+     * 学生信息批量导入用
+     */
+    public function getAllStopClassCode() {
+        $code = array();
+        $classes = TClasses::model()->findAll("status='2'");
+        foreach ($classes as $class) {
+            $code[] = $class->class_code;
+        }
+        return $code;
+    }
+
+    /**
      * 获取该班级所有学生
      */
     public function getClassAllStudents() {

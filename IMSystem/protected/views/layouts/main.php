@@ -187,9 +187,11 @@
                     <li><a href="<?php echo $this->createUrl('class/create');?>">班级信息添加</a></li>
                     <?php } ?>
                     
+                    <!-- 
                     <?php if(in_array('class/upgrade', $authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/upgrade');?>">班级学生迁移</a></li>
                     <?php } ?>
+                    -->
                 </ul>
             </li>
             <?php } ?>
@@ -352,12 +354,11 @@
                             <?php echo Yii::app()->user->getFlash('warning'); ?>
                         </div>
                     <?php } ?>
-                    <?php if (Yii::app()->user->hasFlash('danger')) { ?>
+                    <?php if (Yii::app()->user->hasFlash('error')) { ?>
                         <div class="alert alert-danger">
-                            <?php echo Yii::app()->user->getFlash('danger'); ?>
+                            <?php echo Yii::app()->user->getFlash('error'); ?>
                         </div>
                     <?php } ?>
-
 
                     <?php echo $content; ?>
                 </div>
