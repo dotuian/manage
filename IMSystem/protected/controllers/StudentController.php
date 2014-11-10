@@ -194,78 +194,79 @@ class StudentController extends BaseController {
                 $student->student_number = $currentClass->student_number;
                 // 目前所在班级
                 $student->class_id = $currentClass->class_id;
+                
+                // 班级和学号信息临时保存
+                $student->old_class_id = $currentClass->class_id;
+                $student->old_student_number  = $currentClass->student_number;
             }
 
             if (isset($_POST['TStudents'])) {
                 $student->scenario = 'update';
-                $student->name = trim($_POST['TStudents']['name']);
-                $student->id_card_no = trim($_POST['TStudents']['id_card_no']);
-                $student->birthday = trim($_POST['TStudents']['birthday']);
-                $student->accommodation = trim($_POST['TStudents']['accommodation']);
-                $student->payment1 = trim($_POST['TStudents']['payment1']);
-                $student->payment2 = trim($_POST['TStudents']['payment2']);
-                $student->payment3 = trim($_POST['TStudents']['payment3']);
-                $student->payment4 = trim($_POST['TStudents']['payment4']);
-                $student->payment5 = trim($_POST['TStudents']['payment5']);
-                $student->payment6 = trim($_POST['TStudents']['payment6']);
-                $student->bonus_penalty = trim($_POST['TStudents']['bonus_penalty']);
-                $student->address = trim($_POST['TStudents']['address']);
-                $student->parents_tel = trim($_POST['TStudents']['parents_tel']);
-                $student->parents_qq = trim($_POST['TStudents']['parents_qq']);
-                $student->school_of_graduation = trim($_POST['TStudents']['school_of_graduation']);
-                $student->senior_score = trim($_POST['TStudents']['senior_score']);
-                $student->school_year = trim($_POST['TStudents']['school_year']);
-                $student->college_score = trim($_POST['TStudents']['college_score']);
-                $student->university = trim($_POST['TStudents']['university']);
-                $student->comment = trim($_POST['TStudents']['comment']);
 
-                $student->update_user = $this->getLoginUserId();
-                $student->update_time = new CDbExpression('NOW()');
+                $student->id_card_no    = trim($_POST['TStudents']['id_card_no']);
+                $student->birthday      = trim($_POST['TStudents']['birthday']);
+                $student->accommodation = trim($_POST['TStudents']['accommodation']);
+                $student->payment1      = trim($_POST['TStudents']['payment1']);
+                $student->payment2      = trim($_POST['TStudents']['payment2']);
+                $student->payment3      = trim($_POST['TStudents']['payment3']);
+                $student->payment4      = trim($_POST['TStudents']['payment4']);
+                $student->payment5      = trim($_POST['TStudents']['payment5']);
+                $student->payment6      = trim($_POST['TStudents']['payment6']);
+                $student->bonus_penalty = trim($_POST['TStudents']['bonus_penalty']);
+                $student->address       = trim($_POST['TStudents']['address']);
+                $student->parents_tel   = trim($_POST['TStudents']['parents_tel']);
+                $student->parents_qq    = trim($_POST['TStudents']['parents_qq']);
+                $student->school_of_graduation = trim($_POST['TStudents']['school_of_graduation']);
+                $student->senior_score  = trim($_POST['TStudents']['senior_score']);
+                $student->school_year   = trim($_POST['TStudents']['school_year']);
+                $student->college_score = trim($_POST['TStudents']['college_score']);
+                $student->university    = trim($_POST['TStudents']['university']);
+                $student->comment       = trim($_POST['TStudents']['comment']);
+
+                $student->update_user  = $this->getLoginUserId();
+                $student->update_time  = new CDbExpression('NOW()');
                 
                 // 最新的学生班级信息
-                $student->class_id = trim($_POST['TStudents']['class_id']);
+                $student->class_id     = trim($_POST['TStudents']['class_id']);
                 // 最新的学生班级学号
                 $student->student_number = trim($_POST['TStudents']['student_number']);
                 
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     if($student->validate()) {
-                        //$currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
 
                         if (is_null($currentClass)) {
                             // 学生班级信息不存在，新建班级信息
                             $newClass = new TStudentClasses();
                             $newClass->student_number = $student->student_number; // 学号
-                            $newClass->class_id = $student->class_id;
-                            $newClass->student_id = $student->ID;
+                            $newClass->class_id       = $student->class_id;
+                            $newClass->student_id     = $student->ID;
                             $newClass->status = '1';
                             $newClass->create_user = $this->getLoginUserId();
-                            $newClass->update_user = $this->getLoginUserId();
                             $newClass->create_time = new CDbExpression('NOW()');
-                            $newClass->update_time = new CDbExpression('NOW()');
                             $newClass->save(false);
                         } else {
                             // 存在，并且修改了班级信息时
-                            $new_class_id = trim($_POST['TStudents']['class_id']);
-                            if ($currentClass->class_id != $new_class_id) {
+                            if ($student->old_class_id != $student->class_id) { // 班级信息不一致时，表示修改了班级信息
+                                // 当前班级信息状态设置为暂停
                                 $currentClass->status = '0';
                                 $currentClass->save(false);
-
+                                
+                                // 新加新的班级信息
                                 $newClass = new TStudentClasses();
                                 $newClass->student_number = $student->student_number; // 学号
-                                $newClass->class_id = $new_class_id;
-                                $newClass->student_id = $student->ID;
+                                $newClass->class_id       = $student->class_id;
+                                $newClass->student_id     = $student->ID;
                                 $newClass->status = '1';
                                 $newClass->create_user = $this->getLoginUserId();
-                                $newClass->update_user = $this->getLoginUserId();
                                 $newClass->create_time = new CDbExpression('NOW()');
-                                $newClass->update_time = new CDbExpression('NOW()');
                                 $newClass->save(false);
-                            }
-                            // 学号发生了修改的情况
-                            if ($currentClass->student_number != $student->student_number) {
-                                $currentClass->student_number = $student->student_number;
-                                $currentClass->save(false);
+                            } else {
+                                // 班级信息委发生变化，而学号发生了修改的情况
+                                if ($student->old_student_number != $student->student_number) {
+                                    $currentClass->student_number = $student->student_number;
+                                    $currentClass->save(false);
+                                }
                             }
                         }
 

@@ -39,6 +39,14 @@
  * @property TUsers $iD
  */
 class TStudents extends CActiveRecord {
+    
+    // 学生信息更新时
+    // 原先的班级
+    public $old_class_id;
+    // 原先的学号
+    public $old_student_number;
+    
+    
     // 目前所在班级
     public $class_id;
     // 目前所在班级学号
@@ -80,6 +88,16 @@ class TStudents extends CActiveRecord {
             array('parents_qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,15}$/','message' => '请输入正确的QQ号码！', 'on' => 'profile'),
             // ==============================================================================
             
+            // ==============================================================================
+            // 学生信息更新时(student/update)
+            array('id_card_no, birthday, class_id, student_number', 'required', 'on' => 'update'),
+            array('birthday', 'date', 'format'=>'yyyy-MM-dd', 'on' => 'update'),
+            // QQ号码
+            array('parents_qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,15}$/','message' => '请输入正确的QQ号码！', 'on' => 'update'),
+            
+            array('old_class_id, old_student_number', 'safe', 'on' => 'update'),
+            // ==============================================================================
+            
             // safe
             array('ID, province_code, name, status, sex, id_card_no, birthday, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment, create_user, create_time, update_user, update_time', 'safe'),
         );
@@ -104,7 +122,7 @@ class TStudents extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID' => 'ID',
-			'province_code' => '省内编号',
+            'province_code' => '省内编号',
             'name' => '姓名',
             'status' => '状态', // (1:在校 2:离校)
             'sex' => '性别',
@@ -154,7 +172,7 @@ class TStudents extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('ID', $this->ID, true);
-		$criteria->compare('province_code',$this->province_code,true);
+        $criteria->compare('province_code', $this->province_code, true);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('status', $this->status, true);
         $criteria->compare('sex', $this->sex, true);
@@ -201,10 +219,22 @@ class TStudents extends CActiveRecord {
         parent::afterValidate();
 
         if ($this->scenario === 'update') {
-            $count = TStudentClasses::model()->count("student_number=:student_number and class_id<>:class_id", array(':student_number' => $this->student_number, ':class_id'=>$this->class_id));
-            if ($count > 0) {
-                $this->addError("student_number", '已经存在相同的学号！');
+            // 班级信息发生了修改
+            if($this->old_class_id != $this->class_id) {
+                if($this->old_student_number == $this->student_number) {
+                    $this->addError('student_number', '班级发生了变更的同时，学号也必须变更！');
+                }
             }
+            
+            // 学号发生了变化
+            if($this->old_student_number != $this->student_number) {
+                $count = TStudentClasses::model()->count("student_number=:student_number and student_id<>:student_id", array(':student_number' => $this->student_number, ':student_id'=>$this->ID));
+                if ($count > 0) {
+                    $this->addError("student_number", '已经存在相同的学号！');
+                }
+            }
+            
+            
         }
         
         // 学生个人信息修改
