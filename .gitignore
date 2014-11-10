@@ -1,4 +1,4 @@
-﻿# 以斜杠“/”开头表示目录；
+# 以斜杠“/”开头表示目录；
 # 以星号“*”通配多个字符；
 # 以问号“?”通配单个字符
 # 以方括号“[]”包含单个字符的匹配列表；
@@ -12,6 +12,10 @@
 #忽略/IMSystem/protected/runtime/文件下所有内容，除了readme.txt
 /IMSystem/protected/runtime/*
 !/IMSystem/protected/runtime/readme.txt
+
+/IMSystem/files/upload/*
+!/IMSystem/files/upload/readme.txt
+
 
 #不忽略.gitignore文件
 !.gitignore

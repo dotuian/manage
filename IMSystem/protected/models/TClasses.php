@@ -45,12 +45,14 @@ class TClasses extends CActiveRecord
             // 共同
             array('class_code, class_name, class_type, entry_year, teacher_id, grade', 'required'),
             array('entry_year', 'numerical', 'integerOnly' => true),
-            array('class_name, specialty_name, term_type', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
+            array('class_name, specialty_name', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
             //========================================================================
             // 班级代号
             array('class_code', 'length', 'max' => 10, 'encoding' => 'UTF-8'),
             // 班级名称
             array('class_name', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
+            // 学期(0:整学年 1:上学期 2:下学期)
+            array('term_type', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => false),
             // 班级性质
             array('class_type', 'in', 'range' => array('0', '1'), 'allowEmpty' => false),
             // 专业名称
@@ -90,9 +92,9 @@ class TClasses extends CActiveRecord
             'class_name' => '班级名称',
             'grade' => '年级',
             'entry_year' => '入学年份',
-            'term_type' => '学期',
-            'class_type' => '班级类型',
-            'specialty_name' => '专业名称', // 班级类型(0:普通高中 1:技能专业)
+            'term_type' => '学期', // 学期(0:整学年 1:上学期 2:下学期)
+            'class_type' => '班级类型', // 班级类型(0:普通高中 1:技能专业)
+            'specialty_name' => '专业名称',
             'status' => '状态', // (1:在校 2:毕业)
             'teacher_id' => '班主任',
             'create_user' => '创建用户',
@@ -162,7 +164,22 @@ class TClasses extends CActiveRecord
 
         $data = self::model()->findAll("status='2' order by create_time desc, grade asc, class_code asc");
         foreach ($data as $value) {
-            $term_name = $value->term_type == '1' ? '上学期' : '下学期';
+            $term_name = '';
+            switch ($value->term_type) {
+                case '0':
+                    $term_name = '整学年';
+                    break;
+                case '1':
+                    $term_name = '上学期';
+                    break;
+                case '2':
+                    $term_name = '下学期';
+                    break;
+                default:
+                    break;
+            }
+        
+
             $result[$value->ID] = "{$value->entry_year} | {$value->class_code} | {$value->class_name} | {$term_name}";
         }
 
@@ -182,7 +199,20 @@ class TClasses extends CActiveRecord
 
         $data = self::model()->findAll("status='1'");
         foreach ($data as $value) {
-            $term_name = $value->term_type == '1' ? '上学期' : '下学期';
+            $term_name = '';
+            switch ($value->term_type) {
+                case '0':
+                    $term_name = '整学年';
+                    break;
+                case '1':
+                    $term_name = '上学期';
+                    break;
+                case '2':
+                    $term_name = '下学期';
+                    break;
+                default:
+                    break;
+            }
             $result[$value->ID] = "{$value->class_code} | {$value->class_name} | {$term_name}";
         }
 
@@ -263,10 +293,19 @@ class TClasses extends CActiveRecord
         $str .= ' | ';
         $str .= $this->class_name;
         $str .= ' | ';
-        if($this->term_type == 1){
-            $str .= '上学期';
-        } else {
-            $str .= '下学期';
+        
+        switch ($this->term_type) {
+            case '0':
+                $str = '整学年';
+                break;
+            case '1':
+                $str = '上学期';
+                break;
+            case '2':
+                $str = '下学期';
+                break;
+            default:
+                break;
         }
         
         return $str;
@@ -315,12 +354,10 @@ class TClasses extends CActiveRecord
      * 获取该班级所有学生
      */
     public function getClassAllStudents() {
-        $sql = "select a.*, b.student_number from ";
-        $sql .= "t_students a ";
-        $sql .= "inner join t_student_classes b on a.ID=b.student_id ";
-        $sql .= "inner join t_classes c on c.ID= b.class_id ";
-        $sql .= "where ";
-        $sql .= "a.`status`='1' and c.ID=:class_id";
+        $sql = "select a.* , c.ID from m_subjects a ";
+        $sql .= "inner join m_courses b on b.subject_id=a.ID and b.`status`='1' ";
+        $sql .= "inner join t_classes c on c.ID=b.class_id ";
+        $sql .= "where c.ID=:class_id ";
         
         return TStudents::model()->findAllBySql($sql, array(':class_id' => $this->ID));
     }

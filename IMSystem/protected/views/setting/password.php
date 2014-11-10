@@ -34,9 +34,16 @@ $(document).ready(function(){
                         ));
                     ?>
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">登录用户名</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->textField($user,'username',array('class'=>'form-control','disabled'=>'disabled')); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">旧密码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->passwordField($model,'old_password', array('class'=>'form-control', 'placeholder'=>'旧密码', 'required'=>'')); ?>
+                                <?php echo $form->passwordField($model,'old_password', array('class'=>'form-control required', 'placeholder'=>'旧密码', 'required'=>'')); ?>
                                 <?php echo $form->error($model,'old_password'); ?>
                             </div>
                         </div>
@@ -44,7 +51,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">新密码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->passwordField($model,'new_password', array('class'=>'form-control', 'placeholder'=>'新密码', 'required'=>'')); ?>
+                                <?php echo $form->passwordField($model,'new_password', array('class'=>'form-control required', 'placeholder'=>'新密码', 'required'=>'')); ?>
                                 <?php echo $form->error($model,'new_password'); ?>
                             </div>
                         </div>
@@ -52,7 +59,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">新密码(确认)</label>
                             <div class="col-lg-10">
-                                <?php echo $form->passwordField($model,'confirm_password', array('class'=>'form-control', 'placeholder'=>'新密码(确认)', 'required'=>'')); ?>
+                                <?php echo $form->passwordField($model,'confirm_password', array('class'=>'form-control required', 'placeholder'=>'新密码(确认)', 'required'=>'')); ?>
                                 <?php echo $form->error($model,'confirm_password'); ?>
                             </div>
                         </div>

@@ -190,3 +190,16 @@ div.dataTables_length{
     top: -35px;
     right: 120px;
 }
+
+
+
+/** 学生导入页面，数据有误的式样 */
+.label-mutil-danger {
+    background-color: #d9534f;
+    line-height: 2 !important;
+}
+
+
+td.nopass {
+    color : #D1203B;
+}

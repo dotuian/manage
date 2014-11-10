@@ -1,2 +1,1 @@
-ALTER TABLE `t_student_classes`
-	DROP INDEX `student_number_student_id_class_id`;
+

@@ -74,13 +74,13 @@ class StudentForm extends CFormModel {
             // 性别
             array('sex','in','range'=>array('F', 'M'),'allowEmpty'=>false),
             // 出生年月日
-            array('birthday', 'date', 'format'=>'yyyy-M-d'),
+            array('birthday', 'date', 'format'=>'yyyy-MM-dd'),
             
             // 缴费情况(0: 未缴 1:已缴)
             array('payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
             array('payment1, payment2, payment3, payment4, payment5, payment6','in','range'=>array('0','1'),'allowEmpty'=>false),
             // 家庭住址
-            array('address', 'length', 'max' => 80, 'encoding'=>'UTF-8'),
+            array('address', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             // 电话号码
             array('parents_tel', 'numerical'),
             array('parents_tel', 'length', 'max' => 11),

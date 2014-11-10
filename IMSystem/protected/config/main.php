@@ -76,7 +76,7 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'rootadmin',
@@ -132,6 +132,6 @@ return array(
         'adminEmail' => 'webmaster@example.com',
         'EmptySelectOption' => '--------',
         'PageSize' => 20,
-        'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\uploadfile\\',
+        'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\files\\upload\\',
     ),
 );

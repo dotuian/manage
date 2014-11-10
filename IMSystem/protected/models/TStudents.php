@@ -67,9 +67,18 @@ class TStudents extends CActiveRecord {
             array('accommodation, school_of_graduation', 'length', 'max' => 50),
             array('bonus_penalty', 'length', 'max' => 200, 'encoding'=>'UTF-8'),
             array('address, university', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
+            array('parents_tel', 'numerical'),
             array('parents_tel', 'length', 'max' => 11),
             array('parents_qq', 'length', 'max' => 15),
             array('create_user, update_user, class_id, student_number', 'length', 'max' => 10),
+            
+            // ==============================================================================
+            // 学生修改个人信息时(setting/profile)
+            array('id_card_no, birthday', 'required', 'on' => 'profile'),
+            array('birthday', 'date', 'format'=>'yyyy-MM-dd', 'on' => 'profile'),
+            // QQ号码
+            array('parents_qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,15}$/','message' => '请输入正确的QQ号码！', 'on' => 'profile'),
+            // ==============================================================================
             
             // safe
             array('ID, province_code, name, status, sex, id_card_no, birthday, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment, create_user, create_time, update_user, update_time', 'safe'),
@@ -196,6 +205,12 @@ class TStudents extends CActiveRecord {
             if ($count > 0) {
                 $this->addError("student_number", '已经存在相同的学号！');
             }
+        }
+        
+        // 学生个人信息修改
+        if ($this->scenario === 'profile') {
+            
+            
         }
     }
 

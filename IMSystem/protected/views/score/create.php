@@ -143,7 +143,7 @@ $(document).ready(function(){
                                         'beforeSend'=>"function(xhr, opts){
                                                 var data = $('#text$student->student_number$subject->ID');
                                                 var show = $('#$student->student_number');
-                                                if(data.val().match(/^[0-9]+[.]?[0-9]+$/) && data.val() >= 0 && data.val() <=150) {
+                                                if(data.val().match(/^[0-9]?[.]?[0-9]+$/) && data.val() >= 0 && data.val() <= $subject->total_score) {
                                                     show.text('');
                                                     $.blockUI({ message: null }); 
                                                 } else {

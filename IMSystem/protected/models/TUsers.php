@@ -185,7 +185,7 @@ class TUsers extends CActiveRecord
                 
         
         // 旧班级为空，表示是新生，直接登录系统
-        if(empty($data['old_class_code'])) {
+        if($data['old_class_code'] == '') {
             // 用户登录密码信息
             $data['password'] = substr($data['id_card_no'], 6, 8); // 身份证信息中的出生年月日
             if (strlen($data['password']) !== 8) {
@@ -210,6 +210,7 @@ class TUsers extends CActiveRecord
                 //$student->province_code    = $data['student_number']; // 省内编号
                 $student->name          = $data['name'];
                 $student->status        = '1';
+                $student->sex           = $data['sex'];
                 $student->id_card_no    = $data['id_card_no'];
                 //$student->birthday    = $data['code'];
                 $student->payment1      = isset($data['payment1']) ? $data['payment1'] : null;
@@ -256,44 +257,84 @@ class TUsers extends CActiveRecord
         }
         
         // 旧班级信息不为空的情况下，表明是老生，更新系统中的信息
-        if(!empty($data['old_class_code'])){
+        if($data['old_class_code'] != '') {
             // 根据旧班级信息和姓名，查询学生信息
-            $sql = " select a.* from t_students a ";
-            $sql .= " inner join t_student_classes b on a.ID=b.student_id and b.`status`='1'  ";
-            $sql .= " inner join t_classes c on b.class_id=c.ID  "; 
-            $sql .= "where c.class_code=:class_code and a.name=:name and a.b.`status`='1' ";
+            $sql =  "select a.* from t_students a ";
+            $sql .= " inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
+            $sql .= " inner join t_classes c on b.class_id=c.ID and c.`status`='2' "; // 暂停中的班级信息
+            $sql .= "where c.class_code=:class_code and a.name=:name and a.sex=:sex and a.`status`='1' "; // 未离校的学生
             
-            $student = TStudents::model()->findBySql($sql, array(':name' => $data['name'], ':class_code' => $data['old_class_code']));
+            $student = TStudents::model()->findBySql($sql, array(':name' => $data['name'], ':sex' => $data['sex'], ':class_code' => $data['old_class_code']));
             // 不存在的情况
             if (!is_null($student)) {
                 // 存在的情况下，只需要更新学生表数据
-                //$student->province_code    = $data['student_number']; // 省内编号
-                $student->status  = '1';
-                $student->id_card_no = $data['id_card_no'];
-                $student->payment1 = $data['payment1'];
-                $student->payment2 = $data['payment2'];
-                $student->payment3 = $data['payment3'];
-                $student->payment4 = $data['payment4'];
-                $student->payment5 = $data['payment5'];
-                $student->payment6 = $data['payment6'];
-                $student->bonus_penalty = $data['bonus_penalty'];; // 奖惩情况
-                $student->address       = $data['address'];
-                $student->parents_tel   = $data['parents_tel'];
-                $student->parents_qq    = $data['parents_qq'];
-                $student->school_of_graduation = $data['school_of_graduation'];
-                $student->senior_score  = $data['senior_score'];
-                $student->school_year   = $data['school_year'];
-                $student->college_score = $data['college_score'];
-                $student->university    = $data['university'];
-                $student->comment       = $data['comment'];
+                
+                // 省内编号
+                if(isset($data['province_code']) && $data['province_code'] != '') {
+                    $student->province_code = $data['province_code'];
+                }
+                if(isset($data['id_card_no']) && $data['id_card_no'] != '') {
+                    $student->id_card_no = $data['id_card_no'];
+                }
+                if(isset($data['payment1']) && $data['payment1'] != '') {
+                    $student->payment1 = $data['payment1'];
+                }
+                if(isset($data['payment2']) && $data['payment2'] != '') {
+                    $student->payment2 = $data['payment2'];
+                }
+                if(isset($data['payment3']) && $data['payment3'] != '') {
+                    $student->payment3 = $data['payment3'];
+                }
+                if(isset($data['payment4']) && $data['payment4'] != '') {
+                    $student->payment4 = $data['payment4'];
+                }
+                if(isset($data['payment5']) && $data['payment5'] != '') {
+                    $student->payment1 = $data['payment1'];
+                }
+                if(isset($data['payment6']) && $data['payment6'] != '') {
+                    $student->payment1 = $data['payment1'];
+                }
+                if(isset($data['bonus_penalty']) && $data['bonus_penalty'] != '') {
+                    $student->bonus_penalty = $data['bonus_penalty'];
+                }
+                if(isset($data['bonus_penalty']) && $data['bonus_penalty'] != '') {
+                    $student->bonus_penalty = $data['bonus_penalty'];
+                }
+                if(isset($data['address']) && $data['address'] != '') {
+                    $student->address = $data['address'];
+                }
+                if(isset($data['parents_tel']) && $data['parents_tel'] != '') {
+                    $student->parents_tel = $data['parents_tel'];
+                }
+                if(isset($data['parents_qq']) && $data['parents_qq'] != '') {
+                    $student->parents_qq = $data['parents_qq'];
+                }
+                if(isset($data['school_of_graduation']) && $data['school_of_graduation'] != '') {
+                    $student->school_of_graduation = $data['school_of_graduation'];
+                }
+                if(isset($data['senior_score']) && $data['senior_score'] != '') {
+                    $student->senior_score = $data['senior_score'];
+                }
+                if(isset($data['school_year']) && $data['school_year'] != '') {
+                    $student->school_year = $data['school_year'];
+                }
+                if(isset($data['college_score']) && $data['college_score'] != '') {
+                    $student->college_score = $data['college_score'];
+                }
+                if(isset($data['university']) && $data['university'] != '') {
+                    $student->university = $data['university'];
+                }
+                if(isset($data['comment']) && $data['comment'] != '') {
+                    $student->comment = $data['comment'];
+                }
                 
                 $student->update_user = Yii::app()->user->getState('ID');
                 $student->update_time = new CDbExpression('NOW()');
                 
                 // 班级信息更新
                 $sql = "select a.* from t_student_classes a ";
-                $sql = "inner join t_classes b on a.class_id=b.ID ";
-                $sql = "where a.`status`='1' and a.student_id=:student_id and b.class_code=:old_class_code ";
+                $sql .= "inner join t_classes b on a.class_id=b.ID ";
+                $sql .= "where a.`status`='1' and a.student_id=:student_id and b.class_code=:old_class_code and b.`status`='2'";
                 
                 // 旧班级信息的更新
                 $old_class = TStudentClasses::model()->findBySql($sql, array(':student_id' => $student->ID, ':old_class_code' => $data['old_class_code']));

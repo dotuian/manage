@@ -134,7 +134,7 @@ class MRoles extends CActiveRecord {
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
-        $data = self::model()->findAll("status='1' order by level");
+        $data = self::model()->findAll("status='1' order by create_time");
         foreach ($data as $value) {
             $result[$value->ID] = $value->role_name;
         }

@@ -10,15 +10,15 @@ class ClassController extends BaseController {
      */
     public function actionSearch() {
         
-        $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where a.status=:status ";
-        $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where a.status=:status ";
+        $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
+        $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $condition = '';
         
         $model = new ClassForm();
-        $model->status = '1';
+//        $model->status = '1';
         
         $params = array();
-        $params[':status'] = trim($model->status);
+//        $params[':status'] = trim($model->status);
         
         if (isset($_GET['ClassForm'])) {
             $model->attributes = $_GET['ClassForm'];
@@ -77,8 +77,8 @@ class ClassController extends BaseController {
             'sort' => array(
                 'attributes' => array(
                     'user' => array(
-                        'asc' => 'a.class_code',
-                        'desc' => 'a.class_code desc',
+                        'asc' => 'a.entry_year, a.class_code',
+                        'desc' => 'a.entry_year desc, a.class_code asc',
                         'default' => 'desc',
                     )
                 ),
@@ -245,7 +245,13 @@ class ClassController extends BaseController {
                 throw new CHttpException(404, "该班级信息不存在！");
             }
 
-            $students = TStudents::model()->findAllBySQL("select DISTINCT a.* from t_students a, t_student_classes b where a.ID=b.student_id and b.class_id=:class_id", array(':class_id'=>$class->ID));
+            $sql = "select b.student_number, a.* from t_students a ";
+            $sql .= "inner join t_student_classes b on a.ID = b.student_id ";
+            $sql .= "inner join t_classes c on c.ID = b.class_id ";
+            $sql .= "where b.class_id=:class_id ";
+            $sql .= " and ((c.status='1' and b.status='1') or (c.status='2' and b.status='0')) "; // 目前班级的学生，以及以前班级的学生
+            
+            $students = TStudents::model()->findAllBySQL($sql, array(':class_id'=>$class->ID));
 
             $this->render('student', array(
                 'students' => $students,

@@ -1,15 +1,13 @@
 <?php
 
-$str = '综合高中';
-var_dump(mb_strlen($str, 'UTF-8'));
+echo log(64,2);
 
-$str = 'ABCD';
-var_dump(mb_strlen($str,'UTF-8'));
+echo '<br/>';
 
-$str = '综合高中ABCD';
-var_dump(mb_strlen($str, 'UTF-8'));
+$data = '0';
 
-
-$encode = mb_detect_encoding($string, array('ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5')); 
-echo $encode; // ASCII
-
+if(empty($data)) {
+    echo 1;
+} else {
+    echo 2;
+}

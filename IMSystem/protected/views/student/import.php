@@ -23,7 +23,13 @@ ul.error{
 
             <div class="widget-content">
                 <div class="padd">
-                    <h6>该页面，可以对学生信息批量添加。</h6>
+                    <h6>学生信息批量导入操作步骤：</h6>
+                    <ul>
+                        <li><a href="<?php echo Yii::app()->request->baseUrl; ?>/files/template/student_template.xls">下载Excel数据模板</a>，正确填写需要导入的学生信息。</li>
+                        <li>选择模板信息中学生的班级，填好的学生模板文件，点击“读取数据”。如果数据有误会在表格的右方提示相应的错误。修改之后，重新执行读取数据操作。</li>
+                        <li>如数据无误，点击表格右下方的“导入数据”。</li>
+                    </ul>
+                    
                     <hr />
                     <?php
                         $form = $this->beginWidget('CActiveForm', array(
@@ -80,6 +86,7 @@ ul.error{
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
+                    <th rowspan="2">No.</th>
                     <th rowspan="2">学号</th>
                     <th rowspan="2">姓名</th>
                     <th rowspan="2">性别</th>
@@ -98,11 +105,12 @@ ul.error{
             </thead>
 
             <tbody>
-                <?php foreach ($data as $value) { ?>
+                <?php $index=0; foreach ($data as $value) { ++$index; ?>
                 <tr class="<?php echo isset($value['error']) && is_array($value['error']) && count($value['error'])>0 ? 'error' : ''; ?>">
+                    <td class="center"><?php echo $index; ?></td>
                     <td class="center"><?php echo $value['student_number']; ?></td>
                     <td class="center"><?php echo $value['name']; ?></td>
-                    <td class="center"><?php echo $value['sex']; ?></td>
+                    <td class="center"><?php if($value['sex']=='M') echo '男'; if($value['sex']=='F') echo '女'; ?></td>
                     <td><?php echo $value['id_card_no']; ?></td>
                     <td class="center"><?php echo $value['old_class_code']; ?></td>
                     <td class="center"><?php echo $value['new_class_code']; ?></td>
@@ -115,7 +123,7 @@ ul.error{
                     <td><?php 
                             if(isset($value['error']) && is_array($value['error'])) {
                                 foreach ($value['error'] as $error) {
-                                    echo "<span class='label label-danger'>" . $error . "</span> <br/>";
+                                    echo "<span class='label label-mutil-danger'>" . $error . "</span> <br/>";
                                 }
                             }
                         ?>
@@ -139,7 +147,7 @@ ul.error{
                 <?php echo $form->hiddenField($model, 'ID'); ?>
                 <?php echo $form->hiddenField($model, 'class_id'); ?>
                 <?php echo CHtml::hiddenField('import', 'import'); ?>
-                <?php echo CHtml::submitButton('导入数据', array('class'=>'btn btn-search')); ?>
+                <?php echo CHtml::submitButton('导入数据', array('class'=>'btn btn-search', 'confirm'=>'确定要导入吗？',)); ?>
             <?php $this->endWidget(); ?>
             </div>
             <div class="clearfix"></div> 
@@ -149,9 +157,3 @@ ul.error{
     </div>
 </div>
 <?php } ?>
-
-
-
-
-
-

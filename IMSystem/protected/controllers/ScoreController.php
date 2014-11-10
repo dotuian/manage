@@ -19,14 +19,16 @@ class ScoreController extends BaseController {
         $model = new ScoreForm();
         if (isset($_GET['ScoreForm'])) {
             $model->attributes = $_GET['ScoreForm'];
-
-            $sql = "SELECT b.code, b.name, e.class_code, e.class_name, a.exam_id, d.exam_name, a.subject_id, c.subject_name, a.score ";
-            $sql .= "FROM t_scores a ";
-            $sql .= "LEFT JOIN t_students b ON a.student_id = b.ID ";
-            $sql .= "LEFT JOIN m_subjects c ON a.subject_id = c.ID ";
-            $sql .= "LEFT JOIN m_exams d ON a.exam_id = d.ID ";
-            $sql .= "LEFT JOIN t_classes e ON a.class_id=e.id ";
+            
+            $sql = "SELECT e.student_number, d.name, f.class_code, f.class_name, a.exam_id, b.exam_name, a.subject_id, c.subject_name, a.score ";
+            $sql .= "FROM t_scores a  ";
+            $sql .= "inner JOIN m_exams b ON a.exam_id = b.ID  ";
+            $sql .= "inner JOIN m_subjects c ON a.subject_id = c.ID ";
+            $sql .= "inner JOIN t_students d ON a.student_id = d.ID ";
+            $sql .= "inner JOIN t_student_classes e ON e.student_id = d.ID ";
+            $sql .= "inner join t_classes f on a.class_id = f.ID  ";
             $sql .= "WHERE a.student_id=:student_id ";
+            
             $params = array(':student_id' => $this->getLoginUserId());
 
             if (trim($model->exam_id) !== '') {
@@ -267,15 +269,11 @@ class ScoreController extends BaseController {
         $model = new ScoreForm('class');
         if (isset($_GET['ScoreForm'])) {
             $model->attributes = $_GET['ScoreForm'];
-            //$model->scenario = 'class';
+            $model->scenario = 'class';
             
             if ($model->validate()) {
-                
                 $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
 
-                $exam = MExams::model()->find("status='1' and ID=:ID", array(":ID"=>$model->exam_id));
-                
-                
                 $sql = "select e.student_number, a.name, c.exam_name, d.subject_code, d.subject_name, d.subject_short_name, b.score ";
                 $sql .= "from t_students a ";
                 $sql .= "inner join t_student_classes e on e.student_id= a.ID ";
@@ -310,14 +308,15 @@ class ScoreController extends BaseController {
                 }
 
                 Yii::log(print_R($dataProvider, true));
-
-                if(empty($model->subject_id)) {
-                    // 该班级全部的科目成绩
-                    $subjects = $class->getClassAllSubjects();
-                } else {
-                    // 该班级指定科目的成绩
-                    $subjects = MSubjects::model()->findAll('ID=:ID', array(':ID'=>$model->subject_id));
-                }
+                
+                // 该班级全部的科目成绩
+                $subjects = $class->getClassAllSubjects();
+                Yii::log(print_r($subjects, true));
+//                if($model->subject_id == '') {
+//                } else {
+//                    // 该班级指定科目的成绩
+//                    $subjects = MSubjects::model()->findAll('ID=:ID', array(':ID'=>$model->subject_id));
+//                }
 
                 $this->render('class', array('model' => $model, 'data' => $dataProvider, 'subjects' => $subjects));
                 

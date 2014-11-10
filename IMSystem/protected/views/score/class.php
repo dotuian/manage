@@ -109,9 +109,7 @@ $(document).ready(function(){
             </thead>
 
             <tbody>
-                <?php foreach ($data as $key => $value) { 
-                    list($code, $name) = explode('|', $key);
-                ?>
+                <?php foreach ($data as $key => $value) { list($code, $name) = explode('|', $key); ?>
                 <tr>
                     <!-- 学号 -->
                     <td class="center"><?php echo $code; ?></td>
@@ -119,17 +117,28 @@ $(document).ready(function(){
                     <td class="center"><?php echo $name; ?></td>
                     
                     <?php 
-                        foreach ($value as $score) {  // 按照考试名称循环
-                            $sum = 0 ;
-                            foreach ($subjects as $subject) { //按照科目名称循 环
-                                $sum += isset($score[$subject->subject_name]) ? $score[$subject->subject_name] : '0';
-                        ?>
-                            <td class="center"><?php echo isset($score[$subject->subject_name]) ? $score[$subject->subject_name] : '-'; ?></td>
-                        <?php } ?>
-                        
-                        <!-- 总分 -->
-                        <td class="center"><b><?php echo $sum; ?></b></td>   
-                    <?php } ?>
+                        foreach ($value as $score) {
+                            // 按照考试名称循环
+                            $sum = 0 ; 
+                            foreach ($subjects as $subject) {
+                                //按照科目名称循环 
+                                if(isset($score[$subject->subject_name])) {
+                                    $s = $score[$subject->subject_name];
+                                    $sum += $s;
+                                    
+                                    // 没有及格
+                                    $css = $s < $subject->pass_score ? 'nopass' : '';
+                                    
+                                    echo "<td class='center {$css}'>{$s}</td>";
+                                    
+                                } else {
+                                    echo "<td class='center'>-</td>";
+                                }
+                            }
+                            // 总分
+                            echo "<td clas='class'><b>{$sum}</td><b>";
+                        } 
+                    ?>
                 </tr>
                 <?php } ?>
 

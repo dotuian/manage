@@ -14,6 +14,16 @@ class SettingController extends BaseController {
 
         if (Yii::app()->user->getState('user_type') === 'student') {
             $data = TStudents::model()->find("ID=:ID and status='1'", array(':ID' => $this->ID));
+            
+            // 当前所在班级信息
+            $currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $data->ID));
+            if (!is_null($currentClass)) {
+                // 目前所在班级学号
+                $data->student_number = $currentClass->student_number;
+                // 目前所在班级
+                $data->class_id = $currentClass->class_id;
+            }
+            
         } else {
             $data = TTeachers::model()->find("ID=:ID and status='1'", array(':ID' => $this->ID));
         }
@@ -22,8 +32,9 @@ class SettingController extends BaseController {
             throw new CHttpException('400', '用户信息找不到！');
         }
 
-        if (Yii::app()->user->getState('user_type') === 'student') { // 学生用户信息变更
+        if (Yii::app()->user->getState('user_type') == 'student') { // 学生用户信息变更
             if (isset($_POST['TStudents'])) {
+                $data->scenario = 'profile';
                 $data->id_card_no = $_POST['TStudents']['id_card_no'];
                 $data->birthday = $_POST['TStudents']['birthday'];
                 $data->address = $_POST['TStudents']['address'];
@@ -31,11 +42,12 @@ class SettingController extends BaseController {
                 $data->parents_qq = $_POST['TStudents']['parents_qq'];
                 $data->update_user = $this->getLoginUserId();
                 $data->update_time = new CDbExpression('NOW()');
-
-                if ($data->save()) {
-                    $this->setSuccessMessage("个人信息变更成功！");
-                } else {
-                    $this->setErrorMessage("个人信息变更失败！");
+                if($data->validate()){
+                    if ($data->save()) {
+                        $this->setSuccessMessage("个人信息变更成功！");
+                    } else {
+                        $this->setErrorMessage("个人信息变更失败！");
+                    }
                 }
             }
         } else {// 教师用户信息变更
@@ -91,10 +103,12 @@ class SettingController extends BaseController {
                 $data->update_user = $this->getLoginUserId();
                 $data->update_time = new CDbExpression('NOW()');
 
-                if ($data->save()) {
-                    $this->setSuccessMessage("个人信息变更成功！");
-                } else {
-                    $this->setErrorMessage("个人信息变更失败！");
+                if($data->validate()){
+                    if ($data->save()) {
+                        $this->setSuccessMessage("个人信息变更成功！");
+                    } else {
+                        $this->setErrorMessage("个人信息变更失败！");
+                    }
                 }
             }
         }
@@ -132,7 +146,7 @@ class SettingController extends BaseController {
             }
         }
 
-        $this->render('password', array('model' => $model));
+        $this->render('password', array('model' => $model, 'user'=>$user));
     }
 
 }

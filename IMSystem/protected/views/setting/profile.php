@@ -35,13 +35,21 @@ $(document).ready(function(){
                     
                     <?php if(Yii::app()->user->getState('user_type') === 'student') { // 学生个人信息?>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">学号</label>
+                            <label class="col-lg-2 control-label">登录用户名</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'code',array('class'=>'form-control','disabled'=>'disabled')); ?>
-                                <?php echo $form->error($model,'code'); ?>
+                                <?php echo $form->textField($user,'username',array('class'=>'form-control','disabled'=>'disabled')); ?>
                             </div>
                         </div>
-
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">省内编号</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->textField($model,'province_code',array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->error($model,'province_code'); ?>
+                            </div>
+                        </div>
+                        
+                    
                         <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
@@ -61,7 +69,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">身份证号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
+                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
                                 <?php echo $form->error($model,'id_card_no'); ?>
                             </div>
                         </div>
@@ -69,14 +77,39 @@ $(document).ready(function(){
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
+                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
-                                <?php echo $form->error($model,'birthday'); ?>
+                                <?php echo '<br/>' . $form->error($model,'birthday'); ?>
                             </div>
                         </div>
-
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">班级履历</label>
+                            <div class="col-lg-10">
+                                <?php $classes = $model->getStudentAllClassInfo(); ?>
+                                <?php if(count($classes) > 0) {  ?>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <th class="center">学号</th>
+                                    <th class="center">班级代号</th>
+                                    <th class="center">班级名称</th>
+                                    <th class="center">学期</th>
+                                    <th class="center">班主任</th>
+                                    <?php foreach ($classes as $class) { ?>
+                                    <tr>
+                                        <td class="center"><?php echo $class['student_number']; ?></td>
+                                        <td class="center"><?php echo $class['class_code']; ?></td>
+                                        <td class="center"><?php echo $class['class_name']; ?></td>
+                                        <td class="center"><?php echo ClassForm::getTermTypeDisplayName($class['term_type']); ?></td>
+                                        <td class="center"><?php echo $class['name']; ?></td>
+                                    </tr>
+                                    <?php }?>
+                                </table>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10">

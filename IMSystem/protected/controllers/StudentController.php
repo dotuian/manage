@@ -377,7 +377,7 @@ class StudentController extends BaseController {
                         // 数据整形
                         $data = $model->converdata($data);
                         // 数据验证
-                        if($check = $model->validatedata($data)){
+                        if ($check = $model->validatedata($data)) {
                             $this->setSuccessMessage("数据正常，可以导入！");
                             $tran->commit();
                         } else {
@@ -402,7 +402,7 @@ class StudentController extends BaseController {
                 throw new CHttpException(500, '数据导入过程中出现异常，请稍后重试！');
             }
             
-            $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID' => $model->ID));
+            $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID' => $model->class_id));
             if(is_null($class)){
                 throw new CHttpException(500, '要导入学生信息的班级信息不存在！');
             }

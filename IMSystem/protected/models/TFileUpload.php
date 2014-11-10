@@ -196,13 +196,13 @@ class TFileUpload extends CActiveRecord {
             $temp['payment5']       = trim($value['L']); // 缴费情况（第5学期）
             $temp['payment6']       = trim($value['M']); // 缴费情况（第6学期）
             $temp['bonus_penalty']  = trim($value['N']); // 奖惩情况
-            $temp['address']        = trim($value['O']);       // 家庭住址
-            $temp['parents_tel']    = trim($value['P']);   // 家长电话
-            $temp['parents_qq']     = trim($value['Q']);    // 家长QQ
+            $temp['address']        = trim($value['O']); // 家庭住址
+            $temp['parents_tel']    = trim($value['P']); // 家长电话
+            $temp['parents_qq']     = trim($value['Q']); // 家长QQ
             $temp['school_of_graduation'] = trim($value['R']); // 毕业学校
             $temp['comment']        = trim($value['S']);   // 备注
+            $temp['school_year']    = date('Y');   // 入学年份
     //        $temp['senior_score'] = trim($value['G']);  // 中考总分
-    //        $temp['school_year'] = trim($value['G']);   // 入学年份
     //        $temp['college_score'] = trim($value['G']); // 高考总分
     //        $temp['university'] = trim($value['G']);    // 录取学校
             
@@ -213,10 +213,18 @@ class TFileUpload extends CActiveRecord {
     }
     
     public function getSexCode($sex){
-        $data = array();
-        $data['男'] = 'M';
-        $data['女'] = 'F';
-        return isset($data[$sex]) ? $data[$sex] : null; 
+        switch (trim($sex)) {
+            case '男':
+                $type = 'M';
+                break;
+            case '女':
+                $type = 'F';
+                break;
+            default:
+                $type = $sex;
+                break;
+        }
+        return $type;
     }
     
     /**
@@ -236,20 +244,31 @@ class TFileUpload extends CActiveRecord {
         // 获取所有旧班级CODE
         $old_class_codes = TClasses::model()->getAllStopClassCode();
         
+        // 页面中选择的要导入的班级
+        $class =  TClasses::model()->find('ID=:ID', array(':ID' => $this->class_id));
+        
+        //Excel文件中所有学生的学号
+        $numbers = array();
+        
         foreach ($array as $key => $value) {
             $error = array();
 
             if (empty($value['student_number'])) {
                 $error[] = '学号必须指定！';
             } else {
+                // 文件中是否存在重复的学号
+                if(in_array($value['student_number'], $numbers)){
+                    $error[] = '存在重复的学号!';
+                }
+                $numbers[] = $value['student_number'];
+                
                 // 如果原先班级为空的情况，表明是新添加新的数据
                 if($value['old_class_code'] == '') {
                     // 学号当做登录用的用户名，检查用户名是否存在
                     if(TUsers::model()->exists("username=:username", array(':username'=>$value['student_number']))){
-                        $error[] = '该学号已经存在，请指定其他的学号！';
+                        $error[] = '学号已经存在！';
                     }
                 }
-                
             }
 
             if ($value['name'] == '') {
@@ -261,7 +280,11 @@ class TFileUpload extends CActiveRecord {
             }
 
             if ($value['sex'] == '') {
-                $error[] = '性别数据有误！';
+                $error[] = '性别必须指定！';
+            } else {
+                if (!in_array($value['sex'], array('M', 'F'))) {
+                    $error[] = '性别数据有误！';
+                }
             }
             
             if (strlen($value['id_card_no']) > 18) {
@@ -270,12 +293,17 @@ class TFileUpload extends CActiveRecord {
             
             if($value['old_class_code'] != '') {
                 if (!in_array($value['old_class_code'], $old_class_codes)) {
-                    $error[] = '班级(旧)信息不存在！';
+                    $error[] = '班级(旧)没有被暂停！';
                 }
             }
             
             if (!in_array($value['new_class_code'], $class_codes)) {
                 $error[] = '班级(现)信息不存在！';
+            }
+            
+            // 页面上选择的导入班级和实际信息中的班级不一致
+            if($value['new_class_code'] != $class->class_code) {
+                $error[] = "不是{$class->class_code}班的学生！";
             }
             
             if (mb_strlen($value['accommodation'], $encode) > 50) {
@@ -291,9 +319,22 @@ class TFileUpload extends CActiveRecord {
             }
             
             
+            // 旧班级不为空的情况下，说明是班级的调整
+            // 检查学生的数据是否存在
+            if($value['old_class_code'] != '') {
+                // 根据旧班级信息和姓名，查询学生信息
+                $sql =  "select a.* from t_students a ";
+                $sql .= " inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
+                $sql .= " inner join t_classes c on b.class_id=c.ID and c.`status`='2' "; // 暂停中的班级信息
+                $sql .= "where c.class_code=:class_code and a.name=:name and a.sex=:sex and a.`status`='1' "; // 未离校的学生
+
+                $student = TStudents::model()->findBySql($sql, array(':name' => $value['name'], ':sex' => $value['sex'], ':class_code' => $value['old_class_code']));
+                if (is_null($student)) {
+                    $error[] = '原班级中不存在该学生信息！';
+                }
+            }
             
-            
-            
+            // 错误信息的统计
             if (count($error) > 0) {
                 $result = false;
             }

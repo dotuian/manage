@@ -32,8 +32,6 @@ class ScoreForm extends CFormModel {
             array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_number, student_name, score, grade', 'safe'),
             
             
-            
-            
             // 班级成绩查询时，班级信息必须输入
             array('class_id, exam_id', 'required', 'on'=>'class'),
             

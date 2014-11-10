@@ -97,7 +97,7 @@ $this->breadcrumbs = array(
                                         <td class="center"><?php echo $class['student_number']; ?></td>
                                         <td class="center"><?php echo $class['class_code']; ?></td>
                                         <td class="center"><?php echo $class['class_name']; ?></td>
-                                        <td class="center"><?php echo $class['term_type'] == '1' ? '上学期' : '下学期'; ?></td>
+                                        <td class="center"><?php echo ClassForm::getTermTypeDisplayName($class['term_type']);?></td>
                                         <td class="center"><?php echo $class['name']; ?></td>
                                     </tr>
                                     <?php }?>

@@ -97,12 +97,13 @@ class ClassForm extends CFormModel {
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
 
+        $result['0'] = '整学年';
         $result['1'] = '上学期';
         $result['2'] = '下学期';
 
         return $result;
     }
-
+    
     public static function getClassStatusOption($flag) {
         $result = array();
         if ($flag === true) {
@@ -140,5 +141,22 @@ class ClassForm extends CFormModel {
         }
         return $result;
     }
-
+    
+    public static function getTermTypeDisplayName($term_type) {
+        $term_name = '';
+        switch ($term_type) {
+            case '0':
+                $term_name = '整学年';
+                break;
+            case '1':
+                $term_name = '上学期';
+                break;
+            case '2':
+                $term_name = '下学期';
+                break;
+            default:
+                break;
+        }
+        return $term_name;
+    }
 }
