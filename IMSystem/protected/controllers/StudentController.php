@@ -420,6 +420,8 @@ class StudentController extends BaseController {
                     if($model->importdata($data2, $class)) {
                         $tran->commit();
                         $this->setSuccessMessage("数据导入成功！");
+                        
+                        $this->redirect($this->createUrl('create'));
                     } else {
                         $this->setErrorMessage("数据导入失败，请检查数据是否正确，然后重试！");
                     }

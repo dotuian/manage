@@ -274,16 +274,25 @@ class ScoreController extends BaseController {
             if ($model->validate()) {
                 $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
 
+                $params = array();
+                
                 $sql = "select e.student_number, a.name, c.exam_name, d.subject_code, d.subject_name, d.subject_short_name, b.score ";
                 $sql .= "from t_students a ";
                 $sql .= "inner join t_student_classes e on e.student_id= a.ID ";
                 $sql .= "inner join t_classes f on f.ID= e.class_id ";
                 $sql .= "left join t_scores b on b.student_id= a.ID ";
-                $sql .= "left join m_exams  c on c.ID =  b.exam_id  ";
+                
+                // 为了没有参加考试的学生，也能够显示出来
+                if($model->exam_id != '') {
+                    $sql .= "left join m_exams  c on c.ID =  b.exam_id and b.exam_id=:exam_id  ";
+                    $params[':exam_id'] = trim($model->exam_id);
+                } else {
+                    $sql .= "left join m_exams  c on c.ID =  b.exam_id ";
+                }
+                
                 $sql .= "left join m_subjects d on d.ID = b.subject_id ";
                 $sql .= "where 1=1 ";
 
-                $params = array();
                 if($model->class_id != '') {
                     $sql .= " and e.class_id=:class_id ";
                     $params[':class_id'] = trim($model->class_id);
@@ -291,10 +300,6 @@ class ScoreController extends BaseController {
                 if($model->subject_id != '') {
                     $sql .= " and b.subject_id=:subject_id ";
                     $params[':subject_id'] = trim($model->subject_id);
-                }
-                if($model->exam_id != '') {
-                    $sql .= " and b.exam_id=:exam_id ";
-                    $params[':exam_id'] = trim($model->exam_id);
                 }
                 // 排序（学号，考试名称，科目）
                 $sql .= "order by e.student_number ";

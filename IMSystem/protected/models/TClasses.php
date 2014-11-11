@@ -164,23 +164,7 @@ class TClasses extends CActiveRecord
 
         $data = self::model()->findAll("status='2' order by create_time desc, grade asc, class_code asc");
         foreach ($data as $value) {
-            $term_name = '';
-            switch ($value->term_type) {
-                case '0':
-                    $term_name = '整学年';
-                    break;
-                case '1':
-                    $term_name = '上学期';
-                    break;
-                case '2':
-                    $term_name = '下学期';
-                    break;
-                default:
-                    break;
-            }
-        
-
-            $result[$value->ID] = "{$value->entry_year} | {$value->class_code} | {$value->class_name} | {$term_name}";
+            $result[$value->ID] = $value->getClassDisplayName(true, true);
         }
 
         return $result;
@@ -199,21 +183,7 @@ class TClasses extends CActiveRecord
 
         $data = self::model()->findAll("status='1'");
         foreach ($data as $value) {
-            $term_name = '';
-            switch ($value->term_type) {
-                case '0':
-                    $term_name = '整学年';
-                    break;
-                case '1':
-                    $term_name = '上学期';
-                    break;
-                case '2':
-                    $term_name = '下学期';
-                    break;
-                default:
-                    break;
-            }
-            $result[$value->ID] = "{$value->class_code} | {$value->class_name} | {$term_name}";
+            $result[$value->ID] = $value->getClassDisplayName();
         }
 
         return $result;
@@ -234,7 +204,7 @@ class TClasses extends CActiveRecord
         $data = $this->getClassInfoByUserRole($user_id);
 
         foreach ($data as $value) {
-            $result[$value->ID] = $value->class_code . ' | ' . $value->class_name;
+            $result[$value->ID] = $value->getClassDisplayName();
         }
         
         return $result;
@@ -288,25 +258,32 @@ class TClasses extends CActiveRecord
         return $classes;
     }
     
-    public function getClassDisplayName(){
-        $str = $this->class_code;
-        $str .= ' | ';
-        $str .= $this->class_name;
-        $str .= ' | ';
-        
+    public function getClassDisplayName($show_class_code = true, $show_entry_year = false){
+        $term_name = '';
         switch ($this->term_type) {
             case '0':
-                $str = '整学年';
+                $term_name = '整学年';
                 break;
             case '1':
-                $str = '上学期';
+                $term_name = '上学期';
                 break;
             case '2':
-                $str = '下学期';
+                $term_name = '下学期';
                 break;
             default:
                 break;
         }
+        
+        $str = '';
+        if($show_entry_year){
+            $str .= "【{$this->entry_year}】";
+        }
+        
+        if($show_class_code) {
+            $str .= "【{$this->class_code}】";
+        }
+        
+        $str .= "{$this->class_name}({$term_name})";
         
         return $str;
     }

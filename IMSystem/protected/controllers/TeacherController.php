@@ -282,5 +282,65 @@ class TeacherController extends BaseController {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
+
     
+    
+    
+    
+    
+    
+    
+    public function actionImport() {
+        
+        $model = new TFileUpload();
+        
+        // 学生数据读取
+        if (isset($_POST['TFileUpload'])) {
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                Yii::log(11);
+                
+                $model->attributes = $_POST['TFileUpload'];
+                // 上传文件名
+                $model->filename = CUploadedFile::getInstance($model, 'filename');
+                if ($model->validate()) {
+                    Yii::log(22);
+                    // 保存文件名
+                    $model->realpath = Yii::app()->params['FilePath'] . time() . '.' . $model->filename->extensionName;
+                    $model->create_user = $this->getLoginUserId();
+                    $model->update_user = $this->getLoginUserId();
+                    $model->filename->saveAs($model->realpath); // 将文件保存在服务器端
+
+                    if ($model->save()) {
+                        Yii::log(33);
+                        // 将Excel文件中的数据读取到数组中
+                        $data = $model->readExcel2Array();
+                        
+                        Yii::log(print_r($data, true));
+                        
+                        // 数据整形
+//                        $data = $model->converdata($data);
+//                        // 数据验证
+//                        if ($check = $model->validatedata($data)) {
+//                            $this->setSuccessMessage("数据正常，可以导入！");
+//                            $tran->commit();
+//                        } else {
+//                            $this->setWarningMessage("数据中有格式错误，请修改后重试！");
+//                        }
+                    } else {
+                        $this->setErrorMessage("数据读取失败，请检查文件格式之后重试！");
+                    }
+                } else {
+                    Yii::log(print_r($model->errors, true));
+                }
+            } catch (Exception $e) {
+                $this->setErrorMessage('数据读取失败！');
+            }
+        }
+        
+        $this->render('import', array(
+            'model' => $model,
+        ));
+    }
+
 }   

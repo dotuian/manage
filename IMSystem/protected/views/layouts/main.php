@@ -168,6 +168,10 @@
                     <?php if(in_array('teacher/create', $authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('teacher/create');?>">教师信息添加</a></li>
                     <?php } ?>
+                        
+                    <?php if(in_array('teacher/import', $authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('teacher/import');?>">教师信息导入</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>

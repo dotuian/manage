@@ -17,7 +17,7 @@ $(document).ready(function(){
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left">班级学生信息一览表</div>
+        <div class="pull-left"><?php echo $class->getClassDisplayName(false); ?> 学生信息一览表</div>
         <div class="widget-icons pull-right">
           </div> 
         <div class="clearfix"></div>

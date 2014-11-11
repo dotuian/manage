@@ -68,6 +68,8 @@ class StudentForm extends CFormModel {
             array('address, university', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             
             // 学号
+            array('student_number', 'isExist', 'on'=>'create'),
+            
             array('province_code, student_number', 'length', 'max' => 10),
             // 姓名
             array('name', 'length', 'max' => '10', 'encoding' => 'UTF-8'),
@@ -78,7 +80,7 @@ class StudentForm extends CFormModel {
             
             // 缴费情况(0: 未缴 1:已缴)
             array('payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
-            array('payment1, payment2, payment3, payment4, payment5, payment6','in','range'=>array('0','1'),'allowEmpty'=>false),
+            array('payment1, payment2, payment3, payment4, payment5, payment6','in','range'=>array('0','1'), 'allowEmpty'=>true),
             // 家庭住址
             array('address', 'length', 'max' => 100, 'encoding'=>'UTF-8'),
             // 电话号码
@@ -97,14 +99,21 @@ class StudentForm extends CFormModel {
             array('ID, province_code,student_number, name, status, sex, id_card_no, birthday, class_id, old_class_id, accommodation, payment1, payment2, payment3, payment4, payment5, payment6, bonus_penalty, address, parents_tel, parents_qq, school_of_graduation, senior_score, school_year, college_score, university, comment', 'safe'),
         );
     }
-
+    
+    public function isExist($attribute, $params){
+        $isexist = TStudentClasses::model()->exists("student_number=:student_number", array(':student_number' => $this->student_number));
+        if($isexist){
+            $this->addError('student_number', '学号已经存在！');
+        }
+    }
+    
     public function afterValidate() {
         parent::afterValidate();
 
-        $count = TStudentClasses::model()->count("student_number=:student_number", array(':student_number' => $this->student_number));
-        if ($count > 0) {
-            $this->addError("student_number", '已经存在相同的学号！');
-        }
+//        $count = TStudentClasses::model()->count("student_number=:student_number", array(':student_number' => $this->student_number));
+//        if ($count > 0) {
+//            $this->addError("student_number", '已经存在相同的学号！');
+//        }
     }
 
     /**

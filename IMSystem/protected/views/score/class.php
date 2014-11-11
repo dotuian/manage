@@ -104,7 +104,9 @@ $(document).ready(function(){
                     <?php foreach ($subjects as $subject) {?>
                     <th><?php echo $subject->subject_name; ?></th>
                     <?php }?>
-                    <th>总分</th>
+                    <?php if(count($subjects) > 1) { ?>
+                    <th>合计</th>
+                    <?php } ?>
                 </tr>
             </thead>
 
@@ -135,8 +137,11 @@ $(document).ready(function(){
                                     echo "<td class='center'>-</td>";
                                 }
                             }
+                            
                             // 总分
-                            echo "<td clas='class'><b>{$sum}</td><b>";
+                            if(count($subjects) > 1) {
+                                echo "<td class='center'><b>{$sum}</td><b>";
+                            }
                         } 
                     ?>
                 </tr>

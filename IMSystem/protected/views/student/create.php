@@ -5,14 +5,14 @@ $this->breadcrumbs = array(
 );
 ?>
 <script>
-//$(document).ready(function(){
-//    
-//    $('#datetimepicker1').datetimepicker({
-//        pickTime: false
-//    });
-//});
+$(document).ready(function(){
+    $('#birthday').datetimepicker({
+        language:  'zh-CN',
+        autoclose: true,
+        pickTime: false,
+    });
+});
 </script>
-
 
 
 <div class="row">
@@ -84,7 +84,7 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                     
-                        <div class="form-group input-append" id="datetimepicker1" >
+                        <div class="form-group input-append" id="birthday">
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
@@ -92,7 +92,7 @@ $this->breadcrumbs = array(
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
                                 <?php echo '<br/>' . $form->error($model,'birthday'); ?>
-                                <div class="tip">登录密码（如出生年月为：1998-10-24，则登录密码为：19981024）</div>
+                                <div class="tip">登录密码（如出生年月为：<?php echo date('Y-m-d', strtotime("-16 years", time())); ?>，则登录密码为：<?php echo date('Ymd', strtotime("-16 years", time())); ?>）</div>
                             </div>
                         </div>
                     

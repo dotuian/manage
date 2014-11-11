@@ -119,10 +119,13 @@ class TFileUpload extends CActiveRecord {
 
     public function afterValidate() {
         parent::afterValidate();
-
-        $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID'=>$this->class_id));
-        if (is_null($class)) {
-            $this->addError("class_id", '班级信息不存在！');
+        
+        
+        if($this->scenario == 'validate' || $this->scenario == 'import') {
+            $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID'=>$this->class_id));
+            if (is_null($class)) {
+                $this->addError("class_id", '班级信息不存在！');
+            }
         }
     }
     
@@ -138,7 +141,7 @@ class TFileUpload extends CActiveRecord {
      * 
      * @return type将Excel文件中的内容读取到数组中
      */
-    public function readExcel2Array(){
+    public function readExcel2Array() {
         $data = array();
         if (file_exists($this->realpath) && is_file($this->realpath)) {
             $data = ExcelUtils::readExcel2Array($this->realpath);
@@ -234,7 +237,6 @@ class TFileUpload extends CActiveRecord {
      */
     public function validatedata(&$array) {
         $encode = 'utf-8';
-        
         
         $result = true;
 

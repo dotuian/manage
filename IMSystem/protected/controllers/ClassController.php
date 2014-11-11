@@ -255,6 +255,8 @@ class ClassController extends BaseController {
 
             $this->render('student', array(
                 'students' => $students,
+                'class' => $class,
+                
             ));
         } else {
             throw new CHttpException(404, "找不到该页面！");
