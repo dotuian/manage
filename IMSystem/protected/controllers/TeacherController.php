@@ -287,24 +287,19 @@ class TeacherController extends BaseController {
     
     
     
-    
-    
-    
     public function actionImport() {
         
-        $model = new TFileUpload();
+        $model = new TImportTeacher();
         
         // 学生数据读取
-        if (isset($_POST['TFileUpload'])) {
+        if (isset($_POST['TImportTeacher']) && isset($_POST['validate']) && trim($_POST['validate']) == 'validate') {
             $tran = Yii::app()->db->beginTransaction();
             try {
-                Yii::log(11);
-                
-                $model->attributes = $_POST['TFileUpload'];
+                $model->attributes = $_POST['TImportTeacher'];
+                $model->scenario = 'validate';
                 // 上传文件名
                 $model->filename = CUploadedFile::getInstance($model, 'filename');
                 if ($model->validate()) {
-                    Yii::log(22);
                     // 保存文件名
                     $model->realpath = Yii::app()->params['FilePath'] . time() . '.' . $model->filename->extensionName;
                     $model->create_user = $this->getLoginUserId();
@@ -312,34 +307,67 @@ class TeacherController extends BaseController {
                     $model->filename->saveAs($model->realpath); // 将文件保存在服务器端
 
                     if ($model->save()) {
-                        Yii::log(33);
                         // 将Excel文件中的数据读取到数组中
                         $data = $model->readExcel2Array();
-                        
                         Yii::log(print_r($data, true));
                         
                         // 数据整形
-//                        $data = $model->converdata($data);
-//                        // 数据验证
-//                        if ($check = $model->validatedata($data)) {
-//                            $this->setSuccessMessage("数据正常，可以导入！");
-//                            $tran->commit();
-//                        } else {
-//                            $this->setWarningMessage("数据中有格式错误，请修改后重试！");
-//                        }
+                        $data = $model->converdata($data);
+                        // 数据验证
+                        if ($check = $model->validatedata($data)) {
+                            $this->setSuccessMessage("数据正常，可以导入！");
+                            $tran->commit();
+                        } else {
+                            $this->setWarningMessage("数据中有格式错误，请修改后重试！");
+                        }
                     } else {
                         $this->setErrorMessage("数据读取失败，请检查文件格式之后重试！");
                     }
-                } else {
-                    Yii::log(print_r($model->errors, true));
                 }
             } catch (Exception $e) {
                 $this->setErrorMessage('数据读取失败！');
             }
         }
         
+        // 学生数据导入
+        if (isset($_POST['TImportTeacher']['ID']) && isset($_POST['import']) && trim($_POST['import']) == 'import') {
+            $model->attributes = $_POST['TImportStudent'];
+            $model->scenario = 'import';
+
+            $record = TImportStudent::model()->find('ID=:ID', array(':ID' => $model->ID));
+            if(is_null($record)){
+                throw new CHttpException(500, '数据导入过程中出现异常，请稍后重试！');
+            }
+            
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                // 将Excel文件中的数据读取到数组中
+                $data2 = $record->readExcel2Array();
+                // 数据整形
+                $data2 = $record->converdata($data2);
+                // 数据验证
+                if($model->validatedata($data2)) {
+                    // 数据导入
+                    if($model->importdata($data2, $class)) {
+                        $tran->commit();
+                        $this->setSuccessMessage("数据导入成功！");
+                        
+                        $this->redirect($this->createUrl('create'));
+                    } else {
+                        $this->setErrorMessage("数据导入失败，请检查数据是否正确，然后重试！");
+                    }
+                } else {
+                    $this->setErrorMessage('数据中有异常数据，请修改后再重试！');
+                }
+            } catch (Exception $ex) {
+                throw new CHttpException(500, '数据导入过程中出现了异常！');
+            }
+        }
+        
         $this->render('import', array(
             'model' => $model,
+            'check' => isset($check) ? $check : null,  // 对Excel中的数据进行检查的结果
+            'data'  => isset($data) ? $data : null, // Excel读取的，经过了检查的数据
         ));
     }
 

@@ -355,13 +355,13 @@ class StudentController extends BaseController {
             }
         }
         
-        $model = new TFileUpload();
+        $model = new TImportStudent();
         
         // 学生数据读取
-        if (isset($_POST['TFileUpload']) && isset($_POST['validate']) && trim($_POST['validate']) == 'validate') {
+        if (isset($_POST['TImportStudent']) && isset($_POST['validate']) && trim($_POST['validate']) == 'validate') {
             $tran = Yii::app()->db->beginTransaction();
             try {
-                $model->attributes = $_POST['TFileUpload'];
+                $model->attributes = $_POST['TImportStudent'];
                 $model->scenario = 'validate';
                 // 上传文件名
                 $model->filename = CUploadedFile::getInstance($model, 'filename');
@@ -394,11 +394,11 @@ class StudentController extends BaseController {
         }
         
         // 学生数据导入
-        if (isset($_POST['TFileUpload']['ID']) && isset($_POST['TFileUpload']['class_id']) && isset($_POST['import']) && trim($_POST['import']) == 'import') {
-            $model->attributes = $_POST['TFileUpload'];
+        if (isset($_POST['TImportStudent']['ID']) && isset($_POST['TImportStudent']['class_id']) && isset($_POST['import']) && trim($_POST['import']) == 'import') {
+            $model->attributes = $_POST['TImportStudent'];
             $model->scenario = 'import';
 
-            $record = TFileUpload::model()->find('ID=:ID', array(':ID' => $model->ID));
+            $record = TImportStudent::model()->find('ID=:ID', array(':ID' => $model->ID));
             if(is_null($record)){
                 throw new CHttpException(500, '数据导入过程中出现异常，请稍后重试！');
             }
