@@ -125,7 +125,7 @@ class BaseController extends CController {
     public function isTeacher() {
         $data = Yii::app()->user->getState('roles');
         foreach ($data as $value) {
-            if (in_array($value, array('2', '3', '4', '5'))) {
+            if (in_array($value, array('2'))) {
                 return true;
             }
         }
@@ -133,7 +133,7 @@ class BaseController extends CController {
     }
     
     /**
-     * 判断该登录用户是否为教务处
+     * 判断该登录用户是否为学工科
      * @return boolean
      */
     public function isXueGongKe() {
@@ -161,7 +161,7 @@ class BaseController extends CController {
     }
     
     /**
-     * 判断该登录用户是否为教务处
+     * 判断该登录用户是否为校长
      * @return boolean
      */
     public function isHeaderTeacher() {

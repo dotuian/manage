@@ -9,7 +9,7 @@ class TeacherForm extends CFormModel {
     public $birthday;
     public $id_card_no;
     public $home_address;
-    public $telephonoe;
+    public $telephone;
     public $nation;
     public $birthplace;
     public $working_date;
@@ -59,14 +59,14 @@ class TeacherForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('code, name, sex, birthday, roles', 'required'),
+            array('id_card_no, name, sex, birthday, roles', 'required'),
             array('continue_education_credit', 'numerical', 'integerOnly' => true),
             array('code, continue_education_date', 'length', 'max' => 20),
             array('name', 'length', 'max' => 12),
             array('status, sex', 'length', 'max' => 1),
-            array('id_card_no', 'length', 'max' => 18),
+            array('id_card_no', 'length', 'max' => 18, 'min'=>15),
 
-            array('telephonoe', 'length', 'max' => 11),
+            array('telephone', 'length', 'max' => 11),
             array('nation, birthplace, before_degree, current_degree', 'length', 'max' => 10),
             array('working_date, party_date, before_graduate_date, current_graduate_date, current_position_date, current_level_date', 'length', 'max' => 7),
             array('before_graduate_school, before_graduate_major, current_graduate_school, current_graduate_major, professional_technical_position, work_departments_postion, current_position_rank, continue_education_address, continue_education_prove_people, teach_grades, teach_subjects, teaching_research_postion', 'length', 'max' => 50),
@@ -77,11 +77,11 @@ class TeacherForm extends CFormModel {
             array('name', 'length', 'max' => 12, 'encoding'=>'UTF-8'),
             array('status, sex', 'length', 'max' => 1),
             array('home_address', 'length', 'max' => 50, 'encoding' => 'UTF-8'),
-            array('telephonoe', 'length', 'max' => 11),
+            array('telephone', 'length', 'max' => 11),
             array('birthday', 'date', 'format' => 'yyyy-MM-dd', 'allowEmpty' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('subject_id, subjects, roles, ID, code, name, status, sex, birthday, id_card_no, home_address, telephonoe, nation, birthplace, working_date, party_date, before_degree, before_graduate_date, before_graduate_school, before_graduate_major, current_degree, current_graduate_date, current_graduate_school, current_graduate_major, professional_technical_position, work_departments_postion, current_position_rank, current_position_date, current_level_date, basic_memo, continue_education_address, continue_education_date, continue_education_credit, continue_education_prove_people, moral_praise, moral_student_evaluation, moral_target_check, moral_memo, teach_grades, teach_subjects, teaching_research_postion, recruit_students, attendance, working_memo, tutorship_award, competition_award, paper_work, competition_item, business_memo', 'safe'),
+            array('subject_id, subjects, roles, ID, code, name, status, sex, birthday, id_card_no, home_address, telephone, nation, birthplace, working_date, party_date, before_degree, before_graduate_date, before_graduate_school, before_graduate_major, current_degree, current_graduate_date, current_graduate_school, current_graduate_major, professional_technical_position, work_departments_postion, current_position_rank, current_position_date, current_level_date, basic_memo, continue_education_address, continue_education_date, continue_education_credit, continue_education_prove_people, moral_praise, moral_student_evaluation, moral_target_check, moral_memo, teach_grades, teach_subjects, teaching_research_postion, recruit_students, attendance, working_memo, tutorship_award, competition_award, paper_work, competition_item, business_memo', 'safe'),
         );
     }
 
@@ -100,7 +100,7 @@ class TeacherForm extends CFormModel {
             'birthday' => '出生年月日',
             'id_card_no' => '身份证号码',
             'home_address' => '家庭住址',
-            'telephonoe' => '电话号码',
+            'telephone' => '电话号码',
             'nation' => '民族',
             'birthplace' => '籍贯',
             'working_date' => '工作年月',

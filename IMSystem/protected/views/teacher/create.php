@@ -31,9 +31,8 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">教工编号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'code',array('class'=>'form-control required','placeholder'=>'教工编号')); ?>
+                                <?php echo $form->textField($model,'code',array('class'=>'form-control','placeholder'=>'教工编号')); ?>
                                 <?php echo $form->error($model,'code'); ?>
-                                <div class="tip">登录用户名</div>
                             </div>
                         </div>
 
@@ -66,6 +65,15 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">身份证号码</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
+                                <?php echo $form->error($model,'id_card_no'); ?>
+                                <div class="tip">登录用户名</div>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">担任科目</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
@@ -80,14 +88,6 @@ $this->breadcrumbs = array(
                                 <br/><?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">身份证号码</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
-                                <?php echo $form->error($model,'id_card_no'); ?>
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家庭住址</label>
@@ -100,8 +100,8 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">电话号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'telephonoe', array('class'=>'form-control','placeholder'=>'电话号码')); ?>
-                                <?php echo $form->error($model,'telephonoe'); ?>
+                                <?php echo $form->textField($model,'telephone', array('class'=>'form-control','placeholder'=>'电话号码')); ?>
+                                <?php echo $form->error($model,'telephone'); ?>
                             </div>
                         </div>
 

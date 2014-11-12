@@ -90,13 +90,11 @@ class TeacherController extends BaseController {
                 try {
                     // 用户表信息
                     $user = new TUsers();
-                    $user->username = $model->code;
-                    $user->password = str_replace('-', '', $model->birthday); // 密码默认为身份证后六位
+                    $user->username = strtolower(trim($model->id_card_no));   // 身份证当做登录用户名
+                    $user->password = substr(strtolower(trim($model->id_card_no)), 6, 8); // 
                     $user->status = '1';
                     $user->create_user = $this->getLoginUserId();
-                    $user->update_user = $this->getLoginUserId();
                     $user->create_time = new CDbExpression('NOW()');
-                    $user->update_time = new CDbExpression('NOW()');
                     
                     if ($user->save()) {
                         // 教师表信息
@@ -104,9 +102,7 @@ class TeacherController extends BaseController {
                         $teacher->attributes = $model->attributes;
                         $teacher->ID = $user->ID;
                         $teacher->create_user = $this->getLoginUserId();
-                        $teacher->update_user = $this->getLoginUserId();
                         $teacher->create_time = new CDbExpression('NOW()');
-                        $teacher->update_time = new CDbExpression('NOW()');
                         if ($teacher->save()) {
                             // 角色信息
                             if(is_array($model->roles)){
@@ -115,9 +111,7 @@ class TeacherController extends BaseController {
                                     $userRole->user_id = $user->ID;
                                     $userRole->role_id = $value;
                                     $userRole->create_user = $this->getLoginUserId();
-                                    $userRole->update_user = $this->getLoginUserId();
                                     $userRole->create_time = new CDbExpression('NOW()');
-                                    $userRole->update_time = new CDbExpression('NOW()');
                                     $userRole->save();
                                 }
                             }
@@ -128,9 +122,7 @@ class TeacherController extends BaseController {
                                     $teacherSubject->teacher_id = $user->ID;
                                     $teacherSubject->subject_id = $value;
                                     $teacherSubject->create_user = $this->getLoginUserId();
-                                    $teacherSubject->update_user = $this->getLoginUserId();
                                     $teacherSubject->create_time = new CDbExpression('NOW()');
-                                    $teacherSubject->update_time = new CDbExpression('NOW()');
                                     $teacherSubject->save();
                                 }
                             }
@@ -177,51 +169,50 @@ class TeacherController extends BaseController {
             if (isset($_POST['TTeachers'])) {
                 $tran = Yii::app()->db->beginTransaction();
                 try{
-                    $teacher->name = trim($_POST['TTeachers']['name']);;
-                    $teacher->birthday   = empty($_POST['TTeachers']['birthday']) ? null : trim($_POST['TTeachers']['birthday']);
-                    $teacher->address    = trim($_POST['TTeachers']['address']);
-                    $teacher->telephonoe = trim($_POST['TTeachers']['telephonoe']);
+                    $teacher->attributes = $_POST['TTeachers'];
+                    
                     $teacher->update_user = $this->getLoginUserId();
                     $teacher->update_time = new CDbExpression('NOW()');
-                    if ($teacher->save()) {
-                        // 删除所有与该教师关联的角色信息
-                        TUserRoles::model()->deleteAll("user_id=:user_id", array(":user_id"=>$user->ID));
-                        // 添加角色信息
-                        $teacher->roles = is_array($_POST['TTeachers']['roles']) ? $_POST['TTeachers']['roles'] : array();
-                        foreach ($teacher->roles as $role) {
-                            $userRole = new TUserRoles();
-                            $userRole->user_id = $user->ID;
-                            $userRole->role_id = $role;
-                            $userRole->create_user = $this->getLoginUserId();
-                            $userRole->update_user = $this->getLoginUserId();
-                            $userRole->create_time = new CDbExpression('NOW()');
-                            $userRole->update_time = new CDbExpression('NOW()');
-                            $userRole->save();
-                        }
-
-                        // 删除担任科目信息
-                        TTeacherSubjects::model()->deleteAll("teacher_id=:teacher_id", array(':teacher_id'=>$user->ID));
-                        // 添加担任科目信息
-                        $teacher->subjects  = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
-                        if(is_array($teacher->subjects)){
-                            foreach ($teacher->subjects as $key => $value) {
-                                $teacherSubject = new TTeacherSubjects();
-                                $teacherSubject->teacher_id = $user->ID;
-                                $teacherSubject->subject_id = $value;
-                                $teacherSubject->create_user = $this->getLoginUserId();
-                                $teacherSubject->update_user = $this->getLoginUserId();
-                                $teacherSubject->create_time = new CDbExpression('NOW()');
-                                $teacherSubject->update_time = new CDbExpression('NOW()');
-                                $teacherSubject->save();
-                            }
-                        }
                     
-                        $tran->commit();
-                        $this->setSuccessMessage("教师信息变更成功！");
-                    } else {
-                        Yii::log(print_r($teacher->errors, true));
-                        $this->setErrorMessage("教师信息变更失败！");
+                    if($teacher->validate()) {
+                        if ($teacher->save()) {
+                            // 删除所有与该教师关联的角色信息
+                            TUserRoles::model()->deleteAll("user_id=:user_id", array(":user_id"=>$user->ID));
+                            // 添加角色信息
+                            $teacher->roles = is_array($_POST['TTeachers']['roles']) ? $_POST['TTeachers']['roles'] : array();
+                            foreach ($teacher->roles as $role) {
+                                $userRole = new TUserRoles();
+                                $userRole->user_id = $user->ID;
+                                $userRole->role_id = $role;
+                                $userRole->create_user = $this->getLoginUserId();
+                                $userRole->create_time = new CDbExpression('NOW()');
+
+                                $userRole->save();
+                            }
+
+                            // 删除担任科目信息
+                            TTeacherSubjects::model()->deleteAll("teacher_id=:teacher_id", array(':teacher_id'=>$user->ID));
+                            // 添加担任科目信息
+                            $teacher->subjects  = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
+                            if(is_array($teacher->subjects)){
+                                foreach ($teacher->subjects as $key => $value) {
+                                    $teacherSubject = new TTeacherSubjects();
+                                    $teacherSubject->teacher_id = $user->ID;
+                                    $teacherSubject->subject_id = $value;
+                                    $teacherSubject->create_user = $this->getLoginUserId();
+                                    $teacherSubject->create_time = new CDbExpression('NOW()');
+                                    $teacherSubject->save();
+                                }
+                            }
+
+                            $tran->commit();
+                            $this->setSuccessMessage("教师信息变更成功！");
+                        } else {
+                            Yii::log(print_r($teacher->errors, true));
+                            $this->setErrorMessage("教师信息变更失败！");
+                        }
                     }
+                    
                 }  catch (Exception $e){
                     throw new CHttpException(500, "系统异常！");
                 }
@@ -234,7 +225,6 @@ class TeacherController extends BaseController {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
-    
     
     /**
      * 教师信息息删除
@@ -309,7 +299,6 @@ class TeacherController extends BaseController {
                     if ($model->save()) {
                         // 将Excel文件中的数据读取到数组中
                         $data = $model->readExcel2Array();
-                        Yii::log(print_r($data, true));
                         
                         // 数据整形
                         $data = $model->converdata($data);
@@ -331,10 +320,10 @@ class TeacherController extends BaseController {
         
         // 学生数据导入
         if (isset($_POST['TImportTeacher']['ID']) && isset($_POST['import']) && trim($_POST['import']) == 'import') {
-            $model->attributes = $_POST['TImportStudent'];
+            $model->attributes = $_POST['TImportTeacher'];
             $model->scenario = 'import';
 
-            $record = TImportStudent::model()->find('ID=:ID', array(':ID' => $model->ID));
+            $record = TImportTeacher::model()->find('ID=:ID', array(':ID' => $model->ID));
             if(is_null($record)){
                 throw new CHttpException(500, '数据导入过程中出现异常，请稍后重试！');
             }
@@ -348,18 +337,18 @@ class TeacherController extends BaseController {
                 // 数据验证
                 if($model->validatedata($data2)) {
                     // 数据导入
-                    if($model->importdata($data2, $class)) {
+                    if($model->importdata($data2)) {
                         $tran->commit();
                         $this->setSuccessMessage("数据导入成功！");
                         
-                        $this->redirect($this->createUrl('create'));
+                        $this->redirect($this->createUrl('import'));
                     } else {
                         $this->setErrorMessage("数据导入失败，请检查数据是否正确，然后重试！");
                     }
                 } else {
                     $this->setErrorMessage('数据中有异常数据，请修改后再重试！');
                 }
-            } catch (Exception $ex) {
+            } catch (Exception $e) {
                 throw new CHttpException(500, '数据导入过程中出现了异常！');
             }
         }

@@ -13,7 +13,7 @@
  * @property string $birthday
  * @property string $id_card_no
  * @property string $home_address
- * @property string $telephonoe
+ * @property string $telephone
  * @property string $nation
  * @property string $birthplace
  * @property string $working_date
@@ -83,14 +83,14 @@ class TTeachers extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('code, name, sex, birthday', 'required'),
+            array('name, sex, birthday', 'required'),
             array('continue_education_credit', 'numerical', 'integerOnly' => true),
             array('code, continue_education_date', 'length', 'max' => 20),
             array('name', 'length', 'max' => 12),
             array('status, sex', 'length', 'max' => 1),
             array('id_card_no', 'length', 'max' => 18),
 
-            array('telephonoe', 'length', 'max' => 11),
+            array('telephone', 'length', 'max' => 11),
             array('nation, birthplace, before_degree, current_degree, create_user, update_user', 'length', 'max' => 10),
             array('working_date, party_date, before_graduate_date, current_graduate_date, current_position_date, current_level_date', 'length', 'max' => 7),
             array('before_graduate_school, before_graduate_major, current_graduate_school, current_graduate_major, professional_technical_position, work_departments_postion, current_position_rank, continue_education_address, continue_education_prove_people, teach_grades, teach_subjects, teaching_research_postion', 'length', 'max' => 50),
@@ -101,11 +101,11 @@ class TTeachers extends CActiveRecord
             array('create_user, update_user', 'length', 'max' => 10),
             array('status, sex', 'length', 'max' => 1),
             array('home_address', 'length', 'max' => 100, 'encoding' => 'UTF-8'),
-            array('telephonoe', 'length', 'max' => 11),
+            array('telephone', 'length', 'max' => 11),
             array('birthday', 'date', 'format' => 'yyyy-MM-dd', 'allowEmpty' => true),
 
             // safe
-            array('ID, code, name, status, sex, birthday, id_card_no, home_address, telephonoe, nation, birthplace, working_date, party_date, before_degree, before_graduate_date, before_graduate_school, before_graduate_major, current_degree, current_graduate_date, current_graduate_school, current_graduate_major, professional_technical_position, work_departments_postion, current_position_rank, current_position_date, current_level_date, basic_memo, continue_education_address, continue_education_date, continue_education_credit, continue_education_prove_people, moral_praise, moral_student_evaluation, moral_target_check, moral_memo, teach_grades, teach_subjects, teaching_research_postion, recruit_students, attendance, working_memo, tutorship_award, competition_award, paper_work, competition_item, business_memo, create_user, create_time, update_user, update_time', 'safe'),
+            array('ID, code, name, status, sex, birthday, id_card_no, home_address, telephone, nation, birthplace, working_date, party_date, before_degree, before_graduate_date, before_graduate_school, before_graduate_major, current_degree, current_graduate_date, current_graduate_school, current_graduate_major, professional_technical_position, work_departments_postion, current_position_rank, current_position_date, current_level_date, basic_memo, continue_education_address, continue_education_date, continue_education_credit, continue_education_prove_people, moral_praise, moral_student_evaluation, moral_target_check, moral_memo, teach_grades, teach_subjects, teaching_research_postion, recruit_students, attendance, working_memo, tutorship_award, competition_award, paper_work, competition_item, business_memo, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -136,7 +136,7 @@ class TTeachers extends CActiveRecord
             'birthday' => '出生年月日',
             'id_card_no' => '身份证号码',
             'home_address' => '家庭住址',
-            'telephonoe' => '电话号码',
+            'telephone' => '电话号码',
             'nation' => '民族',
             'birthplace' => '籍贯',
             'working_date' => '工作年月',
@@ -206,7 +206,7 @@ class TTeachers extends CActiveRecord
         $criteria->compare('birthday', $this->birthday, true);
         $criteria->compare('id_card_no', $this->id_card_no, true);
         $criteria->compare('home_address', $this->home_address, true);
-        $criteria->compare('telephonoe', $this->telephonoe, true);
+        $criteria->compare('telephone', $this->telephone, true);
         $criteria->compare('nation', $this->nation, true);
         $criteria->compare('birthplace', $this->birthplace, true);
         $criteria->compare('working_date', $this->working_date, true);

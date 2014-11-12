@@ -214,45 +214,42 @@ class TClasses extends CActiveRecord
      * 根据用户的角色，来获取具有访问权限的班级信息
      */
     public function getClassInfoByUserRole($user_id) {
+        $user = TUsers::model()->find("ID=:ID and status='1'", array(':ID'=> $user_id));
+        
         $classes = array();
         
-        $userRoles = TUserRoles::model()->findAll('user_id=:user_id', array(':user_id'=>$user_id));
-        foreach ($userRoles as $userrole) {
-            switch ($userrole->role_id) {
-                case 6: // 系统管理员
-                case 4: // 教务处
-                case 5: // 校长
-                    // 可以获取所有班级的信息
-                    $classes = TClasses::model()->findAll();
-                    return $classes;
-                    break;
-                case 2: // 教师
-                    // 班主任和任课教师的班级ID
-                    $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
-                    $connection = Yii::app()->db;
-                    $command = $connection->createCommand($sql);
-                    $command->bindValue(":teacher_id", $user_id);
-                    $data = $command->queryAll();
-                    
-                    $result = array();
-                    foreach ($data as $value) {
-                        $result[] = $value['class_id'];
-                    }
+        // 校长
+        // 教务处
+        if($user->isJiaoWuChu() || $user->isHeaderTeacher()) {
+            // 可以获取所有班级的信息
+            $classes = TClasses::model()->findAll("status='1'");
+        }
+        
+        // 普通教师
+        elseif($user->isTeacher()) {
+            // 班主任和任课教师的班级ID
+            $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
+            $connection = Yii::app()->db;
+            $command = $connection->createCommand($sql);
+            $command->bindValue(":teacher_id", $user_id);
+            $data = $command->queryAll();
 
-                    // 任课教师可以获取任课班级的信息
-                    $criteria = new CDbCriteria();
-                    $criteria->addInCondition("ID", $result);
-                    $classes = TClasses::model()->findAll($criteria);
-
-                    break;
-                case 1: // 学生
-                case 3: // 学工科
-                    // 没有获取班级信息的权限
-                    $classes = array();
-                    break;
-                default:
-                    break;
+            $result = array();
+            foreach ($data as $value) {
+                $result[] = $value['class_id'];
             }
+
+            // 任课教师可以获取任课班级的信息
+            $criteria = new CDbCriteria();
+            $criteria->addCondition(" status='1' ");
+            $criteria->addInCondition("ID", $result);
+            $classes = TClasses::model()->findAll($criteria);
+        }
+        
+        // 学工科
+        // 学生
+        elseif($user->isXueGongKe() || $user->isStudent()) {
+            $classes = array();
         }
         
         return $classes;

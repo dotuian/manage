@@ -88,17 +88,21 @@ Yii::app()->clientScript->registerScript('js', "
                 <?php foreach ($data as $key => $value) { $count=0; ?>
                     <tr>
                         <td class="center"><?php echo $key;?></td>
-                        <?php foreach ($subjects as $subject) { ?>
-                        <td class="center">
-                            <?php 
-                                // 分数表示
-                                echo empty($value[$subject->subject_name])?'--':$value[$subject->subject_name];
-                                // 求总分
-                                $count += empty($value[$subject->subject_name])?'0':$value[$subject->subject_name];
-                            ?>
-                        </td>
-                        <?php }?>
-                        <td class="center"><?php echo $count; ?></td>
+                        <?php 
+                            $sum = 0 ;
+                            foreach ($subjects as $subject) {
+                                if(isset($value[$subject->subject_name])) {
+                                    $s = $value[$subject->subject_name];
+                                    $sum += $s;
+                                    // 没有及格
+                                    $css = $s < $subject->pass_score ? 'nopass' : '';
+                                    echo "<td class='center {$css}'>{$s}</td>";
+                                } else {
+                                    echo "<td class='center'>-</td>";
+                                }
+                            }
+                        ?>
+                        <td class="center"><?php echo $sum; ?></td>
                     </tr>
                 <?php }?>
             </tbody>

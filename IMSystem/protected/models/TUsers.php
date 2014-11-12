@@ -363,5 +363,149 @@ class TUsers extends CActiveRecord
         return $result;
     }
 
-
+    
+    public function importTeacher($data){
+        $result = false;
+        
+        $data['password'] = substr($data['id_card_no'], 6, 8); // 身份证信息中的出生年月日
+        if (strlen($data['password']) !== 8) {
+            $data['password'] = '88888888';
+        }
+        
+        $user = new TUsers();
+        $user->username = $data['id_card_no']; // 圣诞 
+        $user->password = $data['password'];  // 生日做密码
+        $user->status = '1';
+        $user->last_login_time = null;
+        $user->last_password_time = null;
+        $user->create_user = Yii::app()->user->getState('ID');
+        $user->create_time = new CDbExpression('NOW()');
+        
+        if($user->save(false)){
+            $teacher = new TTeachers();
+            $teacher->ID = $user->ID;
+            $teacher->code = $data['id_card_no'];
+            $teacher->name = $data['name'];
+            $teacher->status = '1'; // 
+            $teacher->sex = $data['sex'];
+            
+            if(isset($data['birthday'])) {
+                $teacher->birthday = $data['birthday'];
+            }
+            if(isset($data['id_card_no'])) {
+                $teacher->id_card_no = $data['id_card_no'];
+            }
+            if(isset($data['home_address'])) {
+                $teacher->home_address = $data['home_address'];
+            }
+            if(isset($data['telephone'])) {
+                $teacher->telephone = $data['telephone'];
+            }
+            if(isset($data['nation'])) {
+                $teacher->nation = $data['nation'];
+            }
+            if(isset($data['birthplace'])) {
+                $teacher->birthplace = $data['birthplace'];
+            }
+            if(isset($data['working_date'])) {
+                $teacher->working_date = $data['working_date'];
+            }
+            
+            $teacher->create_user = Yii::app()->user->getState('ID');
+            $teacher->create_time = new CDbExpression('NOW()');
+            
+            // 用户角色表
+            $userRole = new TUserRoles();
+            $userRole->role_id = '2'; // 教师角色
+            $userRole->user_id = $user->ID;
+            $userRole->create_user = Yii::app()->user->getState('ID');
+            $userRole->create_time = new CDbExpression('NOW()');
+            
+            if($teacher->save(false) && $userRole->save(false)){
+                $result = true;
+            }
+            
+            if($result) {
+                if(isset($data['subjects'])){
+                    $temp = MSubjects::model()->find("(subject_name=:subject_name or subject_short_name=:subject_name)and status='1'", array(':subject_name'=> $data['subjects']));
+                    // 任教科目
+                    if(!is_null($temp)){
+                        $subject = new TTeacherSubjects();
+                        $subject->teacher_id = $teacher->ID;
+                        $subject->subject_id = $temp->ID;
+                        $subject->create_user = Yii::app()->user->getState('ID');
+                        $subject->create_time = new CDbExpression('NOW()');
+                        $subject->save();
+                    }
+                }
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * 判断该登录用户是否为学生
+     * @return boolean
+     */
+    public function isStudent() {
+        foreach ($this->tUserRoles as $value) {
+            if ($value->role_id == '1') { // 学生
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 判断该登录用户是否为教师
+     * @return boolean
+     */
+    public function isTeacher() {
+        foreach ($this->tUserRoles as $value) {
+            if ($value->role_id == '2') { // 教师
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 判断该登录用户是否为学工科
+     * @return boolean
+     */
+    public function isXueGongKe() {
+        foreach ($this->tUserRoles as $value) {
+            if ($value->role_id == '3') { // 学工科
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 判断该登录用户是否为教务处
+     * @return boolean
+     */
+    public function isJiaoWuChu() {
+        foreach ($this->tUserRoles as $value) {
+            if ($value->role_id == '4') { // 教务处
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 判断该登录用户是否为校长
+     * @return boolean
+     */
+    public function isHeaderTeacher() {
+        foreach ($this->tUserRoles as $value) {
+            if ($value->role_id == '5') { // 校长
+                return true;
+            }
+        }
+        return false;
+    }
 }

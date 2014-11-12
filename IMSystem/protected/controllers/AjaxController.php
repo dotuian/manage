@@ -94,7 +94,8 @@ class AjaxController extends BaseController {
 
             if (is_numeric($_POST['class_id'])) {
                 $class_id = trim($_POST['class_id']);
-                $data = MExams::model()->findAll('ID in (select DISTINCT a.exam_id from t_scores a where a.class_id=:class_id)', array(':class_id' => $class_id));
+                $sql = "select DISTINCT a.* from m_exams a inner join t_scores b on a.ID=b.exam_id and b.class_id=:class_id ";
+                $data = MExams::model()->findAllBySql($sql, array(':class_id' => $class_id));
                 foreach ($data as $value) {
                     echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['exam_name']), true);
                 }

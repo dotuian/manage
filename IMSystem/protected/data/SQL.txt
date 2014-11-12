@@ -1,1 +1,11 @@
+ALTER TABLE `t_teachers`
+	CHANGE COLUMN `telephonoe` `telephone` CHAR(11) NULL DEFAULT NULL COMMENT '电话号码' COLLATE 'utf8_bin' AFTER `home_address`;
 
+
+
+
+ALTER TABLE `t_teachers`
+	ALTER `code` DROP DEFAULT;
+ALTER TABLE `t_teachers`
+	CHANGE COLUMN `code` `code` CHAR(20) NULL COMMENT '教师CODE' COLLATE 'utf8_bin' AFTER `ID`,
+	DROP INDEX `teacher_code`;

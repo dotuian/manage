@@ -145,24 +145,22 @@ class ScoreController extends BaseController {
                 $this->setWarningMessage("没有检索到相关数据！");
             }
         }
-
         
         $this->render('search', array(
                     'model' => $model, 
                     'dataProvider' => isset($dataProvider) ? $dataProvider : null,
                 ));
-        
     }    
     
 
     public function actionCreate() {
 
         $model = new ScoreForm('create');
+        
         if (isset($_POST['ScoreForm'])) {
-            
             $model->attributes = $_POST['ScoreForm'];
+            
             if($model->validate()) {
-                
                 $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
                 if(is_null($class)){
                     throw new CHttpException('500', '该班级信息不存在！');
@@ -272,8 +270,7 @@ class ScoreController extends BaseController {
             $model->scenario = 'class';
             
             if ($model->validate()) {
-                $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
-
+                
                 $params = array();
                 
                 $sql = "select e.student_number, a.name, c.exam_name, d.subject_code, d.subject_name, d.subject_short_name, b.score ";
@@ -312,16 +309,13 @@ class ScoreController extends BaseController {
                     $dataProvider[$value['student_number'].'|'.$value['name']][$value['exam_name']][$value['subject_name']] = $value['score'];
                 }
 
-                Yii::log(print_R($dataProvider, true));
-                
                 // 该班级全部的科目成绩
-                $subjects = $class->getClassAllSubjects();
-                Yii::log(print_r($subjects, true));
-//                if($model->subject_id == '') {
-//                } else {
-//                    // 该班级指定科目的成绩
-//                    $subjects = MSubjects::model()->findAll('ID=:ID', array(':ID'=>$model->subject_id));
-//                }
+                //$subjects = $class->getClassAllSubjects();
+                
+                // 根据教师角色获取相应的科目
+                $subjects = MSubjects::model()->getSubjectInfoByUserRole($this->getLoginUserId(), $model->class_id);
+                
+                
 
                 $this->render('class', array('model' => $model, 'data' => $dataProvider, 'subjects' => $subjects));
                 

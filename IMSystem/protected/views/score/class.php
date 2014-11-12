@@ -32,9 +32,12 @@ $(document).ready(function(){
                 ?>
                 <div class="padd">
                     <h6>
-                        班主任，任课教师可以在该页面查看学生的成绩信息。<br/>
+                        以班级单位，查看当前在校学生的成绩信息。<br/>
                     </h6>
                     <hr/>
+                        <?php
+
+                        ?>
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">

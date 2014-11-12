@@ -118,10 +118,7 @@ class TImportTeacher extends CActiveRecord {
         
         
         if($this->scenario == 'validate' || $this->scenario == 'import') {
-//            $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID'=>$this->class_id));
-//            if (is_null($class)) {
-//                $this->addError("class_id", '班级信息不存在！');
-//            }
+
         }
     }
     
@@ -132,7 +129,6 @@ class TImportTeacher extends CActiveRecord {
         }
     }
     
-    
     /**
      * 
      * @return type将Excel文件中的内容读取到数组中
@@ -141,7 +137,7 @@ class TImportTeacher extends CActiveRecord {
         $data = array();
         if (file_exists($this->realpath) && is_file($this->realpath)) {
             $data = ExcelUtils::readExcel2Array($this->realpath);
-            Yii::log(print_r($data, true));
+//            Yii::log(print_r($data, true));
         }
         return $data;
     }
@@ -151,11 +147,11 @@ class TImportTeacher extends CActiveRecord {
      * 将文件中的数据导入到数据库中
      * @return boolean
      */
-    public function importdata($data, $class) {
+    public function importdata($data) {
         $result = true;
         
         foreach ($data as $value) {
-            if (!TUsers::model()->importStudent($value, $class)) {
+            if (!TUsers::model()->importTeacher($value)) {
                 $result = false;
                 break;
             }
@@ -185,8 +181,9 @@ class TImportTeacher extends CActiveRecord {
             $temp['sex']            = $this->getSexCode(trim($value['C']));  // 性别
             $temp['nation']         = trim($value['D']);        // 民族
             $temp['birthplace']     = trim($value['E']);        // 籍贯
-            $temp['id_card_no']     = trim($value['F']);        // 学生姓名
-            $temp['working_date']     = trim($value['H']);      // 参加工作年月
+            $temp['id_card_no']     = strtoupper(trim($value['F'])); // 学生姓名
+            $temp['subjects']       = trim($value['G']);      // 任教科目
+            $temp['working_date']   = trim($value['I']);      // 参加工作年月
 
             $result[] = $temp;
         }
@@ -194,7 +191,7 @@ class TImportTeacher extends CActiveRecord {
         return $result;
     }
     
-    public function getSexCode($sex){
+    public function getSexCode($sex) {
         switch (trim($sex)) {
             case '男':
                 $type = 'M';

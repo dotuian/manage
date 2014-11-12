@@ -185,13 +185,13 @@ class TImportStudent extends CActiveRecord {
         foreach ($data as $value) {
             $temp = array();
             $temp['student_number'] = trim($value['A']);        // 学号
-            $temp['code']           = trim($value['A']);                  // 用户名
-            $temp['name']           = trim($value['B']);                  // 学生姓名
+            $temp['code']           = trim($value['A']);        // 用户名
+            $temp['name']           = trim($value['B']);        // 学生姓名
             $temp['sex']            = $this->getSexCode(trim($value['C']));  // 性别
-            $temp['id_card_no']     = trim($value['D']);     // 身份证号
+            $temp['id_card_no']     = strtoupper(trim($value['D']));         // 身份证号
             $temp['old_class_code'] = trim($value['E']); // 旧班级代号
             $temp['new_class_code'] = trim($value['F']); // 新班级代号
-            $temp['accommodation']  = trim($value['G']);  // 住宿情况
+            $temp['accommodation']  = trim($value['G']); // 住宿情况
             $temp['payment1']       = trim($value['H']); // 缴费情况（第1学期）(0: 未缴  1:已缴)
             $temp['payment2']       = trim($value['I']); // 缴费情况（第2学期）
             $temp['payment3']       = trim($value['J']); // 缴费情况（第3学期）

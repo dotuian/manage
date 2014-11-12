@@ -35,7 +35,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label"><?php echo $model->getAttributeLabel('code');?></label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'code',array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->textField($model,'code',array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'code'); ?>
                             </div>
                         </div>
@@ -102,8 +102,8 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">电话号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'telephonoe', array('class'=>'form-control','placeholder'=>'电话号码')); ?>
-                                <?php echo $form->error($model,'telephonoe'); ?>
+                                <?php echo $form->textField($model,'telephone', array('class'=>'form-control','placeholder'=>'电话号码')); ?>
+                                <?php echo $form->error($model,'telephone'); ?>
                             </div>
                         </div>
 

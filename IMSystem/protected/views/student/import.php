@@ -25,7 +25,7 @@ ul.error{
                 <div class="padd">
                     <h6>学生信息批量导入操作步骤：</h6>
                     <ul>
-                        <li><a href="<?php echo Yii::app()->request->baseUrl; ?>/files/template/student_template.xls">下载Excel数据模板</a>，正确填写需要导入的学生信息。</li>
+                        <li><a href="<?php echo Yii::app()->request->baseUrl; ?>/files/template/学生模板.xlsx">下载Excel数据模板</a>，正确填写需要导入的学生信息。</li>
                         <li>选择模板信息中学生的班级，填好的学生模板文件，点击“读取数据”。如果数据有误会在表格的右方提示相应的错误。修改之后，重新执行读取数据操作。</li>
                         <li>如数据无误，点击表格右下方的“导入数据”。</li>
                     </ul>

@@ -239,4 +239,53 @@ class MSubjects extends CActiveRecord
         return MSubjects::model()->findAll($criteria);
     }
 
+    /**
+     * 获取当前用户可以查看学生成绩的科目
+     * @param type $user_id
+     * @param type $class_id
+     * @return array
+     */
+    public function getSubjectInfoByUserRole($user_id, $class_id) {
+        // 当前用户信息
+        $user = TUsers::model()->find("ID=:ID and status='1'", array(':ID'=> $user_id));
+        // 班级信息
+        $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=> $class_id));
+        
+        $subjects = array();
+        
+        // 校长
+        // 教务处
+        if($user->isJiaoWuChu() || $user->isHeaderTeacher()) {
+            // 获取该班级所修的所有科目信息
+            $subjects = $class->getClassAllSubjects();
+        }
+        
+        // 普通教师
+        elseif($user->isTeacher()) {
+            // 当前用户是该班班主任的情况
+            if($class->teacher_id === $user->ID) {
+                $subjects = $class->getClassAllSubjects();
+            }
+            
+            // 不是班主任，任课教师的情况下
+            else {
+                $sql = "select * from m_subjects a ";
+                $sql .= "inner join m_courses b on a.ID = b.subject_id  ";
+                $sql .= "where b.`status`='1' and a.`status`='1' and ";
+                $sql .= " b.class_id=:class_id and  ";
+                $sql .= " b.teacher_id=:teacher_id ";
+                
+                $subjects = MSubjects::model()->findAllBySql($sql, array(':class_id'=> $class_id, ':teacher_id'=> $user_id));
+            }
+        }
+        
+        // 学工科
+        // 学生
+        elseif($user->isXueGongKe() || $user->isStudent()) {
+            $subjects = array();
+        }
+        
+        return $subjects;
+    }
+    
 }
