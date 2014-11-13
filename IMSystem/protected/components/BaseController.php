@@ -28,6 +28,11 @@ class BaseController extends CController {
     public $ID = '';
     // 登录用户角色
     public $role = '';
+    // 当前用户拥有的权限列表
+    public $authoritys;
+    // 当前用户拥有的权限种类
+    public $category;
+    
     
     public function init() {
         // 错误标签的设定
@@ -35,12 +40,13 @@ class BaseController extends CController {
         
         // 登录用户ID
         $this->ID = Yii::app()->user->getState('ID');
-        
         // 登录用户角色
         $this->role = Yii::app()->user->getState('role');
+        // 权限列表
+        $this->authoritys = Yii::app()->user->getState('authoritys');
+        // 权限种类
+        $this->category = Yii::app()->user->getState('auth_category');
         
-        Yii::log('__GET___ ' . print_r($_GET, true));
-        Yii::log('__POST___ ' . print_r($_POST, true));
     }
     
     /**

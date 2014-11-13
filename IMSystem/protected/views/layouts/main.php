@@ -4,14 +4,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta charset="utf-8" />
 
-        <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />-->
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
-
-        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes" />
 
-        
         <meta name="description" content="孝感综合高级中学" />
         <meta name="description" content="成绩管理" />
         <meta name="keywords" content="孝感综合高级中学,成绩管理" />
@@ -51,7 +47,6 @@
         <!--[if lt IE 9]>
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/html5shim.js"></script>    
         <![endif]-->
-
         
         <!-- datatables -->
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/media/DataTables-1.10.2/css/jquery.dataTables.min.css" />
@@ -128,32 +123,26 @@
             <li><a href="<?php echo Yii::app()->homeUrl; ?>"><i class="fa fa-home"></i> <span>首页</span></a></li>
             
             <?php
-                $controller = Yii::app()->controller->id;  // controller
-                //$action = $this->getAction()->getId(); // action
-                //$route =$this->getRoute(); // route 
-
-                // 权限列表
-                $authoritys = Yii::app()->user->getState('authoritys');
-                // 权限分类
-                $category = Yii::app()->user->getState('auth_category');
+                // controller
+                $controller = Yii::app()->controller->id;  
             ?>
           
-            <?php if(in_array('STUDENT', $category)) { ?>
+            <?php if(in_array('STUDENT', $this->category)) { ?>
             <!-- 学生管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'student' ? 'open' : ''; ?>">
                     <i class="fa fa-user"></i> <span>学生管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'student' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span>
                 </a>
                 <ul>
-                    <?php if(in_array('student/search', $authoritys)) { ?>
+                    <?php if(in_array('student/search', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('student/search');?>">学生信息检索</a></li>
                     <?php } ?>
                         
-                    <?php if(in_array('student/create', $authoritys)) { ?>
+                    <?php if(in_array('student/create', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('student/create');?>">学生信息添加</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('student/import', $authoritys)) { ?>
+                    <?php if(in_array('student/import', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('student/import');?>">学生信息导入</a></li>
                     <?php } ?>
                 </ul>
@@ -161,21 +150,21 @@
             <?php } ?>
           
           
-            <?php if(in_array('TEACHER', $category)) { ?>
+            <?php if(in_array('TEACHER', $this->category)) { ?>
             <!-- 教师管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'teacher' ? 'open' : ''; ?>">
                 <i class="fa fa-sitemap"></i> <span>教师管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'teacher' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('teacher/search', $authoritys)) { ?>
+                    <?php if(in_array('teacher/search', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('teacher/search');?>">教师信息检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('teacher/create', $authoritys)) { ?>
+                    <?php if(in_array('teacher/create', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('teacher/create');?>">教师信息添加</a></li>
                     <?php } ?>
                         
-                    <?php if(in_array('teacher/import', $authoritys)) { ?>
+                    <?php if(in_array('teacher/import', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('teacher/import');?>">教师信息导入</a></li>
                     <?php } ?>
                 </ul>
@@ -183,41 +172,39 @@
             <?php } ?>
           
           
-            <?php if(in_array('CLASS', $category)) { ?>
+            <?php if(in_array('CLASS', $this->category)) { ?>
             <!-- 班级管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'class' ? 'open' : ''; ?>">
                 <i class="fa fa-tasks"></i> <span>班级管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'class' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('class/search', $authoritys)) { ?>
+                    <?php if(in_array('class/search', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/search');?>">班级信息检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('class/create', $authoritys)) { ?>
+                    <?php if(in_array('class/create', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/create');?>">班级信息添加</a></li>
                     <?php } ?>
                     
-                    <!-- 
-                    <?php if(in_array('class/upgrade', $authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('class/upgrade');?>">班级学生迁移</a></li>
+                    <?php if(in_array('class/stopMore', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('class/stopMore');?>">班级批量暂停</a></li>
                     <?php } ?>
-                    -->
                 </ul>
             </li>
             <?php } ?>
           
           
-            <?php if(in_array('SUBJECT', $category)) { ?>
+            <?php if(in_array('SUBJECT', $this->category)) { ?>
             <!-- 科目管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'subject' ? 'open' : ''; ?>">
                 <i class="fa fa-bookmark"></i> <span>科目管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'subject' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('subject/search', $authoritys)) { ?>
+                    <?php if(in_array('subject/search', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('subject/search');?>">科目信息检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('subject/create', $authoritys)) { ?>
+                    <?php if(in_array('subject/create', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('subject/create');?>">科目信息添加</a></li>
                     <?php } ?>
                 </ul>
@@ -225,17 +212,17 @@
             <?php } ?>
           
           
-            <?php if(in_array('COURSE', $category)) { ?>
+            <?php if(in_array('COURSE', $this->category)) { ?>
             <!-- 课程管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'course' ? 'open' : ''; ?>">
                 <i class="fa fa-table"></i> <span>课程管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'course' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('course/search', $authoritys)) { ?>
+                    <?php if(in_array('course/search', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('course/search');?>">课程信息检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('course/create', $authoritys)) { ?>
+                    <?php if(in_array('course/create', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
                     <?php } ?>
                 </ul>
@@ -243,25 +230,25 @@
             <?php } ?>
           
           
-            <?php if(in_array('SCORE', $category)  && !$this->isStudent()) { ?>
+            <?php if(in_array('SCORE', $this->category)  && !$this->isStudent()) { ?>
             <!-- 成绩管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'score' ? 'open' : ''; ?>">
                 <i class="fa fa-bar-chart-o"></i> <span>成绩管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'score' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('score/search', $authoritys)) { ?>
+                    <?php if(in_array('score/search', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/search');?>">成绩信息检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('score/create', $authoritys)) { ?>
+                    <?php if(in_array('score/create', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('score/class', $authoritys)) { ?>
+                    <?php if(in_array('score/class', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/class');?>">班级学生成绩</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('score/analysis', $authoritys)) { ?>
+                    <?php if(in_array('score/analysis', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/analysis');?>">成绩统计分析</a></li>
                     <?php } ?>
                 </ul>
@@ -269,23 +256,23 @@
             <?php } ?>
           
           
-            <?php if(in_array('score/query', $authoritys)  && $this->isStudent()) { ?>
+            <?php if(in_array('score/query', $this->authoritys)  && $this->isStudent()) { ?>
                 <!-- 学生成绩查询 -->
                 <li><a href="<?php echo $this->createUrl('score/query');?>"><i class="fa fa-book"></i> <span>成绩查询</span></a></li> 
             <?php } ?>
           
           
-            <?php if(in_array('ROLE', $category)) { ?>
+            <?php if(in_array('ROLE', $this->category)) { ?>
             <!-- 角色管理 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'role' ? 'open' : ''; ?>">
                 <i class="fa fa-users"></i> <span>角色管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'role' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('role/search', $authoritys)) { ?>
+                    <?php if(in_array('role/search', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('role/search');?>">角色检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('role/create', $authoritys)) { ?>
+                    <?php if(in_array('role/create', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('role/create');?>">角色添加</a></li>
                     <?php } ?>
                 </ul>
@@ -293,16 +280,16 @@
             <?php } ?>
           
           
-            <?php if(in_array('AUTHORITY', $category)) { ?>
+            <?php if(in_array('AUTHORITY', $this->category)) { ?>
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'authority' ? 'open' : ''; ?>">
                 <i class="fa fa-wrench"></i> <span>权限管理</span> <span class="pull-right"><i class="fa <?php echo $controller == 'authority' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php if(in_array('authority/search', $authoritys)) { ?>
+                    <?php if(in_array('authority/search', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('authority/search');?>">权限检索</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('authority/create', $authoritys)) { ?>
+                    <?php if(in_array('authority/create', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('authority/create');?>">权限添加</a></li>
                     <?php } ?>
                 </ul>
@@ -321,7 +308,7 @@
                 </ul>
             </li>
             
-            <?php if(in_array('system/setting', $authoritys)) { ?>
+            <?php if(in_array('system/setting', $this->authoritys)) { ?>
                 <!-- 系统设置 -->
                 <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-cog"></i> <span>系统配置</span></a></li> 
             <?php } ?>
@@ -462,6 +449,8 @@
 
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/custom.js"></script>
+
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/function.js"></script>
 
 
 </body>

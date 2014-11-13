@@ -13,19 +13,21 @@ class StudentController extends BaseController {
             $model->attributes = $_GET['StudentForm'];
 
             // 查询SQL
-            $sql = "select DISTINCT a.* ";
+            $sql = "select DISTINCT a.*, b.student_number, c.class_name ";
             $countSql = "select count(DISTINCT a.ID ) ";
-            $condition = "FROM t_students a inner join t_student_classes b on a.ID = b.student_id inner join t_classes c on c.ID = b.class_id ";
-
+            $condition = " FROM t_students a left join t_student_classes b on a.ID = b.student_id and b.status='1'";
+            $condition .=" left join t_classes c on c.ID = b.class_id ";
+            $condition .="where 1=1 ";
+            
             $params = array();
-            // 省内编号
-            if (trim($model->province_code) !== '') {
-                $condition .= " and a.province_code = :province_code ";
-                $params[':province_code'] = trim($model->province_code);
+            // 班级(现)
+            if (trim($model->class_id) !== '') {
+                $condition .= " and b.class_id = :class_id "; // 查询现在所在班级的学生
+                $params[':class_id'] = trim($model->class_id);
             }
-            // 学号
+            // 学号(现)
             if (trim($model->student_number) !== '') {
-                $condition .= " and b.student_number = :student_number ";
+                $condition .= " and b.student_number = :student_number "; // 查询现在所在班级的学生
                 $params[':student_number'] = trim($model->student_number);
             }
             // 学生姓名
@@ -60,9 +62,9 @@ class StudentController extends BaseController {
                 'sort' => array(
                     'attributes' => array(
                         'user' => array(
-                            'asc' => 'a.ID',
-                            'desc' => 'a.ID desc',
-                            'default' => 'desc',
+                            'asc' => 'b.class_id asc, b.student_number asc ',
+                            'desc' => 'c.class_code , b.student_number ',
+                            'default' => 'asc',
                         )
                     ),
                     'defaultOrder' => array(
@@ -70,7 +72,7 @@ class StudentController extends BaseController {
                     ),
                 ),
                 'pagination' => array(
-                    'pageSize' => Yii::app()->params['PageSize'],
+                    'pageSize' => 100, //Yii::app()->params['PageSize'],
                 ),
             ));
 

@@ -84,7 +84,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">角色</label>
                             <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getAllRolesOption(false), array('class'=>'required', 'separator'=>'　')); ?>
+                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getStaffRolesOption(false), array('class'=>'required', 'separator'=>'　')); ?>
                                 <br/><?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>

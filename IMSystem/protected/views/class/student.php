@@ -2,7 +2,7 @@
 $this->pageTitle = Yii::app()->name . '班级学生信息一览表';
 $this->breadcrumbs = array(
     '班级信息检索' => $this->createUrl('search'),
-    '班级学生信息一览表',
+    $class->class_name . '学生信息一览表',
 );
 
 Yii::app()->clientScript->registerScript('js', "
@@ -13,11 +13,11 @@ $(document).ready(function(){
 ?>
 
 
-<?php if(isset($students)) { ?>
+<?php if(isset($students) && count($students) > 0) { ?>
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left"><?php echo $class->getClassDisplayName(false); ?> 学生信息一览表</div>
+        <div class="pull-left"><?php echo $class->class_name; ?> 学生信息一览表</div>
         <div class="widget-icons pull-right">
           </div> 
         <div class="clearfix"></div>

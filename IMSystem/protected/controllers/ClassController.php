@@ -4,22 +4,22 @@
  * 班级控制器
  */
 class ClassController extends BaseController {
-    
+
     /**
      * 查询班级信息
      */
     public function actionSearch() {
-        
+
         $sql = "select a.*, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $condition = '';
-        
+
         $model = new ClassForm();
 //        $model->status = '1';
-        
+
         $params = array();
 //        $params[':status'] = trim($model->status);
-        
+
         if (isset($_GET['ClassForm'])) {
             $model->attributes = $_GET['ClassForm'];
             // 检索条件
@@ -92,17 +92,16 @@ class ClassController extends BaseController {
         ));
 
         // 没有数据
-        if($dataProvider->totalItemCount == 0 ) {
+        if ($dataProvider->totalItemCount == 0) {
             $this->setWarningMessage("没有检索到相关数据！");
         }
 
         $this->render('search', array(
-                    'model' => $model, 
-                    'dataProvider' => isset($dataProvider) ? $dataProvider : null ,
-                ));
+            'model' => $model,
+            'dataProvider' => isset($dataProvider) ? $dataProvider : null,
+        ));
     }
-    
-    
+
     /**
      * 添加班级信息
      */
@@ -110,7 +109,7 @@ class ClassController extends BaseController {
 
         $model = new ClassForm('create');
         $model->entry_year = date('Y');
-        
+
         if (isset($_POST['ClassForm'])) {
             $model->attributes = $_POST['ClassForm'];
             if ($model->validate()) {
@@ -125,12 +124,12 @@ class ClassController extends BaseController {
                     $class->specialty_name = trim($model->specialty_name); // 专业名称
                     $class->status = '1'; // 新建正常状态的班级信息
                     $class->teacher_id = intval($model->teacher_id);
-                    
+
                     $class->create_user = $this->getLoginUserId();
                     $class->update_user = $this->getLoginUserId();
                     $class->create_time = new CDbExpression('NOW()');
                     $class->update_time = new CDbExpression('NOW()');
-                    
+
                     if ($class->save()) {
                         $tran->commit();
                         $this->setSuccessMessage("班级信息添加成功！");
@@ -147,28 +146,27 @@ class ClassController extends BaseController {
 
         $this->render('create', array('model' => $model));
     }
-    
-    
+
     public function actionUpdate() {
 
         if (isset($_GET['ID'])) {
             $ID = trim($_GET['ID']);
-            
+
             $class = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($class)) {
                 throw new CHttpException(404, "该班级信息不存在！");
             }
-
-            if (isset($_POST['TClasses'])) {
+            
+            // 暂停状态的班级信息不能修改
+            if (isset($_POST['TClasses']) && $class->status == '1') {
                 $class->class_name = trim($_POST['TClasses']['class_name']);
                 $class->class_type = trim($_POST['TClasses']['class_type']);
-                $class->status = trim($_POST['TClasses']['status']);
                 $class->entry_year = trim($_POST['TClasses']['entry_year']);
                 $class->teacher_id = trim($_POST['TClasses']['teacher_id']);
 
                 $class->update_user = $this->getLoginUserId();
                 $class->update_time = new CDbExpression('NOW()');
-                
+
                 if ($class->validate()) {
                     if ($class->save()) {
                         $this->setSuccessMessage("班级信息变更成功！");
@@ -186,60 +184,50 @@ class ClassController extends BaseController {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
- 
-    
+
     /**
-     * 新学年的开始，学生的班级信息批量变更
+     * 暂停单个班级
+     * @throws CHttpException
      */
-    public function actionUpgrade() {
-
-        $model = new ClassUpgradeForm();
-
-        if (isset($_POST['ClassUpgradeForm'])) {
-            $model->attributes = $_POST['ClassUpgradeForm'];
-
-            if ($model->validate()) {
-                $new_class = TClasses::model()->exists("ID=:ID and status='1'", array(":ID" => $this->new_class_id));
-                
-                $tran = Yii::app()->db->beginTransaction();
-                try {
-                    $count = 0;
-                    // 获取旧班级中所有学生班级的信息
-                    $studentClass = TStudentClasses::model()->findAll("class_id=:class_id and `status`='1'", array(':class_id'=>$model->old_class_id));
-                    foreach ($studentClass as $value) {
-                        $value->status = '2'; //暂停状态
-                        $value->update_user = $this->getLoginUserId();
-                        $value->update_time = new CDbExpression('NOW()');
-
-                        $new = new TStudentClasses();
-                        $new->student_id = $value->student_id;
-                        $new->class_id = $model->new_class_id;
-                        $new->status = '1'; // 正常状态
-                        $new->create_user = $this->getLoginUserId();
-                        $new->update_user = $this->getLoginUserId();
-                        $new->create_time = new CDbExpression('NOW()');
-                        $new->update_time = new CDbExpression('NOW()');
-
-                        if ($value->save(false) && $new->save(false)) {
-                            $count++;
-                        }
-                    }
-
-                    $tran->commit();
-                    Yii::app()->user->setFlash('success', "升级处理成功！一共{$count}个学生班级信息变更成功！");
-                } catch (Exception $e) {
-                    throw new CHttpException(404, "系统异常！");
-                }
-            }
-        }
-
-        $this->render('upgrade', array('model' => $model));
-    }
-
-    public function actionStudent(){
+    public function actionStopone(){
         if (isset($_GET['ID'])) {
             $ID = trim($_GET['ID']);
+
+            $class = TClasses::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            if (is_null($class)) {
+                throw new CHttpException(404, "该班级信息不存在！");
+            }
+
+            if (isset($_POST['TClasses'])) {
+                $class->status = '2'; // 暂停
+                $class->update_user = $this->getLoginUserId();
+                $class->update_time = new CDbExpression('NOW()');
+                
+                // 该班级对应的学生信息也全都暂停
+                $sql = "update t_student_classes set status= '0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
+                $command=Yii::app()->db->createCommand($sql);
+                $command->bindValue(":update_user", $this->getLoginUserId());
+                $command->bindValue(":class_id", $class->ID);
+                $command->execute();
+                
+                if ($class->save(false)) {
+                    $this->setSuccessMessage("班级暂停成功！");
+                } else {
+                    Yii::log(print_r($class->errors, true));
+                    $this->setErrorMessage("班级暂停失败！");
+                }
+            }
             
+            $this->redirect($this->createUrl('search'));
+        } else {
+            throw new CHttpException(404, "找不到该页面！");
+        }
+    }
+
+    public function actionStudent() {
+        if (isset($_GET['ID'])) {
+            $ID = trim($_GET['ID']);
+
             $class = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($class)) {
                 throw new CHttpException(404, "该班级信息不存在！");
@@ -250,17 +238,76 @@ class ClassController extends BaseController {
             $sql .= "inner join t_classes c on c.ID = b.class_id ";
             $sql .= "where b.class_id=:class_id ";
             $sql .= " and ((c.status='1' and b.status='1') or (c.status='2' and b.status='0')) "; // 目前班级的学生，以及以前班级的学生
-            
-            $students = TStudents::model()->findAllBySQL($sql, array(':class_id'=>$class->ID));
+
+            $students = TStudents::model()->findAllBySQL($sql, array(':class_id' => $class->ID));
+
+            if (count($students) === 0) {
+                $this->setWarningMessage('没有学生信息！');
+            }
 
             $this->render('student', array(
                 'students' => $students,
                 'class' => $class,
-                
             ));
         } else {
             throw new CHttpException(404, "找不到该页面！");
         }
     }
-    
+
+    /**
+     * 暂停多个班级
+     * @throws CHttpException
+     */
+    public function actionStopMore() {
+        
+        $model = new StopClassForm();
+        
+        if (isset($_POST['StopClassForm'])) {
+            $model->attributes = $_POST['StopClassForm'];
+            
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $result = true;
+                foreach ($model->class_ids as $class_id => $value) {
+                    if($value == 1) {
+                        $class = TClasses::model()->find("ID=:ID and status='1'", array(":ID" => $class_id));
+                        if(!is_null($class)){
+                            $class->status = '2'; // 未使用
+                            $class->update_user = $this->getLoginUserId();
+                            $class->update_time = new CDbExpression('NOW()');
+                            
+                            // 该班级对应的学生信息也全都暂停
+                            $sql = "update t_student_classes set status= '0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
+                            $command=Yii::app()->db->createCommand($sql);
+                            $command->bindValue(":update_user", $this->getLoginUserId());
+                            $command->bindValue(":class_id", $class->ID);
+                            $command->execute();
+                            
+                            if(!$class->save(false)){
+                                $result = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if($result) {
+                    $tran->commit();
+                    $this->setSuccessMessage('所选班级信息暂停成功！');
+                } else {
+                    $this->setErrorMessage('所选班级信息暂停失败！');
+                }
+                
+            } catch (Exception $exc) {
+                Yii::log($exc->getTraceAsString());
+            }
+        }
+        
+        $sql = "select a.*, b.name from t_classes a left join t_teachers b on a.teacher_id=b.ID where a.status='1'";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $classes = $command->queryAll();
+        
+        $this->render('stopmore', array('model' => $model, 'classes' => $classes));
+    }
+
 }

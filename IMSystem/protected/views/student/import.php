@@ -6,13 +6,6 @@ $this->breadcrumbs = array(
 
 ?>
 
-<style>
-ul.error{
-
-}
-    
-</style>
-
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
@@ -35,7 +28,7 @@ ul.error{
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'file-upload-form',
                             'enableClientValidation' => false,
-                            'htmlOptions' => array('enctype' => 'multipart/form-data','class' => 'form-horizontal', 'role'=>'form'), // enctype为文件上传说必须选项
+                            'htmlOptions' => array('enctype' => 'multipart/form-data','class' => 'form-horizontal', 'role'=>'form', 'onsubmit'=>'return loading()'), // enctype为文件上传说必须选项
                         ));
                     ?>
                         <div class="form-group">
@@ -141,7 +134,7 @@ ul.error{
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'file-upload-form',
                     'enableClientValidation' => false,
-                    'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'), // enctype为文件上传说必须选项
+                    'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form', 'onsubmit'=>'return loading()'), 
                 ));
             ?>
                 <?php echo $form->hiddenField($model, 'ID'); ?>
@@ -157,3 +150,4 @@ ul.error{
     </div>
 </div>
 <?php } ?>
+

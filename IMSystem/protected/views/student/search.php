@@ -35,8 +35,8 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>省内编号</th>
-                    <th>学号</th>
+                    <th>班级(现)</th>
+                    <th>学号(现)</th>
                     <th>姓名</th>
                     <th>性别</th>
                     <th>身份证号码</th>
@@ -46,10 +46,10 @@ $(document).ready(function(){
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->textField($model,'province_code', array('class'=>'form-control', 'placeholder'=>'省内编号')); ?>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control', 'placeholder'=>'班级(现)')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'student_number', array('class'=>'form-control', 'placeholder'=>'学号')); ?>
+                        <?php echo $form->textField($model,'student_number', array('class'=>'form-control', 'placeholder'=>'学号(现)')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
@@ -79,8 +79,6 @@ $(document).ready(function(){
 </div>
 
 
-
-
 <?php if(!is_null($dataProvider) && $dataProvider->totalItemCount > 0 ) { ?>
 <!-- 检索结果 -->
 <div class="widget">
@@ -94,7 +92,8 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>省内编号</th>
+                    <th>班级(现)</th>
+                    <th>学号(现)</th>
                     <th>姓名</th>
                     <th>性别</th>
                     <th>入学年份</th>

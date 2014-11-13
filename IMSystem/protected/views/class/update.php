@@ -4,16 +4,6 @@ $this->breadcrumbs = array(
     '班级信息变更',
 );
 ?>
-<script>
-//$(document).ready(function(){
-//    
-//    $('#datetimepicker1').datetimepicker({
-//        pickTime: false
-//    });
-//});
-</script>
-
-
 
 <div class="row">
     <div class="col-md-12">
@@ -70,7 +60,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">学期</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-')); ?>
+                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'term_type'); ?>
                             </div>
                         </div>
@@ -99,19 +89,23 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                     
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">状态</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'status'); ?>
-                            </div>
-                        </div>
-                    
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-reset" value='重置' />
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
+                                <?php 
+                                    // 暂停的状态下，不能修改变更班级信息
+                                    if($model->status == '1') {
+                                        echo CHtml::Button('暂停', array(
+                                            'confirm'=>'确定要暂停吗？',
+                                            'params'=>array('ID' => $model->ID),
+                                            'submit' => array('stopOne'),
+                                            'class'=>'btn btn-delete',
+                                            'encode'=>false,
+                                        ));
+
+                                        echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); 
+                                    }
+                                ?>
                             </div>
                         </div>
                     

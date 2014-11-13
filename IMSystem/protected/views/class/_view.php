@@ -11,7 +11,12 @@
         <span class="label <?php echo $data['status'] === '1' ? 'label-active' : 'label-stop';?>"><?php echo $data['status'] === '1' ? '正常' : '暂停'; ?></span>
     </td>
     <td class="center">
-        <a href="<?php echo $this->createUrl('class/update',  array('ID' => $data['ID'])) ?>">详细</a> &nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $this->createUrl('class/student', array('ID' => $data['ID'])) ?>">学生一览</a>
+        <?php if(in_array('class/update', $this->authoritys)) { ?>
+            <a href="<?php echo $this->createUrl('class/update',  array('ID' => $data['ID'])) ?>">详细</a> &nbsp;&nbsp;&nbsp;
+        <?php } ?>
+        
+        <?php if(in_array('class/student', $this->authoritys)) { ?>
+            <a href="<?php echo $this->createUrl('class/student', array('ID' => $data['ID'])) ?>">学生一览</a>
+        <?php } ?>
     </td>
 </tr>

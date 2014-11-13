@@ -276,6 +276,9 @@ class TUsers extends CActiveRecord
                 if(isset($data['id_card_no']) && $data['id_card_no'] != '') {
                     $student->id_card_no = $data['id_card_no'];
                 }
+                if(isset($data['accommodation']) && $data['accommodation'] != '') {
+                    $student->accommodation = $data['accommodation'];
+                }
                 if(isset($data['payment1']) && $data['payment1'] != '') {
                     $student->payment1 = $data['payment1'];
                 }

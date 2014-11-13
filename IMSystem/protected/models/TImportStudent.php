@@ -175,14 +175,19 @@ class TImportStudent extends CActiveRecord {
     public function converdata($data) {
         
         // 数据条数稍微4行是，文件中没有数据
-        if (is_array($data) && count($data) > 4) {
-            $data = array_slice($data, 4);
+        if (is_array($data) && count($data) > 3) {
+            $data = array_slice($data, 3);
         } else {
             return null;
         }
         
         $result = array();
         foreach ($data as $value) {
+            // 如果学号为空，自动跳过该条数据
+            if(trim($value['A']) == ''){
+                continue;
+            }
+            
             $temp = array();
             $temp['student_number'] = trim($value['A']);        // 学号
             $temp['code']           = trim($value['A']);        // 用户名
@@ -192,22 +197,22 @@ class TImportStudent extends CActiveRecord {
             $temp['old_class_code'] = trim($value['E']); // 旧班级代号
             $temp['new_class_code'] = trim($value['F']); // 新班级代号
             $temp['accommodation']  = trim($value['G']); // 住宿情况
-            $temp['payment1']       = trim($value['H']); // 缴费情况（第1学期）(0: 未缴  1:已缴)
-            $temp['payment2']       = trim($value['I']); // 缴费情况（第2学期）
-            $temp['payment3']       = trim($value['J']); // 缴费情况（第3学期）
-            $temp['payment4']       = trim($value['K']); // 缴费情况（第4学期）
-            $temp['payment5']       = trim($value['L']); // 缴费情况（第5学期）
-            $temp['payment6']       = trim($value['M']); // 缴费情况（第6学期）
+            $temp['payment1']       = $this->getPaymentValue(trim($value['H'])); // 缴费情况（第1学期）(0: 未缴  1:已缴)
+            $temp['payment2']       = $this->getPaymentValue(trim($value['I'])); // 缴费情况（第2学期）
+            $temp['payment3']       = $this->getPaymentValue(trim($value['J'])); // 缴费情况（第3学期）
+            $temp['payment4']       = $this->getPaymentValue(trim($value['K'])); // 缴费情况（第4学期）
+            $temp['payment5']       = $this->getPaymentValue(trim($value['L'])); // 缴费情况（第5学期）
+            $temp['payment6']       = $this->getPaymentValue(trim($value['M'])); // 缴费情况（第6学期）
             $temp['bonus_penalty']  = trim($value['N']); // 奖惩情况
             $temp['address']        = trim($value['O']); // 家庭住址
             $temp['parents_tel']    = trim($value['P']); // 家长电话
             $temp['parents_qq']     = trim($value['Q']); // 家长QQ
             $temp['school_of_graduation'] = trim($value['R']); // 毕业学校
             $temp['comment']        = trim($value['S']);   // 备注
-            $temp['school_year']    = date('Y');   // 入学年份
-    //        $temp['senior_score'] = trim($value['G']);  // 中考总分
-    //        $temp['college_score'] = trim($value['G']); // 高考总分
-    //        $temp['university'] = trim($value['G']);    // 录取学校
+    //        $temp['school_year']    = date('Y');           // 入学年份
+    //        $temp['senior_score'] = trim($value['G']);   // 中考总分
+    //        $temp['college_score'] = trim($value['G']);  // 高考总分
+    //        $temp['university'] = trim($value['G']);     // 录取学校
             
             $result[] = $temp;
         }
@@ -215,7 +220,20 @@ class TImportStudent extends CActiveRecord {
         return $result;
     }
     
-    public function getSexCode($sex){
+    public function getPaymentValue($value) {
+        if($value == '') {
+            return null;
+        }
+        
+        if(trim($value) == '齐') {
+            return '1';
+        }
+        
+        return null;
+    }
+    
+    
+    public function getSexCode($sex) {
         switch (trim($sex)) {
             case '男':
                 $type = 'M';
@@ -258,6 +276,10 @@ class TImportStudent extends CActiveRecord {
             if (empty($value['student_number'])) {
                 $error[] = '学号必须指定！';
             } else {
+                if(strlen($value['student_number']) !== 10) {
+                    $error[] = '学号位数有误!';
+                }
+                
                 // 文件中是否存在重复的学号
                 if(in_array($value['student_number'], $numbers)){
                     $error[] = '存在重复的学号!';
@@ -289,7 +311,7 @@ class TImportStudent extends CActiveRecord {
                 }
             }
             
-            if (strlen($value['id_card_no']) > 18) {
+            if (strlen($value['id_card_no']) > 20) {
                 $error[] = '身份证信息有误！';
             }
             
@@ -316,10 +338,18 @@ class TImportStudent extends CActiveRecord {
                 $error[] = '电话号码过长！';
             }
             
-            if(mb_strlen($value['school_of_graduation'], $encode) > 50) {
-                $error[] = '毕业学号过长！';
+            
+            if(strlen(trim($value['parents_qq'])) > 0 && !is_numeric(trim($value['parents_qq']))) {
+                $error[] = 'QQ号码有误！';
             }
             
+            if(strlen($value['parents_qq']) > 15) {
+                $error[] = 'QQ号码过长！';
+            }
+            
+            if(mb_strlen($value['school_of_graduation'], $encode) > 50) {
+                $error[] = '毕业学校过长！';
+            }
             
             // 旧班级不为空的情况下，说明是班级的调整
             // 检查学生的数据是否存在

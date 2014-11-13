@@ -5,7 +5,10 @@
     <td class="center"><?php echo $data['status'] === '1' ? '正常' : '异常'; ?></td>
     <td><?php echo $data['home_address']; ?></td>
     <td class="center"><?php echo $data['telephone']; ?></td>
+    
     <td class="center">
-        <a href="<?php echo $this->createUrl('teacher/update', array('ID' => $data['ID'])) ?>">详细</a>
+        <?php if(in_array('teacher/update', $this->authoritys)) { ?>
+            <a href="<?php echo $this->createUrl('teacher/update', array('ID' => $data['ID'])) ?>">详细</a>
+        <?php } ?>
     </td>
 </tr>

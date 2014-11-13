@@ -350,6 +350,81 @@ class TClasses extends CActiveRecord
         return TStudents::model()->findAllBySql($sql, array(':class_id' => $this->ID));
     }
     
+    /**
+     * 获取班级学期类型的表示名
+     * @param type $value
+     * @return string
+     */
+    public function getTermTypeName($value=null) {
+        if(is_null($value)){
+            $value = $this->term_type;
+        }
+        
+        $result = null;
+        switch ($value) {
+            case '0':
+                $result = '整学年';
+                break;
+            case '1':
+                $result = '上学期';
+                break;
+            case '2':
+                $result = '下学期';
+                break;
+            default:
+                break;
+        }
+        return $result;
+    }
+    
+    /**
+     * 获取班级类型的表示名
+     * @param type $value
+     * @return string
+     */
+    public function getClassTypeName($value=null) {
+        if(is_null($value)){
+            $value = $this->class_type;
+        }
+
+        $result = null;
+        switch ($value) {
+            case '0':
+                $result = '普通高中';
+                break;
+            case '1':
+                $result = '技能专业';
+                break;
+            default:
+                break;
+        }
+        return $result;
+    }
+    
+    /**
+     * 获取班级状态的表示名
+     * @param type $value
+     * @return string
+     */
+    public function getClassStatusName($value=null) {
+        if(is_null($value)){
+            $value = $this->status;
+        }
+
+        $result = null;
+        switch ($value) {
+            case '1':
+                $result = '正常';
+                break;
+            case '2':
+                $result = '暂停';
+                break;
+            default:
+                break;
+        }
+        return $result;
+    }
+    
 }
 
 
