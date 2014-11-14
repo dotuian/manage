@@ -276,7 +276,7 @@ class TTeachers extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
-        $sql = "select c.subject_name, a.ID, a.code, a.name from t_teachers a , t_teacher_subjects b , m_subjects c ";
+        $sql = "select c.subject_name, a.ID, a.code, a.name from t_teachers a, t_teacher_subjects b, m_subjects c ";
         $sql .= "where a.ID = b.teacher_id and b.subject_id=c.ID and a.`status`= '1' and c.`status`='1' ";
         
         $params = array();
@@ -284,17 +284,15 @@ class TTeachers extends CActiveRecord
             $sql .= " and c.subject_code=:subject_code";
             $params[':subject_code'] = trim($subject_code);
         }
-
+        $sql .= " order by b.teacher_id ";
+        
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $data = $command->query($params);
         
         foreach ($data as $value) {
-            ///$result[$value['subject_name']][] = array($value['ID'] => $value['code'] .'|' . $value['name']);
-            $result[$value['subject_name']][$value['ID']] = $value['code'] . '|' . $value['name'];
+            $result[$value['subject_name']][$value['ID']] = $value['name'];
         }
-        
-        Yii::log(print_r($result, true));
         
         return $result;
     }

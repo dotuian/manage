@@ -34,7 +34,7 @@ $(document).ready(function(){
                     <th>班级代号</th>
                     <th>班级名称</th>
                     <th>科目</th>
-                    <th>教工号</th>
+                    <!--<th>教工号</th>-->
                     <th>任课教师姓名</th>
                 </tr>
             </thead>
@@ -49,9 +49,11 @@ $(document).ready(function(){
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control', 'placeholder'=>'教工号')); ?>
                     </td>
+                    <!--
                     <td>
                         <?php echo $form->textField($model,'teacher_id', array('class'=>'form-control', 'placeholder'=>'教工号')); ?>
                     </td>
+                    -->
                     <td>
                         <?php echo $form->textField($model,'teacher_name', array('class'=>'form-control', 'placeholder'=>'任课教师姓名')); ?>
                     </td>
@@ -87,7 +89,7 @@ $(document).ready(function(){
                     <th>班级代号</th>
                     <th>班级名称</th>
                     <th>科目</th>
-                    <th>教工号</th>
+                    <!--<th>教工号</th>-->
                     <th>任课教师姓名</th>
                     <th>操作</th>
                 </tr>

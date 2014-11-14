@@ -30,10 +30,10 @@ class CourseController extends BaseController {
                 $condition .= " and a.subject_id = :subject_id ";
                 $params[':subject_id'] = trim($model->subject_id);
             }
-            if (trim($model->teacher_id) !== '') {
-                $condition .= " and d.code = :teacher_id ";
-                $params[':teacher_id'] = trim($model->teacher_id);
-            }
+//            if (trim($model->teacher_id) !== '') {
+//                $condition .= " and d.code = :teacher_id ";
+//                $params[':teacher_id'] = trim($model->teacher_id);
+//            }
             if (trim($model->teacher_name) !== '') {
                 $condition .= " and d.name like :teacher_name ";
                 $params[':teacher_name'] = '%' . trim($model->teacher_name) . '%';

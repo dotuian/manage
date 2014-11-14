@@ -26,8 +26,11 @@ class SettingController extends BaseController {
             
         } else {
             $data = TTeachers::model()->find("ID=:ID and status='1'", array(':ID' => $this->ID));
+            
+            // 获取该教师担任的科目
+            $data->subjects = $data->getTeacherSubjectIds();
         }
-
+        // 个人信息不存在！
         if (is_null($data)) {
             throw new CHttpException('400', '用户信息找不到！');
         }
@@ -56,7 +59,7 @@ class SettingController extends BaseController {
                 $data->birthday      = $_POST['TTeachers']['birthday'];      // 出生年月日
                 $data->id_card_no    = $_POST['TTeachers']['id_card_no'];    // 身份证号码
                 $data->home_address  = $_POST['TTeachers']['home_address'];  // 家庭住址
-                $data->telephonoe    = $_POST['TTeachers']['telephonoe'];    // 电话号码
+                $data->telephone     = $_POST['TTeachers']['telephone'];     // 电话号码
                 $data->nation        = $_POST['TTeachers']['nation'];        // 民族
                 $data->birthplace    = $_POST['TTeachers']['birthplace'];    // 籍贯
                 $data->working_date  = $_POST['TTeachers']['working_date'];  // 工作年月
@@ -88,7 +91,6 @@ class SettingController extends BaseController {
                 $data->moral_memo                = $_POST['TTeachers']['moral_memo'];                // 师德备注
                 
                 $data->teach_grades              = $_POST['TTeachers']['teach_grades'];     // 任教年级
-                //$data->teach_subjects            = $_POST['TTeachers']['teach_subjects'];   // 课程
                 $data->teaching_research_postion = $_POST['TTeachers']['teaching_research_postion']; // 教研职务
                 $data->recruit_students          = $_POST['TTeachers']['recruit_students']; // 招生情况
                 $data->attendance                = $_POST['TTeachers']['attendance'];       // 考勤情况
@@ -103,7 +105,24 @@ class SettingController extends BaseController {
                 $data->update_user = $this->getLoginUserId();
                 $data->update_time = new CDbExpression('NOW()');
 
-                if($data->validate()){
+                $data->subjects            = $_POST['TTeachers']['subjects'];   // 课程
+                
+                if ($data->validate()) {
+                    // 删除担任科目信息
+                    TTeacherSubjects::model()->deleteAll("teacher_id=:teacher_id", array(':teacher_id'=>$data->ID));
+                    // 添加担任科目信息
+                    $data->subjects = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
+                    if(is_array($data->subjects)){
+                        foreach ($data->subjects as $key => $value) {
+                            $teacherSubject = new TTeacherSubjects();
+                            $teacherSubject->teacher_id = $data->ID;
+                            $teacherSubject->subject_id = $value;
+                            $teacherSubject->create_user = $this->getLoginUserId();
+                            $teacherSubject->create_time = new CDbExpression('NOW()');
+                            $teacherSubject->save(false);
+                        }
+                    }
+                    
                     if ($data->save()) {
                         $this->setSuccessMessage("个人信息变更成功！");
                     } else {

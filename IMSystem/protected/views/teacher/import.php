@@ -35,7 +35,7 @@ ul.error{
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'file-upload-form',
                             'enableClientValidation' => false,
-                            'htmlOptions' => array('enctype' => 'multipart/form-data','class' => 'form-horizontal', 'role'=>'form'), // enctype为文件上传说必须选项
+                            'htmlOptions' => array('enctype' => 'multipart/form-data','class' => 'form-horizontal', 'role'=>'form', 'onsubmit'=>'return loading()'), // enctype为文件上传说必须选项
                         ));
                     ?>
                         <div class="form-group">
@@ -83,6 +83,8 @@ ul.error{
                     <th>民族</th>
                     <th>籍贯</th>
                     <th>身份证</th>
+                    <th>出生年月日</th>
+                    <th>担任科目</th>
                     <th>工作年月</th>
                     <th>信息</th>
                 </tr>
@@ -98,6 +100,10 @@ ul.error{
                     <td class="center"><?php echo $value["nation"]; ?></td>
                     <td class="center"><?php echo $value["birthplace"]; ?></td>
                     <td class="center"><?php echo $value["id_card_no"]; ?></td>
+                    
+                    <td class="center"><?php echo $value["birthday"]; ?></td>
+                    <td class="center"><?php echo $value["subjects"]; ?></td>
+                    
                     <td class="center"><?php echo $value["working_date"]; ?></td>
                     
                     <td><?php 
@@ -121,7 +127,7 @@ ul.error{
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'file-upload-form',
                     'enableClientValidation' => false,
-                    'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'), // enctype为文件上传说必须选项
+                    'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form', 'onsubmit'=>'return loading()'), // enctype为文件上传说必须选项
                 ));
             ?>
                 <?php echo $form->hiddenField($model, 'ID'); ?>

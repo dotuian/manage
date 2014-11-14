@@ -15,16 +15,16 @@ class TeacherController extends BaseController {
             
             $sql = "select DISTINCT a.* ";
             $countSql = "select count(DISTINCT a.ID) ";
-            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.status='1' ";
+            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where 1=1 ";
             $params = array();
             
-            if (trim($model->code) !== '') {
-                $condition .= " and a.code like :code ";
-                $params[':code'] = '%' . StringUtils::escape(trim($model->code)) . '%';
-            }
             if (trim($model->name) !== '') {
                 $condition .= " and a.name like :name ";
                 $params[':name'] = '%' . StringUtils::escape(trim($model->name)). '%';
+            }
+            if (trim($model->id_card_no) !== '') {
+                $condition .= " and a.id_card_no like :id_card_no ";
+                $params[':id_card_no'] = '%' . StringUtils::escape(trim($model->id_card_no)). '%';
             }
             if (trim($model->subject_id) !== '') {
                 $condition .= " and c.ID=:subject_id  ";
@@ -253,7 +253,7 @@ class TeacherController extends BaseController {
                 $teacher->update_user = $this->getLoginUserId();
                 $teacher->update_time = new CDbExpression('NOW()');
 
-                if ($user->save() && $teacher->save(false)) {
+                if ($user->save(false) && $teacher->save(false)) {
                     $tran->commit();
                     $this->setSuccessMessage("教师信息删除成功！");
                     
@@ -273,8 +273,6 @@ class TeacherController extends BaseController {
         }
     }
 
-    
-    
     
     
     public function actionImport() {
@@ -299,9 +297,10 @@ class TeacherController extends BaseController {
                     if ($model->save()) {
                         // 将Excel文件中的数据读取到数组中
                         $data = $model->readExcel2Array();
-                        
+                        Yii::log(print_r($data, true));
                         // 数据整形
                         $data = $model->converdata($data);
+                        Yii::log(print_r($data, true));
                         // 数据验证
                         if ($check = $model->validatedata($data)) {
                             $this->setSuccessMessage("数据正常，可以导入！");

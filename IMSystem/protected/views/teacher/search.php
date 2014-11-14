@@ -31,8 +31,8 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>教工号</th>
                     <th>姓名</th>
+                    <th>身份证号码</th>
                     <th>担任科目</th>
                     <th>性别</th>
                     <th>地址</th>
@@ -41,10 +41,10 @@ $(document).ready(function(){
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->textField($model,'code', array('class'=>'form-control', 'placeholder'=>'教工号')); ?>
+                        <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
+                        <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control', 'placeholder'=>'身份证号码')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
@@ -84,12 +84,12 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>教工号</th>
                     <th>姓名</th>
+                    <th>身份证号码</th>
                     <th>性别</th>
-                    <th>状态</th>
                     <th>地址</th>
                     <th>电话号码</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
             </thead>

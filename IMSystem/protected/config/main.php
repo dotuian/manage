@@ -76,7 +76,7 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'rootadmin',
@@ -115,11 +115,11 @@ return array(
                 array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning, info',
-                    'logFile' => 'application_' . date('Ymd') . '.log',
+                    //'logFile' => 'application_' . date('Ymd') . '.log',
                 ),
                array(
                     'class'=>'CWebLogRoute',
-//                    'levels' => 'trace,info,error,warning,debug',
+                    //'levels' => 'trace,info,error,warning,debug',
                 ),
             ),
         ),
@@ -131,7 +131,7 @@ return array(
         // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
         'EmptySelectOption' => '--------',
-        'PageSize' => 20,
+        'PageSize' => 50,
         'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\files\\upload\\',
     ),
 );

@@ -124,7 +124,9 @@ class TUsers extends CActiveRecord
     public function getAllUserAuthorityCategory(){
         $result = array();
         // 
-        $sql = "select DISTINCT d.category from t_user_roles a, m_roles b, m_role_authoritys c, m_authoritys d where a.role_id=b.ID and b.ID=c.role_id and c.authority_id=d.ID and a.user_id=:user_id";
+        $sql = "select DISTINCT d.category from t_user_roles a, m_roles b, m_role_authoritys c, m_authoritys d ";
+        $sql .= "where a.role_id=b.ID and b.ID=c.role_id and c.authority_id=d.ID and a.user_id=:user_id and d.status='1' and b.status='1' ";
+        
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $command->bindValue(":user_id", $this->ID);
@@ -137,7 +139,6 @@ class TUsers extends CActiveRecord
         return $result;
     }
     
-    
     /**
      * 获取用户的所有权限
      */
@@ -145,7 +146,10 @@ class TUsers extends CActiveRecord
         
         $result = array();
         // 
-        $sql = "select d.ID, d.access_path from t_user_roles a, m_roles b, m_role_authoritys c, m_authoritys d where a.role_id=b.ID and b.ID=c.role_id and c.authority_id=d.ID and a.user_id=:user_id";
+        $sql = "select d.ID, d.access_path from ";
+        $sql .= "t_user_roles a, m_roles b, m_role_authoritys c, m_authoritys d ";
+        $sql .= "where a.role_id=b.ID and b.ID=c.role_id and c.authority_id=d.ID and a.user_id=:user_id and d.status='1' and b.status='1' ";
+        
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $command->bindValue(":user_id", $this->ID);
@@ -370,14 +374,14 @@ class TUsers extends CActiveRecord
     public function importTeacher($data){
         $result = false;
         
-        $data['password'] = substr($data['id_card_no'], 6, 8); // 身份证信息中的出生年月日
-        if (strlen($data['password']) !== 8) {
-            $data['password'] = '88888888';
-        }
+        //$data['password'] = substr($data['id_card_no'], 6, 8); // 身份证信息中的出生年月日
+        //if (strlen($data['password']) !== 8) {
+        //    $data['password'] = '88888888';
+        //}
         
         $user = new TUsers();
-        $user->username = $data['id_card_no']; // 圣诞 
-        $user->password = $data['password'];  // 生日做密码
+        $user->username = $data['id_card_no']; //身份证号做用户名
+        $user->password = '88888888';   // 密码
         $user->status = '1';
         $user->last_login_time = null;
         $user->last_password_time = null;
@@ -387,28 +391,23 @@ class TUsers extends CActiveRecord
         if($user->save(false)){
             $teacher = new TTeachers();
             $teacher->ID = $user->ID;
+            $teacher->status = '1'; // 
+
             $teacher->code = $data['id_card_no'];
             $teacher->name = $data['name'];
-            $teacher->status = '1'; // 
             $teacher->sex = $data['sex'];
-            
-            if(isset($data['birthday'])) {
-                $teacher->birthday = $data['birthday'];
-            }
-            if(isset($data['id_card_no'])) {
-                $teacher->id_card_no = $data['id_card_no'];
-            }
-            if(isset($data['home_address'])) {
-                $teacher->home_address = $data['home_address'];
-            }
-            if(isset($data['telephone'])) {
-                $teacher->telephone = $data['telephone'];
-            }
+            // 
             if(isset($data['nation'])) {
                 $teacher->nation = $data['nation'];
             }
             if(isset($data['birthplace'])) {
                 $teacher->birthplace = $data['birthplace'];
+            }
+            if(isset($data['id_card_no'])) {
+                $teacher->id_card_no = $data['id_card_no'];
+            }
+            if(isset($data['birthday'])) {
+                $teacher->birthday = date('Y-m-d', CDateTimeParser::parse($data['birthday'], 'yyyy-MM-dd'));
             }
             if(isset($data['working_date'])) {
                 $teacher->working_date = $data['working_date'];
@@ -429,7 +428,7 @@ class TUsers extends CActiveRecord
             }
             
             if($result) {
-                if(isset($data['subjects'])){
+                if (isset($data['subjects'])) {
                     $temp = MSubjects::model()->find("(subject_name=:subject_name or subject_short_name=:subject_name)and status='1'", array(':subject_name'=> $data['subjects']));
                     // 任教科目
                     if(!is_null($temp)){

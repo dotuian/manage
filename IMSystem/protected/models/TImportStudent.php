@@ -191,9 +191,9 @@ class TImportStudent extends CActiveRecord {
             $temp = array();
             $temp['student_number'] = trim($value['A']);        // 学号
             $temp['code']           = trim($value['A']);        // 用户名
-            $temp['name']           = trim($value['B']);        // 学生姓名
-            $temp['sex']            = $this->getSexCode(trim($value['C']));  // 性别
-            $temp['id_card_no']     = strtoupper(trim($value['D']));         // 身份证号
+            $temp['name']           = str_replace(' ', '', trim($value['B']));// 学生姓名
+            $temp['sex']            = $this->getSexCode(trim($value['C']));   // 性别
+            $temp['id_card_no']     = strtoupper(trim($value['D']));          // 身份证号
             $temp['old_class_code'] = trim($value['E']); // 旧班级代号
             $temp['new_class_code'] = trim($value['F']); // 新班级代号
             $temp['accommodation']  = trim($value['G']); // 住宿情况

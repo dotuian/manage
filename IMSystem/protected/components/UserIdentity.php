@@ -16,7 +16,7 @@ class UserIdentity extends CUserIdentity {
      * @return boolean whether authentication succeeds.
      */
     public function authenticate() {
-        $user = TUsers::model()->find("username=:username and status='1'", array(':username' => $this->username));
+        $user = TUsers::model()->find("upper(username)=:username and status='1'", array(':username' => strtoupper($this->username)));
         if (is_null($user)) {
             // 用户不存在
             $this->errorCode = self::ERROR_USERNAME_INVALID;

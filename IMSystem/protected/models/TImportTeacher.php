@@ -168,22 +168,27 @@ class TImportTeacher extends CActiveRecord {
     public function converdata($data) {
         
         // 数据条数稍微1行是，文件中没有数据
-        if (is_array($data) && count($data) > 1) {
-            $data = array_slice($data, 1);
+        if (is_array($data) && count($data) > 3) {
+            $data = array_slice($data, 3);
         } else {
             return null;
         }
         
         $result = array();
         foreach ($data as $value) {
+            if($value['A'] == ''){
+                continue;
+            }
+            
             $temp = array();
             $temp['name']           = trim($value['B']);        // 姓名
             $temp['sex']            = $this->getSexCode(trim($value['C']));  // 性别
             $temp['nation']         = trim($value['D']);        // 民族
             $temp['birthplace']     = trim($value['E']);        // 籍贯
-            $temp['id_card_no']     = strtoupper(trim($value['F'])); // 学生姓名
-            $temp['subjects']       = trim($value['G']);      // 任教科目
-            $temp['working_date']   = trim($value['I']);      // 参加工作年月
+            $temp['id_card_no']     = strtoupper(trim($value['F'])); // 身份证号码
+            $temp['birthday']       = trim($value['G']);        // 出生年月
+            $temp['subjects']       = trim($value['H']);        // 任教科目
+            $temp['working_date']   = trim($value['I']);        // 参加工作年月
 
             $result[] = $temp;
         }
@@ -216,6 +221,8 @@ class TImportTeacher extends CActiveRecord {
         
         $result = true;
 
+        $id_card_nos = array();
+        
         foreach ($array as $key => $value) {
             $error = array();
 
@@ -227,9 +234,17 @@ class TImportTeacher extends CActiveRecord {
                 $error[] = '姓名过长！';
             }
             
+            if (empty($value['sex'])) {
+                $error[] = '性别必须指定！';
+            }
+            
             if (empty($value['id_card_no'])) {
                 $error[] = '身份证号必须指定！';
             } else {
+                if(in_array($value['id_card_no'], $id_card_nos)) {
+                    $error[] = '身份证号重复！';
+                }
+                
                 if(strlen($value['id_card_no']) > 18 ) {
                     $error[] = '身份证号信息有误！';
                 }
@@ -238,12 +253,13 @@ class TImportTeacher extends CActiveRecord {
                 if($temp){
                     $error[] = '身份证号已经存在！';
                 }
+                
+                $id_card_nos[] =$value['id_card_no'] ;
             }
             
-            if (empty($value['sex'])) {
-                $error[] = '性别必须指定！';
-            }
-
+            
+            $value['birthday'] = date('Y-m-d', CDateTimeParser::parse($value['birthday'], 'yyyy/MM/dd'));
+            
             // 错误信息的统计
             if (count($error) > 0) {
                 $result = false;

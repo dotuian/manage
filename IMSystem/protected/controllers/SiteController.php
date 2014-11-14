@@ -88,7 +88,7 @@ class SiteController extends BaseController {
                 $user = TUsers::model()->find("username=:username and status='1'", array(':username' => $model->username));
                 if (empty($user->last_password_time)) {
                     // 第一次登陆的情况下，修改密码
-                    $this->setWarningMessage('第一次登陆，请修改密码！');
+                    $this->setWarningMessage('请修改密码！');
                     $this->redirect($this->createUrl('setting/password'));
                 } else {
                     $this->redirect(Yii::app()->user->returnUrl);
