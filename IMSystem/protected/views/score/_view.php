@@ -1,6 +1,9 @@
 <tr>
-    <td class="center"><?php echo $data['exam_name'] ; ?></td>
+    <td class="center"><?php echo $data['entry_year']; ?></td>
+    <td class="center"><?php echo $data['class_code']; ?></td>
     <td class="center"><?php echo $data['class_name']; ?></td>
+    <td class="center"><?php echo ClassForm::getTermTypeDisplayName($data['class_type']); ?></td>
+    <td class="center"><?php echo $data['exam_name'] ; ?></td>
     <td class="center"><?php echo $data['subject_name'] ; ?></td>
     <td class="center"><?php echo $data['student_number']; ?></td>
     <td class="center"><?php echo $data['name']; ?></td>

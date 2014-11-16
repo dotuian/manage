@@ -76,48 +76,54 @@ class ScoreController extends BaseController {
                inner join t_students c on a.student_id = c.ID 
                inner join m_subjects d on a.subject_id = d.ID 
                inner join m_exams e on a.exam_id = e.ID 
-               inner join t_student_classes f on a.class_id=f.class_id and a.student_id=a.student_id 
+               inner join t_student_classes f on f.student_id=c.ID 
                where 1=1 ";
         
-        $sql = "select a.*, b.class_code, b.class_name, b.class_type,b.entry_year, c.province_code, c.name, d.subject_code,d.subject_name,d.subject_type, e.exam_code, e.exam_name $from ";
+        $sql = "select a.*, b.class_code, b.class_name, b.class_type, b.entry_year, c.province_code, c.name, d.subject_code,d.subject_name,d.subject_type, e.exam_code, e.exam_name $from ";
         $countSql = "select count(*) $from ";
         $params = array();
+        $condition= '';
         
         $model = new ScoreForm();
         if (isset($_GET['ScoreForm'])) {
             $model->attributes = $_GET['ScoreForm'];
             
+            if (trim($model->entry_year) !== '') {
+                $condition .= " and b.entry_year = :entry_year ";
+                $params[':entry_year'] = trim($model->entry_year);
+            }
+            if (trim($model->class_code) !== '') {
+                $condition .= " and b.class_code = :class_code ";
+                $params[':class_code'] = trim($model->class_code);
+            }
             if (trim($model->exam_id) !== '') {
-                $sql .= " and a.exam_id = :exam_id ";
-                $countSql .= " and a.exam_id = :exam_id ";
+                $condition .= " and a.exam_id = :exam_id ";
                 $params[':exam_id'] = trim($model->exam_id);
             }
             if (trim($model->class_id) !== '') {
-                $sql .= " and a.class_id = :class_id ";
-                $countSql .= " and a.class_id = :class_id ";
+                $condition .= " and a.class_id = :class_id ";
                 $params[':class_id'] = trim($model->class_id);
             }
             if (trim($model->subject_id) !== '') {
-                $sql .= " and a.subject_id = :subject_id ";
-                $countSql .= " and a.subject_id = :subject_id ";
+                $condition .= " and a.subject_id = :subject_id ";
                 $params[':subject_id'] = trim($model->subject_id);
             }
             if (trim($model->student_number) !== '') {
-                $sql .= " and f.student_number = :student_number ";
-                $countSql .= " and f.student_number = :student_number ";
-                $params[':school_number'] = trim($model->student_number);
+                $condition .= " and f.student_number = :student_number ";
+                $params[':student_number'] = trim($model->student_number);
             }
             if (trim($model->student_name) !== '') {
-                $sql .= " and d.name like :name ";
-                $countSql .= " and d.name like :name ";
+                $condition .= " and c.name like :name ";
                 $params[':name'] = '%' . trim($model->student_name) . '%';
             }
             if (trim($model->score) !== '') {
-                $sql .= " and a.score = :score ";
-                $countSql .= " and a.score = :score ";
+                $condition .= " and a.score = :score ";
                 $params[':score'] = trim($model->score);
             }
 
+            $sql .= $condition;
+            $countSql .= $condition;
+            
             $count = Yii::app()->db->createCommand($countSql)->queryScalar($params);
             $dataProvider = new CSqlDataProvider($sql, array(
                 'params' => $params,
@@ -126,8 +132,8 @@ class ScoreController extends BaseController {
                 'sort' => array(
                     'attributes' => array(
                         'user' => array(
-                            'asc' => 'a.create_time',
-                            'desc' => 'a.create_time desc',
+                            'asc' => 'b.ID, a.student_number, d.level ',
+                            'desc' => 'b.ID asc, a.student_number asc, d.level asc',
                             'default' => 'desc',
                         )
                     ),
@@ -209,7 +215,16 @@ class ScoreController extends BaseController {
                 throw new CHttpException(404, "该成绩信息不存在！");
             }
             
-            $student = TStudents::model()->find("ID=:ID and status='1'", array(':ID'=>$score->student_id));
+            $student = TStudents::model()->find("ID=:ID ", array(':ID'=>$score->student_id));
+            if (is_null($student)) {
+                throw new CHttpException(404, "该学生信息不存在！");
+            }
+            
+            $class = TClasses::model()->find("ID=:ID ", array(':ID'=>$score->class_id));
+            if (is_null($class)) {
+                throw new CHttpException(404, "该班级信息不存在！");
+            }
+            
             
             if (isset($_POST['TScores'])) {
                 $score->scenario = 'update';
@@ -229,6 +244,7 @@ class ScoreController extends BaseController {
             $this->render('update', array(
                 'model' => $score,
                 'student' => $student,
+                'class' => $class,
             ));
         } else {
             throw new CHttpException(404, "找不到该页面！");

@@ -156,7 +156,7 @@ class TClasses extends CActiveRecord
      * @param type $flag
      * @return type
      */
-    public function getAllStopClassOption($flag = true) {
+    public function getStopClassesOption($flag = true) {
         $result = array();
         if ($flag === true) {
             $result[''] = yii::app()->params['EmptySelectOption'];
@@ -171,6 +171,26 @@ class TClasses extends CActiveRecord
     }
     
     /**
+     * 获取所有使用中班级信息
+     * @param type $flag
+     * @return type
+     */
+    public function getAllUsingClassOption($flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $data = self::model()->findAll("status='1'");
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->getClassDisplayName();
+        }
+
+        return $result;
+    }
+    
+    
+    /**
      * 获取所有班级信息
      * @param type $flag
      * @return type
@@ -181,7 +201,8 @@ class TClasses extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
 
-        $data = self::model()->findAll("status='1'");
+        //$data = self::model()->findAll("status='1'");
+        $data = self::model()->findAll();
         foreach ($data as $value) {
             $result[$value->ID] = $value->getClassDisplayName();
         }
@@ -426,18 +447,4 @@ class TClasses extends CActiveRecord
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

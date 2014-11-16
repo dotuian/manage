@@ -44,7 +44,7 @@ $(document).ready(function(){
                         <?php echo $form->textField($model,'class_code', array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control', 'placeholder'=>'教工号')); ?>

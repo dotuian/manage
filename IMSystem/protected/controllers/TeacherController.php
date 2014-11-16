@@ -22,6 +22,10 @@ class TeacherController extends BaseController {
                 $condition .= " and a.name like :name ";
                 $params[':name'] = '%' . StringUtils::escape(trim($model->name)). '%';
             }
+            if (trim($model->sex) !== '') {
+                $condition .= " and a.sex=:sex  ";
+                $params[':sex'] = trim($model->sex);
+            }
             if (trim($model->id_card_no) !== '') {
                 $condition .= " and a.id_card_no like :id_card_no ";
                 $params[':id_card_no'] = '%' . StringUtils::escape(trim($model->id_card_no)). '%';
@@ -33,6 +37,10 @@ class TeacherController extends BaseController {
             if (trim($model->sex) !== '') {
                 $condition .= " and a.sex = :sex ";
                 $params[':sex'] = trim($model->sex);
+            }
+            if (trim($model->status) !== '') {
+                $condition .= " and a.status = :status ";
+                $params[':status'] = trim($model->status);
             }
             if (trim($model->home_address) !== '') {
                 $condition .= " and a.home_address like :home_address ";
@@ -150,12 +158,12 @@ class TeacherController extends BaseController {
 
         if (isset($_GET['ID'])) {
             $ID = trim($_GET['ID']);
-            $user = TUsers::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            $user = TUsers::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($user)) {
                 throw new CHttpException(404, "该用户信息不存在！");
             }
             
-            $teacher = TTeachers::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            $teacher = TTeachers::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($teacher)) {
                 throw new CHttpException(404, "该教师信息不存在！");
             }
@@ -167,6 +175,10 @@ class TeacherController extends BaseController {
             $teacher->subjects = $teacher->getTeacherSubjectIds();
             
             if (isset($_POST['TTeachers'])) {
+                if ($teacher->status != "1") {
+                    throw new CHttpException(404, "不能修改该教师的信息！");
+                }
+                
                 $tran = Yii::app()->db->beginTransaction();
                 try{
                     $teacher->attributes = $_POST['TTeachers'];

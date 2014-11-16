@@ -35,14 +35,11 @@ $(document).ready(function(){
                         以班级单位，查看当前在校学生的成绩信息。<br/>
                     </h6>
                     <hr/>
-                        <?php
-
-                        ?>
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOptionByUserRole($this->getLoginUserId()), array(
-                                        'class'=>'form-control',
+                                        'class'=>'form-control required',
                                         'ajax'=>array(
                                             'type'=>'POST',
                                             'data' => array(
@@ -67,7 +64,7 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">考试名称</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getExamOptionByClassId($model->class_id, true), array('id'=>'exam_id', 'class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getExamOptionByClassId($model->class_id, true), array('id'=>'exam_id', 'class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'exam_id'); ?>
                             </div>
                         </div>

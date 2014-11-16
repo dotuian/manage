@@ -33,7 +33,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id',  TClasses::model()->getAllClassOption(true), array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->dropDownList($model,'class_id',  TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control','disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>

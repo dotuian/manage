@@ -63,7 +63,7 @@ class BaseController extends CController {
             }
 
             if (!in_array($this->getRoute(), Yii::app()->user->getState('authoritys'))) {
-                throw new CHttpException(500,'没有权限！');
+//                throw new CHttpException(500,'没有权限！');
             }
         } else {
             return false;
@@ -178,6 +178,27 @@ class BaseController extends CController {
             }
         }
         return false;
+    }
+    
+    /**
+     * 是否为班主任
+     */
+    public function isBanZhuRen() {
+        // "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
+        //$sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1'";
+        
+        return TClasses::model()->exists("teacher_id=:teacher_id and status='1'", array(':teacher_id' => Yii::app()->user->getState('ID')));
+    }
+    
+    /**
+     * 是否为任课教师
+     */
+    public function isRenKeJiaoShi(){
+        $sql = "select DISTINCT a.* from t_classes a inner join m_courses b on a.ID=b.class_id 
+                where a.`status`='1' and b.`status`='1' b.teacher_id=:teacher_id" ;
+        
+        $data = TClasses::model()->findBySql($sql, array(':teacher_id' => Yii::app()->user->getState('ID')));
+        return !is_null($data);
     }
 
     /**

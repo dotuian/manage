@@ -31,8 +31,9 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>班级年份</th>
+                    <th>班级代号</th>
                     <th>考试名称</th>
-                    <th>班级</th>
                     <th>科目</th>
                     <th>学号</th>
                     <th>学生姓名</th>
@@ -42,10 +43,13 @@ $(document).ready(function(){
             <tbody>
                 <tr>
                     <td>
-                        <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(false), array('class'=>'form-control')); ?>
+                        <?php echo $form->textField($model,'entry_year', array('class'=>'form-control', 'placeholder'=>'班级年份')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->textField($model,'class_code', array('class'=>'form-control', 'placeholder'=>'班级代号')); ?>
+                    </td>
+                    <td>
+                        <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(false), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
@@ -87,9 +91,28 @@ $(document).ready(function(){
     <div class="widget-content">
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
+                <!--
                 <tr>
+                    <th colspan="3">班级</th>
+                    <th rowspan="2">考试名称</th>
+                    <th rowspan="2">科目</th>
+                    <th rowspan="2">学号</th>
+                    <th rowspan="2">姓名</th>
+                    <th rowspan="2">成绩</th>
+                    <th rowspan="2">操作</th>
+                </tr>
+                <tr>
+                    <th>年份</th>
+                    <th>名称</th>
+                    <th>类型</th>
+                </tr>
+                -->
+                <tr>
+                    <th>班级年份</th>
+                    <th>班级代号</th>
+                    <th>班级名称</th>
+                    <th>班级类型</th>
                     <th>考试名称</th>
-                    <th>班级</th>
                     <th>科目</th>
                     <th>学号</th>
                     <th>姓名</th>

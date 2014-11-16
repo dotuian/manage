@@ -9,8 +9,8 @@ class SubjectController extends BaseController {
      * 查询科目信息
      */
     public function actionSearch() {
-        $sql = "select a.* from m_subjects a where a.status='1' ";
-        $countSql = "select count(*) from m_subjects a where a.status='1' ";
+        $sql = "select a.* from m_subjects a where 1=1 ";
+        $countSql = "select count(*) from m_subjects a where 1=1 ";
         $condition = '';
         $params = array();
 

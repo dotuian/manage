@@ -84,6 +84,7 @@ $(document).ready(function(){
                     <th>科目名称</th>
                     <th>科目名称(简称)</th>
                     <th>科目类型</th>
+                    <th>状态</th>
                     <th>详细</th>
                 </tr>
             </thead>

@@ -310,7 +310,7 @@ class TTeachers extends CActiveRecord
         
         $data = TTeachers::model()->findAll("status='1'");
         foreach ($data as $value) {
-            $result[$value->ID] = $value->code . ' | ' . $value->name;
+            $result[$value->ID] = $value->name;
         }
         
         return $result;
@@ -333,7 +333,7 @@ class TTeachers extends CActiveRecord
         $data = $command->query();
         
         foreach ($data as $value) {
-            $result[$value['ID']] = $value['code'] . ' | ' . $value['name'];
+            $result[$value['ID']] = $value['name'];
         }
         return $result;
     }

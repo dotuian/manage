@@ -12,12 +12,15 @@ $this->pageTitle=Yii::app()->name . '首页';
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left">系统使用说明</div>
+                <div class="pull-left">系统首页</div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="widget-content">
                 <div class="padd">
+                    <!--
+                    
+                    
                     <div class="row">
                         <div class="col-lg-12">
                             <h3>说明</h3>
@@ -137,7 +140,9 @@ $this->pageTitle=Yii::app()->name . '首页';
                             ......
                         </div>
                     </div>
-
+                    
+                    -->
+                    
                 </div>
             </div>
         </div>

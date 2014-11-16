@@ -77,8 +77,8 @@ class ClassController extends BaseController {
             'sort' => array(
                 'attributes' => array(
                     'user' => array(
-                        'asc' => 'a.entry_year, a.class_code',
-                        'desc' => 'a.entry_year desc, a.class_code asc',
+                        'asc' => 'a.status, a.entry_year, a.class_code',
+                        'desc' => 'a.status asc, a.entry_year desc, a.class_code asc',
                         'default' => 'desc',
                     )
                 ),
@@ -120,6 +120,7 @@ class ClassController extends BaseController {
                     $class->class_name = trim($model->class_name);
                     $class->entry_year = intval($model->entry_year);
                     $class->term_type = trim($model->term_type);
+                    $class->grade = trim($model->grade); 
                     $class->class_type = trim($model->class_type); // 班级类型(0:普通高中 1:技能专业)
                     $class->specialty_name = trim($model->specialty_name); // 专业名称
                     $class->status = '1'; // 新建正常状态的班级信息

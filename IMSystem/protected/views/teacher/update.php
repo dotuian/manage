@@ -78,7 +78,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">角色</label>
                             <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getAllRolesOption(false), array('separator'=>'　')); ?>
+                                <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getStaffRolesOption(false), array('separator'=>'　')); ?>
                                 <br/><?php echo $form->error($model,'roles'); ?>
                             </div>
                         </div>
@@ -409,11 +409,12 @@ $(document).ready(function(){
                         </div>
 
                         <hr />
+                        <?php if($model->status == '1') { ?>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
                                 <?php 
-                                    echo CHtml::Button("删除", array(
-                                        'confirm'=>'确定要删除吗？',
+                                    echo CHtml::Button("离校", array(
+                                        'confirm'=>'确定要将该教师的设置为离校吗？',
                                         'params'=>array('ID' => $model->ID),
                                         'submit' => array('delete'),
                                         'class'=>'btn btn-delete',
@@ -423,6 +424,7 @@ $(document).ready(function(){
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>
                         </div>
+                        <?php } ?>
                     
                     <?php $this->endWidget(); ?>
                     

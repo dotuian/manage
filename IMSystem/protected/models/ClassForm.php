@@ -70,6 +70,7 @@ class ClassForm extends CFormModel {
             'class_name' => '班级名称',
             'grade' => '年级',
             'class_type' => '班级性质',
+            'term_type' => '学期',
             'specialty_name' => '专业名称',
             'status' => '状态',
             'entry_year' => '入学年份',
@@ -158,5 +159,23 @@ class ClassForm extends CFormModel {
                 break;
         }
         return $term_name;
+    }
+    
+    public static function getEntryYearDisplayName($entry_year) {
+        $str = '';
+        switch ($entry_year) {
+            case '1':
+                $str = '一年级';
+                break;
+            case '2':
+                $str = '二年级';
+                break;
+            case '3':
+                $str = '三年级';
+                break;
+            default:
+                break;
+        }
+        return $str;
     }
 }

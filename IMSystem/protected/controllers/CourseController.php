@@ -13,10 +13,16 @@ class CourseController extends BaseController {
         if (isset($_GET['CourseForm'])) {
             $model->attributes = $_GET['CourseForm'];
             
-            $sql = "select a.ID, a.status, b.subject_code, b.subject_name, b.subject_type, c.class_code, c.class_name, c.class_type, d.code as teacher_code, d.name as teacher_name from m_courses a left join m_subjects b on a.subject_id =b.ID and b.status='1' left join t_classes c  on a.class_id =c.ID and c.status='1' left join t_teachers d on a.teacher_id =d.ID and d.status='1' where a.status='1'";
-            $countSql = "select count(*) from m_courses a left join m_subjects b on a.subject_id =b.ID and b.status='1' left join t_classes c  on a.class_id =c.ID and c.status='1' left join t_teachers d on a.teacher_id =d.ID and d.status='1' where a.status='1'";
+            $sql = "select a.ID, a.status, b.subject_code, b.subject_name, b.subject_type, c.class_code, c.class_name, c.class_type, d.code as teacher_code, d.name as teacher_name ";
+            $countSql = "select count(*) ";
+
+            $condition = " FROM m_courses a ";
+            $condition .= " LEFT JOIN m_subjects b ON a.subject_id =b.ID AND b.status='1' ";
+            $condition .= " inner JOIN t_classes c ON a.class_id =c.ID AND c.status='1' ";
+            $condition .= " inner JOIN t_teachers d ON a.teacher_id =d.ID AND d.status='1' ";
+            $condition .= " WHERE a.status='1' ";
+            
             $params = array();
-            $condition = '';
             
             if (trim($model->class_code) !== '') {
                 $condition .= " and c.class_code = :class_code ";

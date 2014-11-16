@@ -42,7 +42,7 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">考试名称</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'exam_id'); ?>
                             </div>
                         </div>
@@ -50,15 +50,33 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array(
+                                        'class'=>'form-control required',
+                                        'ajax'=>array(
+                                            'type'=>'POST',
+                                            'data' => array(
+                                                'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                                'class_id'=> 'js:$(this).val()',
+                                                'allowempty' => 'true'
+                                            ),
+                                            'url' => Yii::app()->createUrl('ajax/getSubjectOption'),
+                                            'beforeSend'=>"function(){
+                                                    $.blockUI({ message: null });
+                                                }",
+                                            'success'=>"function(data){
+                                                    $.unblockUI();
+                                                    $('#subject_id').html(data);
+                                                }",
+                                        )
+                                        )); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
-
+                    
                         <div class="form-group" id="subject">
                             <label class="col-lg-2 control-label">科目</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsByClassOption($model->class_id, true), array('class'=>'form-control required', 'id'=>'subject_id')); ?>
                                 <?php echo $form->error($model,'subject_id'); ?>
                             </div>
                         </div>

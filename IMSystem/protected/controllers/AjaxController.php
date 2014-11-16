@@ -102,6 +102,24 @@ class AjaxController extends BaseController {
             }
         }
     }
+    
+    /**
+     * 班级成绩查询页面，考试名称
+     */
+    public function actionGetSubjectOption() {
+        if (isset($_POST['class_id'])) {
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode(yii::app()->params['EmptySelectOption']), true);
+
+            if (is_numeric($_POST['class_id'])) {
+                $class_id = trim($_POST['class_id']);
+                $sql = "select a.* from m_subjects a inner join m_courses b on a.ID=b.subject_id where b.class_id=:class_id ";
+                $data = MSubjects::model()->findAllBySql($sql, array(':class_id' => $class_id));
+                foreach ($data as $value) {
+                    echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['subject_name']), true);
+                }
+            }
+        }
+    }
 
     /***
      * 根据年级获取改年级说对应的所有班级

@@ -49,7 +49,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">入学年份</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'entry_year', ClassForm::getEntryYearOption(3, false), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'entry_year', ClassForm::getEntryYearOption(3, true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'entry_year'); ?>
                             </div>
                         </div>
@@ -57,7 +57,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">年级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(3, false), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'grade'); ?>
                             </div>
                         </div>
@@ -65,7 +65,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">学期</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'term_type'); ?>
                             </div>
                         </div>
@@ -73,7 +73,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级性质</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(false), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'class_type'); ?>
                             </div>
                         </div>

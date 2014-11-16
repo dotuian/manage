@@ -157,4 +157,28 @@ class TeacherForm extends CFormModel {
         }
     }
 
+    public static function getTeacherStatusOption($flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['1'] = '在校';
+        $result['2'] = '离校';
+
+        return $result;
+    }
+
+    public static function getSexOption($flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['M'] = '男';
+        $result['F'] = '女';
+
+        return $result;
+    }
+    
 }

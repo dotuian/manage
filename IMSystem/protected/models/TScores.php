@@ -41,11 +41,11 @@ class TScores extends CActiveRecord {
             array('exam_id, subject_id, class_id, student_id, score', 'required'),
             array('score', 'numerical'),
             array('score', 'length', 'max' => 5),
-			array('exam_id, subject_id, class_id, student_id, student_number, create_user, update_user', 'length', 'max'=>10),
-			array('update_time', 'safe'),
-            
+            array('exam_id, subject_id, class_id, student_id, student_number, create_user, update_user', 'length', 'max'=>10),
+            array('update_time', 'safe'),
+
             // safe
-			array('ID, exam_id, subject_id, class_id, student_id, student_number, score, create_user, create_time, update_user, update_time', 'safe'),
+            array('ID, exam_id, subject_id, class_id, student_id, student_number, score, create_user, create_time, update_user, update_time', 'safe'),
         );
     }
 
@@ -73,8 +73,8 @@ class TScores extends CActiveRecord {
             'subject_id' => '科目ID',
             'class_id' => '班级ID',
             'student_id' => '学生ID',
-			'student_number' => '当前学生学号',
-            'score' => '分数',
+            'student_number' => '当前学生学号',
+            'score' => '成绩',
             'create_user' => '创建用户',
             'create_time' => '创建时间',
             'update_user' => '更新用户',
@@ -104,7 +104,7 @@ class TScores extends CActiveRecord {
         $criteria->compare('subject_id', $this->subject_id, true);
         $criteria->compare('class_id', $this->class_id, true);
         $criteria->compare('student_id', $this->student_id, true);
-		$criteria->compare('student_number',$this->student_number,true);
+        $criteria->compare('student_number',$this->student_number,true);
         $criteria->compare('score', $this->score);
         $criteria->compare('create_user', $this->create_user, true);
         $criteria->compare('create_time', $this->create_time, true);
@@ -128,8 +128,10 @@ class TScores extends CActiveRecord {
     
     public function afterValidate() {
         parent::afterValidate();
+        
+        $subject = MSubjects::model()->find("ID=:ID", array(':ID'=>$this->subject_id));
 
-        if ($this->score < 0 || $this->score > 150) {
+        if ($this->score < 0 || $this->score > $subject->total_score) {
             $this->addError('score', '请输入合理范围内的成绩！');
         }
     }

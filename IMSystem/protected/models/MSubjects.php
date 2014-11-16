@@ -154,7 +154,22 @@ class MSubjects extends CActiveRecord
             $result[''] = Yii::app()->params['EmptySelectOption'];
         }
 
-        $data = MSubjects::model()->findAll("status='1'");
+        //$data = MSubjects::model()->findAll("status='1'");
+        $data = MSubjects::model()->findAll();
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->subject_name;
+        }
+        return $result;
+    }
+    
+    public function getAllSubjectsByClassOption($class_id, $flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = Yii::app()->params['EmptySelectOption'];
+        }
+
+        $sql = "select a.* from m_subjects a inner join m_courses b on a.ID=b.subject_id where b.class_id=:class_id ";
+        $data = MSubjects::model()->findAllBySql($sql, array(':class_id' => $class_id));
         foreach ($data as $value) {
             $result[$value->ID] = $value->subject_name;
         }

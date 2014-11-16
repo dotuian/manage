@@ -4,11 +4,6 @@ $this->breadcrumbs = array(
     '成绩信息变更',
 );
 ?>
-<script>
-$(document).ready(function(){
-    
-});
-</script>
 
 
 <div class="row">
@@ -32,6 +27,30 @@ $(document).ready(function(){
                         ));
                     ?>
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">班级年份</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->textField($class,'entry_year', array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->error($class,'entry_year'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">班级代号</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->textField($class,'class_code', array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->error($class,'class_code'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">班级名称</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->textField($class,'class_name', array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->error($class,'class_name'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">考试名称</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->dropDownList($model,'exam_id', MExams::model()->getAllExamsOption(true), array('class'=>'form-control','disabled'=>'disabled')); ?>
@@ -48,18 +67,10 @@ $(document).ready(function(){
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">班级</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control', 'disabled'=>'disabled','separator'=>'　')); ?>
-                                <?php echo $form->error($model,'class_id'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
                             <label class="col-lg-2 control-label">学号</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($student,'code', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
-                                <?php echo $form->error($student,'code'); ?>
+                                <?php echo $form->textField($model,'student_number', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->error($model,'student_number'); ?>
                             </div>
                         </div>
 
@@ -74,7 +85,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">成绩</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'score', array('class'=>'form-control', 'placeholder'=>'成绩')); ?>
+                                <?php echo $form->textField($model,'score', array('class'=>'form-control required', 'placeholder'=>'成绩')); ?>
                                 <?php echo $form->error($model,'score'); ?>
                             </div>
                         </div>
@@ -83,13 +94,13 @@ $(document).ready(function(){
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
                                 <?php 
-                                    echo CHtml::Button("删除", array(
-                                        'confirm'=>'确定要删除吗？',
-                                        'params'=>array('ID' => $model->ID),
-                                        'submit' => array('delete'),
-                                        'class'=>'btn btn-delete',
-                                        'encode'=>false,
-                                    ));
+//                                    echo CHtml::Button("删除", array(
+//                                        'confirm'=>'确定要删除吗？',
+//                                        'params'=>array('ID' => $model->ID),
+//                                        'submit' => array('delete'),
+//                                        'class'=>'btn btn-delete',
+//                                        'encode'=>false,
+//                                    ));
                                 ?>
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
                             </div>

@@ -8,6 +8,8 @@ class ScoreForm extends CFormModel {
     public $subject_id;
     public $subject_name;
     public $class_id;
+    public $class_code;
+    public $entry_year;
     public $class_name;
     public $student_id;
     public $student_number;
@@ -29,12 +31,10 @@ class ScoreForm extends CFormModel {
             array('exam_id, subject_id, class_id, student_id', 'length', 'max' => 10),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_number, student_name, score, grade', 'safe'),
-            
+            array('ID, exam_id, exam_name, subject_id, subject_name, class_id, class_name, student_id, student_number, student_name, score, grade, entry_year, class_code', 'safe'),
             
             // 班级成绩查询时，班级信息必须输入
             array('class_id, exam_id', 'required', 'on'=>'class'),
-            
             // 学生成绩分析
             array('exam_id, grade', 'required', 'on'=>'analysis'),
         );

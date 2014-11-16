@@ -35,22 +35,27 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
+                    <!-- 
                     <th>班级(现)</th>
                     <th>学号(现)</th>
+                   -->
                     <th>姓名</th>
                     <th>性别</th>
                     <th>身份证号码</th>
                     <th>入学年份</th>
+                    <th>状态</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <!--
                     <td>
-                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control', 'placeholder'=>'班级(现)')); ?>
+                        <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control', 'placeholder'=>'班级(现)')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'student_number', array('class'=>'form-control', 'placeholder'=>'学号(现)')); ?>
                     </td>
+                    -->
                     <td>
                         <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
                     </td>
@@ -62,6 +67,9 @@ $(document).ready(function(){
                     </td>
                     <td>
                         <?php echo $form->textField($model,'school_year', array('class'=>'form-control', 'placeholder'=>'入学年份')); ?>
+                    </td>
+                    <td>
+                        <?php echo $form->dropDownList($model,'status', StudentForm::getStudentStatusOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>
@@ -92,12 +100,15 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>班级(现)</th>
+                    <!--
                     <th>学号(现)</th>
+                    -->
                     <th>姓名</th>
                     <th>性别</th>
+                    <th>身份证号</th>
                     <th>入学年份</th>
-                    <th>出生日期</th>
+                    <th>现在所在班级</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
             </thead>

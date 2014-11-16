@@ -32,10 +32,10 @@ $(document).ready(function(){
             <thead>
                 <tr>
                     <th>姓名</th>
+                    <th>性别</th>
                     <th>身份证号码</th>
                     <th>担任科目</th>
-                    <th>性别</th>
-                    <th>地址</th>
+                    <th>状态</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,16 +44,16 @@ $(document).ready(function(){
                         <?php echo $form->textField($model,'name', array('class'=>'form-control', 'placeholder'=>'姓名')); ?>
                     </td>
                     <td>
+                        <?php echo $form->dropDownList($model,'sex', TeacherForm::getSexOption(true), array('class'=>'form-control')); ?>
+                    </td>
+                    <td>
                         <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control', 'placeholder'=>'身份证号码')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_id', MSubjects::model()->getAllSubjectsOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'sex', StudentForm::getSexOption(true), array('class'=>'form-control')); ?>
-                    </td>
-                    <td>
-                        <?php echo $form->textField($model,'home_address', array('class'=>'form-control', 'placeholder'=>'地址')); ?>
+                        <?php echo $form->dropDownList($model,'status', TeacherForm::getTeacherStatusOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>

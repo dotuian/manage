@@ -145,6 +145,14 @@
                     <?php if(in_array('student/import', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('student/import');?>">学生信息导入</a></li>
                     <?php } ?>
+                        
+                    <?php if(in_array('student/changeClass', $this->authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('student/changeClass');?>">学生班级变更</a></li>
+                    <?php } ?>
+
+                    <?php if(in_array('student/class', $this->authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('student/class');?>">班级学生信息</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>

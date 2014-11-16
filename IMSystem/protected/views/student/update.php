@@ -4,16 +4,6 @@ $this->breadcrumbs = array(
     '学生信息变更',
 );
 ?>
-<script>
-//$(document).ready(function(){
-//    
-//    $('#datetimepicker1').datetimepicker({
-//        pickTime: false
-//    });
-//});
-</script>
-
-
 
 <div class="row">
     <div class="col-md-12">
@@ -40,7 +30,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">省内编号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'province_code',array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php echo $form->textField($model,'province_code',array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'province_code'); ?>
                             </div>
                         </div>
@@ -105,11 +95,11 @@ $this->breadcrumbs = array(
                                 <?php } ?>
                             </div>
                         </div>
-                    
+                        
                         <div class="form-group">
                             <label class="col-lg-2 control-label">目前所在班级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllClassOption(true), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
@@ -121,7 +111,7 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'student_number'); ?>
                             </div>
                         </div>
-                    
+
                         <div class="form-group">
                             <label class="col-lg-2 control-label">住宿情况</label>
                             <div class="col-lg-10">
@@ -261,11 +251,12 @@ $this->breadcrumbs = array(
                         </div>
 
                         <hr />
+                        <?php if($model->status == '1') { ?>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
                                 <?php 
-                                    echo CHtml::Button('删除', array(
-                                        'confirm'=>'确定要删除吗？',
+                                    echo CHtml::Button('离校', array(
+                                        'confirm'=>'确定要将该学生设置为离校状态吗？',
                                         'params'=>array('ID' => $model->ID),
                                         'submit' => array('delete'),
                                         'class'=>'btn btn-delete',
@@ -275,6 +266,7 @@ $this->breadcrumbs = array(
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); ?>
                             </div>
                         </div>
+                        <?php } ?>
                     
                     <?php $this->endWidget(); ?>
                     

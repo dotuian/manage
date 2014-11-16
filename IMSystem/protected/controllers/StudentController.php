@@ -50,6 +50,11 @@ class StudentController extends BaseController {
                 $condition .= " and a.school_year = :school_year ";
                 $params[':school_year'] = trim($model->school_year);
             }
+            // 状态
+            if (trim($model->status) !== '') {
+                $condition .= " and a.status = :status ";
+                $params[':status'] = trim($model->status);
+            }
             
             $sql .= $condition;
             $countSql .= $condition;
@@ -184,7 +189,7 @@ class StudentController extends BaseController {
         if (isset($_GET['ID'])) {
 
             $ID = trim($_GET['ID']);
-            $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            $student = TStudents::model()->find("ID=:ID", array(":ID" => $ID));
             if (is_null($student)) {
                 throw new CHttpException(404, "该学生信息不存在！");
             }
@@ -203,8 +208,13 @@ class StudentController extends BaseController {
             }
 
             if (isset($_POST['TStudents'])) {
+                
+                if($student->status != '1') {
+                    throw new CHttpException(404, "不能修改该学生的信息！");
+                }
+                
                 $student->scenario = 'update';
-
+                $student->province_code    = trim($_POST['TStudents']['province_code']);
                 $student->id_card_no    = trim($_POST['TStudents']['id_card_no']);
                 $student->birthday      = trim($_POST['TStudents']['birthday']);
                 $student->accommodation = trim($_POST['TStudents']['accommodation']);
@@ -321,9 +331,9 @@ class StudentController extends BaseController {
                 $student->update_user = $this->getLoginUserId();
                 $student->update_time = new CDbExpression('NOW()');
 
-                if ($user->save() && $student->save()) {
+                if ($user->save(false) && $student->save(false)) {
                     $this->setSuccessMessage("学生信息删除成功！");
-                    $tran->commit;
+                    $tran->commit();
                     
                     $this->redirect($this->createUrl('search'));
                 } else {
@@ -437,4 +447,133 @@ class StudentController extends BaseController {
         ));
     }
 
+    
+    public function actionChangeClass(){
+        
+        $model = new ChangeClassForm();
+        
+        // 学生数据读取
+        if (isset($_POST['ChangeClassForm'])) {
+            $model->attributes = $_POST['ChangeClassForm'];
+            if($model->validate()) {
+                $new_class = TClasses::model()->find("ID=:ID", array(':ID'=>$model->new_class_id));
+                
+                // 学生信息检索
+                if(isset($_POST['search']) && trim($_POST['search']) == 'search') {
+                    $sql = "select 
+                                a.*, b.student_number, c.class_code, c.class_name, c.grade, c.entry_year, c.term_type
+                            from 
+                                t_students a 
+                            inner join t_student_classes b on a.ID=b.student_id and b.`status`='1'
+                            inner join t_classes c on c.ID=b.class_id
+                            where c.ID=:class_id ";
+                    $connection = Yii::app()->db;
+                    $command = $connection->createCommand($sql);
+                    $command->bindValue(":class_id", $_POST['ChangeClassForm']['old_class_id']);
+                    $data = $command->query();
+                    if(count($data) == 0) {
+                        $this->setWarningMessage("没有找到该班级的学生信息！");
+                    }
+                }
+                
+                // 学生班级信息变更
+                if(isset($_POST['change']) && trim($_POST['change']) == 'change') {
+                    $tran = Yii::app()->db->beginTransaction();
+                    try {
+                        $result = true;
+                        Yii::log(print_r($_POST, true));
+                        
+                        
+                        foreach ($model->student_ids as $student_id => $value) {
+                            if($value == 1) {
+                                $studentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(":student_id" => $student_id));
+                                
+                                if(!is_null($studentClass)){
+                                    $studentClass->status = '0'; // 未使用
+                                    $studentClass->update_user = $this->getLoginUserId();
+                                    $studentClass->update_time = new CDbExpression('NOW()');
+
+                                    // 该班级对应的学生信息也全都暂停
+                                    $new = new TStudentClasses();
+                                    $new->student_number = $model->student_numbers[$student_id];
+                                    $new->student_id  = $student_id;
+                                    $new->class_id    = $new_class->ID;
+                                    $new->status      = '1';
+                                    $new->create_user = $this->getLoginUserId();
+                                    $new->create_time = new CDbExpression('NOW()');
+                                    
+                                    if (!($studentClass->save(false) && $new->save(false))) {
+                                        $result = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if($result) {
+                            $tran->commit();
+                            $model->unsetAttributes();
+                            $this->setSuccessMessage('所选学生班级信息变更成功！');
+                        } else {
+                            $this->setErrorMessage('所选学生班级信息变更失败！');
+                        }
+
+                    } catch (Exception $exc) {
+                        Yii::log($exc->getTraceAsString());
+                        $this->setErrorMessage('所选学生班级信息变更失败！');
+                    }
+                }
+            }
+        }
+
+        $this->render('changeClass', array(
+            'model' => $model,
+            'new_class' => isset($new_class) ? $new_class : null,
+            'data'  => isset($data) ? $data : null, // Excel读取的，经过了检查的数据
+        ));
+    }
+    
+    
+    /**
+     * 班主任和任课教师查看的班级学生信息
+     */
+    public function actionClass() {
+
+        $model = new StudentForm();
+        if (isset($_POST['StudentForm'])) {
+            $model->attributes = $_POST['StudentForm'];
+
+            // 查询SQL
+            $sql = "select DISTINCT a.*, b.student_number, c.class_name ";
+            $sql .= " FROM t_students a inner join t_student_classes b on a.ID = b.student_id and b.status='1'";
+            $sql .=" inner join t_classes c on c.ID = b.class_id and c.status='1' ";
+            $sql .="where 1=1 " ; 
+            
+//            $sql .= "c.ID in ( ";
+//            $sql .="select d.ID as class_id from t_classes d where d.teacher_id=:teacher_id and d.`status`='1' UNION ";
+//            $sql .="select DISTINCT e.class_id from m_courses e where e.teacher_id=:teacher_id and e.`status`='1' ) ";
+//            $params = array(':teacher_id' => $this->getLoginUserId());
+            $params = array();
+            // 班级(现)
+            if (trim($model->class_id) !== '') {
+                $sql .= " and b.class_id = :class_id "; // 查询现在所在班级的学生
+                $params[':class_id'] = trim($model->class_id);
+            }
+            
+            $connection = Yii::app()->db;
+            $command = $connection->createCommand($sql);
+            $data = $command->queryAll(true, $params);
+            
+            if(count($data) == 0) {
+                $this->setWarningMessage("没有找到该班级的学生信息！");
+            }
+        }
+
+        $this->render('class', array(
+            'model' => $model,
+            'data' => isset($data) ? $data : null,
+        ));
+    }
+
+    
 }
