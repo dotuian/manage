@@ -510,4 +510,23 @@ class TUsers extends CActiveRecord
         }
         return false;
     }
+    
+    /**
+     * 是否为班主任
+     */
+    public function isBanZhuRen() {
+        return TClasses::model()->exists("teacher_id=:teacher_id and status='1'", array(':teacher_id' => $this->ID));
+    }
+    
+    /**
+     * 是否为任课教师
+     */
+    public function isRenKeJiaoShi(){
+        $sql = "select DISTINCT a.* from t_classes a inner join m_courses b on a.ID=b.class_id 
+                where a.`status`='1' and b.`status`='1' and b.teacher_id=:teacher_id" ;
+        
+        $data = TClasses::model()->findBySql($sql, array(':teacher_id' => $this->ID));
+        return !is_null($data);
+    }
+    
 }

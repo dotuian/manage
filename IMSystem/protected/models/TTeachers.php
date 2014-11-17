@@ -83,13 +83,16 @@ class TTeachers extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, sex, birthday', 'required'),
+            array('name, sex, birthday, id_card_no', 'required'),
             array('continue_education_credit', 'numerical', 'integerOnly' => true),
             array('code, continue_education_date', 'length', 'max' => 20),
             array('name', 'length', 'max' => 12),
             array('status, sex', 'length', 'max' => 1),
             array('id_card_no', 'length', 'max' => 18),
-
+            
+            // 身份证号码
+            array('id_card_no', 'match','pattern' => "/(^\d{15}$)|(^\d{17}([0-9]|X)$)/", 'message' => '请输入正确的身份证号码！', 'allowEmpty' => true),
+            
             array('telephone', 'length', 'max' => 11),
             array('nation, birthplace, before_degree, current_degree, create_user, update_user', 'length', 'max' => 10),
             array('working_date, party_date, before_graduate_date, current_graduate_date, current_position_date, current_level_date', 'length', 'max' => 7),
@@ -121,6 +124,17 @@ class TTeachers extends CActiveRecord
             'tTeacherSubjects' => array(self::HAS_MANY, 'TTeacherSubjects', 'teacher_id'),
             'iD' => array(self::BELONGS_TO, 'TUsers', 'ID'),
         );
+    }
+    
+    public function afterValidate() {
+        parent::afterValidate();
+
+        if ($this->scenario === 'update') {
+            if(TTeachers::model()->exists("code=:code and ID<>:ID", array(':code'=>$this->code, ':ID'=>$this->ID))) {
+                $this->addError('code', '教师编号已经存在！');
+            }
+        }
+
     }
 
     /**
@@ -277,7 +291,7 @@ class TTeachers extends CActiveRecord
         }
         
         $sql = "select c.subject_name, a.ID, a.code, a.name from t_teachers a, t_teacher_subjects b, m_subjects c ";
-        $sql .= "where a.ID = b.teacher_id and b.subject_id=c.ID and a.`status`= '1' and c.`status`='1' ";
+        $sql .= "where a.ID = b.teacher_id and b.subject_id=c.ID and a.`status`= '1' and c.`status`='1' and a.code<>'root' ";
         
         $params = array();
         if (!is_null($subject_code)) {
@@ -308,7 +322,7 @@ class TTeachers extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
-        $data = TTeachers::model()->findAll("status='1'");
+        $data = TTeachers::model()->findAll("status='1' and code<>'root'");
         foreach ($data as $value) {
             $result[$value->ID] = $value->name;
         }
@@ -327,7 +341,7 @@ class TTeachers extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
 
-        $sql = "select DISTINCT b.* from t_classes a , t_teachers b where a.teacher_id=b.ID and a.status='1' and b.status='1'";
+        $sql = "select DISTINCT b.* from t_classes a, t_teachers b where a.teacher_id=b.ID and a.status='1' and b.status='1'";
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $data = $command->query();

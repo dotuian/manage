@@ -75,8 +75,8 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">孝感市综合高级中学</span>
-                 <!--<i>学生成绩管理系统</i> -->
+<!--                 <span class="bold">孝感综合高级中学</span>
+                 <i>学生成绩管理系统</i> -->
             </a>
         </div>
 
@@ -150,7 +150,7 @@
                         <li><a href="<?php echo $this->createUrl('student/changeClass');?>">学生班级变更</a></li>
                     <?php } ?>
 
-                    <?php if(in_array('student/class', $this->authoritys)) { ?>
+                    <?php if(in_array('student/class', $this->authoritys) && ($this->isBanZhuRen() || $this->isRenKeJiaoShi())) {?>
                         <li><a href="<?php echo $this->createUrl('student/class');?>">班级学生信息</a></li>
                     <?php } ?>
                 </ul>
@@ -233,6 +233,10 @@
                     <?php if(in_array('course/create', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('course/create');?>">课程信息添加</a></li>
                     <?php } ?>
+
+                    <?php if(in_array('course/class', $this->authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('course/class');?>">班级课程计划</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>
@@ -304,7 +308,7 @@
             </li>
             <?php } ?>
           
-            
+
             <!-- 个人设置 -->
             <li class="has_sub">
                 <a href="#" class="<?php echo $controller == 'setting' ? 'open' : ''; ?>">
@@ -330,7 +334,7 @@
       
 	    <!-- Page heading -->
 	    <div class="page-head">
-                <h2 class="pull-left">成绩管理系统</h2>
+                <h2 class="pull-left"></h2>
                 <div class="clearfix"></div>
 
                 <!-- Breadcrumb -->
@@ -407,38 +411,42 @@
 <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
 -->
 
-
 <!-- JS -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.js"></script> <!-- Bootstrap -->
 
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-ui-1.9.2.custom.min.js"></script> <!-- jQuery UI -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.rateit.min.js"></script> <!-- RateIt - Star rating -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.prettyPhoto.js"></script> <!-- prettyPhoto -->
+<!-- jQuery UI -->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-ui-1.9.2.custom.min.js"></script> 
+<!-- Full Google Calendar - Calendar -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/fullcalendar.min.js"></script>-->
+
+<!-- RateIt - Star rating -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.rateit.min.js"></script>-->
+<!-- prettyPhoto -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.prettyPhoto.js"></script>-->
 
 <!-- jQuery Flot -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/excanvas.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.js"></script>
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/excanvas.min.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.js"></script>-->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.resize.js"></script>-->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.pie.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.stack.js"></script>
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.pie.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.stack.js"></script>-->
 
 <!-- jQuery Notification - Noty -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.noty.js"></script> <!-- jQuery Notify -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/default.js"></script> <!-- jQuery Notify -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bottom.js"></script> <!-- jQuery Notify -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/topRight.js"></script> <!-- jQuery Notify -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/top.js"></script> <!-- jQuery Notify -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.noty.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/default.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bottom.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/topRight.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/top.js"></script>-->
 <!-- jQuery Notification ends -->
 
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validationEngine-en.js"></script> <!-- jQuery Validation Engine Language File -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validationEngine.js"></script> <!-- jQuery Validation Engine -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sparklines.js"></script> <!-- Sparklines -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.cleditor.min.js"></script> <!-- CLEditor -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script>  
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script>  
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script>
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validationEngine-en.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validationEngine.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sparklines.js"></script>  Sparklines -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.cleditor.min.js"></script>  CLEditor -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.slimscroll.min.js"></script>  -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap-switch.min.js"></script>  -->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskedinput.min.js"></script>-->
+<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.icheck.min.js"></script>-->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/dropzone.js"></script>  jQuery Dropzone -->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/filter.js"></script>  Filter for support page -->
 

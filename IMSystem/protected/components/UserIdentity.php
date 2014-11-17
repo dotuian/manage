@@ -56,6 +56,17 @@ class UserIdentity extends CUserIdentity {
                 $this->setState('name',      $loginUser->name);
                 $this->setState('user',      $user);
                 $this->setState('loginUser', $loginUser);
+                
+                // 用户角色
+                $this->setState('isStudent',      $user->isStudent());
+                $this->setState('isTeacher',      $user->isTeacher());
+                $this->setState('isXueGongKe',    $user->isXueGongKe());
+                $this->setState('isJiaoWuChu',    $user->isJiaoWuChu());
+                $this->setState('isHeaderTeacher',$user->isHeaderTeacher());
+                
+                $this->setState('isBanZhuRen',    $user->isBanZhuRen());
+                $this->setState('isRenKeJiaoShi', $user->isRenKeJiaoShi());
+                
             } else {
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
             }

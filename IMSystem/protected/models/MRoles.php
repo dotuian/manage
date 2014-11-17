@@ -148,11 +148,19 @@ class MRoles extends CActiveRecord {
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
-        $data = self::model()->findAll("status='1' and ID<> 1 order by create_time");
-        foreach ($data as $value) {
-            $result[$value->ID] = $value->role_name;
+        if (Yii::app()->user->getState('isHeaderTeacher')) {
+            $array = array('2', '3', '4', '5');
+        } else {
+            $array = array('2', '3', '4');
         }
         
+        $data = self::model()->findAll("status='1' and ID<> 1 order by create_time");
+        foreach ($data as $value) {
+            if (in_array($value->ID, $array)) {
+                $result[$value->ID] = $value->role_name;
+            }
+        }
+
         return $result;
     }
     

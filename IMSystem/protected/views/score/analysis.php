@@ -73,7 +73,8 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOptionByUserRole($this->getLoginUserId()), array('id'=>'class_id', 'class'=>'form-control')); ?>
+                                <?php // echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOptionByUserRole($this->getLoginUserId()), array('id'=>'class_id', 'class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('id'=>'class_id', 'class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>

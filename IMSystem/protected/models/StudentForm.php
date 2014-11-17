@@ -1,23 +1,4 @@
 <?php
-
-//array('contact','required','on'=>'edit','message'=>'联系人必须填写.'),
-//array('contact','length','on'=>'edit','min'=>2,'max'=>10,'tooShort'=>'联系人长度请控制在2-10个字符.','tooLong'=>'联系人长度请控制在2-10个字符.'),
-//
-//array('tel', 'match','pattern' => '/^(\d{3}-|\d{4}-)(\d{8}|\d{7})?$/','message' => '请输入正确的电话号码.'),
-//array('fax', 'match','pattern' => '/^(\d{3}-|\d{4}-)(\d{8}|\d{7})?$/','message' => '请输入正确的传真号码.'),
-//array('mobile', 'match','pattern' => '/^13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$/','message' => '请输入正确的手机号码.'),
-//
-//array('email','email','on'=>'edit','message'=>'邮箱输入有误.'),
-//
-//array('zipcode','required','on'=>'edit','message'=>'邮编必须填写.'),
-//array('zipcode','numerical','on'=>'edit','message'=>'邮编是6位数字.'),
-//array('zipcode','length','on'=>'edit','min'=>6,'max'=>6,'tooShort'=>'邮编长度为6位数.','tooLong'=>'邮编长度为6位数.'),
-//
-//array('website','url','on'=>'edit','message'=>'网址输入有误.'),
-//array('qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,11}$/','message' => '请输入正确的QQ号码.'),
-//array('msn','email','on'=>'edit','message'=>'MSN输入有误.'),
-
-
 class StudentForm extends CFormModel {
 
     public $ID;
@@ -61,6 +42,8 @@ class StudentForm extends CFormModel {
             array('senior_score, college_score', 'length', 'max' => 5),
             array('id_card_no', 'length', 'max' => 18),
             array('class_id, old_class_id', 'length', 'max' => 10),
+            
+            array('id_card_no', 'match','pattern' => "/(^\d{15}$)|(^\d{17}([0-9]|X)$)/", 'message' => '请输入正确的身份证号码！', 'allowEmpty' => true),
             
             array('sex, payment1, payment2, payment3, payment4, payment5, payment6', 'length', 'max' => 1),
             array('accommodation, school_of_graduation', 'length', 'max' => 50, 'encoding'=>'UTF-8'),

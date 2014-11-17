@@ -5,8 +5,8 @@ class ClassForm extends CFormModel {
     public $class_code;
     public $class_name;
     public $grade; // 年级
-    public $entry_year; // 入学年份
-    public $term_type; // 学期类型
+    public $entry_year; // 年度
+    public $term_type;  // 学期类型
     public $class_type; // 
     public $specialty_name; // 专业名称
     public $status;
@@ -73,7 +73,7 @@ class ClassForm extends CFormModel {
             'term_type' => '学期',
             'specialty_name' => '专业名称',
             'status' => '状态',
-            'entry_year' => '入学年份',
+            'entry_year' => '年度',
             'teacher_id' => '班主任',
         );
     }

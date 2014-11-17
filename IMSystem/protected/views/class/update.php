@@ -42,18 +42,18 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">入学年份</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'entry_year', ClassForm::getEntryYearOption(3, false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'entry_year'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
                             <label class="col-lg-2 control-label">年级</label>
                             <div class="col-lg-10">
                                 <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(3, false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'grade'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">年度</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->dropDownList($model,'entry_year', ClassForm::getEntryYearOption(3, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->error($model,'entry_year'); ?>
                             </div>
                         </div>
                     
@@ -102,11 +102,17 @@ $this->breadcrumbs = array(
                                             'class'=>'btn btn-delete',
                                             'encode'=>false,
                                         ));
-
-                                        echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); 
+                                    }
+                                ?>
+                                
+                                <?php 
+                                    if($model->status == '1') {
+                                        echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); 
                                     }
                                 ?>
                             </div>
+
+                            
                         </div>
                     
                     <?php $this->endWidget(); ?>

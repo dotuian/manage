@@ -80,6 +80,8 @@ class TStudents extends CActiveRecord {
             array('parents_qq', 'length', 'max' => 15),
             array('create_user, update_user, class_id, student_number', 'length', 'max' => 10),
             
+            array('id_card_no', 'match','pattern' => "/(^\d{15}$)|(^\d{17}([0-9]|X)$)/", 'message' => '请输入正确的身份证号码！', 'allowEmpty' => true),
+            
             // ==============================================================================
             // 学生修改个人信息时(setting/profile)
             array('id_card_no, birthday', 'required', 'on' => 'profile'),

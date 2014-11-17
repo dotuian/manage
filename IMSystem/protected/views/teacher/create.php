@@ -60,7 +60,6 @@ $this->breadcrumbs = array(
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
                                 <br/><?php echo $form->error($model,'birthday'); ?>
-                                <div class="tip">登录密码（如出生年月为：1980-05-25，则登录密码为：19800525）</div>
                             </div>
                         </div>
                     
@@ -69,7 +68,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
                                 <?php echo $form->error($model,'id_card_no'); ?>
-                                <div class="tip">登录用户名</div>
+                                <div class="tip">※身份号码作为该教师登录该系统的用户名，密码为八个"8"。</div>
                             </div>
                         </div>
                     
@@ -78,6 +77,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'subjects'); ?>
+                                <div class="tip">※有教学计划的教师，必须设置担任科目。</div>
                             </div>
                         </div>
                         
@@ -86,6 +86,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getStaffRolesOption(false), array('class'=>'required', 'separator'=>'　')); ?>
                                 <br/><?php echo $form->error($model,'roles'); ?>
+                                <div class="tip">※不同的角色，具有不同的系统访问权限。</div>
                             </div>
                         </div>
 

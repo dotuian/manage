@@ -115,13 +115,7 @@ class BaseController extends CController {
      * @return boolean
      */
     public function isStudent() {
-        $data = Yii::app()->user->getState('roles');
-        foreach ($data as $value) {
-            if (in_array($value, array('1'))) {
-                return true;
-            }
-        }
-        return false;
+        return Yii::app()->user->getState('isStudent');
     }
     
     /**
@@ -129,13 +123,7 @@ class BaseController extends CController {
      * @return boolean
      */
     public function isTeacher() {
-        $data = Yii::app()->user->getState('roles');
-        foreach ($data as $value) {
-            if (in_array($value, array('2'))) {
-                return true;
-            }
-        }
-        return false;
+        return Yii::app()->user->getState('isTeacher');
     }
     
     /**
@@ -143,13 +131,7 @@ class BaseController extends CController {
      * @return boolean
      */
     public function isXueGongKe() {
-        $data = Yii::app()->user->getState('roles');
-        foreach ($data as $value) {
-            if (in_array($value, array('3'))) {
-                return true;
-            }
-        }
-        return false;
+        return Yii::app()->user->getState('isXueGongKe');
     }
     
     /**
@@ -157,13 +139,7 @@ class BaseController extends CController {
      * @return boolean
      */
     public function isJiaoWuChu() {
-        $data = Yii::app()->user->getState('roles');
-        foreach ($data as $value) {
-            if (in_array($value, array('4'))) {
-                return true;
-            }
-        }
-        return false;
+        return Yii::app()->user->getState('isJiaoWuChu');
     }
     
     /**
@@ -171,34 +147,22 @@ class BaseController extends CController {
      * @return boolean
      */
     public function isHeaderTeacher() {
-        $data = Yii::app()->user->getState('roles');
-        foreach ($data as $value) {
-            if (in_array($value, array('5'))) {
-                return true;
-            }
-        }
-        return false;
+        return Yii::app()->user->getState('isHeaderTeacher');
     }
     
     /**
      * 是否为班主任
      */
     public function isBanZhuRen() {
-        // "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
-        //$sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1'";
-        
-        return TClasses::model()->exists("teacher_id=:teacher_id and status='1'", array(':teacher_id' => Yii::app()->user->getState('ID')));
+        Yii::log('======= ' . Yii::app()->user->getState('isBanZhuRen'));
+        return Yii::app()->user->getState('isBanZhuRen');
     }
     
     /**
      * 是否为任课教师
      */
     public function isRenKeJiaoShi(){
-        $sql = "select DISTINCT a.* from t_classes a inner join m_courses b on a.ID=b.class_id 
-                where a.`status`='1' and b.`status`='1' b.teacher_id=:teacher_id" ;
-        
-        $data = TClasses::model()->findBySql($sql, array(':teacher_id' => Yii::app()->user->getState('ID')));
-        return !is_null($data);
+        return Yii::app()->user->getState('isRenKeJiaoShi');
     }
 
     /**

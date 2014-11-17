@@ -1,4 +1,29 @@
+$user = Yii::app()->db->createCommand()
+    ->select('username, password')
+    ->from('tbl_user')
+    ->where('id=:id', array(':id'=>1))
+    ->queryRow();
 
+
+
+
+
+//array('contact','required','on'=>'edit','message'=>'联系人必须填写.'),
+//array('contact','length','on'=>'edit','min'=>2,'max'=>10,'tooShort'=>'联系人长度请控制在2-10个字符.','tooLong'=>'联系人长度请控制在2-10个字符.'),
+//
+//array('tel', 'match','pattern' => '/^(\d{3}-|\d{4}-)(\d{8}|\d{7})?$/','message' => '请输入正确的电话号码.'),
+//array('fax', 'match','pattern' => '/^(\d{3}-|\d{4}-)(\d{8}|\d{7})?$/','message' => '请输入正确的传真号码.'),
+//array('mobile', 'match','pattern' => '/^13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$/','message' => '请输入正确的手机号码.'),
+//
+//array('email','email','on'=>'edit','message'=>'邮箱输入有误.'),
+//
+//array('zipcode','required','on'=>'edit','message'=>'邮编必须填写.'),
+//array('zipcode','numerical','on'=>'edit','message'=>'邮编是6位数字.'),
+//array('zipcode','length','on'=>'edit','min'=>6,'max'=>6,'tooShort'=>'邮编长度为6位数.','tooLong'=>'邮编长度为6位数.'),
+//
+//array('website','url','on'=>'edit','message'=>'网址输入有误.'),
+//array('qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,11}$/','message' => '请输入正确的QQ号码.'),
+//array('msn','email','on'=>'edit','message'=>'MSN输入有误.'),
 
 
 

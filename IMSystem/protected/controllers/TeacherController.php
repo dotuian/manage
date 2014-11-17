@@ -15,7 +15,7 @@ class TeacherController extends BaseController {
             
             $sql = "select DISTINCT a.* ";
             $countSql = "select count(DISTINCT a.ID) ";
-            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where 1=1 ";
+            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.code<>'root' ";
             $params = array();
             
             if (trim($model->name) !== '') {
@@ -33,10 +33,6 @@ class TeacherController extends BaseController {
             if (trim($model->subject_id) !== '') {
                 $condition .= " and c.ID=:subject_id  ";
                 $params[':subject_id'] = trim($model->subject_id);
-            }
-            if (trim($model->sex) !== '') {
-                $condition .= " and a.sex = :sex ";
-                $params[':sex'] = trim($model->sex);
             }
             if (trim($model->status) !== '') {
                 $condition .= " and a.status = :status ";
@@ -83,7 +79,10 @@ class TeacherController extends BaseController {
                 ));
     }
     
-    
+    /**
+     * 
+     * @throws CHttpException
+     */
     public function actionCreate() {
 
         $model = new TeacherForm('create');
@@ -92,14 +91,14 @@ class TeacherController extends BaseController {
         if (isset($_POST['TeacherForm'])) {
             
             $model->attributes = $_POST['TeacherForm'];
-            
             if ($model->validate()) {
+                
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     // 用户表信息
                     $user = new TUsers();
                     $user->username = strtolower(trim($model->id_card_no));   // 身份证当做登录用户名
-                    $user->password = substr(strtolower(trim($model->id_card_no)), 6, 8); // 
+                    $user->password = '88888888';
                     $user->status = '1';
                     $user->create_user = $this->getLoginUserId();
                     $user->create_time = new CDbExpression('NOW()');
@@ -141,7 +140,6 @@ class TeacherController extends BaseController {
                         }
                     }
                     
-                    Yii::log(print_r($user->errors, true));
                     $this->setErrorMessage("教师信息添加失败！");
 
                 } catch (Exception $e) {
@@ -163,7 +161,7 @@ class TeacherController extends BaseController {
                 throw new CHttpException(404, "该用户信息不存在！");
             }
             
-            $teacher = TTeachers::model()->find("ID=:ID", array(":ID" => $ID));
+            $teacher = TTeachers::model()->find("ID=:ID and code<>'root'", array(":ID" => $ID));
             if (is_null($teacher)) {
                 throw new CHttpException(404, "该教师信息不存在！");
             }
@@ -175,13 +173,59 @@ class TeacherController extends BaseController {
             $teacher->subjects = $teacher->getTeacherSubjectIds();
             
             if (isset($_POST['TTeachers'])) {
+                
                 if ($teacher->status != "1") {
                     throw new CHttpException(404, "不能修改该教师的信息！");
                 }
                 
                 $tran = Yii::app()->db->beginTransaction();
                 try{
-                    $teacher->attributes = $_POST['TTeachers'];
+                    // $teacher->name   = trim($_POST['TTeachers']['']); 
+                    //$teacher->status = trim($_POST['TTeachers']['']); 
+                    //$teacher->sex    = trim($_POST['TTeachers']['']); 
+                    $teacher->code         = trim($_POST['TTeachers']['code']); 
+                    $teacher->birthday     = trim($_POST['TTeachers']['birthday']); 
+                    $teacher->id_card_no   = trim($_POST['TTeachers']['id_card_no']); 
+                    $teacher->home_address = trim($_POST['TTeachers']['home_address']); 
+                    $teacher->telephone    = trim($_POST['TTeachers']['telephone']); 
+                    $teacher->nation       = trim($_POST['TTeachers']['nation']); 
+                    $teacher->birthplace   = trim($_POST['TTeachers']['birthplace']); 
+                    $teacher->working_date = trim($_POST['TTeachers']['working_date']); 
+                    $teacher->party_date   = trim($_POST['TTeachers']['party_date']); 
+                    $teacher->before_degree= trim($_POST['TTeachers']['before_degree']); 
+                    $teacher->before_graduate_date   = trim($_POST['TTeachers']['before_graduate_date']); 
+                    $teacher->before_graduate_school = trim($_POST['TTeachers']['before_graduate_school']); 
+                    $teacher->before_graduate_major  = trim($_POST['TTeachers']['before_graduate_major']); 
+                    $teacher->current_degree         = trim($_POST['TTeachers']['current_degree']); 
+                    $teacher->current_graduate_date  = trim($_POST['TTeachers']['current_graduate_date']); 
+                    $teacher->current_graduate_school= trim($_POST['TTeachers']['current_graduate_school']); 
+                    $teacher->current_graduate_major = trim($_POST['TTeachers']['current_graduate_major']); 
+                    $teacher->professional_technical_position = trim($_POST['TTeachers']['professional_technical_position']); 
+                    $teacher->work_departments_postion = trim($_POST['TTeachers']['work_departments_postion']); 
+                    $teacher->current_position_rank    = trim($_POST['TTeachers']['current_position_rank']); 
+                    $teacher->current_position_date    = trim($_POST['TTeachers']['current_position_date']); 
+                    $teacher->current_level_date = trim($_POST['TTeachers']['current_level_date']); 
+                    $teacher->basic_memo         = trim($_POST['TTeachers']['basic_memo']); 
+                    
+                    $teacher->continue_education_address = trim($_POST['TTeachers']['continue_education_address']); 
+                    $teacher->continue_education_date    = trim($_POST['TTeachers']['continue_education_date']); 
+                    $teacher->continue_education_credit  = trim($_POST['TTeachers']['continue_education_credit']); 
+                    $teacher->continue_education_prove_people = trim($_POST['TTeachers']['continue_education_prove_people']); 
+                    $teacher->moral_praise = trim($_POST['TTeachers']['moral_praise']); 
+                    $teacher->moral_student_evaluation = trim($_POST['TTeachers']['moral_student_evaluation']); 
+                    $teacher->moral_target_check = trim($_POST['TTeachers']['moral_target_check']); 
+                    $teacher->moral_memo = trim($_POST['TTeachers']['moral_memo']); 
+                    
+                    $teacher->teach_grades = trim($_POST['TTeachers']['teach_grades']); 
+                    $teacher->teaching_research_postion = trim($_POST['TTeachers']['teaching_research_postion']); 
+                    $teacher->recruit_students = trim($_POST['TTeachers']['recruit_students']); 
+                    $teacher->attendance = trim($_POST['TTeachers']['attendance']); 
+                    $teacher->working_memo = trim($_POST['TTeachers']['working_memo']); 
+                    $teacher->tutorship_award = trim($_POST['TTeachers']['tutorship_award']); 
+                    $teacher->competition_award = trim($_POST['TTeachers']['competition_award']); 
+                    $teacher->paper_work = trim($_POST['TTeachers']['paper_work']); 
+                    $teacher->competition_item = trim($_POST['TTeachers']['competition_item']); 
+                    $teacher->business_memo = trim($_POST['TTeachers']['business_memo']); 
                     
                     $teacher->update_user = $this->getLoginUserId();
                     $teacher->update_time = new CDbExpression('NOW()');
@@ -251,7 +295,7 @@ class TeacherController extends BaseController {
                 throw new CHttpException(404, "该用户信息不存在！");
             }
             
-            $teacher = TTeachers::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            $teacher = TTeachers::model()->find("ID=:ID and status='1' and code<>'root'", array(":ID" => $ID));
             if (is_null($teacher)) {
                 throw new CHttpException(404, "该教师信息不存在！");
             }
@@ -286,7 +330,10 @@ class TeacherController extends BaseController {
     }
 
     
-    
+    /**
+     * 教师信息批量导入
+     * @throws CHttpException
+     */
     public function actionImport() {
         
         $model = new TImportTeacher();

@@ -5,9 +5,7 @@
  */
 class CourseController extends BaseController {
 
-    // 未完了
     public function actionSearch() {
-        
         
         $model = new CourseForm();
         if (isset($_GET['CourseForm'])) {
@@ -102,7 +100,7 @@ class CourseController extends BaseController {
                 $subjects = MSubjects::model()->findAll($criteria);
 
                 // 所有的教师信息
-                $teachers = TTeachers::model()->findAll("status='1'");
+                $teachers = TTeachers::model()->findAll("status='1' and code<>'root' ");
 
                 // 收集页面数据
                 $data = new MCourses();
@@ -144,7 +142,7 @@ class CourseController extends BaseController {
                 else if ($teacher_id != '') {
                     if (is_null($course)) {
                         $course = new MCourses();
-                        $course->class_id = $class_id;
+                        $course->class_id   = $class_id;
                         $course->subject_id = $subject_id;
                         $course->teacher_id = $teacher_id;
                         $course->status = '1';
@@ -155,7 +153,7 @@ class CourseController extends BaseController {
                     } else {
                         $course->teacher_id = $teacher_id;
                         $course->update_user = $this->getLoginUserId();
-                        $course->update_time = new CDbExpression('NOW()');     
+                        $course->update_time = new CDbExpression('NOW()');
                     }
 
                     if ($course->save()) {
@@ -173,41 +171,6 @@ class CourseController extends BaseController {
         echo json_encode($data);
     }
     
-    
-//    public function actionCreate() {
-//
-//        $model = new CourseForm('create');
-//        
-//        if (isset($_POST['CourseForm'])) {
-//            $model->attributes = $_POST['CourseForm'];
-//            if ($model->validate()) {
-//                try {
-//                    $courses = new MCourses();
-//                    $courses->class_id = $model->class_id;
-//                    $courses->subject_id = $model->subject_id;
-//                    $courses->teacher_id = $model->teacher_id;
-//                    $courses->status = '1';
-//                    $courses->create_user = $this->getLoginUserId();
-//                    $courses->update_user = $this->getLoginUserId();
-//                    $courses->create_time = new CDbExpression('NOW()');
-//                    $courses->update_time = new CDbExpression('NOW()');
-//                    
-//                    if ($courses->save()) {
-//                        Yii::app()->user->setFlash('success', "课程信息添加成功！");
-//                        $this->redirect($this->createUrl('create'));
-//                    } else {
-//                        Yii::log(print_r($courses->errors, true));
-//                        Yii::app()->user->setFlash('warning', "课程信息添加失败！");
-//                    }
-//                } catch (Exception $e) {
-//                    throw new CHttpException(404, "系统异常！");
-//                }
-//            }
-//        }
-//
-//        $this->render('create', array('model' => $model));
-//    }
-//    
     
     public function actionUpdate() {
 
@@ -239,6 +202,7 @@ class CourseController extends BaseController {
         }
     }
     
+    
     public function actionDelete() {
 
         if (isset($_POST['ID'])) {
@@ -252,7 +216,8 @@ class CourseController extends BaseController {
             $course->status = '2';
             $course->update_user = $this->getLoginUserId();
             $course->update_time = new CDbExpression('NOW()');
-            if ($course->save()) {
+            
+            if ($course->save(false)) {
                 $this->setSuccessMessage("课程信息删除成功！");
                 $this->redirect($this->createUrl('search'));
             } else {
@@ -266,6 +231,46 @@ class CourseController extends BaseController {
         } else {
             throw new CHttpException(404, "找不到该页面！");
         }
+    }
+ 
+    /**
+     * 普通教师查看对应班级的课程教师安排
+     * @throws CHttpException
+     */
+    public function actionClass() {
+        
+        $model = new CourseForm();
+        
+        if (isset($_POST['CourseForm'])) {
+            $model->attributes = $_POST['CourseForm'];
+            
+            $class = TClasses::model()->find("Id=:ID", array(':ID' => $model->class_id));
+            if (is_null($class)) {
+                throw new CHttpException(404, "该班级信息不存在！");
+            }
+            
+            $sql = "select d.*, b.subject_name, c.name from m_courses a
+                    inner join m_subjects b on a.subject_id=b.ID and b.`status`='1'
+                    inner join t_teachers c on a.teacher_id=c.ID and c.`status`='1'
+                    inner join t_classes  d on a.class_id = d.ID and d.`status`='1'
+                    where a.`status`='1' and a.class_id=:class_id ";
+
+            $connection = Yii::app()->db;
+            $command = $connection->createCommand($sql);
+            $command->bindValue(":class_id", $model->class_id);
+            $command->order("d.ID asc , b.level asc ");
+            $data = $command->queryAll();
+            
+            if(count($data) == 0) {
+                $this->setWarningMessage("没有班级的课程安排信息！");
+            }
+        }
+
+        $this->render('class', array(
+            'model' => $model,
+            'class'  => isset($class) ? $class : null,
+            'data'   => isset($data)  ? $data  : null,
+        ));
     }
     
     

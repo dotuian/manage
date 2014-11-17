@@ -30,7 +30,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-2">
                                 <div class="input-append" id="start_date" >
                                     <div>
-                                        <?php echo $form->textField($model,'import_student_start_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'开始日期')); ?>
+                                        <?php echo $form->textField($model,'import_student_start_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'开始日期')); ?>
                                         <span class="add-on">
                                             <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
                                         </span>
@@ -42,7 +42,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-2">
                                 <div class="input-append" id="end_date" >
                                     <div>
-                                        <?php echo $form->textField($model,'import_student_end_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'结束日期')); ?>
+                                        <?php echo $form->textField($model,'import_student_end_date', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'结束日期')); ?>
                                         <span class="add-on">
                                             <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar"></i>
                                         </span>

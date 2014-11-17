@@ -23,6 +23,10 @@ $(document).ready(function(){
             <div class="widget-content">
                 <div class="padd">
                     <h6>该页面，可以修改一个教师的信息。</h6>
+                    <ul>
+                        <li>查看和修改教师的各种信息。
+                        <li>如果将该教师设置为"离校"，则该教师将不能登录该系统。离职或者退休的情况下，可以设置为"离校"。
+                    </ul>
                     <hr />
 
                     <?php
@@ -33,7 +37,7 @@ $(document).ready(function(){
                         ));
                     ?>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php echo $model->getAttributeLabel('code');?></label>
+                            <label class="col-lg-2 control-label">教工编号</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->textField($model,'code',array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'code'); ?>
@@ -43,7 +47,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
+                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
@@ -51,8 +55,8 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">性别</label>
                             <div class="col-lg-10">
-                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'sex'); ?>
+                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('separator'=>'　', 'disabled'=>'disabled')); ?>
+                                <?php echo '<br/>' . $form->error($model,'sex'); ?>
                             </div>
                         </div>
                     
@@ -62,8 +66,8 @@ $(document).ready(function(){
                                 <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
-                                <br/><?php echo $form->error($model,'birthday'); ?>
                                 </span>
+                                <br/><?php echo $form->error($model,'birthday'); ?>
                             </div>
                         </div>
                     
@@ -72,6 +76,7 @@ $(document).ready(function(){
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'subjects', MSubjects::model()->getAllSubjectsOption(false), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'subjects'); ?>
+                                <div class="tip">※有教学计划的教师，必须设置担任科目。</div>
                             </div>
                         </div>
                         
@@ -80,13 +85,14 @@ $(document).ready(function(){
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'roles', MRoles::model()->getStaffRolesOption(false), array('separator'=>'　')); ?>
                                 <br/><?php echo $form->error($model,'roles'); ?>
+                                <div class="tip">※不同的角色，具有不同的系统访问权限。</div>
                             </div>
                         </div>
                     
                         <div class="form-group">
                             <label class="col-lg-2 control-label">身份证号码</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control','placeholder'=>'身份证号码')); ?>
+                                <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
                                 <?php echo $form->error($model,'id_card_no'); ?>
                             </div>
                         </div>

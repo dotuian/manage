@@ -66,6 +66,8 @@ class TeacherForm extends CFormModel {
             array('status, sex', 'length', 'max' => 1),
             array('id_card_no', 'length', 'max' => 18, 'min'=>15),
 
+            array('id_card_no', 'match','pattern' => "/(^\d{15}$)|(^\d{17}([0-9]|X)$)/", 'message' => '请输入正确的身份证号码！', 'allowEmpty' => true),
+            
             array('telephone', 'length', 'max' => 11),
             array('nation, birthplace, before_degree, current_degree', 'length', 'max' => 10),
             array('working_date, party_date, before_graduate_date, current_graduate_date, current_position_date, current_level_date', 'length', 'max' => 7),
@@ -148,7 +150,12 @@ class TeacherForm extends CFormModel {
             if (TTeachers::model()->exists("code=:code", array(':code' => $this->code))) {
                 $this->addError('code', '教师编号已经存在，请重新指定！');
             }
-
+            
+            // 身份证作为登录用户名，不能重复
+            if (TUsers::model()->exists("username=:username", array(':username' => $this->id_card_no))) {
+                $this->addError('id_card_no', '已经存在，身份证号作为用户名不能重复！');
+            }
+            
         }
         
         // 角色变更

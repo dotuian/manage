@@ -34,7 +34,7 @@ $(document).ready(function(){
                     <th>班级代号</th>
                     <th>班级名称</th>
                     <th>年级</th>
-                    <th>入学年份</th>
+                    <th>年度</th>
                     <th>学期</th>
                     <th>班级性质</th>
                     <th>专业名称</th>
@@ -54,7 +54,7 @@ $(document).ready(function(){
                         <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->textField($model,'entry_year', array('class'=>'form-control')); ?>
+                        <?php echo $form->textField($model,'entry_year', array('class'=>'form-control', 'placeholder'=>'年度')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(true), array('class'=>'form-control')); ?>
@@ -103,7 +103,7 @@ $(document).ready(function(){
                     <th>班级代号</th>
                     <th>班级名称</th>
                     <th>年级</th>
-                    <th>入学年份</th>
+                    <th>年度</th>
                     <th>学期</th>
                     <th>班级性质</th>
                     <th>专业名称</th>

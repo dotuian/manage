@@ -18,9 +18,31 @@ $this->pageTitle=Yii::app()->name . '首页';
 
             <div class="widget-content">
                 <div class="padd">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    
                     <!--
-                    
-                    
                     <div class="row">
                         <div class="col-lg-12">
                             <h3>说明</h3>

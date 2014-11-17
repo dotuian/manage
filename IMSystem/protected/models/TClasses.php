@@ -91,7 +91,7 @@ class TClasses extends CActiveRecord
             'class_code' => '班级代号',
             'class_name' => '班级名称',
             'grade' => '年级',
-            'entry_year' => '入学年份',
+            'entry_year' => '年度',
             'term_type' => '学期', // 学期(0:整学年 1:上学期 2:下学期)
             'class_type' => '班级类型', // 班级类型(0:普通高中 1:技能专业)
             'specialty_name' => '专业名称',
@@ -246,8 +246,8 @@ class TClasses extends CActiveRecord
             $classes = TClasses::model()->findAll("status='1'");
         }
         
-        // 普通教师
-        elseif($user->isTeacher()) {
+        // 普通教师(班主任或者任课教师)
+        elseif($user->isTeacher() && ($user->isBanZhuRen() || $user->isRenKeJiaoShi()) ) {
             // 班主任和任课教师的班级ID
             $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
             $connection = Yii::app()->db;

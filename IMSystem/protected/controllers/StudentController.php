@@ -68,7 +68,7 @@ class StudentController extends BaseController {
                     'attributes' => array(
                         'user' => array(
                             'asc' => 'b.class_id asc, b.student_number asc ',
-                            'desc' => 'c.class_code , b.student_number ',
+                            'desc' => 'c.class_code, b.student_number',
                             'default' => 'asc',
                         )
                     ),
@@ -77,7 +77,7 @@ class StudentController extends BaseController {
                     ),
                 ),
                 'pagination' => array(
-                    'pageSize' => 100, //Yii::app()->params['PageSize'],
+                    'pageSize' => Yii::app()->params['PageSize'],
                 ),
             ));
 
@@ -158,28 +158,6 @@ class StudentController extends BaseController {
         $this->render('create', array('model' => $model));
     }
 
-    public function actionView() {
-        if (isset($_GET['ID'])) {
-
-            $ID = trim($_GET['ID']);
-            $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
-            if (is_null($student)) {
-                throw new CHttpException(404, "该学生信息不存在！");
-            }
-            
-            $oldClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
-            if (!is_null($oldClass)) {
-                $student->class_id = $oldClass->class_id;
-            }
-
-            $this->render('update', array(
-                'model' => $student,
-            ));
-        } else {
-            throw new CHttpException(404, "找不到该页面！");
-        }
-    }
-
     /**
      * 
      * @throws CHttpException
@@ -214,7 +192,7 @@ class StudentController extends BaseController {
                 }
                 
                 $student->scenario = 'update';
-                $student->province_code    = trim($_POST['TStudents']['province_code']);
+                $student->province_code = trim($_POST['TStudents']['province_code']);
                 $student->id_card_no    = trim($_POST['TStudents']['id_card_no']);
                 $student->birthday      = trim($_POST['TStudents']['birthday']);
                 $student->accommodation = trim($_POST['TStudents']['accommodation']);
@@ -448,7 +426,10 @@ class StudentController extends BaseController {
     }
 
     
-    public function actionChangeClass(){
+    /**
+     * 学生班级信息变更
+     */
+    public function actionChangeClass() {
         
         $model = new ChangeClassForm();
         
