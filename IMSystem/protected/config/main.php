@@ -114,13 +114,12 @@ return array(
             'routes' => array(
                 array(
                     'class' => 'CFileLogRoute',
-                    'levels' => 'error, warning, info',
-                    //'logFile' => 'application_' . date('Ymd') . '.log',
+                    'levels' => 'info, warning, error, profile',
                 ),
-               array(
-                    'class'=>'CWebLogRoute',
-                    //'levels' => 'trace,info,error,warning,debug',
-                ),
+//               array(
+//                    'class'=>'CWebLogRoute',
+//                    //'levels' => 'trace,info,error,warning,debug',
+//                ),
             ),
         ),
         

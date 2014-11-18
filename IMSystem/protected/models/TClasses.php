@@ -445,6 +445,24 @@ class TClasses extends CActiveRecord
         }
         return $result;
     }
+
+    public function getEntryYearOption($flag=true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = Yii::app()->params['EmptySelectOption'];
+        }
+
+        $sql = "select DISTINCT entry_year from t_classes order by entry_year desc ";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $data = $command->query();
+
+        foreach ($data as $value) {
+            $result[$value['entry_year']] = $value['entry_year'] . '年度';
+        }
+        
+        return $result;
+    }
     
 }
 

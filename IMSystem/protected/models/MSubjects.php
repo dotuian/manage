@@ -302,5 +302,13 @@ class MSubjects extends CActiveRecord
         
         return $subjects;
     }
+ 
     
+    public function getAllSubjectIds(){
+        $data = MSubjects::model()->findAll();
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->ID;
+        }
+        return $result;
+    }
 }

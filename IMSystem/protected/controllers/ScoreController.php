@@ -408,5 +408,74 @@ class ScoreController extends BaseController {
                     'subjects' => isset($subjects) ? $subjects : null,
                 ));
     }
+
+    /**
+     * 下载学生总表
+     */
+    public function actionReport(){
+        $model = new ReportForm();
+        if(isset($_POST['ReportForm'])) {
+            $model->attributes = $_POST['ReportForm'];
+            
+            Yii::log(print_R($_POST, true));
+            
+            if($model->validate()) {
+                // 数据
+                $data = $model->getExcelData();
+                Yii::log(print_R($data, true));
+                
+                // 标题
+                $title = $model->getDataTitle($data);
+                Yii::log(print_R($title, true));
+                
+                // Excel
+                $filename = $model->writeExcel($title, $data);
+                
+//                if(file_exists($filename)){
+//                    Yii::app()->request->sendFile($filename, file_get_contents($filename));
+//                    unlink($filename);
+//                }
+            }
+        } else {
+            $model->exam_id = MExams::model()->getAllExamIds();
+            $model->subject_id = MSubjects::model()->getAllSubjectIds();
+        }
+        
+        $this->render('report', array(
+                    'model' => $model,
+                ));
+    }
+    
+    public function actionTestData() {
+        $class_ids = array(29, 30, 31);
+        $class_ids = array(29);
+        
+        $exams = MExams::model()->findAll();
+        
+        $tran = Yii::app()->db->beginTransaction();
+        foreach ($class_ids as $class_id) {
+            $students = TStudentClasses::model()->findAll("class_id=:class_id", array(":class_id" =>$class_id));
+            $subjects = MCourses::model()->findAll("class_id=:class_id", array(":class_id" =>$class_id));
+            
+            foreach ($students as $student) {
+                foreach ($subjects as $subject) {
+                    
+                    foreach ($exams as $exam) {
+                        $score = new TScores();
+                        $score->exam_id= $exam->ID;
+                        $score->subject_id = $subject->subject_id;
+                        $score->class_id=$student->class_id;
+                        $score->student_id=$student->student_id;
+                        $score->student_number=$student->student_number;
+                        $score->score = rand(0, 150);
+                        $score->create_user = $this->getLoginUserId();
+                        $score->create_time = new CDbExpression('NOW()');
+                        $score->save();
+                    }
+                }
+            }
+        }
+        $tran->commit();
+    }
     
 }

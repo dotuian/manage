@@ -131,7 +131,6 @@ class MExams extends CActiveRecord {
         
     }
     
-    
     public function getAllExamsOption($flag=true) {
         $result = array();
         if ($flag === true) {
@@ -141,6 +140,14 @@ class MExams extends CActiveRecord {
         $data = MExams::model()->findAll("status='1'");
         foreach ($data as $value) {
             $result[$value->ID] = $value->exam_name;
+        }
+        return $result;
+    }
+    
+    public function getAllExamIds(){
+        $data = MExams::model()->findAll();
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->ID;
         }
         return $result;
     }

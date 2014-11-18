@@ -263,6 +263,10 @@
                     <?php if(in_array('score/analysis', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/analysis');?>">成绩统计分析</a></li>
                     <?php } ?>
+                    
+                    <?php if(in_array('score/report', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('score/report');?>">学生成绩总表</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>

@@ -139,6 +139,23 @@ class AjaxController extends BaseController {
         
     }
     
+    public function actionGetClassOptionByGradeAndEntryYear(){
+        if (isset($_POST['grade']) && isset($_POST['entry_year'])) {
+            echo CHtml::tag('option', array('value' => ''), CHtml::encode(yii::app()->params['EmptySelectOption']), true);
+
+            if (is_numeric($_POST['grade']) && isset($_POST['entry_year'])) {
+                $grade = trim($_POST['grade']);
+                $entry_year = trim($_POST['entry_year']);
+                
+                $data = TClasses::model()->findAll("grade=:grade and entry_year=:entry_year", array(':grade'=>$grade, ':entry_year'=>$entry_year));
+                foreach ($data as $value) {
+                    echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['class_name']), true);
+                }
+            }
+        }
+        
+    }
+    
     
     /**
      * 学生成绩录入
