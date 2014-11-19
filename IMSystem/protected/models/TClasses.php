@@ -411,9 +411,15 @@ class TClasses extends CActiveRecord
         $result = null;
         switch ($value) {
             case '0':
-                $result = '普通高中';
+                $result = '普通高中(综合)';
                 break;
             case '1':
+                $result = '普通高中(文科)';
+                break;
+            case '2':
+                $result = '普通高中(理科)';
+                break;
+            case '3':
                 $result = '技能专业';
                 break;
             default:
@@ -445,7 +451,7 @@ class TClasses extends CActiveRecord
         }
         return $result;
     }
-
+    
     public function getEntryYearOption($flag=true) {
         $result = array();
         if ($flag === true) {
@@ -462,6 +468,147 @@ class TClasses extends CActiveRecord
         }
         
         return $result;
+    }
+    
+    public function getClassEntryYearOption($range = 1, $flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $year = date('Y');
+
+        for ($i = $year - $range; $i <= $year ; $i++) {
+            $result[$i] = $i;
+        }
+        return $result;
+    }
+    
+    
+    public function getGradeOption($flag){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['1'] = '一年级';
+        $result['2'] = '二年级';
+        $result['3'] = '三年级';
+
+        return $result;
+    }
+    
+    
+    public function getTermTypeOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['0'] = '整学年';
+        $result['1'] = '上学期';
+        $result['2'] = '下学期';
+
+        return $result;
+    }
+    
+    public function getClassStatusOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['1'] = '正常';
+        $result['2'] = '暂停';
+
+        return $result;
+    }
+    
+    public function getClassStatusDisplayName($class_status){
+        $status_name = '';
+        switch ($class_status) {
+            case '1':
+                $term_name = '正常';
+                break;
+            case '2':
+                $term_name = '暂停';
+                break;
+            default:
+                break;
+        }
+        return $status_name;
+    }
+    
+
+    public static function getClassTypeOption($flag) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+
+        $result['0'] = '普通高中(综合)';
+        $result['1'] = '普通高中(文科)';
+        $result['2'] = '普通高中(理科)';
+        $result['3'] = '技能专业';
+        
+        return $result;
+    }
+
+    public function getClassTypeDisplayName($class_type) {
+        $class_name = '';
+        switch ($class_type) {
+            case '0':
+                $class_name = '普通高中(综合)';
+                break;
+            case '1':
+                $class_name = '普通高中(文科)';
+                break;
+            case '2':
+                $class_name = '普通高中(理科)';
+                break;
+            case '3':
+                $class_name = '技能专业';
+                break;
+            default:
+                break;
+        }
+        return $class_name;
+    }
+    
+    public function getTermTypeDisplayName($term_type) {
+        $term_name = '';
+        switch ($term_type) {
+            case '0':
+                $term_name = '整学年';
+                break;
+            case '1':
+                $term_name = '上学期';
+                break;
+            case '2':
+                $term_name = '下学期';
+                break;
+            default:
+                break;
+        }
+        return $term_name;
+    }
+    
+    public function getEntryYearDisplayName($entry_year) {
+        $str = '';
+        switch ($entry_year) {
+            case '1':
+                $str = '一年级';
+                break;
+            case '2':
+                $str = '二年级';
+                break;
+            case '3':
+                $str = '三年级';
+                break;
+            default:
+                break;
+        }
+        return $str;
     }
     
 }

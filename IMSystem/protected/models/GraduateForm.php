@@ -1,6 +1,6 @@
 <?php
 
-class StopClassForm extends CFormModel {
+class GraduateForm extends CFormModel {
 
     public $class_ids;
 

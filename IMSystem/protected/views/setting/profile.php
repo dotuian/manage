@@ -101,7 +101,7 @@ $(document).ready(function(){
                                         <td class="center"><?php echo $class['student_number']; ?></td>
                                         <td class="center"><?php echo $class['class_code']; ?></td>
                                         <td class="center"><?php echo $class['class_name']; ?></td>
-                                        <td class="center"><?php echo ClassForm::getTermTypeDisplayName($class['term_type']); ?></td>
+                                        <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($class['term_type']); ?></td>
                                         <td class="center"><?php echo $class['name']; ?></td>
                                     </tr>
                                     <?php }?>

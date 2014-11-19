@@ -81,7 +81,6 @@ class AjaxController extends BaseController {
             foreach ($data as $value) {
                 echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['subject_name']), true);
             }
-            
         }
     }
     
@@ -140,20 +139,26 @@ class AjaxController extends BaseController {
     }
     
     public function actionGetClassOptionByGradeAndEntryYear(){
-        if (isset($_POST['grade']) && isset($_POST['entry_year'])) {
+        if (isset($_POST['grade']) && isset($_POST['entry_year']) && isset($_POST['class_type'])) {
             echo CHtml::tag('option', array('value' => ''), CHtml::encode(yii::app()->params['EmptySelectOption']), true);
 
-            if (is_numeric($_POST['grade']) && isset($_POST['entry_year'])) {
+            if (is_numeric($_POST['grade']) && is_numeric($_POST['entry_year'])) {
                 $grade = trim($_POST['grade']);
                 $entry_year = trim($_POST['entry_year']);
+                $class_type = trim($_POST['class_type']);
                 
-                $data = TClasses::model()->findAll("grade=:grade and entry_year=:entry_year", array(':grade'=>$grade, ':entry_year'=>$entry_year));
+                if(trim(isset($_POST['class_type'])) != '') {
+                    $data = TClasses::model()->findAll("grade=:grade and entry_year=:entry_year and class_type=:class_type", 
+                            array(':grade'=>$grade, ':entry_year'=>$entry_year, ':class_type'=>$class_type));
+                } else {
+                    $data = TClasses::model()->findAll("grade=:grade and entry_year=:entry_year", array(':grade'=>$grade, ':entry_year'=>$entry_year));
+                }
+                
                 foreach ($data as $value) {
                     echo CHtml::tag('option', array('value' => $value['ID']), CHtml::encode($value['class_name']), true);
                 }
             }
         }
-        
     }
     
     
@@ -163,9 +168,6 @@ class AjaxController extends BaseController {
      * @throws CHttpException
      */
     public function actionInsertScore(){
-        if (Yii::app()->request->isAjaxRequest) {
-            
-        }
         
         $data = array('result' => false, 'message' => '操作失败！');
         

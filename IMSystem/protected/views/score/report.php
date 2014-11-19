@@ -47,6 +47,7 @@ $(document).ready(function(){
                                                     'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
                                                     'grade'      => 'js:$("#grade").val()',
                                                     'entry_year' => 'js:$("#entry_year").val()',
+                                                    'class_type' => 'js:$("#class_type").val()',
                                                     'allowempty' => 'true'
                                                 ),
                                                 'url' => Yii::app()->createUrl('ajax/getClassOptionByGradeAndEntryYear'),
@@ -66,7 +67,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">年级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(true), array(
+                                <?php echo $form->dropDownList($model,'grade', TClasses::model()->getGradeOption(true), array(
                                         'id'=>'grade',
                                         'class'=>'form-control required',
                                         'ajax'=>array(
@@ -75,6 +76,7 @@ $(document).ready(function(){
                                                 'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
                                                 'grade'      => 'js:$("#grade").val()',
                                                 'entry_year' => 'js:$("#entry_year").val()',
+                                                'class_type' => 'js:$("#class_type").val()',
                                                 'allowempty' => 'true'
                                             ),
                                             'url' => Yii::app()->createUrl('ajax/getClassOptionByGradeAndEntryYear'),
@@ -92,7 +94,36 @@ $(document).ready(function(){
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">班级</label>
+                            <label class="col-lg-2 control-label">班级类型</label>
+                            <div class="col-lg-10 inline-block">
+                                <?php echo $form->dropDownList($model,'class_type', TClasses::model()->getClassTypeOption(true), array(
+                                        'id'=>'class_type',
+                                        'class'=>'form-control required',
+                                        'ajax'=>array(
+                                            'type'=>'POST',
+                                            'data' => array(
+                                                'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                                'grade'      => 'js:$("#grade").val()',
+                                                'entry_year' => 'js:$("#entry_year").val()',
+                                                'class_type' => 'js:$("#class_type").val()',
+                                                'allowempty' => 'true'
+                                            ),
+                                            'url' => Yii::app()->createUrl('ajax/getClassOptionByGradeAndEntryYear'),
+                                            'beforeSend'=>"function(){
+                                                    $.blockUI({ message: null });
+                                                }",
+                                            'success'=>"function(data){
+                                                    $.unblockUI();
+                                                    $('#class_id').html(data);
+                                                }",
+                                        )
+                                        )); ?>
+                                <?php echo $form->error($model,'class_type'); ?>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">班级名称</label>
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->dropDownList($model,'class_id', array(''=>Yii::app()->params['EmptySelectOption']), array('id'=>'class_id', 'class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>

@@ -28,7 +28,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级代号</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->textField($model,'class_code',array('class'=>'form-control required')); ?>
+                                <?php echo $form->textField($model,'class_code',array('class'=>'form-control required', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'class_code'); ?>
                             </div>
                         </div>
@@ -44,7 +44,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">年级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(3, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'grade', TClasses::model()->getGradeOption(false), array('class'=>'form-control', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'grade'); ?>
                             </div>
                         </div>
@@ -52,7 +52,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">年度</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'entry_year', ClassForm::getEntryYearOption(3, false), array('class'=>'form-control')); ?>
+                                <?php echo $form->textField($model,'entry_year', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'entry_year'); ?>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">学期</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'term_type', TClasses::model()->getTermTypeOption(false), array('class'=>'form-control', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'term_type'); ?>
                             </div>
                         </div>
@@ -68,7 +68,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级性质</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(false), array('class'=>'form-control')); ?>
+                                <?php echo $form->dropDownList($model,'class_type', TClasses::model()->getClassTypeOption(false), array('class'=>'form-control', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'class_type'); ?>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">专业名称</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control','placeholder'=>'专业名称')); ?>
+                                <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
                                 <?php echo $form->error($model,'specialty_name'); ?>
                             </div>
                         </div>
@@ -98,7 +98,7 @@ $this->breadcrumbs = array(
                                         echo CHtml::Button('暂停', array(
                                             'confirm'=>'确定要暂停吗？',
                                             'params'=>array('ID' => $model->ID),
-                                            'submit' => array('stopOne'),
+                                            'submit' => array('pause'),
                                             'class'=>'btn btn-delete',
                                             'encode'=>false,
                                         ));

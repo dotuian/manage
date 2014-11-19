@@ -179,15 +179,15 @@ function check(){
                     <td class="center"><?php echo $value['name']; ?></td>
                     <td class="center"><?php if($value['sex']=='M') echo '男'; if($value['sex']=='F') echo '女'; ?></td>
                     
-                    <td class="center"><?php echo ClassForm::getEntryYearDisplayName($value['grade']); ?></td>
+                    <td class="center"><?php echo TClasses::model()->getEntryYearDisplayName($value['grade']); ?></td>
                     <td class="center"><?php echo $value['entry_year'] ?></td>
                     <td class="center"><?php echo $value['class_name'] ?></td>
-                    <td class="center"><?php echo ClassForm::getTermTypeDisplayName($value['term_type']) ?></td>
+                    <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($value['term_type']) ?></td>
                     
-                    <td class="center"><?php echo ClassForm::getEntryYearDisplayName($new_class->grade); ?></td>
+                    <td class="center"><?php echo TClasses::model()->getEntryYearDisplayName($new_class->grade); ?></td>
                     <td class="center"><?php echo $new_class->entry_year; ?></td>
                     <td class="center"><?php echo $new_class->class_name; ?></td>
-                    <td class="center"><?php echo ClassForm::getTermTypeDisplayName($new_class->term_type); ?></td>
+                    <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($new_class->term_type); ?></td>
                     <!--
                     <td>
                         <?php echo $form->textField($model,"student_numbers[{$value['ID']}]", array('class'=>'form-control', 'id'=>"NO{$value['ID']}", 'maxlength'=>10)); ?>

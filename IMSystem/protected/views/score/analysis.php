@@ -38,7 +38,7 @@ $(document).ready(function(){
                         <div class="form-group" id="class">
                             <label class="col-lg-2 control-label">年级</label>
                             <div class="col-lg-10 inline-block">
-                                <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(true), array(
+                                <?php echo $form->dropDownList($model,'grade', TClasses::model()->getGradeOption(true), array(
                                         'class'=>'form-control required',
                                         'ajax'=>array(
                                             'type'=>'POST',

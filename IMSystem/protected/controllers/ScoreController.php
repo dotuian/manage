@@ -343,8 +343,7 @@ class ScoreController extends BaseController {
         }
     }
     
-    
-    public function actionAnalysis(){
+    public function actionAnalysis() {
         $model = new ScoreForm();
         
         if (isset($_GET['ScoreForm'])) {
@@ -416,34 +415,28 @@ class ScoreController extends BaseController {
         $model = new ReportForm();
         if(isset($_POST['ReportForm'])) {
             $model->attributes = $_POST['ReportForm'];
-            
-            Yii::log(print_R($_POST, true));
-            
             if($model->validate()) {
                 // 数据
                 $data = $model->getExcelData();
-                Yii::log(print_R($data, true));
+                //Yii::log(print_R($data, true));
                 
                 // 标题
                 $title = $model->getDataTitle($data);
-                Yii::log(print_R($title, true));
+                //Yii::log(print_R($title, true));
                 
-                // Excel
-                $filename = $model->writeExcel($title, $data);
+                // 下载Excel文件
+                $model->writeExcel($title, $data);
                 
-//                if(file_exists($filename)){
-//                    Yii::app()->request->sendFile($filename, file_get_contents($filename));
-//                    unlink($filename);
-//                }
+                Yii::app()->end();
+            } else {
+                $this->render('report', array('model' => $model));
             }
         } else {
             $model->exam_id = MExams::model()->getAllExamIds();
             $model->subject_id = MSubjects::model()->getAllSubjectIds();
+            
+            $this->render('report', array('model' => $model));
         }
-        
-        $this->render('report', array(
-                    'model' => $model,
-                ));
     }
     
     public function actionTestData() {

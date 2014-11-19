@@ -6,6 +6,40 @@
 class ClassController extends BaseController {
 
     /**
+     * 班级里的所有学生信息
+     * @throws CHttpException
+     */
+    public function actionStudent() {
+        if (isset($_GET['ID'])) {
+            $ID = trim($_GET['ID']);
+
+            $class = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
+            if (is_null($class)) {
+                throw new CHttpException(404, "该班级信息不存在！");
+            }
+
+            $sql = "select b.student_number, a.* from t_students a ";
+            $sql .= "inner join t_student_classes b on a.ID = b.student_id ";
+            $sql .= "inner join t_classes c on c.ID = b.class_id ";
+            $sql .= "where b.class_id=:class_id ";
+            $sql .= " and ((c.status='1' and b.status='1') or (c.status='2' and b.status='0')) "; // 目前班级的学生，以及以前班级的学生
+
+            $students = TStudents::model()->findAllBySQL($sql, array(':class_id' => $class->ID));
+
+            if (count($students) === 0) {
+                $this->setWarningMessage('没有学生信息！');
+            }
+
+            $this->render('student', array(
+                'students' => $students,
+                'class' => $class,
+            ));
+        } else {
+            throw new CHttpException(404, "找不到该页面！");
+        }
+    }
+    
+    /**
      * 查询班级信息
      */
     public function actionSearch() {
@@ -15,10 +49,7 @@ class ClassController extends BaseController {
         $condition = '';
 
         $model = new ClassForm();
-//        $model->status = '1';
-
         $params = array();
-//        $params[':status'] = trim($model->status);
 
         if (isset($_GET['ClassForm'])) {
             $model->attributes = $_GET['ClassForm'];
@@ -27,17 +58,17 @@ class ClassController extends BaseController {
                 $condition .= " and a.class_code like :class_code ";
                 $params[':class_code'] = '%' . trim($model->class_code) . '%';
             }
-            // 
-            if (trim($model->class_name) !== '') {
-                $condition .= " and a.class_name like :class_name ";
-                $params[':class_name'] = '%' . trim($model->class_name) . '%';
-            }
             // 年级
             if (trim($model->grade) !== '') {
                 $condition .= " and a.grade = :grade ";
                 $params[':grade'] = trim($model->grade);
             }
-            // 入学年份
+            // 
+            if (trim($model->class_name) !== '') {
+                $condition .= " and a.class_name like :class_name ";
+                $params[':class_name'] = '%' . trim($model->class_name) . '%';
+            }
+            // 年度
             if (trim($model->entry_year) !== '') {
                 $condition .= " and a.entry_year = :entry_year ";
                 $params[':entry_year'] = trim($model->entry_year);
@@ -119,19 +150,16 @@ class ClassController extends BaseController {
                     $class->class_code = trim($model->class_code);
                     $class->class_name = trim($model->class_name);
                     $class->entry_year = intval($model->entry_year);
-                    $class->term_type = trim($model->term_type);
-                    $class->grade = trim($model->grade); 
+                    $class->term_type  = trim($model->term_type);
+                    $class->grade      = trim($model->grade); 
                     $class->class_type = trim($model->class_type); // 班级类型(0:普通高中 1:技能专业)
                     $class->specialty_name = trim($model->specialty_name); // 专业名称
                     $class->status = '1'; // 新建正常状态的班级信息
                     $class->teacher_id = intval($model->teacher_id);
 
                     $class->create_user = $this->getLoginUserId();
-                    $class->update_user = $this->getLoginUserId();
                     $class->create_time = new CDbExpression('NOW()');
-                    $class->update_time = new CDbExpression('NOW()');
-
-                    if ($class->save()) {
+                    if ($class->save(false)) {
                         $tran->commit();
                         $this->setSuccessMessage("班级信息添加成功！");
                         $this->redirect($this->createUrl('create'));
@@ -148,6 +176,11 @@ class ClassController extends BaseController {
         $this->render('create', array('model' => $model));
     }
 
+    
+    /**
+     * 班级信息更新
+     * @throws CHttpException
+     */
     public function actionUpdate() {
 
         if (isset($_GET['ID'])) {
@@ -161,10 +194,10 @@ class ClassController extends BaseController {
             // 暂停状态的班级信息不能修改
             if (isset($_POST['TClasses']) && $class->status == '1') {
                 $class->class_name = trim($_POST['TClasses']['class_name']);
-                $class->class_type = trim($_POST['TClasses']['class_type']);
-                $class->entry_year = trim($_POST['TClasses']['entry_year']);
                 $class->teacher_id = trim($_POST['TClasses']['teacher_id']);
-
+                $class->status = trim($_POST['TClasses']['status']);
+                
+                
                 $class->update_user = $this->getLoginUserId();
                 $class->update_time = new CDbExpression('NOW()');
 
@@ -172,7 +205,6 @@ class ClassController extends BaseController {
                     if ($class->save()) {
                         $this->setSuccessMessage("班级信息变更成功！");
                     } else {
-                        Yii::log(print_r($class->errors, true));
                         $this->setErrorMessage("班级信息变更失败！");
                     }
                 }
@@ -190,7 +222,7 @@ class ClassController extends BaseController {
      * 暂停单个班级
      * @throws CHttpException
      */
-    public function actionStopone(){
+    public function actionPause() {
         if (isset($_GET['ID'])) {
             $ID = trim($_GET['ID']);
 
@@ -225,41 +257,11 @@ class ClassController extends BaseController {
         }
     }
 
-    public function actionStudent() {
-        if (isset($_GET['ID'])) {
-            $ID = trim($_GET['ID']);
-
-            $class = TClasses::model()->find("ID=:ID", array(":ID" => $ID));
-            if (is_null($class)) {
-                throw new CHttpException(404, "该班级信息不存在！");
-            }
-
-            $sql = "select b.student_number, a.* from t_students a ";
-            $sql .= "inner join t_student_classes b on a.ID = b.student_id ";
-            $sql .= "inner join t_classes c on c.ID = b.class_id ";
-            $sql .= "where b.class_id=:class_id ";
-            $sql .= " and ((c.status='1' and b.status='1') or (c.status='2' and b.status='0')) "; // 目前班级的学生，以及以前班级的学生
-
-            $students = TStudents::model()->findAllBySQL($sql, array(':class_id' => $class->ID));
-
-            if (count($students) === 0) {
-                $this->setWarningMessage('没有学生信息！');
-            }
-
-            $this->render('student', array(
-                'students' => $students,
-                'class' => $class,
-            ));
-        } else {
-            throw new CHttpException(404, "找不到该页面！");
-        }
-    }
-
     /**
      * 暂停多个班级
      * @throws CHttpException
      */
-    public function actionStopMore() {
+    public function actionPauseMore() {
         
         $model = new StopClassForm();
         
@@ -308,7 +310,7 @@ class ClassController extends BaseController {
         $command = $connection->createCommand($sql);
         $classes = $command->queryAll();
         
-        $this->render('stopmore', array('model' => $model, 'classes' => $classes));
+        $this->render('pausemore', array('model' => $model, 'classes' => $classes));
     }
 
 }

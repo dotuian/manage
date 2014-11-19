@@ -557,4 +557,72 @@ class StudentController extends BaseController {
     }
 
     
+    public function actionGraduate(){
+
+        $model = new GraduateForm();
+        
+        if (isset($_POST['GraduateForm'])) {
+            $model->attributes = $_POST['GraduateForm'];
+            
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $result = true;
+                foreach ($model->class_ids as $class_id => $value) {
+                    if($value == 1) {
+                        $class = TClasses::model()->find("ID=:ID and status='1'", array(":ID" => $class_id));
+                        if(!is_null($class)){
+                            $class->status = '2'; // 未使用
+                            $class->update_user = $this->getLoginUserId();
+                            $class->update_time = new CDbExpression('NOW()');
+                            
+                            // 该班级对应的学生信息也全都暂停
+                            $sql = "update t_student_classes set status='0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
+                            $command=Yii::app()->db->createCommand($sql);
+                            $command->bindValue(":update_user", $this->getLoginUserId());
+                            $command->bindValue(":class_id", $class->ID);
+                            $command->execute();
+                            
+                            // 学生表
+                            $sql = "update t_students set status='2', update_user=:update_user, update_time=now() where ID in (select a.student_id from t_student_classes a where a.class_id=:class_id)";
+                            $command=Yii::app()->db->createCommand($sql);
+                            $command->bindValue(":update_user", $this->getLoginUserId());
+                            $command->bindValue(":class_id", $class->ID);
+                            $command->execute();
+
+                            // User表
+                            $sql = "update t_users set status='2', update_user=:update_user, update_time=now() where ID in (select a.student_id from t_student_classes a where a.class_id=:class_id)";
+                            $command=Yii::app()->db->createCommand($sql);
+                            $command->bindValue(":update_user", $this->getLoginUserId());
+                            $command->bindValue(":class_id", $class->ID);
+                            $command->execute();
+                            
+                            if(!$class->save(false)){
+                                $result = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if($result) {
+                    $tran->commit();
+                    $this->setSuccessMessage('所选班级学生离校处理成功！');
+                } else {
+                    $this->setErrorMessage('所选班级学生离校处理失败！');
+                }
+                
+            } catch (Exception $exc) {
+                Yii::log($exc->getTraceAsString());
+            }
+        }
+        
+        $sql = "select a.*, b.name from t_classes a left join t_teachers b on a.teacher_id=b.ID where a.status='1' and a.grade='3'";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $classes = $command->queryAll();
+        
+        $this->render('graduate', array('model' => $model, 'classes' => $classes));
+        
+    }
+    
+    
 }

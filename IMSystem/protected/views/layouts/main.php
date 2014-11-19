@@ -75,8 +75,8 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-<!--                 <span class="bold">孝感综合高级中学</span>
-                 <i>学生成绩管理系统</i> -->
+                 <span class="bold">孝感综合高级中学</span>
+                 <i>学生成绩管理系统</i> 
             </a>
         </div>
 
@@ -153,6 +153,10 @@
                     <?php if(in_array('student/class', $this->authoritys) && ($this->isBanZhuRen() || $this->isRenKeJiaoShi())) {?>
                         <li><a href="<?php echo $this->createUrl('student/class');?>">班级学生信息</a></li>
                     <?php } ?>
+
+                    <?php if(in_array('student/graduate', $this->authoritys)) {?>
+                        <li><a href="<?php echo $this->createUrl('student/graduate');?>">学生毕业处理</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>
@@ -194,8 +198,8 @@
                     <li><a href="<?php echo $this->createUrl('class/create');?>">班级信息添加</a></li>
                     <?php } ?>
                     
-                    <?php if(in_array('class/stopMore', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('class/stopMore');?>">班级批量暂停</a></li>
+                    <?php if(in_array('class/pauseMore', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('class/pauseMore');?>">班级批量暂停</a></li>
                     <?php } ?>
                 </ul>
             </li>

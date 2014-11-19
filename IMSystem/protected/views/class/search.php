@@ -51,16 +51,16 @@ $(document).ready(function(){
                         <?php echo $form->textField($model,'class_name', array('class'=>'form-control', 'placeholder'=>'班级名称')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'grade', ClassForm::getGradeOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'grade', TClasses::model()->getGradeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'entry_year', array('class'=>'form-control', 'placeholder'=>'年度')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'term_type', ClassForm::getTermTypeOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'term_type', TClasses::model()->getTermTypeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'class_type', ClassForm::getClassTypeOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'class_type', TClasses::model()->getClassTypeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control', 'placeholder'=>'专业名称')); ?>
@@ -69,7 +69,7 @@ $(document).ready(function(){
                         <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllHeadTeacherOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
-                        <?php echo $form->dropDownList($model,'status', ClassForm::getClassStatusOption(true), array('class'=>'form-control')); ?>
+                        <?php echo $form->dropDownList($model,'status', TClasses::model()->getClassStatusOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>
@@ -120,7 +120,7 @@ $(document).ready(function(){
                         'itemView' => '_view',
                         'summaryText' => '{start}条 - {end}条 / 共{count}条',
                         'template' => "{items}",
-                        'viewData' => array('grade' => ClassForm::getGradeOption(false)),
+                        'viewData' => array('grade' => TClasses::model()->getGradeOption(false)),
                         'pager' => array(
                             'header' => '',
                             'htmlOptions' => array('class'=>'pagination pull-right')
