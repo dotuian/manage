@@ -190,11 +190,8 @@ class TUsers extends CActiveRecord
         
         // 旧班级为空，表示是新生，直接登录系统
         if($data['old_class_code'] == '') {
-            // 用户登录密码信息
-            $data['password'] = substr($data['id_card_no'], 6, 8); // 身份证信息中的出生年月日
-            if (strlen($data['password']) !== 8) {
-                $data['password'] = '88888888';
-            }
+            // 学生用户登录密码信息
+            $data['password'] = Yii::app()->params['SLoginPassword'];
 
             // 用户表
             $user = new TUsers();
@@ -374,14 +371,9 @@ class TUsers extends CActiveRecord
     public function importTeacher($data){
         $result = false;
         
-        //$data['password'] = substr($data['id_card_no'], 6, 8); // 身份证信息中的出生年月日
-        //if (strlen($data['password']) !== 8) {
-        //    $data['password'] = '88888888';
-        //}
-        
         $user = new TUsers();
         $user->username = $data['id_card_no']; //身份证号做用户名
-        $user->password = '88888888';   // 密码
+        $user->password = Yii::app()->params['TLoginPassword'];
         $user->status = '1';
         $user->last_login_time = null;
         $user->last_password_time = null;

@@ -56,7 +56,7 @@ $(document).ready(function(){
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->textField($model,'student_number',array('class'=>'form-control required','placeholder'=>'学号')); ?>
                                 <?php echo $form->error($model,'student_number'); ?>
-                                <div class="tip">※学号作为该登录该系统的用户名。</div>
+                                <div class="tip">※学号作为该登录该系统的用户名。登录密码为：<?php echo Yii::app()->params['SLoginPassword']; ?></div>
                             </div>
                         </div>
                     
@@ -91,8 +91,7 @@ $(document).ready(function(){
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
-                                <?php echo '<br/>' . $form->error($model,'birthday'); ?>
-                                <div class="tip">登录密码（如出生年月为：<?php echo date('Y-m-d', strtotime("-16 years", time())); ?>，则登录密码为：<?php echo date('Ymd', strtotime("-16 years", time())); ?>）</div>
+                                <br/><?php echo $form->error($model,'birthday'); ?>
                             </div>
                         </div>
                     

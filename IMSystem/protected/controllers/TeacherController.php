@@ -98,7 +98,7 @@ class TeacherController extends BaseController {
                     // 用户表信息
                     $user = new TUsers();
                     $user->username = strtolower(trim($model->id_card_no));   // 身份证当做登录用户名
-                    $user->password = '88888888';
+                    $user->password = Yii::app()->params['TLoginPassword'];
                     $user->status = '1';
                     $user->create_user = $this->getLoginUserId();
                     $user->create_time = new CDbExpression('NOW()');

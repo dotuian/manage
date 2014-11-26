@@ -68,7 +68,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'id_card_no', array('class'=>'form-control required','placeholder'=>'身份证号码')); ?>
                                 <?php echo $form->error($model,'id_card_no'); ?>
-                                <div class="tip">※身份号码作为该教师登录该系统的用户名，密码为八个"8"。</div>
+                                <div class="tip">※身份号码作为该教师登录该系统的用户名，登录密码为：<?php echo Yii::app()->params['TLoginPassword']; ?></div>
                             </div>
                         </div>
                     

@@ -29,12 +29,12 @@ return array(
     'modules' => array(
         // uncomment the following to enable the Gii tool
 
-        'gii' => array(
-            'class' => 'system.gii.GiiModule',
-            'password' => 'rootadmin',
-            // If removed, Gii defaults to localhost only. Edit carefully to taste.
-            'ipFilters' => array('127.0.0.1', '::1'),
-        ),
+//        'gii' => array(
+//            'class' => 'system.gii.GiiModule',
+//            'password' => 'rootadmin',
+//            // If removed, Gii defaults to localhost only. Edit carefully to taste.
+//            'ipFilters' => array('127.0.0.1', '::1'),
+//        ),
     ),
     // application components
     'components' => array(
@@ -132,5 +132,8 @@ return array(
         'EmptySelectOption' => '--------',
         'PageSize' => 50,
         'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\files\\upload\\',
+        
+        'SLoginPassword' => '666666', // 学生默认密码
+        'TLoginPassword' => '666666', // 教师默认密码
     ),
 );

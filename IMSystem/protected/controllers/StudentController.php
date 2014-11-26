@@ -109,7 +109,7 @@ class StudentController extends BaseController {
                     // 登录用的用户信息
                     $user = new TUsers();
                     $user->username = trim($model->student_number);
-                    $user->password = str_replace('-', '', $model->birthday); // 密码默认为身份证后六位
+                    $user->password = Yii::app()->params['SLoginPassword'];//学生默认密码
                     $user->status = '1';
                     $user->create_user = $this->getLoginUserId();
                     $user->create_time = new CDbExpression('NOW()');
