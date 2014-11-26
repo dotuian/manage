@@ -64,6 +64,10 @@ class UserForm extends CFormModel {
     public function afterValidate() {
         parent::afterValidate();
         
+        if($this->old_password === $this->new_password){
+            $this->addError('new_password', '新密码必须与旧密码不相同！');
+        }
+        
     }
         
 }

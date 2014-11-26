@@ -5,44 +5,80 @@ $this->pageTitle=Yii::app()->name . '首页';
 //);
 ?>
 
-
-
-
+<?php if($this->isStudent()) { ?>
+<!-- 学生使用说明 -->
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left">系统首页</div>
+                <div class="pull-left">学生使用须知</div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="widget-content">
                 <div class="padd">
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4>功能说明</h4>
+                            <ul>
+                              <li>成绩查询：查询登录到系统中的相关科目成绩。</li>
+                              <li>个人设置＞个人信息：查看和修改个人的基本信息。</li>
+                              <li>个人设置＞密码变更：修改登录密码，第一次登录，请务必修改自己的登录密码。</li>
+                            </ul>
+                        </div>
+                    </div>
                     
-                    <!--
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+
+<?php if($this->isTeacher()) { ?>
+<!-- 教师使用说明 -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-head">
+                <div class="pull-left">教师使用须知</div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="widget-content">
+                <div class="padd">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul>
+                              <li>如果您有教学安排，请务必在“个人设置”--“个人信息”页面中“担任科目”项目中，勾选自己所担任的科目。然后点击最下方的“变更”按钮。不然不能进行课程安排的设定。</li>
+                              <li>如果您在使用的遇到了任何问题，可与屏幕下方的QQ号联系。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+
+
+<?php if($this->isHeaderTeacher()) { ?>
+<!-- 校长使用说明 -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-head">
+                <div class="pull-left">系统功能</div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="widget-content">
+                <div class="padd">
                     <div class="row">
                         <div class="col-lg-12">
                             <h3>说明</h3>
@@ -163,10 +199,9 @@ $this->pageTitle=Yii::app()->name . '首页';
                         </div>
                     </div>
                     
-                    -->
-                    
                 </div>
             </div>
         </div>
     </div>
 </div>
+<?php } ?>
