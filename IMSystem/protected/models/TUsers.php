@@ -211,7 +211,7 @@ class TUsers extends CActiveRecord
                 //$student->province_code    = $data['student_number']; // 省内编号
                 $student->name          = $data['name'];
                 $student->status        = '1';
-                $student->sex           = $data['sex'];
+                $student->sex           = empty($data['sex']) ? null : $data['sex'];
                 $student->id_card_no    = $data['id_card_no'];
                 //$student->birthday    = $data['code'];
                 $student->payment1      = isset($data['payment1']) ? $data['payment1'] : null;

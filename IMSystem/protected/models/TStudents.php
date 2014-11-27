@@ -66,8 +66,8 @@ class TStudents extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, sex, class_id, student_number', 'required'),
-            array('id_card_no, school_year, student_number', 'numerical', 'integerOnly' => true),
+            array('name, sex', 'required'),
+            array('school_year, student_number', 'numerical', 'integerOnly' => true),
             array('senior_score, college_score', 'numerical'),
             array('province_code, id_card_no', 'length', 'max'=>18),
             array('name', 'length', 'max' => 12, 'encoding'=>'UTF-8'),
@@ -267,6 +267,25 @@ class TStudents extends CActiveRecord {
     }
     
     
+    public function getSexName($sex){
+        $sexname = '';
+        switch ($sex) {
+            case 'M':
+                $sexname = '女';
+                break;
+            case 'F':
+                $sexname = '男';
+                break;
+            default:
+                break;
+        }
+        
+        return $sexname;
+    }
+    
+    public function getPaymentName($payment){
+        return $payment == '1' ? '缴' : '未';
+    }
     
     
 }

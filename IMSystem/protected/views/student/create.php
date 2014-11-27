@@ -178,7 +178,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长QQ</label>
                             <div class="col-lg-10">
-                                <?php echo $form->numberField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
+                                <?php echo $form->textField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
                                 <?php echo $form->error($model,'parents_qq'); ?>
                             </div>
                         </div>
@@ -212,7 +212,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">高考总分</label>
                             <div class="col-lg-10">
-                                <?php echo $form->numberField($model,'college_score', array('class'=>'form-control', 'placeholder'=>'高考总分')); ?>
+                                <?php echo $form->textField($model,'college_score', array('class'=>'form-control', 'placeholder'=>'高考总分')); ?>
                                 <?php echo $form->error($model,'college_score'); ?>
                             </div>
                         </div>
@@ -232,7 +232,6 @@ $(document).ready(function(){
                                 <?php echo $form->error($model,'comment'); ?>
                             </div>
                         </div>
-                    
 
                         <hr />
                         <div class="form-group">

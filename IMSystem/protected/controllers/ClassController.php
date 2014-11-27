@@ -313,4 +313,121 @@ class ClassController extends BaseController {
         $this->render('pausemore', array('model' => $model, 'classes' => $classes));
     }
 
+    
+    /**
+     * 班主任和任课教师查看自己管辖访问内的学生信息
+     */
+    public function actionMyclass() {
+        $model = new MyClassForm();
+        
+        // 当前教师可以访问的班级
+        $classes = TClasses::model()->getClassOptionByUserRole($this->getLoginUserId());
+        
+        if (isset($_GET['MyClassForm'])) {
+            $model->attributes = $_GET['MyClassForm'];
+            
+            // 检查是否有权限查看该班级的信息
+            if (!in_array($model->class_id, array_keys($classes))) {
+                throw new CHttpException(500, "您没有权限查看该班级的信息！");
+            }
+            
+            if ($model->validate()) {
+
+                $sql = "select a.*, b.student_number from t_students a ";
+                $sql .= " inner join t_student_classes b on a.ID=b.student_id ";
+                $sql .= " inner join t_classes c         on c.ID=b.class_id ";
+                $sql .= "where a.`status`='1' and b.`status`='1' and c.`status`='1' ";
+                $sql .= "and c.ID=:class_id";
+                $command = Yii::app()->db->createCommand($sql);
+                $command->bindValue(":class_id", $model->class_id);
+                $data = $command->queryAll();
+                
+                if (count($data) === 0) {
+                    $this->setWarningMessage('没有学生信息！');
+                }
+                
+                Yii::log(print_r($data, true));
+            }
+        }
+
+        $this->render('myclass', array('classes'=>$classes, 'model' => $model, 'data' => isset($data) ? $data : null));
+    }
+    
+    
+    /**
+     * 班主任修改自己班级学生的信息
+     * @throws CHttpException
+     */
+    public function actionUpdateMyStudent() {
+        if (isset($_GET['ID'])) {
+
+            $ID = trim($_GET['ID']);
+            $student = TStudents::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
+            if (is_null($student)) {
+                throw new CHttpException(404, "该学生信息不存在！");
+            }
+            
+            // 当前所在班级信息
+            $currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
+            if (!is_null($currentClass)) {
+                // 目前所在班级学号
+                $student->student_number = $currentClass->student_number;
+                // 目前所在班级
+                $student->class_id = $currentClass->class_id;
+            }
+            
+            $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID'=>$currentClass->class_id));
+            if (is_null($class) || $class->teacher_id != $this->getLoginUserId()) {
+//                throw new CHttpException(404, "不是该学生的班主任，没有修改权限！");
+            }
+
+            // 变更学生信息
+            if (isset($_POST['TStudents'])) {
+                $student->scenario = 'update';
+                $student->province_code = trim($_POST['TStudents']['province_code']);
+                $student->name = trim($_POST['TStudents']['name']);
+                $student->sex = trim($_POST['TStudents']['sex']);
+                $student->id_card_no = trim($_POST['TStudents']['id_card_no']);
+                $student->birthday = trim($_POST['TStudents']['birthday']);
+                $student->accommodation = trim($_POST['TStudents']['accommodation']);
+                $student->payment1 = trim($_POST['TStudents']['payment1']);
+                $student->payment2 = trim($_POST['TStudents']['payment2']);
+                $student->payment3 = trim($_POST['TStudents']['payment3']);
+                $student->payment4 = trim($_POST['TStudents']['payment4']);
+                $student->payment5 = trim($_POST['TStudents']['payment5']);
+                $student->payment6 = trim($_POST['TStudents']['payment6']);
+                $student->bonus_penalty = trim($_POST['TStudents']['bonus_penalty']);
+                $student->address = trim($_POST['TStudents']['address']);
+                $student->parents_tel = trim($_POST['TStudents']['parents_tel']);
+                $student->parents_qq = trim($_POST['TStudents']['parents_qq']);
+                $student->school_of_graduation = trim($_POST['TStudents']['school_of_graduation']);
+                $student->senior_score = trim($_POST['TStudents']['senior_score']);
+                $student->school_year = trim($_POST['TStudents']['school_year']);
+                $student->college_score = trim($_POST['TStudents']['college_score']);
+                $student->university = trim($_POST['TStudents']['university']);
+                $student->comment = trim($_POST['TStudents']['comment']);
+
+                $student->update_user = $this->getLoginUserId();
+                $student->update_time = new CDbExpression('NOW()');
+
+                if ($student->validate()) {
+                    if ($student->save()) {
+                        $this->setSuccessMessage("学生信息变更成功！");
+                    } else {
+                        Yii::log(print_r($student->errors, true));
+                        $this->setErrorMessage("学生信息变更失败！");
+                    }
+                }
+            }
+            
+            Yii::log(print_r($student->errors, true));
+
+            $this->render('updatemystudent', array(
+                'model' => $student,
+            ));
+        } else {
+            throw new CHttpException(404, "找不到该页面！");
+        }
+    }
+    
 }

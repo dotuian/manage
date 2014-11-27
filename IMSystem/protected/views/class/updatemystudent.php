@@ -15,7 +15,7 @@ $this->breadcrumbs = array(
 
             <div class="widget-content">
                 <div class="padd">
-                    <h6>该页面，可以修改一个学生的信息。</h6>
+                    <h6>该页面，班主任可以修改自己班级学生的信息。</h6>
                     <hr />
 
                     <?php
@@ -23,7 +23,7 @@ $this->breadcrumbs = array(
                             'id' => 'update-student-form',
                             'enableClientValidation'=>true,
                             'method' => 'post',
-                            'action' => $this->createUrl('update', array('ID' => $model->ID)),
+                            //'action' => $this->createUrl('update', array('ID' => $model->ID)),
                             'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                         ));
                     ?>
@@ -38,7 +38,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
@@ -46,8 +46,8 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">性别</label>
                             <div class="col-lg-10">
-                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('disabled'=>'disabled','separator'=>'　')); ?>
-                                <?php echo $form->error($model,'sex'); ?>
+                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('separator'=>'　')); ?>
+                                <br/><?php echo $form->error($model,'sex'); ?>
                             </div>
                         </div>
 
@@ -96,22 +96,6 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">目前所在班级</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control required')); ?>
-                                <?php echo $form->error($model,'class_id'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">目前所在班级学号</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->textField($model,'student_number', array('class'=>'form-control required', 'placeholder'=>'目前所在班级学号')); ?>
-                                <?php echo $form->error($model,'student_number'); ?>
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label class="col-lg-2 control-label">住宿情况</label>
                             <div class="col-lg-10">
@@ -187,7 +171,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长电话</label>
                             <div class="col-lg-10">
-                                <?php echo $form->telField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
+                                <?php echo $form->textField($model,'parents_tel', array('class'=>'form-control', 'placeholder'=>'家长电话')); ?>
                                 <?php echo $form->error($model,'parents_tel'); ?>
                             </div>
                         </div>
@@ -195,7 +179,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长QQ</label>
                             <div class="col-lg-10">
-                                <?php echo $form->numberField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
+                                <?php echo $form->textField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
                                 <?php echo $form->error($model,'parents_qq'); ?>
                             </div>
                         </div>
@@ -211,7 +195,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">中考总分</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'senior_score', array('class'=>'form-control', 'placeholder'=>'中考总分')); ?>
+                                <?php echo $form->numberField($model,'senior_score', array('class'=>'form-control', 'placeholder'=>'中考总分')); ?>
                                 <?php echo $form->error($model,'senior_score'); ?>
                             </div>
                         </div>
@@ -251,22 +235,11 @@ $this->breadcrumbs = array(
                         </div>
 
                         <hr />
-                        <?php if($model->status == '1') { ?>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
-                                <?php 
-                                    echo CHtml::Button('离校', array(
-                                        'confirm'=>'确定要将该学生设置为离校状态吗？',
-                                        'params'=>array('ID' => $model->ID),
-                                        'submit' => array('delete'),
-                                        'class'=>'btn btn-delete',
-                                        'encode'=>false,
-                                    ));
-                                ?>
                                 <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); ?>
                             </div>
                         </div>
-                        <?php } ?>
                     
                     <?php $this->endWidget(); ?>
                     

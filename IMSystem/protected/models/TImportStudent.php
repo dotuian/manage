@@ -303,9 +303,7 @@ class TImportStudent extends CActiveRecord {
                 $error[] = '姓名过长！';
             }
 
-            if ($value['sex'] == '') {
-                $error[] = '性别必须指定！';
-            } else {
+            if ($value['sex'] != '') {
                 if (!in_array($value['sex'], array('M', 'F'))) {
                     $error[] = '性别数据有误！';
                 }

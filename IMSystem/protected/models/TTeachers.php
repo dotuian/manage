@@ -322,7 +322,7 @@ class TTeachers extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
-        $data = TTeachers::model()->findAll("status='1' and code<>'root'");
+        $data = TTeachers::model()->findAll("status='1' and code<>'root' order by name");
         foreach ($data as $value) {
             $result[$value->ID] = $value->name;
         }
