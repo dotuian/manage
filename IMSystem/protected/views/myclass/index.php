@@ -101,7 +101,7 @@ Yii::app()->clientScript->registerScript('js', "
                     <td class="center"><?php echo $index++; ?></td>
                     <td class="center"><?php echo $value['student_number']; ?></td>
                     <td class="center">
-                        <?php if(!$flag) { ?>
+                        <?php if($flag) { ?>
                             <!-- 班主任可以修改学生信息 -->
                             <a href="<?php echo $this->createUrl('myclass/student', array('ID'=> $value['ID']))?>">
                                 <?php echo $value['name']; ?>
