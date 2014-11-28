@@ -2,6 +2,8 @@
 
 class MyClassForm extends CFormModel {
     public $class_id;
+    
+    public $exam_id;
 
     /**
      * @return array validation rules for model attributes.
@@ -13,7 +15,9 @@ class MyClassForm extends CFormModel {
             // 共同
             array('class_id', 'required'),
             
-            array('class_id', 'safe'),
+            array('exam_id', 'required', 'on'=>'score'), // 查看学生的成绩信息
+            
+            array('class_id, exam_id', 'safe'),
         );
     }
     
@@ -28,6 +32,7 @@ class MyClassForm extends CFormModel {
     public function attributeLabels() {
         return array(
             'class_id' => '班级',
+            'class_id' => '考试名称',
         );
     }
 

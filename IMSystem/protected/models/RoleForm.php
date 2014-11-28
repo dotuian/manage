@@ -17,6 +17,7 @@ class RoleForm extends CFormModel
     public $authority_authoritys = array();
     public $other_authoritys = array();
     public $system_authoritys = array();
+    public $myclass_authoritys = array();
     
 	/**
      * @return array validation rules for model attributes.
@@ -28,7 +29,7 @@ class RoleForm extends CFormModel
             array('role_name', 'required'),
             array('role_code', 'length', 'max' => 10),
             array('role_name', 'length', 'max' => 50, 'encoding'=>'UTF-8'),
-            array('role_id, role_code, role_name, level， authoritys, student_authoritys, teacher_authoritys, score_authoritys, class_authoritys, subject_authoritys, course_authoritys, role_authoritys, authority_authoritys, other_authoritys, system_authoritys', 'safe'),
+            array('role_id, role_code, role_name, level， authoritys, student_authoritys, teacher_authoritys, score_authoritys, class_authoritys, subject_authoritys, course_authoritys, role_authoritys, authority_authoritys, other_authoritys, system_authoritys, myclass_authoritys', 'safe'),
         );
     }
 
@@ -105,6 +106,9 @@ class RoleForm extends CFormModel
         }
         if (is_array($this->system_authoritys)) {
             $this->authoritys = array_merge($this->authoritys, $this->system_authoritys);
+        }
+        if (is_array($this->myclass_authoritys)) {
+            $this->authoritys = array_merge($this->authoritys, $this->myclass_authoritys);
         }
         
         return $this->authoritys;

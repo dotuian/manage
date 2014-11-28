@@ -39,10 +39,20 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">我的班级权限</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'myclass_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('MYCLASS'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'myclass_authoritys'); ?>
+                                <div class="tip">※班主任和任课教师必须具备的权限。</div>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
                             <label class="col-lg-2 control-label">学生管理权限</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'student_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('STUDENT'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'student_authoritys'); ?>
+                                <div class="tip">※学工科应该具备的权限。</div>
                             </div>
                         </div>
 
@@ -51,6 +61,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'teacher_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('TEACHER'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'teacher_authoritys'); ?>
+                                <div class="tip">※教务处应该具备的权限。</div>
                             </div>
                         </div>
 
@@ -59,6 +70,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'class_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('CLASS'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'class_authoritys'); ?>
+                                <div class="tip">※教务处应该具备的权限。</div>
                             </div>
                         </div>
                     
@@ -67,6 +79,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'subject_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('SUBJECT'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'subject_authoritys'); ?>
+                                <div class="tip">※教务处应该具备的权限。</div>
                             </div>
                         </div>
                     
@@ -75,6 +88,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'course_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('COURSE'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'course_authoritys'); ?>
+                                <div class="tip">※教务处应该具备的权限。</div>
                             </div>
                         </div>
                     
@@ -83,22 +97,7 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'score_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('SCORE'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'score_authoritys'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">角色管理权限</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'role_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('ROLE'), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'role_authoritys'); ?>
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">权限管理权限</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->checkBoxList($model,'authority_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('AUTHORITY'), array('separator'=>'　')); ?>
-                                <?php echo $form->error($model,'authority_authoritys'); ?>
+                                <div class="tip">※教务处，教师，学生可以具备的权限。</div>
                             </div>
                         </div>
                     
@@ -107,14 +106,34 @@ $this->breadcrumbs = array(
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'system_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('SYSTEM'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'system_authoritys'); ?>
+                                <div class="tip">※教务处应该具备的权限。</div>
                             </div>
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">其他权限</label>
+                            <label class="col-lg-2 control-label">角色管理权限</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'role_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('ROLE'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'role_authoritys'); ?>
+                                <div class="tip">※校长可以具备的权限。此处的修改会影响到系统的使用！</div>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">权限管理权限</label>
+                            <div class="col-lg-10">
+                                <?php echo $form->checkBoxList($model,'authority_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('AUTHORITY'), array('separator'=>'　')); ?>
+                                <?php echo $form->error($model,'authority_authoritys'); ?>
+                                <div class="tip">※校长可以具备的权限。此处的修改会影响到系统的使用！</div>
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">基本权限</label>
                             <div class="col-lg-10">
                                 <?php echo $form->checkBoxList($model,'other_authoritys', MAuthoritys::model()->getAuthorityByCategoryOption('OTHER'), array('separator'=>'　')); ?>
                                 <?php echo $form->error($model,'other_authoritys'); ?>
+                                <div class="tip">※所有用户都应该具备的权限！</div>
                             </div>
                         </div>
                     

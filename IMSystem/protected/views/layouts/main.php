@@ -201,6 +201,32 @@
                     <?php if(in_array('class/pauseMore', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/pauseMore');?>">班级批量暂停</a></li>
                     <?php } ?>
+                    
+                    <?php // if(in_array('class/myself', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('class/myclass');?>">我的班级</a></li>
+                    <?php // } ?>
+                </ul>
+            </li>
+            <?php } ?>
+            
+
+            <?php if(in_array('MYCLASS', $this->category)) { ?>
+            <!-- 班级管理 -->
+            <li class="has_sub">
+                <a href="#" class="<?php echo $controller == 'myclass' ? 'open' : ''; ?>">
+                <i class="fa fa-tasks"></i> <span>我的班级</span> <span class="pull-right"><i class="fa <?php echo $controller == 'myclass' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
+                <ul>
+                    <?php // if(in_array('myclass/index', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/index');?>">我的班级</a></li>
+                    <?php // } ?>
+                    
+                    <?php // if(in_array('myclass/score', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/score');?>">学生成绩</a></li>
+                    <?php // } ?>
+                    
+                    <?php // if(in_array('myclass/course', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/course');?>">课程安排</a></li>
+                    <?php // } ?>
                 </ul>
             </li>
             <?php } ?>

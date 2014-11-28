@@ -11,13 +11,12 @@ Yii::app()->clientScript->registerScript('js', "
 ", CClientScript::POS_HEAD);
 ?>
 
-
 <!-- 检索条件 -->
 <div class="row">
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left">我的班级信息</div>
+                <div class="pull-left">学生信息</div>
                 <div class="clearfix"></div>
             </div>
 
@@ -26,6 +25,7 @@ Yii::app()->clientScript->registerScript('js', "
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'myclass-form',
                         'method' => 'get',
+                        'action' => $this->createUrl('index'),
                         'enableClientValidation'=>false,
                         'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                     ));
@@ -42,12 +42,15 @@ Yii::app()->clientScript->registerScript('js', "
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="widget-foot">
+                        <div class="pull-left">
+
+                        </div>
+                        
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('检索', array('class'=>'btn btn-search')); ?>
+                            <?php echo CHtml::submitButton('查看学生信息', array('class'=>'btn btn-search')); ?>
                         </div>
                         <div class="clearfix"></div> 
                     </div>
@@ -98,9 +101,14 @@ Yii::app()->clientScript->registerScript('js', "
                     <td class="center"><?php echo $index++; ?></td>
                     <td class="center"><?php echo $value['student_number']; ?></td>
                     <td class="center">
-                        <a href="<?php echo $this->createUrl('class/updateMyStudent', array('ID'=> $value['ID']))?>">
+                        <?php if(!$flag) { ?>
+                            <!-- 班主任可以修改学生信息 -->
+                            <a href="<?php echo $this->createUrl('myclass/student', array('ID'=> $value['ID']))?>">
+                                <?php echo $value['name']; ?>
+                            </a>
+                        <?php } else { ?>
                             <?php echo $value['name']; ?>
-                        </a>
+                        <?php } ?>
                     </td>
                     
                     <td class="center"><?php echo TStudents::model()->getSexName($value['sex']); ?></td>

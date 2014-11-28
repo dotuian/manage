@@ -1,7 +1,8 @@
 <?php
 $this->pageTitle=Yii::app()->name . '学生信息变更';
-$this->breadcrumbs = array(
-    '学生信息变更',
+$this->breadcrumbs=array(
+    "我的班级【{$class->class_name}】"  => $this->createUrl('myclass/index', array('MyClassForm[class_id]' => $class->ID)),
+    "学生({$model->name})信息变更",
 );
 ?>
 
@@ -39,7 +40,7 @@ $this->breadcrumbs = array(
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
                                 <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
-                                <?php echo $form->error($model,'name'); ?>
+                                <br/><?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
                     
@@ -66,8 +67,7 @@ $this->breadcrumbs = array(
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
-                                
-                                <?php echo "<br/>" . $form->error($model,'birthday'); ?>
+                                <br/><?php echo $form->error($model,'birthday'); ?>
                             </div>
                         </div>
 

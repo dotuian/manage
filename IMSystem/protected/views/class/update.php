@@ -84,7 +84,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班主任</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherOption(true), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllTeacherWithPinYinOption(true), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'teacher_id'); ?>
                             </div>
                         </div>

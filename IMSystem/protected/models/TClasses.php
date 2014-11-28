@@ -611,5 +611,15 @@ class TClasses extends CActiveRecord
         return $str;
     }
     
+    /**
+     * 指定的教师是否为当班的班主任
+     * @param type $class_id
+     * @param type $teacher_id
+     * @return type
+     */
+    public function isClassTeacher($class_id, $teacher_id) {
+        return TClasses::model()->exists("ID=:ID and teacher_id=:teacher_id", array(':ID' => $class_id, ':teacher_id' => $teacher_id));
+    }
+    
 }
 

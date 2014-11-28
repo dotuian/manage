@@ -291,21 +291,23 @@ class TTeachers extends CActiveRecord
         }
         
         $sql = "select c.subject_name, a.ID, a.code, a.name from t_teachers a, t_teacher_subjects b, m_subjects c ";
-        $sql .= "where a.ID = b.teacher_id and b.subject_id=c.ID and a.`status`= '1' and c.`status`='1' and a.code<>'root' ";
+        $sql .= "where a.ID = b.teacher_id and b.subject_id=c.ID and a.`status`= '1' and c.`status`='1' and a.code<>'root'  ";
         
         $params = array();
         if (!is_null($subject_code)) {
             $sql .= " and c.subject_code=:subject_code";
             $params[':subject_code'] = trim($subject_code);
         }
-        $sql .= " order by b.teacher_id ";
+        $sql .= " order by a.name ";
         
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $data = $command->query($params);
         
         foreach ($data as $value) {
-            $result[$value['subject_name']][$value['ID']] = $value['name'];
+            //$pinyin = strtoupper(PinYinUtils::utf8_to($value['name'], true));
+            //$pinyin = str_pad($pinyin, 3, " ", STR_PAD_BOTH);
+            $result[$value['subject_name'] . '教师'][$value['ID']] = $value['name'];
         }
         
         return $result;
@@ -327,6 +329,27 @@ class TTeachers extends CActiveRecord
             $result[$value->ID] = $value->name;
         }
         
+        return $result;
+    }
+    
+    /**
+     * 
+     * @param type $flag
+     * @return string
+     */
+    public function getAllTeacherWithPinYinOption($flag){
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+        
+        $data = TTeachers::model()->findAll("status='1' and code<>'root' order by name");
+        foreach ($data as $value) {
+            $pinyin = strtoupper(PinYinUtils::utf8_to($value->name, true));
+            $pinyin = str_pad($pinyin, 3, " ", STR_PAD_BOTH);
+            $result[$value->ID] = $pinyin . ' | ' . $value->name;
+        }
+
         return $result;
     }
     
