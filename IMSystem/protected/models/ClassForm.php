@@ -30,7 +30,7 @@ class ClassForm extends CFormModel {
             // 班级名称
             array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             // 班级性质
-            array('class_type','in','range'=>array('0','1'),'allowEmpty'=>false),
+            array('class_type', 'in', 'range' => array('0', '1', '2', '3'), 'allowEmpty' => false),
             // 专业名称
             array('class_code', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             // 年级

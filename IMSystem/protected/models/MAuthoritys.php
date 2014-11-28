@@ -133,7 +133,7 @@ class MAuthoritys extends CActiveRecord {
 
         $result = array();
 
-        $data = self::model()->findAll('category=:category order by level', array(':category' => $category));
+        $data = self::model()->findAll("category=:category and status='1' order by level", array(':category' => $category));
         foreach ($data as $value) {
             $result[$value->ID] = $value->authority_name;
         }

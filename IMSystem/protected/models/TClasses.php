@@ -54,7 +54,7 @@ class TClasses extends CActiveRecord
             // 学期(0:整学年 1:上学期 2:下学期)
             array('term_type', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => false),
             // 班级性质
-            array('class_type', 'in', 'range' => array('0', '1'), 'allowEmpty' => false),
+            array('class_type', 'in', 'range' => array('0', '1', '2', '3'), 'allowEmpty' => false),
             // 专业名称
             array('class_code', 'length', 'max' => 20, 'encoding' => 'UTF-8'),
             // 年级

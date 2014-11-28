@@ -75,8 +75,8 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">孝感综合高级中学</span>
-                 <i>学生成绩管理系统</i> 
+<!--                 <span class="bold">孝感综合高级中学</span>
+                 <i>学生成绩管理系统</i> -->
             </a>
         </div>
 
@@ -127,6 +127,11 @@
                 $controller = Yii::app()->controller->id;  
             ?>
           
+            <?php if(in_array('system/setting', $this->authoritys)) { ?>
+                <!-- 系统设置 -->
+                <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-cog"></i> <span>系统配置</span></a></li> 
+            <?php } ?>
+            
             <?php if(in_array('STUDENT', $this->category)) { ?>
             <!-- 学生管理 -->
             <li class="has_sub">
@@ -201,10 +206,7 @@
                     <?php if(in_array('class/pauseMore', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('class/pauseMore');?>">班级批量暂停</a></li>
                     <?php } ?>
-                    
-                    <?php // if(in_array('class/myself', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('class/myclass');?>">我的班级</a></li>
-                    <?php // } ?>
+
                 </ul>
             </li>
             <?php } ?>
@@ -353,12 +355,6 @@
                     <li><a href="<?php echo $this->createUrl('site/logout');?>">退出登录</a></li>
                 </ul>
             </li>
-            
-            <?php if(in_array('system/setting', $this->authoritys)) { ?>
-                <!-- 系统设置 -->
-                <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-cog"></i> <span>系统配置</span></a></li> 
-            <?php } ?>
-            
         </ul>
     </div>
     <!-- Sidebar ends -->
