@@ -15,7 +15,9 @@ class TeacherController extends BaseController {
             
             $sql = "select DISTINCT a.* ";
             $countSql = "select count(DISTINCT a.ID) ";
-            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.code<>'root' ";
+            $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID ";
+            $condition .= "left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.code<>'root' ";
+            
             $params = array();
             
             if (trim($model->name) !== '') {

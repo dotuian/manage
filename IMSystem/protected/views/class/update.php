@@ -1,7 +1,8 @@
 <?php
 $this->pageTitle = Yii::app()->name . '班级信息变更';
-$this->breadcrumbs = array(
-    '班级信息变更',
+$this->breadcrumbs=array(
+    "班级信息检索"  => $this->createUrl('search'),
+    "班级信息变更",
 );
 ?>
 
@@ -22,6 +23,8 @@ $this->breadcrumbs = array(
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'update-class-form',
                             'enableClientValidation'=>true,
+                            'method' => 'post',
+                            'action' => $this->createUrl('update', array('ID' => $model->ID)),
                             'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                         ));
                     ?>
@@ -96,7 +99,7 @@ $this->breadcrumbs = array(
                                     // 暂停的状态下，不能修改变更班级信息
                                     if($model->status == '1') {
                                         echo CHtml::Button('暂停', array(
-                                            'confirm'=>'确定要暂停吗？',
+                                            'confirm'=>'确定要暂停该班级吗？',
                                             'params'=>array('ID' => $model->ID),
                                             'submit' => array('pause'),
                                             'class'=>'btn btn-delete',

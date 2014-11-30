@@ -528,10 +528,10 @@ class TClasses extends CActiveRecord
         $status_name = '';
         switch ($class_status) {
             case '1':
-                $term_name = '正常';
+                $status_name = '正常';
                 break;
             case '2':
-                $term_name = '暂停';
+                $status_name = '暂停';
                 break;
             default:
                 break;

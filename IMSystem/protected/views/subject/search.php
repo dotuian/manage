@@ -35,6 +35,7 @@ $(document).ready(function(){
                     <th>科目名称</th>
                     <th>科目名称(简称)</th>
                     <th>科目类型</th>
+                    <th>状态</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +51,9 @@ $(document).ready(function(){
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'subject_type', SubjectForm::getSubjectTypeOption(true), array('class'=>'form-control')); ?>
+                    </td>
+                    <td>
+                        <?php echo $form->dropDownList($model,'status', SubjectForm::getSubjectStatusOption(true), array('class'=>'form-control')); ?>
                     </td>
                 </tr>
             </tbody>

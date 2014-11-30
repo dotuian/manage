@@ -1,7 +1,8 @@
 <?php
 $this->pageTitle = Yii::app()->name . '教师信息变更';
-$this->breadcrumbs = array(
-    '教师信息变更',
+$this->breadcrumbs=array(
+    "教师信息检索"  => $this->createUrl('search'),
+    "教师信息变更",
 );
 ?>
 <script>

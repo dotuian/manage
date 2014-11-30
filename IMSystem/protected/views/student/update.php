@@ -1,7 +1,8 @@
 <?php
 $this->pageTitle=Yii::app()->name . '学生信息变更';
-$this->breadcrumbs = array(
-    '学生信息变更',
+$this->breadcrumbs=array(
+    "学生信息检索"  => $this->createUrl('search'),
+    "学生信息变更",
 );
 ?>
 
@@ -15,7 +16,11 @@ $this->breadcrumbs = array(
 
             <div class="widget-content">
                 <div class="padd">
-                    <h6>该页面，可以修改一个学生的信息。</h6>
+                    <h6>查看/修改学生基本信息。</h6>
+                    <ul>
+                        <li>在校学生：可以查看和修改在校学生的信息。</li>
+                        <li>离校学生：可以查看离校学生的信息，但不能修改。</li>
+                    </ul>
                     <hr />
 
                     <?php

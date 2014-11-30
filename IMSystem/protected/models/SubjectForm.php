@@ -84,7 +84,7 @@ class SubjectForm extends CFormModel {
         }
 
         $result['1'] = '使用中';
-        $result['2'] = '停止中';
+        $result['2'] = '暂停中';
 
         return $result;
     }

@@ -223,8 +223,8 @@ class ClassController extends BaseController {
      * @throws CHttpException
      */
     public function actionPause() {
-        if (isset($_GET['ID'])) {
-            $ID = trim($_GET['ID']);
+        if (isset($_POST['ID'])) {
+            $ID = trim($_POST['ID']);
 
             $class = TClasses::model()->find("ID=:ID and status='1'", array(":ID" => $ID));
             if (is_null($class)) {

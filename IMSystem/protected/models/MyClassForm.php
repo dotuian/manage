@@ -32,7 +32,7 @@ class MyClassForm extends CFormModel {
     public function attributeLabels() {
         return array(
             'class_id' => '班级',
-            'class_id' => '考试名称',
+            'exam_id' => '考试名称',
         );
     }
 

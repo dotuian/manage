@@ -122,7 +122,7 @@ class MyClassController extends BaseController {
             
             Yii::log(print_r($student->errors, true));
 
-            $this->render('update_student', array(
+            $this->render('student', array(
                 'model' => $student,
                 'class' => $class,
             ));
@@ -253,6 +253,105 @@ class MyClassController extends BaseController {
             'subjects' => isset($subjects) ? $subjects : null,
         ));
     }
+ 
     
+
+    public function actionImport() {
+        // 导入时间的检查
+        $config = MConfig::model()->getConfigByKey('IMPORT_STUDENT_DATA_RANGE');
+        if (is_null($config) || (!is_null($config) && empty($config->value))) {
+            throw new CHttpException(500, "批量导入时间没有设置！");
+        }
+
+        list($start_date, $end_date) = explode('|', $config->value);
+        $today = date('Y-m-d');
+        if (!($start_date <= $today && $today <= $end_date)) {
+            throw new CHttpException(500, "当前日期不能导入学生信息！");
+        }
+        
+        $model = new TImportStudent();
+        
+        // 学生数据读取
+        if (isset($_POST['TImportStudent']) && isset($_POST['validate']) && trim($_POST['validate']) == 'validate') {
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $model->attributes = $_POST['TImportStudent'];
+                $model->scenario = 'validate';
+                // 上传文件名
+                $model->filename = CUploadedFile::getInstance($model, 'filename');
+                if ($model->validate()) {
+                    // 保存文件名
+                    $model->realpath = Yii::app()->params['FilePath'] . time() . '.' . $model->filename->extensionName;
+                    $model->create_user = $this->getLoginUserId();
+                    $model->update_user = $this->getLoginUserId();
+                    $model->filename->saveAs($model->realpath); // 将文件保存在服务器端
+
+                    if ($model->save()) {
+                        // 将Excel文件中的数据读取到数组中
+                        $data = $model->readExcel2Array();
+                        // 数据整形
+                        $data = $model->converdata($data);
+                        // 数据验证
+                        if ($check = $model->validatedata($data)) {
+                            $this->setSuccessMessage("数据正常，可以导入！");
+                            $tran->commit();
+                        } else {
+                            $this->setWarningMessage("数据中有格式错误，请修改后重试！");
+                        }
+                    } else {
+                        $this->setErrorMessage("数据读取失败，请检查文件格式之后重试！");
+                    }
+                }
+            } catch (Exception $e) {
+                $this->setErrorMessage('数据读取失败！');
+            }
+        }
+        
+        // 学生数据导入
+        if (isset($_POST['TImportStudent']['ID']) && isset($_POST['TImportStudent']['class_id']) && isset($_POST['import']) && trim($_POST['import']) == 'import') {
+            $model->attributes = $_POST['TImportStudent'];
+            $model->scenario = 'import';
+
+            $record = TImportStudent::model()->find('ID=:ID', array(':ID' => $model->ID));
+            if(is_null($record)){
+                throw new CHttpException(500, '数据导入过程中出现异常，请稍后重试！');
+            }
+            
+            $class = TClasses::model()->find("ID=:ID and status='1'", array(':ID' => $model->class_id));
+            if(is_null($class)){
+                throw new CHttpException(500, '要导入学生信息的班级信息不存在！');
+            }
+
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                // 将Excel文件中的数据读取到数组中
+                $data2 = $record->readExcel2Array();
+                // 数据整形
+                $data2 = $record->converdata($data2);
+                // 数据验证
+                if($model->validatedata($data2)) {
+                    // 数据导入
+                    if($model->importdata($data2, $class)) {
+                        $tran->commit();
+                        $this->setSuccessMessage("数据导入成功！");
+                        
+                        $this->redirect($this->createUrl('import'));
+                    } else {
+                        $this->setErrorMessage("数据导入失败，请检查数据是否正确，然后重试！");
+                    }
+                } else {
+                    $this->setErrorMessage('数据中有异常数据，请修改后再重试！');
+                }
+            } catch (Exception $ex) {
+                throw new CHttpException(500, '数据导入过程中出现了异常！');
+            }
+        }
+        
+        $this->render('import', array(
+            'model' => $model,
+            'check' => isset($check) ? $check : null,  // 对Excel中的数据进行检查的结果
+            'data'  => isset($data) ? $data : null, // Excel读取的，经过了检查的数据
+        ));
+    }
     
 }

@@ -75,8 +75,8 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-<!--                 <span class="bold">孝感综合高级中学</span>
-                 <i>学生成绩管理系统</i> -->
+                 <span class="bold">孝感综合高级中学</span>
+                 <i>学生成绩管理系统</i> 
             </a>
         </div>
 
@@ -218,17 +218,21 @@
                 <a href="#" class="<?php echo $controller == 'myclass' ? 'open' : ''; ?>">
                 <i class="fa fa-tasks"></i> <span>我的班级</span> <span class="pull-right"><i class="fa <?php echo $controller == 'myclass' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
                 <ul>
-                    <?php // if(in_array('myclass/index', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('myclass/index');?>">我的班级</a></li>
+                    <?php if(in_array('myclass/index', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/index');?>">学生信息</a></li>
+                    <?php } ?>
+
+                    <?php // if(in_array('myclass/import', $this->authoritys) && $this->isBanZhuRen()) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/import');?>">学生导入</a></li>
                     <?php // } ?>
                     
-                    <?php // if(in_array('myclass/score', $this->authoritys)) { ?>
+                    <?php if(in_array('myclass/score', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('myclass/score');?>">学生成绩</a></li>
-                    <?php // } ?>
+                    <?php } ?>
                     
-                    <?php // if(in_array('myclass/course', $this->authoritys)) { ?>
+                    <?php if(in_array('myclass/course', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('myclass/course');?>">课程安排</a></li>
-                    <?php // } ?>
+                    <?php } ?>
                 </ul>
             </li>
             <?php } ?>

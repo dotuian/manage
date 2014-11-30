@@ -1,13 +1,13 @@
 <?php
 $this->pageTitle=Yii::app()->name . '科目信息变更';
-$this->breadcrumbs = array(
-    '科目信息变更',
+$this->breadcrumbs=array(
+    "科目信息检索"  => $this->createUrl('search'),
+    "科目信息变更",
 );
 ?>
 <script>
 
 </script>
-
 
 
 <div class="row">
@@ -27,6 +27,8 @@ $this->breadcrumbs = array(
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'update-subject-form',
                             'enableClientValidation'=>true,
+                            'method' => 'post',
+                            'action' => $this->createUrl('update', array('ID' => $model->ID)),
                             'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
                         ));
                     ?>
@@ -78,6 +80,7 @@ $this->breadcrumbs = array(
                             </div>
                         </div>
                     
+                        <!--
                         <div class="form-group">
                             <label class="col-lg-2 control-label">状态</label>
                             <div class="col-lg-10">
@@ -85,21 +88,27 @@ $this->breadcrumbs = array(
                                 <?php echo $form->error($model,'status'); ?>
                             </div>
                         </div>
+                        -->
                     
                         <hr />
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-9">
                                 <?php 
-//                                    echo CHtml::Button("删除", array(
-//                                        'confirm'=>'确定要删除吗？',
-//                                        'params'=>array('ID' => $model->ID),
-//                                        'submit' => array('delete'),
-//                                        'class'=>'btn btn-delete',
-//                                        'encode'=>false,
-//                                    ));
+                                    if($model->status == "1") {
+                                        echo CHtml::Button("删除", array(
+                                            'confirm'=>'确定要删除吗？',
+                                            'params'=>array('ID' => $model->ID),
+                                            'submit' => array('delete'),
+                                            'class'=>'btn btn-delete',
+                                            'encode'=>false,
+                                        ));
+                                    }
                                 ?>
-                                <input type="reset" class="btn btn-reset" value='重置' />
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
+                                <?php 
+                                    if($model->status == "1") {
+                                        echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); 
+                                    }
+                                ?>
                             </div>
                         </div>
                     

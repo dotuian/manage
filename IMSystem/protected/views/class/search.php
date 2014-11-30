@@ -130,7 +130,7 @@ $(document).ready(function(){
                 ?>
                 <div class="clearfix"></div> 
                 <tr>
-                    <td colspan="7">
+                    <td colspan="10">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </tr>

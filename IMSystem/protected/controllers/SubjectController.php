@@ -34,6 +34,10 @@ class SubjectController extends BaseController {
                 $condition .= " and a.subject_type = :subject_type ";
                 $params[':subject_type'] = trim($model->subject_type);
             }
+            if (trim($model->status) !== '') {
+                $condition .= " and a.status = :status ";
+                $params[':status'] = trim($model->status);
+            }
         }
 
         $sql .= $condition;
@@ -130,7 +134,7 @@ class SubjectController extends BaseController {
                 $subject->subject_type       = trim($_POST['MSubjects']['subject_type']);
                 $subject->total_score        = trim($_POST['MSubjects']['total_score']);
                 $subject->pass_score         = trim($_POST['MSubjects']['pass_score']);
-                $subject->status             = trim($_POST['MSubjects']['status']);
+                //$subject->status             = trim($_POST['MSubjects']['status']);
                 
                 $subject->update_user = $this->getLoginUserId();
                 $subject->update_time = new CDbExpression('NOW()');
@@ -166,6 +170,7 @@ class SubjectController extends BaseController {
             $subject->status = '2';
             $subject->update_user = $this->getLoginUserId();
             $subject->update_time = new CDbExpression('NOW()');
+            
             if ($subject->save(false)) {
                 $this->setSuccessMessage("科目信息删除成功！");
                 $this->redirect($this->createUrl('search'));

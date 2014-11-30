@@ -40,7 +40,7 @@ $this->breadcrumbs = array(
                         </div>
                     
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">文件名</label>
+                            <label class="col-lg-2 control-label">文件</label>
                             <div class="col-lg-10">
                                 <?php echo $form->fileField($model, 'filename', array('class' => 'form-control required')); ?>
                                 <?php echo $form->error($model, 'filename'); ?>

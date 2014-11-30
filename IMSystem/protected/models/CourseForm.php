@@ -7,6 +7,9 @@ class CourseForm extends CFormModel {
     public $teacher_id;
     public $class_id;
     public $class_code;
+    public $entry_year; // 班级年度
+    public $term_type; // 学期(0:整学年 1:上学期 2:下学期)
+    
     public $status;
     public $teacher_name;
     

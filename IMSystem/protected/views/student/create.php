@@ -241,6 +241,7 @@ $(document).ready(function(){
                             </div>
                         </div>
                     
+                        
                     <?php $this->endWidget(); ?>
                     
                 </div>

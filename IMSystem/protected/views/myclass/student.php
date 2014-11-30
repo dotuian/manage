@@ -1,8 +1,8 @@
 <?php
 $this->pageTitle=Yii::app()->name . '学生信息变更';
 $this->breadcrumbs=array(
-    "我的班级【{$class->class_name}】"  => $this->createUrl('myclass/index', array('MyClassForm[class_id]' => $class->ID)),
-    "学生({$model->name})信息变更",
+    "学生信息"  => $this->createUrl('myclass/index', array('MyClassForm[class_id]' => $class->ID)),
+    "【{$model->name}】信息变更",
 );
 ?>
 

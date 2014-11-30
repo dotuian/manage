@@ -8,7 +8,9 @@
     <td class="center"><?php echo $data['specialty_name']; ?></td>
     <td class="center"><?php echo $data['teacher_name']; ?></td>
     <td class="center">
-        <span class="label <?php echo $data['status'] === '1' ? 'label-active' : 'label-stop';?>"><?php echo TClasses::model()->getClassStatusDisplayName($data['status']); ?></span>
+        <span class="label <?php echo $data['status'] === '1' ? 'label-active' : 'label-stop';?>">
+            <?php echo TClasses::model()->getClassStatusDisplayName($data['status']); ?>
+        </span>
     </td>
     <td class="center">
         <?php if(in_array('class/update', $this->authoritys)) { ?>

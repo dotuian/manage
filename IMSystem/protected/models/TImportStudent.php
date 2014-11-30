@@ -63,7 +63,7 @@ class TImportStudent extends CActiveRecord {
         return array(
             'ID' => 'ID',
             'class_id' => '班级',
-            'filename' => '上传文件名',
+            'filename' => '文件',
             'realpath' => '保存文件路径',
             'category' => '用途',
             'status' => '状态', // (0:未处理  1:处理正常  2:处理异常)

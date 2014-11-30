@@ -1,7 +1,7 @@
 <?php
-$this->pageTitle = Yii::app()->name . '我的班级';
+$this->pageTitle = Yii::app()->name . '学生信息';
 $this->breadcrumbs = array(
-    '我的班级',
+    '学生信息',
 );
 
 Yii::app()->clientScript->registerScript('js', "
@@ -16,7 +16,7 @@ Yii::app()->clientScript->registerScript('js', "
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left">学生信息</div>
+                <div class="pull-left">指定班级</div>
                 <div class="clearfix"></div>
             </div>
 
@@ -50,7 +50,7 @@ Yii::app()->clientScript->registerScript('js', "
                         </div>
                         
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('查看学生信息', array('class'=>'btn btn-search')); ?>
+                            <?php echo CHtml::submitButton('学生信息', array('class'=>'btn btn-search')); ?>
                         </div>
                         <div class="clearfix"></div> 
                     </div>
@@ -69,7 +69,7 @@ Yii::app()->clientScript->registerScript('js', "
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left">检索结果</div>
+        <div class="pull-left">学生信息</div>
         <div class="clearfix"></div>
     </div>
 
