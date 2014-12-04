@@ -232,6 +232,27 @@ class TClasses extends CActiveRecord
     }
     
     /**
+     * 班主任或者任课教师所能查看的班级
+     * @param type $user_id
+     * @param type $flag
+     * @return string
+     */
+    public function getClassOptionByTeacher($teacher_id, $flag = true) {
+        $result = array();
+        if ($flag === true) {
+            $result[''] = yii::app()->params['EmptySelectOption'];
+        }
+        
+        $data = $this->getClassInfoByTeacher($teacher_id);
+
+        foreach ($data as $value) {
+            $result[$value->ID] = $value->getClassDisplayName();
+        }
+        
+        return $result;
+    }
+    
+    /**
      * 根据用户的角色，来获取具有访问权限的班级信息
      */
     public function getClassInfoByUserRole($user_id) {
@@ -248,23 +269,7 @@ class TClasses extends CActiveRecord
         
         // 普通教师(班主任或者任课教师)
         elseif($user->isTeacher() && ($user->isBanZhuRen() || $user->isRenKeJiaoShi()) ) {
-            // 班主任和任课教师的班级ID
-            $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
-            $connection = Yii::app()->db;
-            $command = $connection->createCommand($sql);
-            $command->bindValue(":teacher_id", $user_id);
-            $data = $command->queryAll();
-
-            $result = array();
-            foreach ($data as $value) {
-                $result[] = $value['class_id'];
-            }
-
-            // 任课教师可以获取任课班级的信息
-            $criteria = new CDbCriteria();
-            $criteria->addCondition(" status='1' ");
-            $criteria->addInCondition("ID", $result);
-            $classes = TClasses::model()->findAll($criteria);
+            $classes = $this->getClassInfoByTeacher($user_id);
         }
         
         // 学工科
@@ -275,6 +280,32 @@ class TClasses extends CActiveRecord
         
         return $classes;
     }
+    
+    /**
+     * 根据指定的任课教师，班主任，来获取对应的班级信息
+     */
+    public function getClassInfoByTeacher($teacher_id){
+        // 班主任和任课教师的班级ID
+        $sql = "select a.ID as class_id from t_classes a where a.teacher_id=:teacher_id and a.`status`='1' UNION select DISTINCT b.class_id from m_courses b where b.teacher_id=:teacher_id and b.`status`='1'";
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $command->bindValue(":teacher_id", $teacher_id);
+        $data = $command->queryAll();
+
+        $result = array();
+        foreach ($data as $value) {
+            $result[] = $value['class_id'];
+        }
+
+        // 任课教师可以获取任课班级的信息
+        $criteria = new CDbCriteria();
+        $criteria->addCondition(" status='1' ");
+        $criteria->addInCondition("ID", $result);
+        $classes = TClasses::model()->findAll($criteria);
+        
+        return $classes;
+    }
+            
     
     public function getClassDisplayName($show_class_code = true, $show_entry_year = false){
         $term_name = '';

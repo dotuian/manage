@@ -34,7 +34,7 @@ $this->breadcrumbs = array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOptionByUserRole($this->getLoginUserId(), false), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getClassOptionByTeacher($this->getLoginUserId(), false), array('class'=>'form-control required')); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>

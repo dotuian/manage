@@ -221,13 +221,13 @@
                     <?php if(in_array('myclass/index', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('myclass/index');?>">学生信息</a></li>
                     <?php } ?>
-
-                    <?php // if(in_array('myclass/import', $this->authoritys) && $this->isBanZhuRen()) { ?>
-                    <li><a href="<?php echo $this->createUrl('myclass/import');?>">学生导入</a></li>
-                    <?php // } ?>
                     
                     <?php if(in_array('myclass/score', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('myclass/score');?>">学生成绩</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('myclass/import', $this->authoritys) && $this->isBanZhuRen()) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/import');?>">学生导入</a></li>
                     <?php } ?>
                     
                     <?php if(in_array('myclass/course', $this->authoritys)) { ?>

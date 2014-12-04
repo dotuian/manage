@@ -67,7 +67,7 @@ $this->breadcrumbs=array(
                         <div class="form-group input-append" id="datetimepicker1" >
                             <label class="col-lg-2 control-label">出生年月日</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker required', 'placeholder'=>'出生年月日')); ?>
+                                <?php echo $form->textField($model,'birthday', array('data-format'=>'yyyy-MM-dd', 'class'=>'form-control dtpicker', 'placeholder'=>'出生年月日')); ?>
                                 <span class="add-on">
                                     <i data-time-icon="fa fa-time" data-date-icon="fa fa-calendar" class="btn btn-info fa fa-calendar"></i>
                                 </span>
@@ -82,17 +82,23 @@ $this->breadcrumbs=array(
                                 <?php $classes = $model->getStudentAllClassInfo(); ?>
                                 <?php if(count($classes) > 0) {  ?>
                                 <table class="table table-striped table-bordered table-hover">
-                                    <th class="center">学号</th>
-                                    <th class="center">班级代号</th>
-                                    <th class="center">班级名称</th>
+                                    <th class="center">年度</th>
+                                    <th class="center">年级</th>
                                     <th class="center">学期</th>
+                                    <th class="center">类型</th>
+                                    <th class="center">专业</th>
+                                    <th class="center">班级</th>
+                                    <th class="center">学号</th>
                                     <th class="center">班主任</th>
                                     <?php foreach ($classes as $class) { ?>
                                     <tr>
-                                        <td class="center"><?php echo $class['student_number']; ?></td>
-                                        <td class="center"><?php echo $class['class_code']; ?></td>
-                                        <td class="center"><?php echo $class['class_name']; ?></td>
+                                        <td class="center"><?php echo $class['entry_year']; ?></td>
+                                        <td class="center"><?php echo TClasses::model()->getEntryYearDisplayName($class['grade']); ?></td>
                                         <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($class['term_type']);?></td>
+                                        <td class="center"><?php echo TClasses::model()->getClassTypeName($class['class_type']); ?></td>
+                                        <td class="center"><?php echo $class['specialty_name']; ?></td>
+                                        <td class="center"><?php echo $class['class_name']; ?></td>
+                                        <td class="center"><?php echo $class['student_number']; ?></td>
                                         <td class="center"><?php echo $class['name']; ?></td>
                                     </tr>
                                     <?php }?>

@@ -16,7 +16,7 @@ Yii::app()->clientScript->registerScript('js', "
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-head">
-                <div class="pull-left">指定班级</div>
+                <div class="pull-left">班级</div>
                 <div class="clearfix"></div>
             </div>
 

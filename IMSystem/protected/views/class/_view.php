@@ -6,7 +6,15 @@
     <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($data['term_type']);?></td>
     <td class="center"><?php echo TClasses::model()->getClassTypeDisplayName($data['class_type']); ?></td>
     <td class="center"><?php echo $data['specialty_name']; ?></td>
-    <td class="center"><?php echo $data['teacher_name']; ?></td>
+    
+    <td class="center">
+        <?php if(in_array('class/update', $this->authoritys)) { ?>
+            <a href="<?php echo $this->createUrl('teacher/update',  array('ID' => $data['teacher_id'])) ?>"><?php echo $data['teacher_name']; ?></a>
+        <?php } else { ?>
+            <?php echo $data['teacher_name']; ?>
+        <?php } ?>
+    </td>
+    
     <td class="center">
         <span class="label <?php echo $data['status'] === '1' ? 'label-active' : 'label-stop';?>">
             <?php echo TClasses::model()->getClassStatusDisplayName($data['status']); ?>

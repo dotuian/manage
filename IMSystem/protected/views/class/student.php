@@ -43,7 +43,13 @@ $(document).ready(function(){
                 <tr>
                     <td class="center"><?php echo $index++; ?></td>
                     <td class="center"><?php echo $student->student_number; ?></td>
-                    <td class="center"><?php echo $student->name; ?></td>
+                    <td class="center">
+                        <?php if(in_array('student/update', $this->authoritys)) { ?>
+                            <a href="<?php echo $this->createUrl('student/update',  array('ID' => $student->ID)) ?>"><?php echo $student->name; ?></a>
+                        <?php } else { ?>
+                            <?php echo $student->name; ?>
+                        <?php } ?>
+                    </td>
                     <td class="center"><?php echo $student->sex == 'M' ? '男' : '女' ; ?></td>
                     <td class="center"><?php echo $student->birthday; ?></td>
                     <td class="center"><?php echo $student->parents_tel; ?></td>

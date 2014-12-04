@@ -229,6 +229,10 @@ class TImportStudent extends CActiveRecord {
             return '1';
         }
         
+        if(trim($value) == '未') {
+            return '0';
+        }
+        
         return null;
     }
     

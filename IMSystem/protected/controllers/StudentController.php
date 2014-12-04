@@ -15,9 +15,10 @@ class StudentController extends BaseController {
             // 查询SQL
             $sql = "select DISTINCT a.*, b.student_number, c.class_name ";
             $countSql = "select count(DISTINCT a.ID ) ";
-            $condition = " FROM t_students a left join t_student_classes b on a.ID = b.student_id and b.status='1'";
-            $condition .=" left join t_classes c on c.ID = b.class_id ";
-            $condition .="where 1=1 ";
+            $condition = " FROM t_students a ";
+            $condition .= " left join t_student_classes b on a.ID = b.student_id and b.status='1'";
+            $condition .= " left join t_classes c on c.ID = b.class_id ";
+            $condition .= "where 1=1 ";
             
             $params = array();
             // 班级(现)
@@ -145,11 +146,13 @@ class StudentController extends BaseController {
                             // 成功消息
                             $this->setSuccessMessage('学生信息添加成功！');
                         } else {
+                            $tran->rollback();
                             $this->setErrorMessage('学生信息添加失败！');
                         }
                     }
 
                 } catch (Exception $e) {
+                    $tran->rollback();
                     throw new CHttpException(404, "系统异常！");
                 }
             }
@@ -194,7 +197,7 @@ class StudentController extends BaseController {
                 $student->scenario = 'update';
                 $student->province_code = trim($_POST['TStudents']['province_code']);
                 $student->id_card_no    = trim($_POST['TStudents']['id_card_no']);
-                $student->birthday      = trim($_POST['TStudents']['birthday']);
+                $student->birthday      = empty($_POST['TStudents']['birthday']) ? null : trim($_POST['TStudents']['birthday']);
                 $student->accommodation = trim($_POST['TStudents']['accommodation']);
                 $student->payment1      = trim($_POST['TStudents']['payment1']);
                 $student->payment2      = trim($_POST['TStudents']['payment2']);
@@ -252,7 +255,7 @@ class StudentController extends BaseController {
                                 $newClass->create_time = new CDbExpression('NOW()');
                                 $newClass->save(false);
                             } else {
-                                // 班级信息委发生变化，而学号发生了修改的情况
+                                // 班级信息没有发生变化，而学号发生了修改的情况
                                 if ($student->old_student_number != $student->student_number) {
                                     $currentClass->student_number = $student->student_number;
                                     $currentClass->save(false);
@@ -364,8 +367,13 @@ class StudentController extends BaseController {
                         $data = $model->converdata($data);
                         // 数据验证
                         if ($check = $model->validatedata($data)) {
-                            $this->setSuccessMessage("数据正常，可以导入！");
-                            $tran->commit();
+                            if(count($data) > 0) {
+                                $this->setSuccessMessage("数据正常，可以导入！");
+                                $tran->commit();
+                            } else {
+                                $this->setWarningMessage("没有读取到学生学生！");
+                            }
+                            
                         } else {
                             $this->setWarningMessage("数据中有格式错误，请修改后重试！");
                         }

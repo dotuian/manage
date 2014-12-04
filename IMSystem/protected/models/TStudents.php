@@ -92,7 +92,7 @@ class TStudents extends CActiveRecord {
             
             // ==============================================================================
             // 学生信息更新时(student/update)
-            array('id_card_no, birthday, class_id, student_number', 'required', 'on' => 'update'),
+            array('id_card_no, class_id, student_number', 'required', 'on' => 'update'),
             array('birthday', 'date', 'format'=>'yyyy-MM-dd', 'on' => 'update'),
             // QQ号码
             array('parents_qq', 'match','pattern' => '/^[1-9]{1}[0-9]{4,15}$/','message' => '请输入正确的QQ号码！', 'on' => 'update'),

@@ -11,8 +11,8 @@ class MyClassController extends BaseController {
     public function actionIndex() {
         $model = new MyClassForm();
         
-        // 当前教师可以访问的班级
-        $classes = TClasses::model()->getClassOptionByUserRole($this->getLoginUserId());
+        // 获取该教师可以查看的班级
+        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId(), false);
         
         if (isset($_GET['MyClassForm'])) {
             $model->attributes = $_GET['MyClassForm'];
@@ -78,7 +78,7 @@ class MyClassController extends BaseController {
             
             // 当前用户不是该班级的班主任
             if($class->teacher_id != $this->getLoginUserId()) {
-                //throw new CHttpException(404, "不是该学生的班主任，没有修改权限！");
+                throw new CHttpException(404, "不是该学生的班主任，没有修改权限！");
             }
 
             // 变更学生信息
@@ -88,7 +88,7 @@ class MyClassController extends BaseController {
                 $student->name = trim($_POST['TStudents']['name']);
                 $student->sex = trim($_POST['TStudents']['sex']);
                 $student->id_card_no = trim($_POST['TStudents']['id_card_no']);
-                $student->birthday = trim($_POST['TStudents']['birthday']);
+                $student->birthday = empty($_POST['TStudents']['birthday']) ? null : trim($_POST['TStudents']['birthday']);
                 $student->accommodation = trim($_POST['TStudents']['accommodation']);
                 $student->payment1 = trim($_POST['TStudents']['payment1']);
                 $student->payment2 = trim($_POST['TStudents']['payment2']);
@@ -139,8 +139,9 @@ class MyClassController extends BaseController {
     public function actionCourse() {
 
         $model = new MyClassForm();
-
-        $classes = TClasses::model()->getClassOptionByUserRole($this->getLoginUserId());
+        
+        // 获取该教师可以查看的班级
+        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId(), false);
 
         if (isset($_POST['MyClassForm'])) {
             $model->attributes = $_POST['MyClassForm'];
@@ -185,8 +186,9 @@ class MyClassController extends BaseController {
 
         $model = new MyClassForm();
 
-        $classes = TClasses::model()->getClassOptionByUserRole($this->getLoginUserId());
-
+        // 获取该教师可以查看的班级
+        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId());
+        
         if (isset($_POST['MyClassForm'])) {
             $model->attributes = $_POST['MyClassForm'];
             $model->scenario = 'score';
@@ -269,8 +271,16 @@ class MyClassController extends BaseController {
             throw new CHttpException(500, "当前日期不能导入学生信息！");
         }
         
-        $model = new TImportStudent();
+        // 只有该班的班主任才可以导入学生信息
+        if (isset($_POST['TImportStudent']['class_id'])) {
+            $class_id = trim($_POST['TImportStudent']['class_id']);
+            if (!TClasses::model()->isClassTeacher($class_id, $this->getLoginUserId())) {
+                throw new CHttpException(500, "不是所选班级的班主任，不能导入该班级中导入学生信息！");
+            }
+        }
         
+        
+        $model = new TImportStudent();
         // 学生数据读取
         if (isset($_POST['TImportStudent']) && isset($_POST['validate']) && trim($_POST['validate']) == 'validate') {
             $tran = Yii::app()->db->beginTransaction();
@@ -293,8 +303,12 @@ class MyClassController extends BaseController {
                         $data = $model->converdata($data);
                         // 数据验证
                         if ($check = $model->validatedata($data)) {
-                            $this->setSuccessMessage("数据正常，可以导入！");
-                            $tran->commit();
+                            if(count($data) > 0) {
+                                $this->setSuccessMessage("数据正常，可以导入！");
+                                $tran->commit();
+                            } else {
+                                $this->setWarningMessage("没有读取到学生学生！");
+                            }
                         } else {
                             $this->setWarningMessage("数据中有格式错误，请修改后重试！");
                         }
