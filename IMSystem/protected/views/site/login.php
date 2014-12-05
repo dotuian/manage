@@ -24,7 +24,7 @@ CHtml::$errorContainerTag = 'div';
             'htmlOptions' => array('class' => 'form-signin'),
         ));
     ?>
-        <h2 class="form-signin-heading">成绩管理系统</h2>
+        <!--<h2 class="form-signin-heading">成绩管理系统</h2>-->
 		
         <?php echo $form->error($model,'username'); ?>
         <?php echo $form->error($model,'password'); ?>

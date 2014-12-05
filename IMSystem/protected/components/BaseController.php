@@ -47,8 +47,6 @@ class BaseController extends CController {
         // 权限种类
         $this->category = Yii::app()->user->getState('auth_category');
         
-        Yii::log("_POST_ \r\n" . print_r($_POST, true));
-        Yii::log("_GET__ \r\n" . print_r($_GET,  true));
     }
     
     /**
