@@ -36,7 +36,7 @@ class TStudentClasses extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('create_time', 'required'),
+			array('student_number, student_id, class_id', 'required'),
 			array('student_number, student_id, class_id, create_user, update_user', 'length', 'max'=>10),
 			array('status', 'length', 'max'=>1),
 			array('update_time', 'safe'),

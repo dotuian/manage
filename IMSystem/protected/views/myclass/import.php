@@ -85,6 +85,7 @@ $this->breadcrumbs = array(
                     <th rowspan="2">性别</th>
                     <th rowspan="2">身份证号码</th>
                     <th colspan="2">班级</th>
+                    <th rowspan="2">原班级学号</th>
                     <th rowspan="2">住宿<br/>情况</th>
                     <th rowspan="2">家庭住址</th>
                     <th rowspan="2">家长电话</th>
@@ -107,6 +108,7 @@ $this->breadcrumbs = array(
                     <td><?php echo $value['id_card_no']; ?></td>
                     <td class="center"><?php echo $value['old_class_code']; ?></td>
                     <td class="center"><?php echo $value['new_class_code']; ?></td>
+                    <td class="center"><?php echo $value['old_student_number']; ?></td>
                     <td class="center"><?php echo $value['accommodation']; ?></td>
                     
                     <td title="<?php echo $value['address']; ?>"><?php echo $value['address']; ?></td>

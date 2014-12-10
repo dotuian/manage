@@ -2,7 +2,7 @@
 $this->pageTitle = Yii::app()->name . '班级学生信息一览表';
 $this->breadcrumbs = array(
     '班级信息检索' => $this->createUrl('search'),
-    $class->class_name . '学生信息一览表',
+    "{$class->entry_year}年{$class->class_name} 学生信息一览表",
 );
 
 Yii::app()->clientScript->registerScript('js', "
@@ -17,7 +17,7 @@ $(document).ready(function(){
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left"><?php echo $class->class_name; ?> 学生信息一览表</div>
+        <div class="pull-left"><?php echo "{$class->entry_year}年{$class->class_name} 学生信息一览表"; ?> </div>
         <div class="widget-icons pull-right">
           </div> 
         <div class="clearfix"></div>
@@ -50,14 +50,14 @@ $(document).ready(function(){
                             <?php echo $student->name; ?>
                         <?php } ?>
                     </td>
-                    <td class="center"><?php echo $student->sex == 'M' ? '男' : '女' ; ?></td>
+                    <td class="center"><?php if($student->sex == 'M') echo '男' ; if($student->sex == 'F') echo '女'; ?></td>
                     <td class="center"><?php echo $student->birthday; ?></td>
                     <td class="center"><?php echo $student->parents_tel; ?></td>
                     <td><?php echo $student->address; ?></td>
                     <!--<td></td>-->
                 </tr>
                 <?php } ?>
-                <div class="clearfix"></div> 
+                <div class="clearfix"></div>
             </tbody>
         </table>
     </div>

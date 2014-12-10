@@ -331,18 +331,6 @@ class StudentController extends BaseController {
     
 
     public function actionImport() {
-        // 导入时间的检查
-        $config = MConfig::model()->getConfigByKey('IMPORT_STUDENT_DATA_RANGE');
-        if (is_null($config) || (!is_null($config) && empty($config->value))) {
-            throw new CHttpException(500, "批量导入时间没有设置！");
-        }
-
-        list($start_date, $end_date) = explode('|', $config->value);
-        $today = date('Y-m-d');
-        if (!($start_date <= $today && $today <= $end_date)) {
-            throw new CHttpException(500, "当前日期不能导入学生信息！");
-        }
-        
         $model = new TImportStudent();
         
         // 学生数据读取

@@ -184,35 +184,53 @@ class TImportStudent extends CActiveRecord {
         $result = array();
         foreach ($data as $value) {
             // 如果学号为空，自动跳过该条数据
-            if(trim($value['A']) == ''){
+            if (!isset($value['A']) || trim($value['A']) == '') {
                 continue;
             }
             
             $temp = array();
-            $temp['student_number'] = trim($value['A']);        // 学号
-            $temp['code']           = trim($value['A']);        // 用户名
-            $temp['name']           = str_replace(' ', '', trim($value['B']));// 学生姓名
-            $temp['sex']            = $this->getSexCode(trim($value['C']));   // 性别
-            $temp['id_card_no']     = strtoupper(trim($value['D']));          // 身份证号
-            $temp['old_class_code'] = trim($value['E']); // 旧班级代号
-            $temp['new_class_code'] = trim($value['F']); // 新班级代号
-            $temp['accommodation']  = trim($value['G']); // 住宿情况
-            $temp['payment1']       = $this->getPaymentValue(trim($value['H'])); // 缴费情况（第1学期）(0: 未缴  1:已缴)
-            $temp['payment2']       = $this->getPaymentValue(trim($value['I'])); // 缴费情况（第2学期）
-            $temp['payment3']       = $this->getPaymentValue(trim($value['J'])); // 缴费情况（第3学期）
-            $temp['payment4']       = $this->getPaymentValue(trim($value['K'])); // 缴费情况（第4学期）
-            $temp['payment5']       = $this->getPaymentValue(trim($value['L'])); // 缴费情况（第5学期）
-            $temp['payment6']       = $this->getPaymentValue(trim($value['M'])); // 缴费情况（第6学期）
-            $temp['bonus_penalty']  = trim($value['N']); // 奖惩情况
-            $temp['address']        = trim($value['O']); // 家庭住址
-            $temp['parents_tel']    = trim($value['P']); // 家长电话
-            $temp['parents_qq']     = trim($value['Q']); // 家长QQ
-            $temp['school_of_graduation'] = trim($value['R']); // 毕业学校
-            $temp['comment']        = trim($value['S']);   // 备注
-    //        $temp['school_year']    = date('Y');           // 入学年份
-    //        $temp['senior_score'] = trim($value['G']);   // 中考总分
-    //        $temp['college_score'] = trim($value['G']);  // 高考总分
-    //        $temp['university'] = trim($value['G']);     // 录取学校
+            // 学号
+            $temp['student_number']  = isset($value['A']) ? trim($value['A']) : null;
+            // 用户名
+            $temp['code']            = isset($value['A']) ? trim($value['A']) : null;
+            // 学生姓名
+            $temp['name']            = isset($value['B']) ? str_replace(' ', '', trim($value['B'])) : null;
+            // 性别
+            $temp['sex']             = isset($value['C']) ? $this->getSexCode(trim($value['C'])) : null;
+            // 身份证号
+            $temp['id_card_no']      = isset($value['D']) ? strtoupper(trim($value['D'])) : null; 
+            // 旧班级代号
+            $temp['old_class_code']  = isset($value['E']) ? trim($value['E']) : null; 
+            // 新班级代号
+            $temp['new_class_code']  = isset($value['F']) ? trim($value['F']) : null; 
+            // 原班级学号
+            $temp['old_student_number'] = isset($value['G']) ? trim($value['G']) : null; 
+            // 住宿情况
+            $temp['accommodation']   = isset($value['H']) ? trim($value['H']) : null; 
+             // 缴费情况（第1学期）(0: 未缴  1:已缴)
+            $temp['payment1']        = isset($value['I']) ? $this->getPaymentValue(trim($value['I'])) : null;
+             // 缴费情况（第2学期）
+            $temp['payment2']        = isset($value['J']) ? $this->getPaymentValue(trim($value['J'])) : null;
+             // 缴费情况（第3学期）
+            $temp['payment3']        = isset($value['K']) ? $this->getPaymentValue(trim($value['K'])) : null;
+             // 缴费情况（第4学期）
+            $temp['payment4']        = isset($value['L']) ? $this->getPaymentValue(trim($value['L'])) : null;
+             // 缴费情况（第5学期）
+            $temp['payment5']        = isset($value['M']) ? $this->getPaymentValue(trim($value['M'])) : null;
+            // 缴费情况（第6学期）
+            $temp['payment6']        = isset($value['N']) ? $this->getPaymentValue(trim($value['N'])) : null;
+             // 奖惩情况
+            $temp['bonus_penalty']   = isset($value['O']) ? trim($value['O']) : null;
+            // 家庭住址
+            $temp['address']         = isset($value['P']) ? trim($value['P']) : null;
+            // 家长电话
+            $temp['parents_tel']     = isset($value['Q']) ? trim($value['Q']) : null;
+            // 家长QQ
+            $temp['parents_qq']      = isset($value['R']) ? trim($value['R']) : null;
+            // 毕业学校
+            $temp['school_of_graduation'] = isset($value['S']) ? trim($value['S']) : null;
+            // 备注
+            $temp['comment']         = isset($value['T']) ? trim($value['T']) : null;
             
             $result[] = $temp;
         }
@@ -258,6 +276,10 @@ class TImportStudent extends CActiveRecord {
      * @return boolean
      */
     public function validatedata(&$array) {
+        if (!is_array($array)) {
+            return false;
+        }
+        
         $encode = 'utf-8';
         
         $result = true;
@@ -296,6 +318,16 @@ class TImportStudent extends CActiveRecord {
                     if(TUsers::model()->exists("username=:username", array(':username'=>$value['student_number']))){
                         $error[] = '学号已经存在！';
                     }
+                }
+                
+                // 原班级学号和班级(原)要么都为空，要么都指定
+                if ($value['old_student_number'] != '' && $value['old_class_code'] == '') {
+                    $error[] = '班级(原)必须指定！';
+                    
+                    Yii::log('==> ' . print_R($value, true));
+                }
+                if ($value['old_student_number'] == '' && $value['old_class_code'] != '') {
+                    $error[] = '原班级学号必须指定！';
                 }
             }
 
@@ -355,14 +387,14 @@ class TImportStudent extends CActiveRecord {
             
             // 旧班级不为空的情况下，说明是班级的调整
             // 检查学生的数据是否存在
-            if($value['old_class_code'] != '') {
+            if ($value['old_class_code'] != '' && $value['old_student_number'] != '' && count($error) == 0) {
                 // 根据旧班级信息和姓名，查询学生信息
                 $sql =  "select a.* from t_students a ";
                 $sql .= " inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
                 $sql .= " inner join t_classes c on b.class_id=c.ID and c.`status`='2' "; // 暂停中的班级信息
-                $sql .= "where c.class_code=:class_code and a.name=:name and a.sex=:sex and a.`status`='1' "; // 未离校的学生
+                $sql .= "where c.class_code=:class_code and a.name=:name and a.`status`='1' and b.student_number=:old_student_number"; // 未离校的学生
 
-                $student = TStudents::model()->findBySql($sql, array(':name' => $value['name'], ':sex' => $value['sex'], ':class_code' => $value['old_class_code']));
+                $student = TStudents::model()->findBySql($sql, array(':name' => $value['name'], ':class_code' => $value['old_class_code'], ':old_student_number'=>$value['old_student_number']));
                 if (is_null($student)) {
                     $error[] = '原班级中不存在该学生信息！';
                 }

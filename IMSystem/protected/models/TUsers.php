@@ -263,9 +263,9 @@ class TUsers extends CActiveRecord
             $sql =  "select a.* from t_students a ";
             $sql .= " inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
             $sql .= " inner join t_classes c on b.class_id=c.ID and c.`status`='2' "; // 暂停中的班级信息
-            $sql .= "where c.class_code=:class_code and a.name=:name and a.sex=:sex and a.`status`='1' "; // 未离校的学生
+            $sql .= "where c.class_code=:class_code and a.name=:name and b.student_number=:old_student_number and a.`status`='1' "; // 未离校的学生
             
-            $student = TStudents::model()->findBySql($sql, array(':name' => $data['name'], ':sex' => $data['sex'], ':class_code' => $data['old_class_code']));
+            $student = TStudents::model()->findBySql($sql, array(':name' => $data['name'], ':class_code' => $data['old_class_code'], ':old_student_number'=>$data['old_student_number']));
             // 不存在的情况
             if (!is_null($student)) {
                 // 存在的情况下，只需要更新学生表数据
@@ -349,16 +349,17 @@ class TUsers extends CActiveRecord
                     $old_class->save(false);
                 }
 
+                
                 // 新的班级信息的添加
-                $new_class = new TStudentClasses();
-                $new_class->student_number = $data['student_number'];
-                $new_class->student_id = $student->ID;
-                $new_class->class_id = $new_class->ID;
-                $new_class->status = '1';
-                $new_class->create_user = Yii::app()->user->getState('ID');
-                $new_class->create_time = new CDbExpression('NOW()');
-
-                if ($student->save(false) && $new_class->save(false)) {
+                $class1 = new TStudentClasses();
+                $class1->student_number = $data['student_number'];
+                $class1->student_id = $student->ID;
+                $class1->class_id = $new_class->ID;
+                $class1->status = '1';
+                $class1->create_user = Yii::app()->user->getState('ID');
+                $class1->create_time = new CDbExpression('NOW()');
+                
+                if ($student->save(false) && $class1->save(false)) {
                     $result = true;
                 }
             }

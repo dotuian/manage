@@ -236,12 +236,12 @@ class ClassController extends BaseController {
                 $class->update_user = $this->getLoginUserId();
                 $class->update_time = new CDbExpression('NOW()');
                 
-                // 该班级对应的学生信息也全都暂停
-                $sql = "update t_student_classes set status= '0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
-                $command=Yii::app()->db->createCommand($sql);
-                $command->bindValue(":update_user", $this->getLoginUserId());
-                $command->bindValue(":class_id", $class->ID);
-                $command->execute();
+//                // 该班级对应的学生信息也全都暂停
+//                $sql = "update t_student_classes set status= '0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
+//                $command=Yii::app()->db->createCommand($sql);
+//                $command->bindValue(":update_user", $this->getLoginUserId());
+//                $command->bindValue(":class_id", $class->ID);
+//                $command->execute();
                 
                 if ($class->save(false)) {
                     $this->setSuccessMessage("班级暂停成功！");
@@ -279,12 +279,12 @@ class ClassController extends BaseController {
                             $class->update_user = $this->getLoginUserId();
                             $class->update_time = new CDbExpression('NOW()');
                             
-                            // 该班级对应的学生信息也全都暂停
-                            $sql = "update t_student_classes set status= '0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
-                            $command=Yii::app()->db->createCommand($sql);
-                            $command->bindValue(":update_user", $this->getLoginUserId());
-                            $command->bindValue(":class_id", $class->ID);
-                            $command->execute();
+//                            // 该班级对应的学生信息也全都暂停
+//                            $sql = "update t_student_classes set status= '0', update_user=:update_user, update_time=now() where class_id=:class_id and status='1'";
+//                            $command=Yii::app()->db->createCommand($sql);
+//                            $command->bindValue(":update_user", $this->getLoginUserId());
+//                            $command->bindValue(":class_id", $class->ID);
+//                            $command->execute();
                             
                             if(!$class->save(false)){
                                 $result = false;

@@ -26,7 +26,7 @@ $this->breadcrumbs = array(
                         ));
                     ?>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">学生信息批量导入时间区间  </label>
+                            <label class="col-lg-2 control-label">班主任导入学生信息日期范围</label>
                             <div class="col-lg-2">
                                 <div class="input-append" id="start_date" >
                                     <div>
@@ -50,6 +50,7 @@ $this->breadcrumbs = array(
                                 </div>
                                 <?php echo $form->error($model,'import_student_end_date'); ?>
                             </div>
+                            
                         </div>
 
                         <hr />

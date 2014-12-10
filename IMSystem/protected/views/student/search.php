@@ -7,14 +7,9 @@ $this->breadcrumbs = array(
 Yii::app()->clientScript->registerScript('js', "
 $(document).ready(function(){
 
-
 });
 ", CClientScript::POS_END );
 ?>
-
-<script>
-</script>
-
 
 <!-- 检索条件 -->
 <div class="widget">
@@ -22,7 +17,7 @@ $(document).ready(function(){
         <div class="pull-left">检索条件</div>
         <div class="clearfix"></div>
     </div>
-
+    
     <div class="widget-content">
         <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -82,7 +77,7 @@ $(document).ready(function(){
             <div class="clearfix"></div> 
         </div>
         <?php $this->endWidget(); ?>
-        
+
     </div>
 </div>
 
@@ -138,7 +133,7 @@ $(document).ready(function(){
             </tbody>
         </table>
 
-        
+
         <?php if ($dataProvider->getPagination()->pageCount > 1) { ?>
         <div class="widget-foot">
             <?php $listview->renderPager(); ?>
