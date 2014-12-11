@@ -63,7 +63,7 @@ class BaseController extends CController {
             }
 
             if (!in_array($this->getRoute(), Yii::app()->user->getState('authoritys'))) {
-//                throw new CHttpException(500,'没有权限！');
+                throw new CHttpException(500,'没有权限！');
             }
         } else {
             return false;

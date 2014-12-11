@@ -56,7 +56,7 @@ $(document).ready(function(){
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->textField($model,'student_number',array('class'=>'form-control required','placeholder'=>'学号')); ?>
                                 <?php echo $form->error($model,'student_number'); ?>
-                                <div class="tip">※学号作为该登录该系统的用户名。登录密码为：<?php echo Yii::app()->params['SLoginPassword']; ?></div>
+                                <div class="tip">※学号作为登录该系统的用户名。登录密码为：<?php echo Yii::app()->params['SLoginPassword']; ?></div>
                             </div>
                         </div>
                     

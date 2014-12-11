@@ -127,10 +127,31 @@
                 $controller = Yii::app()->controller->id;  
             ?>
           
-            <?php if(in_array('system/setting', $this->authoritys)) { ?>
-                <!-- 系统设置 -->
-                <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-cog"></i> <span>系统配置</span></a></li> 
+            <?php if(in_array('MYCLASS', $this->category)) { ?>
+            <!-- 我的班级 -->
+            <li class="has_sub">
+                <a href="#" class="<?php echo $controller == 'myclass' ? 'open' : ''; ?>">
+                <i class="fa fa-tasks"></i> <span>我的班级</span> <span class="pull-right"><i class="fa <?php echo $controller == 'myclass' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
+                <ul>
+                    <?php if(in_array('myclass/index', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/index');?>">学生信息</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('myclass/score', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/score');?>">学生成绩</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('myclass/import', $this->authoritys) && $this->isBanZhuRen()) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/import');?>">学生导入</a></li>
+                    <?php } ?>
+                    
+                    <?php if(in_array('myclass/course', $this->authoritys)) { ?>
+                    <li><a href="<?php echo $this->createUrl('myclass/course');?>">课程安排</a></li>
+                    <?php } ?>
+                </ul>
+            </li>
             <?php } ?>
+
             
             <?php if(in_array('STUDENT', $this->category)) { ?>
             <!-- 学生管理 -->
@@ -210,34 +231,8 @@
                 </ul>
             </li>
             <?php } ?>
-            
 
-            <?php if(in_array('MYCLASS', $this->category)) { ?>
-            <!-- 班级管理 -->
-            <li class="has_sub">
-                <a href="#" class="<?php echo $controller == 'myclass' ? 'open' : ''; ?>">
-                <i class="fa fa-tasks"></i> <span>我的班级</span> <span class="pull-right"><i class="fa <?php echo $controller == 'myclass' ? 'fa-chevron-down' : 'fa-chevron-left'; ?>"></i></span></a>
-                <ul>
-                    <?php if(in_array('myclass/index', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('myclass/index');?>">学生信息</a></li>
-                    <?php } ?>
-                    
-                    <?php if(in_array('myclass/score', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('myclass/score');?>">学生成绩</a></li>
-                    <?php } ?>
-                    
-                    <?php if(in_array('myclass/import', $this->authoritys) && $this->isBanZhuRen()) { ?>
-                    <li><a href="<?php echo $this->createUrl('myclass/import');?>">学生导入</a></li>
-                    <?php } ?>
-                    
-                    <?php if(in_array('myclass/course', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('myclass/course');?>">课程安排</a></li>
-                    <?php } ?>
-                </ul>
-            </li>
-            <?php } ?>
-          
-          
+            
             <?php if(in_array('SUBJECT', $this->category)) { ?>
             <!-- 科目管理 -->
             <li class="has_sub">
@@ -271,7 +266,7 @@
                     <?php } ?>
 
                     <?php if(in_array('course/class', $this->authoritys)) { ?>
-                        <li><a href="<?php echo $this->createUrl('course/class');?>">班级课程计划</a></li>
+                        <li><a href="<?php echo $this->createUrl('course/class');?>">班级课程安排</a></li>
                     <?php } ?>
                 </ul>
             </li>
@@ -347,7 +342,11 @@
                 </ul>
             </li>
             <?php } ?>
-          
+            
+            <?php if(in_array('system/setting', $this->authoritys)) { ?>
+                <!-- 系统设置 -->
+                <li><a href="<?php echo $this->createUrl('system/setting');?>"><i class="fa fa-cog"></i> <span>系统配置</span></a></li> 
+            <?php } ?>
 
             <!-- 个人设置 -->
             <li class="has_sub">

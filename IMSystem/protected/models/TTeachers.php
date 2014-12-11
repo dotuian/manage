@@ -305,9 +305,11 @@ class TTeachers extends CActiveRecord
         $data = $command->query($params);
         
         foreach ($data as $value) {
-            //$pinyin = strtoupper(PinYinUtils::utf8_to($value['name'], true));
-            //$pinyin = str_pad($pinyin, 3, " ", STR_PAD_BOTH);
-            $result[$value['subject_name'] . '教师'][$value['ID']] = $value['name'];
+            $pinyin = strtoupper(PinYinUtils::utf8_to($value['name'], true));
+            $pinyin = str_pad($pinyin, 3, " ", STR_PAD_BOTH);
+            $name = $pinyin . ' | ' . $value['name'];
+            
+            $result[$value['subject_name'] . '教师'][$value['ID']] = $name; //$value['name'];
         }
         
         return $result;

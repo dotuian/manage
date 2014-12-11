@@ -82,7 +82,7 @@ $(document).ready(function(){
         <?php if($model->type ==='1' && isset($class) ) { ?>
             <table class="table table-striped table-bordered table-hover" id="result">
                 <thead>
-                    <tr><th>班级</th><th>科目</th><th>教师</th><th>操作结果</th></tr>
+                    <tr><th>班级</th><th>科目</th><th>教师</th><th>操作</th><th>操作结果</th></tr>
                 </thead>
                 <tbody>
                     <?php foreach ($subjects as $subject) { ?>
@@ -92,6 +92,8 @@ $(document).ready(function(){
                                 $course = MCourses::model()->find("class_id=:class_id and subject_id=:subject_id and status='1'",array(':subject_id' => $subject->ID, ':class_id' => $class->ID));
                                 if(!is_null($course)){
                                     $data->teacher_id = $course->teacher_id;
+                                } else {
+                                    $data->teacher_id = null;
                                 }
                             
                                 $form = $this->beginWidget('CActiveForm', array(
@@ -104,41 +106,75 @@ $(document).ready(function(){
                                 <td class="center"><?php echo $class->class_name; ?></td>
                                 <td class="center"><?php echo $subject->subject_name; ?></td>
                                 <td class="center">
+                                    <?php echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getAllTeacherWithPinYinOption(true), array('class'=>'form-control', 'id'=> 'teacher'. $subject->ID)); ?>
+                                </td>
+                                <td class="center">
+                                    <?php echo CHtml::ajaxButton("保存",   
+                                            Yii::app()->createUrl('ajax/insertCourse'),
+                                            array(
+                                                'class'=>'btn btn-primary',
+                                                'type'=>'POST',
+                                                'data' => array(
+                                                        'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                                        'class_id'=> $class->ID,
+                                                        'subject_id'=> $subject->ID,
+                                                        'teacher_id'=> "js:$('#teacher$subject->ID').val()",
+                                                    ),
+                                                'beforeSend'=>"function(xhr, opts){
+                                                        $('#result$subject->ID').html('');
+                                                        $.blockUI({ message: null });
+                                                    }",
+                                                'success'=>"function(data){
+                                                        $.unblockUI();
+                                                        data = JSON.parse(data);
+                                                        var show = $('#result$subject->ID');
+
+                                                        show.removeClass();
+                                                        if(data.result) {
+                                                            show.addClass('label label-success');
+                                                        } else {
+                                                            show.addClass('label label-danger');
+                                                        }
+                                                        show.text(data.message);
+
+                                                    }",                                                
+                                            )); ?>  
+                                    
                                     <?php 
                                     // 根据科目CODE，获取相应的科目教师
-                                    echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getAllTeacherGroupOption(true, $subject->subject_code), array(
-                                        'class'=>'form-control',
-                                        'id' => 'teacher_id' . $subject->ID ,
-                                        'ajax'=>array(
-                                            'type'=>'POST',
-                                            'data' => array(
-                                                'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
-                                                'class_id'=> $class->ID,
-                                                'subject_id'=> $subject->ID,
-                                                'teacher_id'=> 'js:$(this).val()',
-                                            ),
-                                            'url' => Yii::app()->createUrl('course/insert'),
-                                            //'update'=>'#objtype',
-                                            'beforeSend'=>"function(){
-                                                    $('#result$subject->ID').html('');
-                                                    $.blockUI({ message: null });
-                                                }",
-                                            'success'=>"function(data){
-                                                    $.unblockUI();
-                                                    data = JSON.parse(data);
-                                                    var show = $('#result$subject->ID');
-
-                                                    show.removeClass();
-                                                    if(data.result) {
-                                                        show.addClass('label label-success');
-                                                    } else {
-                                                        show.addClass('label label-danger');
-                                                    }
-                                                    show.text(data.message);
-
-                                                }",
-                                        )
-                                        )); ?>
+//                                    echo $form->dropDownList($data,'teacher_id', TTeachers::model()->getAllTeacherGroupOption(true, $subject->subject_code), array(
+//                                        'class'=>'form-control',
+//                                        'id' => 'teacher_id' . $subject->ID ,
+//                                        'ajax'=>array(
+//                                            'type'=>'POST',
+//                                            'data' => array(
+//                                                'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+//                                                'class_id'=> $class->ID,
+//                                                'subject_id'=> $subject->ID,
+//                                                'teacher_id'=> 'js:$(this).val()',
+//                                            ),
+//                                            'url' => Yii::app()->createUrl('ajax/insertCourse'),
+//                                            //'update'=>'#objtype',
+//                                            'beforeSend'=>"function(){
+//                                                    $('#result$subject->ID').html('');
+//                                                    $.blockUI({ message: null });
+//                                                }",
+//                                            'success'=>"function(data){
+//                                                    $.unblockUI();
+//                                                    data = JSON.parse(data);
+//                                                    var show = $('#result$subject->ID');
+//
+//                                                    show.removeClass();
+//                                                    if(data.result) {
+//                                                        show.addClass('label label-success');
+//                                                    } else {
+//                                                        show.addClass('label label-danger');
+//                                                    }
+//                                                    show.text(data.message);
+//
+//                                                }",
+//                                        )
+//                                        )); ?>
                                 </td>
                                 <td>
                                     <span id="result<?php echo $subject->ID; ?>"></span>

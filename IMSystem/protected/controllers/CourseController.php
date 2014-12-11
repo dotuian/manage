@@ -115,63 +115,6 @@ class CourseController extends BaseController {
         
     }
     
-    public function actionInsert() {
-        if (!Yii::app()->request->isAjaxRequest) {
-            return;
-        }
-        
-        $data = array('result' => false, 'message' => '操作失败！');
-        
-        if (isset($_POST['class_id']) && isset($_POST['subject_id']) && isset($_POST['teacher_id'])) {
-            $class_id = trim($_POST['class_id']);
-            $subject_id = trim($_POST['subject_id']);
-            $teacher_id = trim($_POST['teacher_id']);
-
-            try {
-                // 判断该课程是否已经存在
-                $course = MCourses::model()->find("class_id=:class_id and subject_id=:subject_id and status='1'",array(':subject_id' => $subject_id, ':class_id' => $class_id));
-                // 删除
-                if(empty($teacher_id)) {
-                    
-                    if (!is_null($course) && $course->delete()) {
-                        $data['result'] = true;
-                        $data['message'] = '删除成功！';
-                    }
-                }
-                // 添加/修改任课教师
-                else if ($teacher_id != '') {
-                    if (is_null($course)) {
-                        $course = new MCourses();
-                        $course->class_id   = $class_id;
-                        $course->subject_id = $subject_id;
-                        $course->teacher_id = $teacher_id;
-                        $course->status = '1';
-                        $course->create_user = $this->getLoginUserId();
-                        $course->update_user = $this->getLoginUserId();
-                        $course->create_time = new CDbExpression('NOW()');
-                        $course->update_time = new CDbExpression('NOW()');                    
-                    } else {
-                        $course->teacher_id = $teacher_id;
-                        $course->update_user = $this->getLoginUserId();
-                        $course->update_time = new CDbExpression('NOW()');
-                    }
-
-                    if ($course->save()) {
-                        $data['result'] = true;
-                        $data['message'] = '操作成功！';
-                    }
-                }
-                
-            } catch (Exception $e) {
-                $data['message'] = '系统异常！';
-                throw new CHttpException(404, "系统异常！");
-            }
-        }
-        
-        echo json_encode($data);
-    }
-    
-    
     public function actionUpdate() {
 
         if (isset($_GET['ID'])) {

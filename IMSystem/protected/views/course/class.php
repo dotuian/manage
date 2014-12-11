@@ -30,7 +30,7 @@ Yii::app()->clientScript->registerScript('js', "
                 ?>
                 <div class="padd">
                     <h6>
-                        查看班级当当年的教学，教师安排。<br/>
+                        查看班级当年的教学，教师安排。<br/>
                     </h6>
                     <hr/>
                         <div class="form-group" id="class">
