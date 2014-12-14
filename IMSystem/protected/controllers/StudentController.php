@@ -620,5 +620,28 @@ class StudentController extends BaseController {
         
     }
     
+
+    /**
+     * 下载学生总表
+     */
+    public function actionExport(){
+        $model = new ExportStudentForm();
+        if(isset($_POST['ExportStudentForm'])) {
+            $model->attributes = $_POST['ExportStudentForm'];
+            if($model->validate()) {
+                // 数据
+                $data = $model->getExcelData();
+                //Yii::log(print_R($data, true));
+                
+                // 下载Excel文件
+                $model->writeExcel($data);
+                
+                Yii::app()->end();
+            } 
+        } 
+        
+        $this->render('export', array('model' => $model));
+    }
+    
     
 }

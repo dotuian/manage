@@ -261,8 +261,6 @@ class TStudents extends CActiveRecord {
         $params = array(':student_id' => $this->ID);
         $data = Yii::app()->db->createCommand($sql)->queryAll(true, $params);
         
-        Yii::log(print_r($data, true));
-        
         return $data;
     }
     
@@ -284,8 +282,18 @@ class TStudents extends CActiveRecord {
     }
     
     public function getPaymentName($payment){
-        return $payment == '1' ? '缴' : '未';
+        $result = '';
+        switch ($payment) {
+            case '0':
+                $sexname = '未';
+                break;
+            case '1':
+                $sexname = '缴';
+                break;
+            default:
+                break;
+        }
+        return $result;
     }
-    
     
 }
