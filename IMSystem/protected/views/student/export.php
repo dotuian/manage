@@ -34,7 +34,8 @@ $(document).ready(function(){
                     <h6>
                         导出指定条件所对应学生的信息到Excel文件中。<br/>
                         <ul>
-                            <li>指定年级和班级的条件，将对应的学生信息下载到Excel文件中。</li>
+                            <li>指定年级和班级的条件，将对应的在校学生信息下载到Excel文件中。</li>
+                            <li>在不指定任何条件的情况下，下载全部在校学生的信息。但是这样需要等待较长的时间。建议指定年级，班级后下载学生信息。</li>
                         </ul>
                     </h6>
                     <hr/>
@@ -43,7 +44,7 @@ $(document).ready(function(){
                             <div class="col-lg-10 inline-block">
                                 <?php echo $form->dropDownList($model,'grade', TClasses::model()->getGradeOption(true), array(
                                         'id'=>'grade',
-                                        'class'=>'form-control required',
+                                        'class'=>'form-control',
                                         'ajax'=>array(
                                             'type'=>'POST',
                                             'data' => array(

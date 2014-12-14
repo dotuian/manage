@@ -303,13 +303,22 @@ class ReportForm extends CFormModel {
         
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; charset=UTF-8; filename=' . $filename);
+        header('Content-Disposition: attachment; filename=' . $filename);
         header('Cache-Control: max-age=1');
+
         ob_end_clean(); //避免下载的文件打开出现格式错误
+        ob_start();
         
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        $objWriter->save('php://output');
-
+        // 官方提供下载的方式是下面一行代码，但是在有些平台下会出现格式错误。
+        //$objWriter->save('php://output');
+        
+        // 在有些平台下，下载会出现格式错误时，可以采用下面的下载方式
+        $filePath = "files\\download\\" . rand(0, getrandmax()) . rand(0, getrandmax()) . ".xlsx";
+        $objWriter->SAVE($filePath);
+        readfile($filePath);
+        unlink($filePath);
+        
         spl_autoload_register(array('YiiBase', 'autoload'));
     }
 

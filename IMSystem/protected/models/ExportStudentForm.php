@@ -12,7 +12,7 @@ class ExportStudentForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('grade', 'required'),
+//            array('grade', 'required'),
             array('grade, class_id', 'safe'),
         );
     }
@@ -31,6 +31,26 @@ class ExportStudentForm extends CFormModel {
         parent::afterValidate();
     }
 
+    public function createFileName() {
+        $filename = "学生基本信息_";
+        
+        if($this->grade != "") {
+            $filename .= TClasses::model()->getEntryYearDisplayName($this->grade);
+            $filename .= "_";
+        }
+        
+        if($this->class_id != "") {
+            $class = TClasses::model()->find("ID=:ID", array(":ID" => $this->class_id));
+            if (!is_null($class)) {
+                $filename .= $class->class_name;
+                $filename .= "_";
+            }
+        }
+        $filename .= date('Ymd') . '.xlsx';
+        
+        return $filename;
+    }
+    
     /**
      * 
      */
@@ -41,15 +61,21 @@ class ExportStudentForm extends CFormModel {
         $sql .= "FROM t_students a  ";
         $sql .= "inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
         $sql .= "inner join t_classes c on c.ID=b.class_id  ";
-        $sql .= "where c.grade=:grade ";
+        $sql .= "where 1=1 ";
 
         $params = array();
-        $params[':grade'] = $this->grade;
+        
+        if($this->grade != "") {
+            $sql .= "and c.grade=:grade ";
+            $params[':grade'] = $this->grade;
+        }
         if($this->class_id != "") {
             $sql .= "and c.ID=:class_id ";
             $params[':class_id'] = $this->class_id;
         }
 
+        $sql .= "order by c.class_code, b.student_number ";
+        
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $data = $command->queryAll(true, $params);
@@ -59,10 +85,10 @@ class ExportStudentForm extends CFormModel {
 
     /**
      * 写文件
-     * @param type $title
      * @param type $data
+     * @param type $filename 下载的文件名
      */
-    public function writeExcel($data) {
+    public function writeExcel($data, $filename) {
         //error_reporting(E_ALL);
 
         $phpExcelPath = Yii::getPathOfAlias('ext.phpexcel');
@@ -232,35 +258,42 @@ class ExportStudentForm extends CFormModel {
         $column = 0;
         foreach ($data as $key => $value) {
             $colIndex = 0 ;
-            // 设置学生信息列的数据
+            // 姓名
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["student_number"], PHPExcel_Cell_DataType::TYPE_STRING); // 学号
-            $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["name"]); // 姓名
+            $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["name"]); 
             // 性别
             $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getSexName($value["sex"]));
             // 身份证号码
             $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["id_card_no"], PHPExcel_Cell_DataType::TYPE_STRING); 
             // 班级(原)
-            $worksheet->getStyleByColumnAndRow($colIndex, $index + 1)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["old_class_code"]); 
             // 班级(现)
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["class_code"]); 
             
             // 住宿情况
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["accommodation"]); 
             
             // 缴费情况(第一学期)
-            $worksheet->getStyleByColumnAndRow($colIndex, $index + 5)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getPaymentName($value["payment1"]));
             // 缴费情况(第二学期)
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getPaymentName($value["payment2"])); 
             // 缴费情况(第三学期)
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getPaymentName($value["payment3"])); 
             // 缴费情况(第四学期)
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getPaymentName($value["payment4"])); 
             // 缴费情况(第五学期)
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getPaymentName($value["payment5"])); 
             // 缴费情况(第六学期)
+            $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getPaymentName($value["payment6"])); 
             // 奖惩情况
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["bonus_penalty"]); 
@@ -290,16 +323,23 @@ class ExportStudentForm extends CFormModel {
         // =============================================================
         // 文件下载
         // =============================================================
-        $filename = "学生基本信息_" .date('Ymd') . '.xlsx';
-        
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; charset=UTF-8; filename=' . $filename);
+        header('Content-Disposition: attachment; filename=' . $filename);
         header('Cache-Control: max-age=1');
+
         ob_end_clean(); //避免下载的文件打开出现格式错误
+        ob_start();
         
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        $objWriter->save('php://output');
+        // 官方提供下载的方式是下面一行代码，但是在有些平台下会出现格式错误。
+        //$objWriter->save('php://output');
+        
+        // 在有些平台下，下载会出现格式错误时，可以采用下面的下载方式
+        $filePath = "files\\download\\" . rand(0, getrandmax()) . rand(0, getrandmax()) . ".xlsx";
+        $objWriter->SAVE($filePath);
+        readfile($filePath);
+        unlink($filePath);
 
         spl_autoload_register(array('YiiBase', 'autoload'));
     }

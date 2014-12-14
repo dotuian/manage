@@ -631,10 +631,10 @@ class StudentController extends BaseController {
             if($model->validate()) {
                 // 数据
                 $data = $model->getExcelData();
-                //Yii::log(print_R($data, true));
-                
+                // 下载的文件名
+                $filename = $model->createFileName();
                 // 下载Excel文件
-                $model->writeExcel($data);
+                $model->writeExcel($data, $filename);
                 
                 Yii::app()->end();
             } 
