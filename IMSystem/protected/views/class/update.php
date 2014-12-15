@@ -71,7 +71,7 @@ $this->breadcrumbs=array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">班级性质</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_type', TClasses::model()->getClassTypeOption(false), array('class'=>'form-control', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->dropDownList($model,'class_type', TClasses::model()->getClassTypeOption(false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'class_type'); ?>
                             </div>
                         </div>
@@ -79,7 +79,7 @@ $this->breadcrumbs=array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">专业名称</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'specialty_name'); ?>
                             </div>
                         </div>

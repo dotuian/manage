@@ -195,8 +195,9 @@ class ClassController extends BaseController {
             if (isset($_POST['TClasses']) && $class->status == '1') {
                 $class->class_name = trim($_POST['TClasses']['class_name']);
                 $class->teacher_id = trim($_POST['TClasses']['teacher_id']);
-                //$class->status = trim($_POST['TClasses']['status']);
                 
+                $class->class_type = trim($_POST['TClasses']['class_type']);
+                $class->specialty_name = trim($_POST['TClasses']['specialty_name']);
                 
                 $class->update_user = $this->getLoginUserId();
                 $class->update_time = new CDbExpression('NOW()');

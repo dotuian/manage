@@ -20,13 +20,13 @@ class CourseForm extends CFormModel {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('class_id, subjects', 'required'),
+            array('class_id', 'required'),
             array('subject_id, teacher_id, class_id', 'length', 'max' => 10),
             array('status, type', 'length', 'max' => 1),
             array('class_code', 'length', 'max' => 5),
             array('type, subject_id, class_code, teacher_id, class_id, status, teacher_name, subjects', 'safe'),
             // 课程信息添加 create
-            array('subject_id, teacher_id, class_id', 'required', 'on' => 'create'),
+            array('class_id, subjects', 'required', 'on' => 'create'),
         );
     }
 
@@ -40,7 +40,7 @@ class CourseForm extends CFormModel {
             'subject_id' => '科目',
             'teacher_id' => '任课教师',
             'teacher_name' => '任课教师',
-            'class_id' => '班级名称',
+            'class_id' => '班级',
             'class_code' => '班级代号',
             'status' => '状态',
             'subjects' => '科目',
@@ -66,7 +66,6 @@ class CourseForm extends CFormModel {
             if(is_null($class)){
                 $this->addError('class_id','该班级信息不存在！');
             }
-            
         }
         
         

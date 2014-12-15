@@ -87,6 +87,7 @@ class CourseController extends BaseController {
         
         if (isset($_POST['CourseForm'])) {
             $model->attributes = $_POST['CourseForm'];
+            $model->scenario = 'create';
             
             if($model->validate()){
                 $class = TClasses::model()->find("status='1' and ID=:ID", array(":ID"=>$model->class_id));
@@ -186,26 +187,33 @@ class CourseController extends BaseController {
         
         if (isset($_POST['CourseForm'])) {
             $model->attributes = $_POST['CourseForm'];
+            $model->scenario = 'class';
             
-            $class = TClasses::model()->find("Id=:ID", array(':ID' => $model->class_id));
-            if (is_null($class)) {
-                throw new CHttpException(404, "该班级信息不存在！");
-            }
-            
-            $sql = "select d.*, b.subject_name, c.name from m_courses a
-                    inner join m_subjects b on a.subject_id=b.ID and b.`status`='1'
-                    inner join t_teachers c on a.teacher_id=c.ID and c.`status`='1'
-                    inner join t_classes  d on a.class_id = d.ID and d.`status`='1'
-                    where a.`status`='1' and a.class_id=:class_id ";
+            if($model->validate()) {
+                $class = TClasses::model()->find("Id=:ID", array(':ID' => $model->class_id));
+                if (is_null($class)) {
+                    throw new CHttpException(404, "该班级信息不存在！");
+                }
 
-            $connection = Yii::app()->db;
-            $command = $connection->createCommand($sql);
-            $command->bindValue(":class_id", $model->class_id);
-            $command->order("d.ID asc , b.level asc ");
-            $data = $command->queryAll();
-            
-            if(count($data) == 0) {
-                $this->setWarningMessage("没有班级的课程安排信息！");
+                $sql = "select d.*, b.subject_name, c.name from m_courses a
+                        inner join m_subjects b on a.subject_id=b.ID and b.`status`='1'
+                        inner join t_teachers c on a.teacher_id=c.ID and c.`status`='1'
+                        inner join t_classes  d on a.class_id = d.ID and d.`status`='1'
+                        where a.`status`='1' and a.class_id=:class_id ";
+
+                $connection = Yii::app()->db;
+                $command = $connection->createCommand($sql);
+                $command->bindValue(":class_id", $model->class_id);
+                $command->order("d.ID asc , b.level asc ");
+                $data = $command->queryAll();
+                
+                Yii::log(print_r($data, true));
+                
+                if(count($data) == 0) {
+                    $this->setWarningMessage("没有班级的课程安排信息！");
+                }
+            } else {
+                Yii::log(print_r($model->errors, true));
             }
         }
 
