@@ -182,9 +182,9 @@ class TeacherController extends BaseController {
                 
                 $tran = Yii::app()->db->beginTransaction();
                 try{
-                    // $teacher->name   = trim($_POST['TTeachers']['']); 
+                    $teacher->name   = trim($_POST['TTeachers']['name']); 
                     //$teacher->status = trim($_POST['TTeachers']['']); 
-                    //$teacher->sex    = trim($_POST['TTeachers']['']); 
+                    $teacher->sex    = trim($_POST['TTeachers']['sex']); 
                     $teacher->code         = trim($_POST['TTeachers']['code']); 
                     $teacher->birthday     = trim($_POST['TTeachers']['birthday']); 
                     $teacher->id_card_no   = trim($_POST['TTeachers']['id_card_no']); 

@@ -48,7 +48,7 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">姓名</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->textField($model,'name', array('class'=>'form-control required','placeholder'=>'姓名')); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
@@ -56,8 +56,8 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label class="col-lg-2 control-label">性别</label>
                             <div class="col-lg-10">
-                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('separator'=>'　', 'disabled'=>'disabled')); ?>
-                                <?php echo '<br/>' . $form->error($model,'sex'); ?>
+                                <?php echo $form->radioButtonList($model,'sex', StudentForm::getSexOption(false), array('separator'=>'　')); ?>
+                                <br/><?php echo $form->error($model,'sex'); ?>
                             </div>
                         </div>
                     
