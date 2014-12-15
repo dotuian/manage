@@ -24,7 +24,7 @@ $(document).ready(function(){
             <div class="widget-content">
                 <?php
                     $form = $this->beginWidget('CActiveForm', array(
-                        'id' => 'class-score-form',
+                        'id' => 'export-student-form',
                         'method' => 'post',
                         'enableClientValidation'=>false,
                         'htmlOptions' => array('class' => 'form-horizontal', 'role'=>'form'),
@@ -78,7 +78,7 @@ $(document).ready(function(){
 
                     <div class="widget-foot">
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('导出', array('class'=>'btn btn-search')); ?>
+                            <?php echo CHtml::submitButton('导出', array('class'=>'btn btn-export')); ?>
                         </div>
                         <div class="clearfix"></div> 
                     </div>

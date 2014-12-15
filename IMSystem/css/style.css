@@ -143,6 +143,12 @@ a:hover,a:active,a:focus {
     border-color: #0044cc #0044cc #002a80;
 }
 
+.btn-export{
+    color: #fff;
+    background-color: #0044cc;
+    border-color: #0044cc #0044cc #002a80;
+}
+
 
 .form-control{
   -webkit-border-radius: 2px;

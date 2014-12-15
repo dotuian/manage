@@ -420,4 +420,28 @@ class TeacherController extends BaseController {
         ));
     }
 
+
+    /**
+     * 下载教师信息
+     */
+    public function actionExport() {
+        $model = new ExportTeacherForm();
+        if (isset($_POST['ExportTeacherForm'])) {
+            
+            $model->attributes = $_POST['ExportTeacherForm'];
+            if ($model->validate()) {
+                // 数据
+                $data = $model->getExcelData();
+                // 下载的文件名
+                $filename = $model->createFileName();
+                // 下载Excel文件
+                $model->writeExcel($data, $filename);
+
+                Yii::app()->end();
+            }
+        }
+
+        $this->render('export', array('model' => $model));
+    }
+    
 }   

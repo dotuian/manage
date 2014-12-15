@@ -75,8 +75,8 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">孝感综合高级中学</span>
-                 <i>校园信息系统</i> 
+<!--                 <span class="bold">孝感综合高级中学</span>
+                 <i>校园信息系统</i> -->
             </a>
         </div>
 
@@ -208,6 +208,10 @@
                         
                     <?php if(in_array('teacher/import', $this->authoritys)) { ?>
                         <li><a href="<?php echo $this->createUrl('teacher/import');?>">教师信息导入</a></li>
+                    <?php } ?>
+                        
+                    <?php if(in_array('teacher/export', $this->authoritys)) { ?>
+                        <li><a href="<?php echo $this->createUrl('teacher/export');?>">教师信息导出</a></li>
                     <?php } ?>
                 </ul>
             </li>
