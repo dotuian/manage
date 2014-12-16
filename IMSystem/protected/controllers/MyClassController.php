@@ -12,7 +12,7 @@ class MyClassController extends BaseController {
         $model = new MyClassForm();
         
         // 获取该教师可以查看的班级
-        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId(), false);
+        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId());
         
         if (isset($_GET['MyClassForm'])) {
             $model->attributes = $_GET['MyClassForm'];
@@ -141,7 +141,7 @@ class MyClassController extends BaseController {
         $model = new MyClassForm();
         
         // 获取该教师可以查看的班级
-        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId(), false);
+        $classes = TClasses::model()->getClassOptionByTeacher($this->getLoginUserId());
 
         if (isset($_POST['MyClassForm'])) {
             $model->attributes = $_POST['MyClassForm'];

@@ -102,7 +102,7 @@ class ExportTeacherForm extends CFormModel {
         // 标题
         // =============================================================
         // 最大列数39列
-        $lastColumn = PHPExcel_Cell::stringFromColumnIndex(39);
+        $lastColumn = PHPExcel_Cell::stringFromColumnIndex(38);
         
         // 大标题
         $row = 1;
@@ -114,10 +114,6 @@ class ExportTeacherForm extends CFormModel {
         $worksheet->getStyle("A1")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
         $worksheet->getStyle("A1")->getFont()->setName('Consolas');
         $worksheet->getStyle("A1")->getFont()->setSize(12);
-        
-        // 第二行
-        $row = 2; 
-        $col = 0;
         
         $title = array(
             "基本情况" => array(
@@ -172,9 +168,18 @@ class ExportTeacherForm extends CFormModel {
         );
         
         //$index = 1;
+        
+        // 第二行(大标题)
+        $row = 2; 
+        $col = 0;
         foreach ($title as $key => $value) {
-            $count = count($value);
+            if(count($value, COUNT_RECURSIVE) !== count($value)) {
+                $count = count($value, COUNT_RECURSIVE) -1 ;
+            } else {
+                $count = count($value);
+            }
             
+            // 第一行大标题
             $worksheet->mergeCellsByColumnAndRow($col, $row, $col + $count - 1, $row);
             $worksheet->setCellValueByColumnAndRow($col, $row, $key);
             
@@ -185,21 +190,31 @@ class ExportTeacherForm extends CFormModel {
             $col += $count;
         }
         
-        
-        // 
-        $title = 
-        
-        // 第3行的小标题
-//        $row = 3;
-//        $col = 0;
-//        foreach ($title as $value) {
-//            $worksheet->mergeCellsByColumnAndRow($col, $row, $col, $row + 1);
-//            $worksheet->setCellValueByColumnAndRow($col, $row, $value);
-//            $col++;
-//        }
-//        
-        
 
+        // 第三行小标题
+        $row = 3; 
+        $col = 0;
+        foreach ($title as $key => $value) {
+            foreach ($value as $sub_key => $sub_value) {
+                if(is_string($sub_value)) {
+                    $count = 1;
+                    $worksheet->mergeCellsByColumnAndRow($col, $row, $col + $count - 1, $row + 1);
+                    $worksheet->setCellValueByColumnAndRow($col, $row, $sub_value);
+                    
+                    $col += $count;
+                } else {
+                    // 师德档案-- 继续教育情况
+                    $count = count($sub_value, COUNT_RECURSIVE);
+                    $worksheet->mergeCellsByColumnAndRow($col, $row, $col + $count - 1, $row);
+                    $worksheet->setCellValueByColumnAndRow($col, $row, $sub_key);
+                    
+                    foreach ($sub_value as $v) {
+                        $worksheet->setCellValueByColumnAndRow($col++, $row + 1, $v);
+                    }
+                }
+                
+            }
+        }
         
         // 标题设置为粗体，水平/垂直居中
         //$worksheet->getStyle("A2:{$lastColumn}3")->getFont()->setBold(true);
