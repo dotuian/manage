@@ -32,7 +32,7 @@ $(document).ready(function(){
                 ?>
                 <div class="padd">
                     <h6>
-                        导出包含指定条件所对应教师的信息到Excel文件中。<br/>
+                        导出包含指定条件所对应教师的信息到Excel文件中。不指定任何条件时，则导出所有教师的信息。<br/>
                     </h6>
                     <hr/>
                         <div class="form-group">
@@ -42,7 +42,6 @@ $(document).ready(function(){
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
-                    
                     </div>
 
                     <div class="widget-foot">

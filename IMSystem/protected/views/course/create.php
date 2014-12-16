@@ -112,7 +112,6 @@ $(document).ready(function(){
                                     <?php echo CHtml::ajaxButton("保存",   
                                             Yii::app()->createUrl('ajax/insertCourse'),
                                             array(
-                                                'class'=>'btn btn-primary',
                                                 'type'=>'POST',
                                                 'data' => array(
                                                         'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
@@ -138,7 +137,10 @@ $(document).ready(function(){
                                                         show.text(data.message);
 
                                                     }",                                                
-                                            )); ?>  
+                                            ),
+                                            array(
+                                                'class'=>'btn btn-save'
+                                            )); ?>
                                     
                                     <?php 
                                     // 根据科目CODE，获取相应的科目教师

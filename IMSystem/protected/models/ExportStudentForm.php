@@ -134,7 +134,7 @@ class ExportStudentForm extends CFormModel {
         $worksheet->getStyle("A1")->getAlignment()->setWrapText(true);
         $worksheet->getStyle("A1")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $worksheet->getStyle("A1")->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $worksheet->getStyle("A1")->getFont()->setName('Consolas');
+        $worksheet->getStyle("A1")->getFont()->setName('宋体');
         $worksheet->getStyle("A1")->getFont()->setSize(12);
         
         $index = 1;  // 小标题开始行数
@@ -313,7 +313,7 @@ class ExportStudentForm extends CFormModel {
 
         // 设置数据区域边框
         $worksheet->getStyle("A2:{$lastColumn}" . ($index - 1))->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $worksheet->getStyle("A2:{$lastColumn}" . ($index - 1))->getFont()->setName('Consolas');
+        $worksheet->getStyle("A2:{$lastColumn}" . ($index - 1))->getFont()->setName('宋体');
         $worksheet->getStyle("A2:{$lastColumn}" . ($index - 1))->getFont()->setSize(10);
         
         // 固定标题栏

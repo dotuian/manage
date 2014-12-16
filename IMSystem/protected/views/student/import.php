@@ -49,9 +49,15 @@ $this->breadcrumbs = array(
 
                         <hr />
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
-                                <?php echo CHtml::hiddenField('validate', 'validate'); ?>
-                                <?php echo CHtml::submitButton('读取数据', array('class'=>'btn btn-import')); ?>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
+
+                                </div>
+                                <div class="pull-right">
+                                    <?php echo CHtml::hiddenField('validate', 'validate'); ?>
+                                    <?php echo CHtml::submitButton('读取数据', array('class'=>'btn btn-import')); ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
                         </div>
                         <div class="clearfix"></div>

@@ -139,12 +139,16 @@ $this->breadcrumbs = array(
                     
                         <hr />
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
-                                <input type="reset" class="btn btn-reset" value='重置' />
-                                <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary')); ?>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
+                                    <input type="reset" class="btn btn-reset" value='重置' />
+                                </div>
+                                <div class="pull-right">
+                                    <?php echo CHtml::submitButton('添加', array('class'=>'btn btn-primary')); ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
                         </div>
-                    
                     <?php $this->endWidget(); ?>
                     
                 </div>

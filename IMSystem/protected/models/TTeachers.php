@@ -408,12 +408,11 @@ class TTeachers extends CActiveRecord
      */
     public function getTeacherSubjectIds(){
         $result = array();
-        Yii::log(print_r($this->tTeacherSubjects, true));
+
         foreach ($this->tTeacherSubjects as $teacherSubject) {
             $result[] = $teacherSubject->subject_id;
         }
         
         return $result;
     }
-    
 }

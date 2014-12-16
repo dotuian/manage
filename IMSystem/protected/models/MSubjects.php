@@ -311,4 +311,27 @@ class MSubjects extends CActiveRecord
         }
         return $result;
     }
+    
+    
+    /**
+     * 任课教师任课科目名称的获取
+     * 用于修改变更教师信息
+     * @param type $ids
+     * @return type
+     */
+    public function getTeachSubjectsName($ids) {
+        
+        $criteria = new CDbCriteria;
+        $criteria->addInCondition('ID', $ids);
+        $criteria->addCondition("status='1'");
+        
+        $temp = array();
+        $subjects = MSubjects::model()->findAll($criteria);
+        foreach ($subjects as $subject) {
+            $temp[] = $subject->subject_name;
+        }
+        
+        return count($temp) > 0 ?  implode(',', $temp) : null;
+    }
+    
 }

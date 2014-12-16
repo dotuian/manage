@@ -72,7 +72,6 @@ $(document).ready(function(){
                     <th>角色名称</th>
                     <th>创建日期</th>
                     <th>更新日期</th>
-                    <th>操作</th>
                 </tr>
             </thead>
 
@@ -92,7 +91,7 @@ $(document).ready(function(){
                 ?>
                 <div class="clearfix"></div> 
                 <tr>
-                    <td colspan="4">
+                    <td colspan="3">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </tr>

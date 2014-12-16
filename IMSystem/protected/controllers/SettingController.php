@@ -55,6 +55,9 @@ class SettingController extends BaseController {
             }
         } else {// 教师用户信息变更
             if (isset($_POST['TTeachers'])) {
+                // 添加担任科目信息
+                $data->subjects = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
+                
                 $data->sex           = $_POST['TTeachers']['sex'];           //性别
                 $data->birthday      = $_POST['TTeachers']['birthday'];      // 出生年月日
                 $data->id_card_no    = $_POST['TTeachers']['id_card_no'];    // 身份证号码
@@ -90,8 +93,9 @@ class SettingController extends BaseController {
                 $data->moral_target_check        = $_POST['TTeachers']['moral_target_check'];        // 目标考核
                 $data->moral_memo                = $_POST['TTeachers']['moral_memo'];                // 师德备注
                 
-                $data->teach_grades              = $_POST['TTeachers']['teach_grades'];     // 任教年级
+                $data->teach_grades              = $_POST['TTeachers']['teach_grades'];              // 任教年级
                 $data->teaching_research_postion = $_POST['TTeachers']['teaching_research_postion']; // 教研职务
+                $data->teach_subjects            = MSubjects::model()->getTeachSubjectsName($data->subjects); // 任教科目
                 $data->recruit_students          = $_POST['TTeachers']['recruit_students']; // 招生情况
                 $data->attendance                = $_POST['TTeachers']['attendance'];       // 考勤情况
                 $data->working_memo              = $_POST['TTeachers']['working_memo'];     // 履职备注
@@ -110,8 +114,6 @@ class SettingController extends BaseController {
                 if ($data->validate()) {
                     // 删除担任科目信息
                     TTeacherSubjects::model()->deleteAll("teacher_id=:teacher_id", array(':teacher_id'=>$data->ID));
-                    // 添加担任科目信息
-                    $data->subjects = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
                     if(is_array($data->subjects)){
                         foreach ($data->subjects as $key => $value) {
                             $teacherSubject = new TTeacherSubjects();

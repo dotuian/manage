@@ -182,6 +182,9 @@ class TeacherController extends BaseController {
                 
                 $tran = Yii::app()->db->beginTransaction();
                 try{
+                    // 任教科目
+                    $teacher->subjects  = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
+                    
                     $teacher->name   = trim($_POST['TTeachers']['name']); 
                     //$teacher->status = trim($_POST['TTeachers']['']); 
                     $teacher->sex    = trim($_POST['TTeachers']['sex']); 
@@ -220,6 +223,8 @@ class TeacherController extends BaseController {
                     
                     $teacher->teach_grades = trim($_POST['TTeachers']['teach_grades']); 
                     $teacher->teaching_research_postion = trim($_POST['TTeachers']['teaching_research_postion']); 
+                    $teacher->teach_subjects = MSubjects::model()->getTeachSubjectsName($teacher->subjects);
+                    
                     $teacher->recruit_students = trim($_POST['TTeachers']['recruit_students']); 
                     $teacher->attendance = trim($_POST['TTeachers']['attendance']); 
                     $teacher->working_memo = trim($_POST['TTeachers']['working_memo']); 
@@ -251,7 +256,6 @@ class TeacherController extends BaseController {
                             // 删除担任科目信息
                             TTeacherSubjects::model()->deleteAll("teacher_id=:teacher_id", array(':teacher_id'=>$user->ID));
                             // 添加担任科目信息
-                            $teacher->subjects  = is_array($_POST['TTeachers']['subjects']) ? $_POST['TTeachers']['subjects'] : array();
                             if(is_array($teacher->subjects)){
                                 foreach ($teacher->subjects as $key => $value) {
                                     $teacherSubject = new TTeacherSubjects();

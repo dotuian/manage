@@ -66,6 +66,7 @@ class AuthorityForm extends CFormModel
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
         
+        $result['MYCLASS'] = '我的班级';
         $result['TEACHER'] = '教师管理';
         $result['STUDENT'] = '学生管理';
         $result['SCORE'] = '成绩管理';
@@ -75,6 +76,7 @@ class AuthorityForm extends CFormModel
         $result['ROLE'] = '角色管理';
         $result['AUTHORITY'] = '权限管理';
         $result['OTHER'] = '其他选项';
+        $result['SYSTEM'] = '系统设置';
 
         return $result;
     }

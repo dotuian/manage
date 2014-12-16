@@ -91,7 +91,6 @@ $(document).ready(function(){
                     <th>地址</th>
                     <th>电话号码</th>
                     <th>状态</th>
-                    <th>操作</th>
                 </tr>
             </thead>
 

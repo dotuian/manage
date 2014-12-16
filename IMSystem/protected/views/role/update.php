@@ -140,22 +140,26 @@ $this->breadcrumbs = array(
 
                         <hr />
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
                                 <?php 
-                                if (!in_array($model->role_id, array('1', '2', '3', '4', '5'))) {
-                                    echo CHtml::Button("删除", array(
-                                        'confirm' => '确定要删除吗？',
-                                        'params' => array('ID' => $model->role_id),
-                                        'submit' => array('delete'),
-                                        'class' => 'btn btn-delete',
-                                        'encode' => false,
-                                    ));
-                                }
+                                    if (!in_array($model->role_id, array('1', '2', '3', '4', '5'))) {
+                                        echo CHtml::Button("删除", array(
+                                            'confirm' => '确定要删除吗？',
+                                            'params' => array('ID' => $model->role_id),
+                                            'submit' => array('delete'),
+                                            'class' => 'btn btn-delete',
+                                            'encode' => false,
+                                        ));
+                                    }
                                 ?>
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-primary')); ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-primary')); ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
                         </div>
-                    
                     <?php $this->endWidget(); ?>
                     
                 </div>

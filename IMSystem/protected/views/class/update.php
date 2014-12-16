@@ -94,28 +94,30 @@ $this->breadcrumbs=array(
                     
                         <hr />
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
-                                <?php 
-                                    // 暂停的状态下，不能修改变更班级信息
-                                    if($model->status == '1') {
-                                        echo CHtml::Button('暂停', array(
-                                            'confirm'=>'确定要暂停该班级吗？',
-                                            'params'=>array('ID' => $model->ID),
-                                            'submit' => array('pause'),
-                                            'class'=>'btn btn-delete',
-                                            'encode'=>false,
-                                        ));
-                                    }
-                                ?>
-                                
-                                <?php 
-                                    if($model->status == '1') {
-                                        echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); 
-                                    }
-                                ?>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
+                                    <?php 
+                                        // 暂停的状态下，不能修改变更班级信息
+                                        if($model->status == '1') {
+                                            echo CHtml::Button('暂停', array(
+                                                'confirm'=>'确定要暂停该班级吗？',
+                                                'params'=>array('ID' => $model->ID),
+                                                'submit' => array('pause'),
+                                                'class'=>'btn btn-delete',
+                                                'encode'=>false,
+                                            ));
+                                        }
+                                    ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?php 
+                                        if($model->status == '1') {
+                                            echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); 
+                                        }
+                                    ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
-
-                            
                         </div>
                     
                     <?php $this->endWidget(); ?>

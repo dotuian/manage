@@ -66,12 +66,16 @@ $(document).ready(function(){
 
                         <hr />
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
-                                <?php echo CHtml::resetButton('重置', array('class'=>'btn btn-reset')); ?>
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
+                                    <?php echo CHtml::resetButton('重置', array('class'=>'btn btn-reset')); ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
                         </div>
-                    
                     <?php $this->endWidget(); ?>
                     
                 </div>

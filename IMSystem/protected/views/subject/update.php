@@ -80,38 +80,32 @@ $this->breadcrumbs=array(
                             </div>
                         </div>
                     
-                        <!--
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label">状态</label>
-                            <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'status', SubjectForm::getSubjectStatusOption(false), array('class'=>'form-control')); ?>
-                                <?php echo $form->error($model,'status'); ?>
-                            </div>
-                        </div>
-                        -->
-                    
                         <hr />
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
-                                <?php 
-                                    if($model->status == "1") {
-                                        echo CHtml::Button("删除", array(
-                                            'confirm'=>'确定要删除吗？',
-                                            'params'=>array('ID' => $model->ID),
-                                            'submit' => array('delete'),
-                                            'class'=>'btn btn-delete',
-                                            'encode'=>false,
-                                        ));
-                                    }
-                                ?>
-                                <?php 
-                                    if($model->status == "1") {
-                                        echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); 
-                                    }
-                                ?>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
+                                    <?php 
+                                        if($model->status == "1") {
+                                            echo CHtml::Button("删除", array(
+                                                'confirm'=>'确定要删除吗？',
+                                                'params'=>array('ID' => $model->ID),
+                                                'submit' => array('delete'),
+                                                'class'=>'btn btn-delete',
+                                                'encode'=>false,
+                                            ));
+                                        }
+                                    ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?php 
+                                        if($model->status == "1") {
+                                            echo CHtml::submitButton('变更', array('class'=>'btn btn-update ')); 
+                                        }
+                                    ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
                         </div>
-                    
                     <?php $this->endWidget(); ?>
                     
                 </div>

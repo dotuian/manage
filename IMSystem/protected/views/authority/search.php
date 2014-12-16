@@ -79,7 +79,6 @@ $(document).ready(function(){
                     <th>权限名称</th>
                     <th>分类</th>
                     <th>访问路径</th>
-                    <th>详细</th>
                 </tr>
             </thead>
 
@@ -100,7 +99,7 @@ $(document).ready(function(){
                 ?>
                 <div class="clearfix"></div> 
                 <tr>
-                    <td colspan="7">
+                    <td colspan="3">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </tr>

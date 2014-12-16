@@ -264,17 +264,22 @@ $this->breadcrumbs=array(
                         <hr />
                         <?php if($model->status == '1') { ?>
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-9">
-                                <?php 
-                                    echo CHtml::Button('离校', array(
-                                        'confirm'=>'确定要将该学生设置为离校状态吗？',
-                                        'params'=>array('ID' => $model->ID),
-                                        'submit' => array('delete'),
-                                        'class'=>'btn btn-delete',
-                                        'encode'=>false,
-                                    ));
-                                ?>
-                                <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); ?>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="pull-left">
+                                    <?php 
+                                        echo CHtml::Button('离校', array(
+                                            'confirm'=>'确定要将该学生设置为离校状态吗？',
+                                            'params'=>array('ID' => $model->ID),
+                                            'submit' => array('delete'),
+                                            'class'=>'btn btn-delete',
+                                            'encode'=>false,
+                                        ));
+                                    ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?php echo CHtml::submitButton('变更', array('class'=>'btn btn-update')); ?>
+                                </div>
+                                <div class="clearfix"></div> 
                             </div>
                         </div>
                         <?php } ?>
