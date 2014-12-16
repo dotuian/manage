@@ -661,7 +661,7 @@ border: 0;
 
 .navbar-brand{
    color:#f1f1f1 !important;
-   font-size:22px;
+   font-size:20px;
    margin:0px !important;
    font-weight:normal;
    padding:12px 35px 10px 15px;
@@ -717,7 +717,7 @@ a.navbar-brand span.bold{
 
 .navbar i{
     margin-right: 4px;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .navbar-nav > li > .dropdown-menu{
