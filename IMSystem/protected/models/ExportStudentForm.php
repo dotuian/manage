@@ -260,7 +260,8 @@ class ExportStudentForm extends CFormModel {
             $colIndex = 0 ;
             // 姓名
             $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["student_number"], PHPExcel_Cell_DataType::TYPE_STRING); // 学号
+            $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["student_number"], PHPExcel_Cell_DataType::TYPE_STRING);
+            // 学号
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["name"]); 
             // 性别
             $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);

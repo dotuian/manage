@@ -470,5 +470,137 @@ class ScoreController extends BaseController {
         }
         $tran->commit();
     }
+
+    
+    /**
+     * 学生成绩录入模板下载
+     */
+    public function actionTemplate() {
+        $model = new ScoreTemplateForm();
+
+        if (isset($_POST['ScoreTemplateForm'])) {
+            $model->attributes = $_POST['ScoreTemplateForm'];
+            $model->scenario = 'template';
+
+            if ($model->validate()) {
+                // 学生数据
+                $students = $model->getStudentData();
+
+                $subjects = $model->getSubjectData();
+                
+                $class = TClasses::model()->find("ID=:ID", array(":ID"=>$model->class_id));
+                
+                // 下载Excel文件
+                $model->writeExcel($class, $students, $subjects);
+
+                Yii::app()->end();
+            }
+        }
+
+        $this->render('template', array('model' => $model));
+    }
+
+    /**
+     * 学生成绩批量导入
+     */
+    public function actionImport() {
+        $model = new TImportScore();
+        
+        // 学生成绩数据读取
+        if (isset($_POST['TImportScore']) && isset($_POST['validate']) && trim($_POST['validate']) == 'validate') {
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $model->attributes = $_POST['TImportScore'];
+                $model->scenario = 'validate';
+                // 上传文件名
+                $model->filename = CUploadedFile::getInstance($model, 'filename');
+                if ($model->validate()) {
+                    // 保存文件名
+                    $model->realpath = Yii::app()->params['FilePath'] . time() . '.' . $model->filename->extensionName;
+                    $model->create_user = $this->getLoginUserId();
+                    $model->update_user = $this->getLoginUserId();
+                    $model->filename->saveAs($model->realpath); // 将文件保存在服务器端
+
+                    if ($model->save()) {
+                        // 将Excel文件中的数据读取到数组中
+                        $data = $model->readExcel2Array();
+                        // 文件中的标题
+                        $title = $model->getTitleData($data);
+                        // 数据整形
+                        $data = $model->converdata($data);
+                        
+                        // 数据验证
+                        if ($check = $model->validatedata($data)) {
+                            
+                            if(count($data) > 0) {
+                                $this->setSuccessMessage("数据正常，可以导入！");
+                                $tran->commit();
+                            } else {
+                                $this->setWarningMessage("没有读取到成绩学生！");
+                            }
+                            
+                        } else {
+                            $this->setWarningMessage("数据中有格式错误，请修改后重试！");
+                        }
+                    } else {
+                        $this->setErrorMessage("数据读取失败，请检查文件格式之后重试！");
+                    }
+                }
+            } catch (Exception $e) {
+                $this->setErrorMessage('数据读取失败！');
+            }
+        }
+        
+        // 学生成绩数据导入
+        if (isset($_POST['TImportScore']['ID']) && isset($_POST['TImportScore']['class_id']) && isset($_POST['import']) && trim($_POST['import']) == 'import') {
+            $model->attributes = $_POST['TImportScore'];
+            $model->scenario = 'import';
+
+            $record = TImportScore::model()->find('ID=:ID', array(':ID' => $model->ID));
+            if(is_null($record)){
+                throw new CHttpException(500, '数据导入过程中出现异常，请稍后重试！');
+            }
+
+            $tran = Yii::app()->db->beginTransaction();
+            try {
+                $record->class_id = $model->class_id;
+                $record->exam_id = $model->exam_id;
+                
+                // 将Excel文件中的数据读取到数组中
+                $data2 = $record->readExcel2Array();
+                
+                $title2 = $record->getTitleData($data2);
+                
+                // 数据整形
+                $data2 = $record->converdata($data2);
+                
+                // 数据验证
+                if($record->validatedata($data2)) {
+                    // 数据导入
+                    if($record->importdata($data2)) {
+                        $tran->commit();
+                        $this->setSuccessMessage("数据导入成功！");
+                        
+                        //$this->redirect($this->createUrl('import'));
+                    } else {
+                        $this->setErrorMessage("数据导入失败，请检查数据是否正确，然后重试！");
+                    }
+                } else {
+                    $this->setErrorMessage('数据中有异常数据，请修改后再重试！');
+                }
+            } catch (Exception $ex) {
+                Yii::log($ex->getTraceAsString());
+                throw new CHttpException(500, '数据导入过程中出现了异常！');
+            }
+        }
+        
+        $this->render('import', array(
+            'model' => $model,
+            'check' => isset($check) ? $check : null,  // 对Excel中的数据进行检查的结果
+            'title'  => isset($title) ? $title : null, 
+            'data'  => isset($data) ? $data : null, // Excel读取的，经过了检查的数据
+        ));
+    }
+    
     
 }

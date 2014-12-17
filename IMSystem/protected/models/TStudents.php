@@ -295,5 +295,25 @@ class TStudents extends CActiveRecord {
         }
         return $result;
     }
-    
+
+    /**
+     * 通过学号+姓名+班级获取学生信息
+     * @param type $student_number
+     * @param type $name
+     * @param type $class_id
+     * @return type
+     */
+    public function getStudentInfoByCondition($student_number, $name, $class_id){
+        $sql = "select a.ID from t_students a ";
+        $sql .= "inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
+        $sql .= "inner join t_classes c on b.class_id=c.ID and c.`status`='1' ";
+        $sql .= "where a.`status`='1' and b.student_number=:student_number and a.name=:name and c.ID=:class_id";
+        
+        $params = array();
+        $params[":student_number"] = $student_number;
+        $params[":name"] = $name;
+        $params[":class_id"] = $class_id;
+        
+        return TStudents::model()->findBySql($sql, $params);
+    }
 }
