@@ -116,10 +116,10 @@ return array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'info, warning, error, profile',
                 ),
-//               array(
-//                    'class'=>'CWebLogRoute',
-//                    //'levels' => 'trace,info,error,warning,debug',
-//                ),
+               array(
+                    'class'=>'CWebLogRoute',
+                    //'levels' => 'trace,info,error,warning,debug',
+                ),
             ),
         ),
         

@@ -294,13 +294,15 @@
                     <?php if(in_array('score/create', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/create');?>">学生成绩录入</a></li>
                     <?php } ?>
-
+                    
+                    <!--
                     <?php if(in_array('score/template', $this->authoritys)) { ?>
                     <li><a href="<?php echo $this->createUrl('score/template');?>">成绩录入模板</a></li>
                     <?php } ?>
+                    -->
                     
                     <?php if(in_array('score/import', $this->authoritys)) { ?>
-                    <li><a href="<?php echo $this->createUrl('score/import');?>">成绩信息导入</a></li>
+                    <li><a href="<?php echo $this->createUrl('score/import');?>">学生成绩导入</a></li>
                     <?php } ?>
                     
                     <?php if(in_array('score/class', $this->authoritys)) { ?>
