@@ -76,7 +76,7 @@
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
                  <span class="bold">孝感综合高级中学</span>
-                 <i class="subtitle">校园信息系统</i> 
+                 <i>校园信息系统</i> 
             </a>
         </div>
 

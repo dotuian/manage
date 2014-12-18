@@ -351,7 +351,7 @@ class TImportStudent extends CActiveRecord {
             
             if($value['old_class_code'] != '') {
                 if (!in_array($value['old_class_code'], $old_class_codes)) {
-                    $error[] = '班级(旧)没有被暂停！';
+                    $error[] = '班级(旧)信息不存在！';
                 }
             }
             

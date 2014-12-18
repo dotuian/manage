@@ -528,10 +528,8 @@ class ScoreController extends BaseController {
                         $title = $model->getTitleData($data);
                         // 数据整形
                         $data = $model->converdata($data);
-                        
                         // 数据验证
                         if ($check = $model->validatedata($data)) {
-                            
                             if(count($data) > 0) {
                                 $this->setSuccessMessage("数据正常，可以导入！");
                                 $tran->commit();
@@ -568,20 +566,16 @@ class ScoreController extends BaseController {
                 
                 // 将Excel文件中的数据读取到数组中
                 $data2 = $record->readExcel2Array();
-                
                 $title2 = $record->getTitleData($data2);
-                
                 // 数据整形
                 $data2 = $record->converdata($data2);
-                
                 // 数据验证
                 if($record->validatedata($data2)) {
                     // 数据导入
                     if($record->importdata($data2)) {
                         $tran->commit();
                         $this->setSuccessMessage("数据导入成功！");
-                        
-                        //$this->redirect($this->createUrl('import'));
+                        $this->redirect($this->createUrl('import'));
                     } else {
                         $this->setErrorMessage("数据导入失败，请检查数据是否正确，然后重试！");
                     }
