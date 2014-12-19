@@ -297,14 +297,14 @@ class ScoreController extends BaseController {
                 
                 // 为了没有参加考试的学生，也能够显示出来
                 if($model->exam_id != '') {
-                    $sql .= "left join m_exams  c on c.ID =  b.exam_id and b.exam_id=:exam_id  ";
+                    $sql .= "left join m_exams  c on c.ID = b.exam_id ";
                     $params[':exam_id'] = trim($model->exam_id);
                 } else {
-                    $sql .= "left join m_exams  c on c.ID =  b.exam_id ";
+                    $sql .= "left join m_exams  c on c.ID = b.exam_id ";
                 }
                 
                 $sql .= "left join m_subjects d on d.ID = b.subject_id ";
-                $sql .= "where 1=1 ";
+                $sql .= "where b.exam_id=:exam_id ";
 
                 if($model->class_id != '') {
                     $sql .= " and e.class_id=:class_id ";
@@ -318,7 +318,9 @@ class ScoreController extends BaseController {
                 $sql .= "order by e.student_number ";
 
                 $data = Yii::app()->db->createCommand($sql)->queryAll(true,$params);
-
+                
+                Yii::log(print_R($data, true));
+                
                 // 成绩表示，数据整形
                 $dataProvider = null;
                 foreach ($data as $value) {
@@ -330,8 +332,6 @@ class ScoreController extends BaseController {
                 
                 // 根据教师角色获取相应的科目
                 $subjects = MSubjects::model()->getSubjectInfoByUserRole($this->getLoginUserId(), $model->class_id);
-                
-                
 
                 $this->render('class', array('model' => $model, 'data' => $dataProvider, 'subjects' => $subjects));
                 
@@ -418,12 +418,8 @@ class ScoreController extends BaseController {
             if($model->validate()) {
                 // 数据
                 $data = $model->getExcelData();
-                //Yii::log(print_R($data, true));
-                
                 // 标题
                 $title = $model->getDataTitle($data);
-                //Yii::log(print_R($title, true));
-                
                 // 下载Excel文件
                 $model->writeExcel($title, $data);
                 
@@ -438,39 +434,6 @@ class ScoreController extends BaseController {
             $this->render('report', array('model' => $model));
         }
     }
-    
-    public function actionTestData() {
-        $class_ids = array(29, 30, 31);
-        $class_ids = array(29);
-        
-        $exams = MExams::model()->findAll();
-        
-        $tran = Yii::app()->db->beginTransaction();
-        foreach ($class_ids as $class_id) {
-            $students = TStudentClasses::model()->findAll("class_id=:class_id", array(":class_id" =>$class_id));
-            $subjects = MCourses::model()->findAll("class_id=:class_id", array(":class_id" =>$class_id));
-            
-            foreach ($students as $student) {
-                foreach ($subjects as $subject) {
-                    
-                    foreach ($exams as $exam) {
-                        $score = new TScores();
-                        $score->exam_id= $exam->ID;
-                        $score->subject_id = $subject->subject_id;
-                        $score->class_id=$student->class_id;
-                        $score->student_id=$student->student_id;
-                        $score->student_number=$student->student_number;
-                        $score->score = rand(0, 150);
-                        $score->create_user = $this->getLoginUserId();
-                        $score->create_time = new CDbExpression('NOW()');
-                        $score->save();
-                    }
-                }
-            }
-        }
-        $tran->commit();
-    }
-
     
     /**
      * 学生成绩录入模板下载

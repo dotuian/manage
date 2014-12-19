@@ -366,7 +366,7 @@ class TTeachers extends CActiveRecord
             $result[''] = yii::app()->params['EmptySelectOption'];
         }
 
-        $sql = "select DISTINCT b.* from t_classes a, t_teachers b where a.teacher_id=b.ID and a.status='1' and b.status='1'";
+        $sql = "select DISTINCT b.* from t_classes a, t_teachers b where a.teacher_id=b.ID ";
         $connection = Yii::app()->db;
         $command = $connection->createCommand($sql);
         $data = $command->query();

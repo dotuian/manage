@@ -85,9 +85,8 @@ $(document).ready(function(){
                 <tr>
                     <th>姓名</th>
                     <th>性别</th>
-                    <th>身份证号</th>
                     <th>入学年份</th>
-                    <th>现在所在班级</th>
+                    <th>班级(现)</th>
                     <th>状态</th>
                 </tr>
             </thead>
@@ -105,7 +104,7 @@ $(document).ready(function(){
                     ));
                 ?>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="5">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </td>

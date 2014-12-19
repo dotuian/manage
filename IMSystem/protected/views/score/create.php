@@ -9,7 +9,7 @@ $this->breadcrumbs = array(
 Yii::app()->clientScript->registerScript('create', "
 
 $(document).ready(function(){
-    $('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false, 'aaSorting': [],});
+    //$('#result').dataTable({'bPaginate': false, 'bFilter':false, 'bInfo':false, 'aaSorting': [],});
 });
 
 ",CClientScript::POS_HEAD);
@@ -102,7 +102,7 @@ $(document).ready(function(){
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left">检索结果</div>
+        <div class="pull-left"><?php echo $class->class_name ?>学生成绩录入</div>
         <div class="clearfix"></div>
     </div>
 
@@ -110,8 +110,8 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>序号</th>
-                    <th>班级</th>
+                    <th class="autohide">序号</th>
+                    <th class="autohide">班级</th>
                     <th>学号</th>
                     <th>姓名</th>
                     <th><?php echo $subject->subject_name; ?></th>
@@ -121,8 +121,8 @@ $(document).ready(function(){
             <tbody>
             <?php $i=0 ; foreach ($students as $student) { ?>
                 <tr>
-                    <td class="center"><?php echo ++$i; ?></td>
-                    <td class="center"><?php echo $class->class_name; ?></td>
+                    <td class="center autohide"><?php echo ++$i; ?></td>
+                    <td class="center autohide"><?php echo $class->class_name; ?></td>
                     <td class="center"><?php echo $student->student_number; ?></td>
                     <td class="center"><?php echo $student->name; ?></td>
                     <!-- 成绩录入列 --->

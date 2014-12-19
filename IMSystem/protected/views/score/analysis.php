@@ -113,7 +113,7 @@ $(document).ready(function(){
         <div class="clearfix"></div>
     </div>
 
-    <div class="widget-content">
+    <div class="widget-content scrolldiv">
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
@@ -138,8 +138,8 @@ $(document).ready(function(){
                         list($exam_name, $class_name) = explode('|', $key);
                 ?>
                 <tr>
-                    <td class="center"><?php echo $exam_name; ?></td>
-                    <td class="center"><?php echo $class_name; ?></td>
+                    <td class="center" nowrap><?php echo $exam_name; ?></td>
+                    <td class="center" nowrap><?php echo $class_name; ?></td>
                     <?php foreach ($subjects as $subject) { ?>
                         <td class="center"><?php echo $value[$subject]['及格人数']; ?></td>
                         <td class="center"><?php echo $value[$subject]['考试人数']; ?></td>

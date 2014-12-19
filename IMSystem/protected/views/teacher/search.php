@@ -87,9 +87,10 @@ $(document).ready(function(){
                     <th>姓名</th>
                     <th>性别</th>
                     <th>出生年月日</th>
-                    <th>身份证号码</th>
-                    <th>地址</th>
-                    <th>电话号码</th>
+                    <th>任教科目</th>
+                    <th class="autohide">身份证号码</th>
+                    <th class="autohide">地址</th>
+                    <th class="autohide">电话号码</th>
                     <th>状态</th>
                 </tr>
             </thead>
@@ -110,7 +111,7 @@ $(document).ready(function(){
                 ?>
                 <div class="clearfix"></div> 
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <center><?php $listview->renderSummary(); ?></center>
                     </td>
                 </tr>

@@ -68,11 +68,11 @@ Yii::app()->clientScript->registerScript('js', "
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left">检索结果</div>
+        <div class="pull-left">考试成绩</div>
         <div class="clearfix"></div>
     </div>
 
-    <div class="widget-content">
+    <div class="widget-content scrollbar">
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
@@ -87,7 +87,7 @@ Yii::app()->clientScript->registerScript('js', "
             <tbody>
                 <?php foreach ($data as $key => $value) { $count=0; ?>
                     <tr>
-                        <td class="center"><?php echo $key;?></td>
+                        <td class="center" nowrap><?php echo $key;?></td>
                         <?php 
                             $sum = 0 ;
                             foreach ($subjects as $subject) {
@@ -102,7 +102,7 @@ Yii::app()->clientScript->registerScript('js', "
                                 }
                             }
                         ?>
-                        <td class="center"><?php echo $sum; ?></td>
+                        <td class="center"><b><?php echo $sum; ?></b></td>
                     </tr>
                 <?php }?>
             </tbody>

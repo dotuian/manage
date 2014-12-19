@@ -16,7 +16,7 @@ class TeacherController extends BaseController {
             $sql = "select DISTINCT a.* ";
             $countSql = "select count(DISTINCT a.ID) ";
             $condition = "from t_teachers a left join t_teacher_subjects b on b.teacher_id=a.ID ";
-            $condition .= "left join m_subjects c on c.ID=b.subject_id and c.status='1' where a.code<>'root' ";
+            $condition .= "where a.code<>'root' ";
             
             $params = array();
             
@@ -33,7 +33,7 @@ class TeacherController extends BaseController {
                 $params[':id_card_no'] = '%' . StringUtils::escape(trim($model->id_card_no)). '%';
             }
             if (trim($model->subject_id) !== '') {
-                $condition .= " and c.ID=:subject_id  ";
+                $condition .= " and exists (select c.* from t_teacher_subjects c where c.teacher_id=a.ID and c.subject_id=:subject_id)  ";
                 $params[':subject_id'] = trim($model->subject_id);
             }
             if (trim($model->status) !== '') {

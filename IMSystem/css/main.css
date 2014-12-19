@@ -203,3 +203,17 @@ div.dataTables_length{
 td.nopass {
     color : #F00;
 }
+
+
+/** 表格标题纵向居中 */
+table th {
+  vertical-align:middle !important;
+}
+
+/** 显示横向滚动条 **/
+.scrolldiv{
+  overflow-x:scroll !important; 
+  overflow-y:visible  !important; 
+  width: 100%  !important;
+}
+

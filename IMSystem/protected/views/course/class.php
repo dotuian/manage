@@ -44,7 +44,7 @@ Yii::app()->clientScript->registerScript('js', "
 
                     <div class="widget-foot">
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('查看', array('class'=>'btn btn-search')); ?>
+                            <?php echo CHtml::submitButton('检索', array('class'=>'btn btn-search')); ?>
                         </div>
                         <div class="clearfix"></div> 
                     </div>
@@ -63,7 +63,7 @@ Yii::app()->clientScript->registerScript('js', "
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left"></div>
+        <div class="pull-left">班级课程安排</div>
         <div class="clearfix"></div>
     </div>
 

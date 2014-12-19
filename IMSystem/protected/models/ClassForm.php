@@ -11,6 +11,7 @@ class ClassForm extends CFormModel {
     public $specialty_name; // 专业名称
     public $status;
     public $teacher_id;
+    public $teacher_name;
 
     /**
      * @return array validation rules for model attributes.
@@ -20,7 +21,7 @@ class ClassForm extends CFormModel {
         // will receive user inputs.
         return array(
             // 共同
-            array('class_code, class_name, class_type, entry_year, term_type, teacher_id, grade', 'required'),
+            array('class_code, class_name, class_type, entry_year, term_type, teacher_id, teacher_name, grade', 'required'),
             array('entry_year', 'numerical', 'integerOnly' => true),
             array('class_name, specialty_name', 'length', 'max' => 20, 'encoding'=>'UTF-8'),
             
@@ -41,7 +42,7 @@ class ClassForm extends CFormModel {
             array('teacher_id', 'length', 'max' => 10),
             //========================================================================
             
-            array('ID, class_code, class_name, grade, class_type, specialty_name, status, entry_year, teacher_id', 'safe'),
+            array('ID, class_code, class_name, grade, class_type, specialty_name, status, entry_year, teacher_id, teacher_name', 'safe'),
         );
     }
     
@@ -75,6 +76,7 @@ class ClassForm extends CFormModel {
             'status' => '状态',
             'entry_year' => '年度',
             'teacher_id' => '班主任',
+            'teacher_name' => '班主任',
         );
     }
 

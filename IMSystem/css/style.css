@@ -149,6 +149,11 @@ a:hover,a:active,a:focus {
     border-color: #0044cc #0044cc #002a80;
 }
 
+.btn-save{
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
 
 .form-control{
   -webkit-border-radius: 2px;
@@ -2052,6 +2057,16 @@ footer .copy a{
 	.fc-button-month, .fc-button-agendaWeek, .fc-button-agendaDay {
 		display: none;
 	}
+    
+    .autohide{
+		display: none;
+    }
+    
+    .scrollbar{
+        overflow-x:scroll !important; 
+        overflow-y:visible  !important; 
+        width: 100%  !important;
+    }
 }
 
 @media (max-width: 767px){

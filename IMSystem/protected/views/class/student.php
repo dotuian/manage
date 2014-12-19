@@ -2,7 +2,7 @@
 $this->pageTitle = Yii::app()->name . '班级学生信息一览表';
 $this->breadcrumbs = array(
     '班级信息检索' => $this->createUrl('search'),
-    "{$class->entry_year}年{$class->class_name} 学生信息一览表",
+    "学生信息一览",
 );
 
 Yii::app()->clientScript->registerScript('js', "
@@ -29,12 +29,11 @@ $(document).ready(function(){
                 <tr>
                     <th>No.</th>
                     <th>学号</th>
-                    <th>学生姓名</th>
+                    <th>姓名</th>
                     <th>性别</th>
                     <th>出生年月</th>
-                    <th>家长电话</th>
-                    <th>家庭住址</th>
-                    <!--<th>详细</th>-->
+                    <th class="autohide">家长电话</th>
+                    <th class="autohide">家庭住址</th>
                 </tr>
             </thead>
 
@@ -43,7 +42,7 @@ $(document).ready(function(){
                 <tr>
                     <td class="center"><?php echo $index++; ?></td>
                     <td class="center"><?php echo $student->student_number; ?></td>
-                    <td class="center">
+                    <td class="center" nowrap>
                         <?php if(in_array('student/update', $this->authoritys)) { ?>
                             <a href="<?php echo $this->createUrl('student/update',  array('ID' => $student->ID)) ?>"><?php echo $student->name; ?></a>
                         <?php } else { ?>
@@ -52,9 +51,8 @@ $(document).ready(function(){
                     </td>
                     <td class="center"><?php if($student->sex == 'M') echo '男' ; if($student->sex == 'F') echo '女'; ?></td>
                     <td class="center"><?php echo $student->birthday; ?></td>
-                    <td class="center"><?php echo $student->parents_tel; ?></td>
-                    <td><?php echo $student->address; ?></td>
-                    <!--<td></td>-->
+                    <td class="center autohide"><?php echo $student->parents_tel; ?></td>
+                    <td class="autohide"><?php echo $student->address; ?></td>
                 </tr>
                 <?php } ?>
                 <div class="clearfix"></div>

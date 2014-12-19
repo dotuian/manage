@@ -31,26 +31,26 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>班级代号</th>
+                    <th class="autohide">班级代号</th>
                     <th>班级名称</th>
-                    <th>年级</th>
+                    <th class="autohide">年级</th>
                     <th>年度</th>
                     <th>学期</th>
                     <th>班级性质</th>
-                    <th>专业名称</th>
-                    <th>班主任</th>
+                    <th class="autohide">专业名称</th>
+                    <th class="autohide">班主任</th>
                     <th>状态</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>
+                    <td class="autohide">
                         <?php echo $form->textField($model,'class_code', array('class'=>'form-control', 'placeholder'=>'班级代号')); ?>
                     </td>
                     <td>
                         <?php echo $form->textField($model,'class_name', array('class'=>'form-control', 'placeholder'=>'班级名称')); ?>
                     </td>
-                    <td>
+                    <td class="autohide">
                         <?php echo $form->dropDownList($model,'grade', TClasses::model()->getGradeOption(true), array('class'=>'form-control')); ?>
                     </td>
                     <td>
@@ -62,11 +62,11 @@ $(document).ready(function(){
                     <td>
                         <?php echo $form->dropDownList($model,'class_type', TClasses::model()->getClassTypeOption(true), array('class'=>'form-control')); ?>
                     </td>
-                    <td>
+                    <td class="autohide">
                         <?php echo $form->textField($model,'specialty_name', array('class'=>'form-control', 'placeholder'=>'专业名称')); ?>
                     </td>
-                    <td>
-                        <?php echo $form->dropDownList($model,'teacher_id', TTeachers::model()->getAllHeadTeacherOption(true), array('class'=>'form-control')); ?>
+                    <td class="autohide">
+                        <?php echo $form->textField($model,'teacher_name', array('class'=>'form-control', 'placeholder'=>'班主任')); ?>
                     </td>
                     <td>
                         <?php echo $form->dropDownList($model,'status', TClasses::model()->getClassStatusOption(true), array('class'=>'form-control')); ?>
@@ -100,14 +100,14 @@ $(document).ready(function(){
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
-                    <th>班级代号</th>
+                    <th class="autohide">班级代号</th>
                     <th>班级名称</th>
-                    <th>年级</th>
+                    <th class="autohide">年级</th>
                     <th>年度</th>
                     <th>学期</th>
                     <th>班级性质</th>
-                    <th>专业名称</th>
-                    <th>班主任</th>
+                    <th class="autohide">专业名称</th>
+                    <th class="autohide">班主任</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>

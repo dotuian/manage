@@ -10,9 +10,10 @@
     </td>
     <td class="center"><?php echo $data['sex'] === 'M' ? '男' : '女'; ?></td>
     <td class="center"><?php echo $data['birthday']; ?></td>
-    <td class="center"><?php echo $data['id_card_no']; ?></td>
-    <td><?php echo $data['home_address']; ?></td>
-    <td class="center"><?php echo $data['telephone']; ?></td>
+    <td class="center"><?php echo $data['teach_subjects']; ?></td>
+    <td class="center autohide"><?php echo $data['id_card_no']; ?></td>
+    <td class="autohide"><?php echo $data['home_address']; ?></td>
+    <td class="center autohide"><?php echo $data['telephone']; ?></td>
     
     <td class="center">
         <span class="label <?php echo $data['status'] === '1' ? 'label-active' : 'label-stop';?>"><?php echo $data['status'] === '1' ? '在校' : '离校'; ?></span>

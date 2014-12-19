@@ -59,14 +59,14 @@ function check(){
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="selectAll"></th>
-                        <th>班级代号</th>
+                        <th class="autohide">班级代号</th>
                         <th>班级名称</th>
-                        <th>年级</th>
+                        <th class="autohide">年级</th>
                         <th>入学年份</th>
                         <th>学期</th>
                         <th>班级类型</th>
-                        <th>专业名称</th>
-                        <th>班主任</th>
+                        <th class="autohide">专业名称</th>
+                        <th class="autohide">班主任</th>
                         <th>状态</th>
                     </tr>
                 </thead>
@@ -77,14 +77,14 @@ function check(){
                         <td class="center">
                             <?php echo $form->checkBox($model,"class_ids[{$class['ID']}]", array('class'=>'option')); ?>
                         </td>
-                        <td class="center"><?php echo $class['class_code']; ?></td>
+                        <td class="center autohide"><?php echo $class['class_code']; ?></td>
                         <td class="center"><?php echo $class['class_name']; ?></td>
-                        <td class="center"><?php echo $class['grade']; ?></td>
+                        <td class="center autohide"><?php echo $class['grade']; ?></td>
                         <td class="center"><?php echo $class['entry_year']; ?></td>
                         <td class="center"><?php echo TClasses::model()->getTermTypeName($class['term_type']); ?></td>
                         <td class="center"><?php echo TClasses::model()->getClassTypeName($class['class_type']); ?></td>
-                        <td class="center"><?php echo $class['specialty_name']; ?></td>
-                        <td class="center"><?php echo $class['name']; ?></td>
+                        <td class="center autohide"><?php echo $class['specialty_name']; ?></td>
+                        <td class="center autohide"><?php echo $class['name']; ?></td>
                         <td class="center">
                             <span class="label <?php echo $class['status'] === '1' ? 'label-active' : 'label-stop';?>">
                                 <?php echo TClasses::model()->getClassStatusName($class['status']); ?>

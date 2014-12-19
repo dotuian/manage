@@ -92,9 +92,9 @@ class ClassController extends BaseController {
                 $condition .= " and a.status = :status ";
                 $params[':status'] = trim($model->status);
             }
-            if (trim($model->teacher_id) !== '') {
-                $condition .= " and a.teacher_id = :teacher_id ";
-                $params[':teacher_id'] = trim($model->teacher_id);
+            if (trim($model->teacher_name) !== '') {
+                $condition .= " and b.name like :name ";
+                $params[':name'] = "%" . trim($model->teacher_name) . "%";
             }
         }
         $sql .= $condition;

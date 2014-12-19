@@ -83,20 +83,20 @@ $this->breadcrumbs=array(
                                 <?php if(count($classes) > 0) {  ?>
                                 <table class="table table-striped table-bordered table-hover">
                                     <th class="center">年度</th>
-                                    <th class="center">年级</th>
+<!--                                    <th class="center">年级</th>
                                     <th class="center">学期</th>
                                     <th class="center">类型</th>
-                                    <th class="center">专业</th>
+                                    <th class="center">专业</th>-->
                                     <th class="center">班级</th>
                                     <th class="center">学号</th>
                                     <th class="center">班主任</th>
                                     <?php foreach ($classes as $class) { ?>
                                     <tr>
                                         <td class="center"><?php echo $class['entry_year']; ?></td>
-                                        <td class="center"><?php echo TClasses::model()->getEntryYearDisplayName($class['grade']); ?></td>
+<!--                                        <td class="center"><?php echo TClasses::model()->getEntryYearDisplayName($class['grade']); ?></td>
                                         <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($class['term_type']);?></td>
                                         <td class="center"><?php echo TClasses::model()->getClassTypeName($class['class_type']); ?></td>
-                                        <td class="center"><?php echo $class['specialty_name']; ?></td>
+                                        <td class="center"><?php echo $class['specialty_name']; ?></td>-->
                                         <td class="center"><?php echo $class['class_name']; ?></td>
                                         <td class="center"><?php echo $class['student_number']; ?></td>
                                         <td class="center"><?php echo $class['name']; ?></td>

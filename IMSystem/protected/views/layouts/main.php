@@ -477,8 +477,8 @@
 
 <!-- jQuery Flot -->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/excanvas.min.js"></script>-->
-<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.js"></script>-->
-<!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.resize.js"></script>-->
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.resize.js"></script>
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.pie.js"></script>-->
 <!--<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.flot.stack.js"></script>-->
 

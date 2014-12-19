@@ -1,5 +1,5 @@
 <tr>
-    <td class="center">
+    <td class="center" nowrap>
         <?php 
             if (in_array('student/update', $this->authoritys)) {
                 echo "<a href='{$this->createUrl('student/update', array('ID' => $data['ID']))}'>{$data['name']}</a>";
@@ -9,7 +9,6 @@
         ?>
     </td>
     <td class="center"><?php if($data['sex'] == 'M') echo '男' ; if($data['sex'] == 'F') echo '女'; ?></td>
-    <td class="center"><?php echo $data['id_card_no']; ?></td>
     <td class="center"><?php echo $data['school_year']; ?></td>
     <td class="center"><?php echo $data['class_name']; ?></td>
     <td class="center">

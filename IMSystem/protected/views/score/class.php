@@ -91,11 +91,12 @@ $(document).ready(function(){
 <div class="widget">
 
     <div class="widget-head">
-        <div class="pull-left">检索结果</div>
+        <div class="pull-left">学生成绩信息</div>
         <div class="clearfix"></div>
     </div>
-
-    <div class="widget-content">
+    
+    <!-- 带有横向滚动条的表格 -->
+    <div class="widget-content scrollbar">
         <table class="table table-striped table-bordered table-hover" id="result">
             <thead>
                 <tr>
@@ -105,7 +106,7 @@ $(document).ready(function(){
                     <th><?php echo $subject->subject_name; ?></th>
                     <?php }?>
                     <?php if(count($subjects) > 1) { ?>
-                    <th>合计</th>
+                    <th>总分</th>
                     <?php } ?>
                 </tr>
             </thead>
@@ -140,13 +141,12 @@ $(document).ready(function(){
                             
                             // 总分
                             if(count($subjects) > 1) {
-                                echo "<td class='center'><b>{$sum}</td><b>";
+                                echo "<td class='center'><b>{$sum}<b></td>";
                             }
                         } 
                     ?>
                 </tr>
                 <?php } ?>
-
                 <div class="clearfix"></div> 
             </tbody>
         </table>

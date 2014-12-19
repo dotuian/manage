@@ -92,14 +92,14 @@ $(document).ready(function(){
                                 <?php if(count($classes) > 0) {  ?>
                                 <table class="table table-striped table-bordered table-hover">
                                     <th class="center">学号</th>
-                                    <th class="center">班级代号</th>
+<!--                                    <th class="center">班级代号</th>-->
                                     <th class="center">班级名称</th>
                                     <th class="center">学期</th>
                                     <th class="center">班主任</th>
                                     <?php foreach ($classes as $class) { ?>
                                     <tr>
                                         <td class="center"><?php echo $class['student_number']; ?></td>
-                                        <td class="center"><?php echo $class['class_code']; ?></td>
+<!--                                        <td class="center"><?php echo $class['class_code']; ?></td>-->
                                         <td class="center"><?php echo $class['class_name']; ?></td>
                                         <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($class['term_type']); ?></td>
                                         <td class="center"><?php echo $class['name']; ?></td>
