@@ -359,7 +359,13 @@ class TUsers extends CActiveRecord
                 $class1->create_user = Yii::app()->user->getState('ID');
                 $class1->create_time = new CDbExpression('NOW()');
                 
-                if ($student->save(false) && $class1->save(false)) {
+                // 修改登录用户名
+                $tempUser = TUsers::model()->find('ID=:ID', array(':ID' => $student->ID));
+                $tempUser->username = $data['student_number'];
+                $tempUser->update_user = Yii::app()->user->getState('ID');
+                $tempUser->update_time = new CDbExpression('NOW()');
+
+                if ($student->save(false) && $class1->save(false) && $tempUser->save(false)) {
                     $result = true;
                 }
             }
