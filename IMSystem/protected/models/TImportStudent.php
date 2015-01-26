@@ -243,7 +243,7 @@ class TImportStudent extends CActiveRecord {
             return null;
         }
         
-        if(trim($value) == '齐') {
+        if(trim($value) == '齐' || trim($value) == '缴') {
             return '1';
         }
         
