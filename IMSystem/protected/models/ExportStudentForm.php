@@ -57,7 +57,8 @@ class ExportStudentForm extends CFormModel {
     public function getExcelData() {
         
         $sql = "SELECT a.*, b.student_number, c.class_code, ";
-        $sql .= "(select aa.class_code from t_classes aa, t_student_classes bb where aa.ID=bb.class_id and bb.student_id=a.ID order by bb.create_time asc limit 1, 1) as old_class_code ";
+        $sql .= "(select aa.class_code     from t_classes aa, t_student_classes bb where aa.ID=bb.class_id and bb.student_id=a.ID order by bb.create_time desc limit 1, 1) as old_class_code,   ";
+        $sql .= "(select bb.student_number from t_classes aa, t_student_classes bb where aa.ID=bb.class_id and bb.student_id=a.ID order by bb.create_time desc limit 1, 1) as old_student_number ";
         $sql .= "FROM t_students a  ";
         $sql .= "inner join t_student_classes b on a.ID=b.student_id and b.`status`='1' ";
         $sql .= "inner join t_classes c on c.ID=b.class_id  ";
@@ -125,10 +126,10 @@ class ExportStudentForm extends CFormModel {
         // =============================================================
         // 标题
         // =============================================================
-        // 最大列数19列
-        $lastColumn = PHPExcel_Cell::stringFromColumnIndex(18);
+        // 最大列数20列
+        $lastColumn = PHPExcel_Cell::stringFromColumnIndex(19);
         // 大标题
-        $worksheet->mergeCellsByColumnAndRow(0, 1, 18, 1);
+        $worksheet->mergeCellsByColumnAndRow(0, 1, 19, 1);
         $worksheet->setCellValue("A1", "孝感生物工程学校学生信息一览表");
         $worksheet->getStyle("A1")->getFont()->setBold(true);
         $worksheet->getStyle("A1")->getAlignment()->setWrapText(true);
@@ -175,6 +176,12 @@ class ExportStudentForm extends CFormModel {
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
 
+        //原班级学号
+        $worksheet->mergeCellsByColumnAndRow($col, $index + 1, $col, $index + 2);
+        $worksheet->setCellValueByColumnAndRow($col, $index + 1, "原班级" . PHP_EOL . "学号");
+        $worksheet->getColumnDimensionByColumn($col)->setWidth(12);
+        $col++;
+
         //住宿情况
         $worksheet->mergeCellsByColumnAndRow($col, $index + 1, $col, $index + 2);
         $worksheet->setCellValueByColumnAndRow($col, $index + 1, "住宿" . PHP_EOL . "情况");
@@ -184,27 +191,27 @@ class ExportStudentForm extends CFormModel {
         //缴费情况
         $worksheet->mergeCellsByColumnAndRow($col, $index + 1, $col + 5, $index + 1);
         $worksheet->setCellValueByColumnAndRow($col, $index + 1, "缴费情况");
-        //班级(原)
+        //缴费情况(第一学期)
         $worksheet->setCellValueByColumnAndRow($col, $index + 2, "第一".PHP_EOL."学期");
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
-        //班级(现)
+        //缴费情况(第二学期)
         $worksheet->setCellValueByColumnAndRow($col, $index + 2, "第二".PHP_EOL."学期");
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
-        //班级(原)
+        //缴费情况(第三学期)
         $worksheet->setCellValueByColumnAndRow($col, $index + 2, "第三".PHP_EOL."学期");
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
-        //班级(现)
+        //缴费情况(第四学期)
         $worksheet->setCellValueByColumnAndRow($col, $index + 2, "第四".PHP_EOL."学期");
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
-        //班级(原)
+        //缴费情况(第五学期)
         $worksheet->setCellValueByColumnAndRow($col, $index + 2, "第五".PHP_EOL."学期");
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
-        //班级(现)
+        //缴费情况(第六学期)
         $worksheet->setCellValueByColumnAndRow($col, $index + 2, "第六".PHP_EOL."学期");
         $worksheet->getColumnDimensionByColumn($col)->setWidth(5);
         $col++;
@@ -258,11 +265,11 @@ class ExportStudentForm extends CFormModel {
         $column = 0;
         foreach ($data as $key => $value) {
             $colIndex = 0 ;
-            // 姓名
+            // 学号
             $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["student_number"], PHPExcel_Cell_DataType::TYPE_STRING);
-            // 学号
-            $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["name"]); 
+            // 姓名
+            $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["name"], PHPExcel_Cell_DataType::TYPE_STRING); 
             // 性别
             $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $this->getSexName($value["sex"]));
@@ -275,6 +282,8 @@ class ExportStudentForm extends CFormModel {
             $worksheet->getStyleByColumnAndRow($colIndex, $index)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["class_code"]); 
             
+            // 原班级学号
+            $worksheet->setCellValueExplicitByColumnAndRow($colIndex++, $index, $value["old_student_number"], PHPExcel_Cell_DataType::TYPE_STRING); 
             // 住宿情况
             $worksheet->setCellValueByColumnAndRow($colIndex++, $index, $value["accommodation"]); 
             
