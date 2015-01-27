@@ -43,15 +43,15 @@ $(document).ready(function(){
                 <tr>
                     <td class="center"><?php echo $index++; ?></td>
                     <td class="center"><?php echo $student->student_number; ?></td>
-                    <td class="center">
-                        <span class="label <?php echo $student->status === '1' ? 'label-active' : 'label-stop';?>"><?php echo $student->status === '1' ? '在校' : '离校'; ?></span>
-                    </td>
                     <td class="center" nowrap>
                         <?php if(in_array('student/update', $this->authoritys)) { ?>
                             <a href="<?php echo $this->createUrl('student/update',  array('ID' => $student->ID)) ?>"><?php echo $student->name; ?></a>
                         <?php } else { ?>
                             <?php echo $student->name; ?>
                         <?php } ?>
+                    </td>
+                    <td class="center">
+                        <span class="label <?php echo $student->status === '1' ? 'label-active' : 'label-stop';?>"><?php echo $student->status === '1' ? '在校' : '离校'; ?></span>
                     </td>
                     <td class="center"><?php if($student->sex == 'M') echo '男' ; if($student->sex == 'F') echo '女'; ?></td>
                     <td class="center"><?php echo $student->birthday; ?></td>
