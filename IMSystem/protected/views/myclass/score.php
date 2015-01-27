@@ -31,7 +31,8 @@ Yii::app()->clientScript->registerScript('js', "
                 ?>
                 <div class="padd">
                     <h6>
-                        班主任，任课教师查看自己班级的学生信息。<br/>
+                        班主任，任课教师查看当前自己所担任班级的学生的成绩信息。<br/>
+                        对于过去班级的学生成绩，则无法查看。<br/>
                     </h6>
                     <hr/>
                         <div class="form-group" id="class">
