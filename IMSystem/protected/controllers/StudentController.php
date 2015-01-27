@@ -313,12 +313,12 @@ class StudentController extends BaseController {
                 $student->update_time = new CDbExpression('NOW()');
 
                 if ($user->save(false) && $student->save(false)) {
-                    $this->setSuccessMessage("学生信息删除成功！");
+                    $this->setSuccessMessage("学生离校处理成功！");
                     $tran->commit();
                     
                     $this->redirect($this->createUrl('search'));
                 } else {
-                    $this->setErrorMessage("学生信息删除失败！");
+                    $this->setErrorMessage("学生离校处理失败！");
                     $this->redirect($this->createUrl('update', array('ID'=>$ID)));
                 }
             } catch (Exception $e) {

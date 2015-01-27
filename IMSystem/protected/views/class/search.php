@@ -105,11 +105,11 @@ $(document).ready(function(){
                     <th class="autohide">年级</th>
                     <th>年度</th>
                     <th>学期</th>
-                    <th>班级性质</th>
+                    <th class="autohide">班级性质</th>
                     <th class="autohide">专业名称</th>
-                    <th class="autohide">班主任</th>
+                    <th>班主任</th>
                     <th>状态</th>
-                    <th>操作</th>
+                    <th>学生人数</th>
                 </tr>
             </thead>
 

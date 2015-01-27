@@ -22,7 +22,7 @@ class ClassController extends BaseController {
             $sql .= "inner join t_student_classes b on a.ID = b.student_id ";
             $sql .= "inner join t_classes c on c.ID = b.class_id ";
             $sql .= "where b.class_id=:class_id ";
-            $sql .= " and ((c.status='1' and b.status='1') or (c.status='2' and b.status='0')) "; // 目前班级的学生，以及以前班级的学生
+            $sql .= " and b.status='1' "; 
 
             $students = TStudents::model()->findAllBySQL($sql, array(':class_id' => $class->ID));
 
@@ -44,7 +44,9 @@ class ClassController extends BaseController {
      */
     public function actionSearch() {
 
-        $sql = "select a.*, b.ID as teacher_id, b.name as teacher_name from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
+        $sql = "select a.*, b.ID as teacher_id, b.name as teacher_name,
+                (select count(c.student_number) from t_student_classes c where a.ID=c.class_id ) as student_count 
+                from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $condition = '';
 

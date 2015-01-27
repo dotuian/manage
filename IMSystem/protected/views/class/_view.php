@@ -30,7 +30,9 @@
     </td>
     <td class="center">
         <?php if(in_array('class/student', $this->authoritys)) { ?>
-            <a href="<?php echo $this->createUrl('class/student', array('ID' => $data['ID'])) ?>">学生一览</a>
+            <a href="<?php echo $this->createUrl('class/student', array('ID' => $data['ID'])) ?>"><?php echo $data['student_count']; ?></a>
+        <?php } else { ?>
+            <?php echo $data['student_count']; ?>
         <?php } ?>
     </td>
 </tr>
