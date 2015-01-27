@@ -174,19 +174,19 @@ class StudentController extends BaseController {
             if (is_null($student)) {
                 throw new CHttpException(404, "该学生信息不存在！");
             }
-            
+            // 2015.01.27 去掉学生班级变更功能
             // 当前所在班级信息
-            $currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
-            if (!is_null($currentClass)) {
-                // 目前所在班级学号
-                $student->student_number = $currentClass->student_number;
-                // 目前所在班级
-                $student->class_id = $currentClass->class_id;
-                
-                // 班级和学号信息临时保存
-                $student->old_class_id = $currentClass->class_id;
-                $student->old_student_number  = $currentClass->student_number;
-            }
+//            $currentClass = TStudentClasses::model()->find("student_id=:student_id and status='1'", array(':student_id' => $student->ID));
+//            if (!is_null($currentClass)) {
+//                // 目前所在班级学号
+//                $student->student_number = $currentClass->student_number;
+//                // 目前所在班级
+//                $student->class_id = $currentClass->class_id;
+//                
+//                // 班级和学号信息临时保存
+//                $student->old_class_id = $currentClass->class_id;
+//                $student->old_student_number  = $currentClass->student_number;
+//            }
 
             if (isset($_POST['TStudents'])) {
                 
@@ -219,49 +219,50 @@ class StudentController extends BaseController {
                 $student->update_user  = $this->getLoginUserId();
                 $student->update_time  = new CDbExpression('NOW()');
                 
-                // 最新的学生班级信息
-                $student->class_id     = trim($_POST['TStudents']['class_id']);
-                // 最新的学生班级学号
-                $student->student_number = trim($_POST['TStudents']['student_number']);
+//                // 最新的学生班级信息
+//                $student->class_id     = trim($_POST['TStudents']['class_id']);
+//                // 最新的学生班级学号
+//                $student->student_number = trim($_POST['TStudents']['student_number']);
                 
                 $tran = Yii::app()->db->beginTransaction();
                 try {
                     if($student->validate()) {
 
-                        if (is_null($currentClass)) {
-                            // 学生班级信息不存在，新建班级信息
-                            $newClass = new TStudentClasses();
-                            $newClass->student_number = $student->student_number; // 学号
-                            $newClass->class_id       = $student->class_id;
-                            $newClass->student_id     = $student->ID;
-                            $newClass->status = '1';
-                            $newClass->create_user = $this->getLoginUserId();
-                            $newClass->create_time = new CDbExpression('NOW()');
-                            $newClass->save(false);
-                        } else {
-                            // 存在，并且修改了班级信息时
-                            if ($student->old_class_id != $student->class_id) { // 班级信息不一致时，表示修改了班级信息
-                                // 当前班级信息状态设置为暂停
-                                $currentClass->status = '0';
-                                $currentClass->save(false);
-                                
-                                // 新加新的班级信息
-                                $newClass = new TStudentClasses();
-                                $newClass->student_number = $student->student_number; // 学号
-                                $newClass->class_id       = $student->class_id;
-                                $newClass->student_id     = $student->ID;
-                                $newClass->status = '1';
-                                $newClass->create_user = $this->getLoginUserId();
-                                $newClass->create_time = new CDbExpression('NOW()');
-                                $newClass->save(false);
-                            } else {
-                                // 班级信息没有发生变化，而学号发生了修改的情况
-                                if ($student->old_student_number != $student->student_number) {
-                                    $currentClass->student_number = $student->student_number;
-                                    $currentClass->save(false);
-                                }
-                            }
-                        }
+                          // 2015.01.27 去掉学生班级变更功能
+//                        if (is_null($currentClass)) {
+//                            // 学生班级信息不存在，新建班级信息
+//                            $newClass = new TStudentClasses();
+//                            $newClass->student_number = $student->student_number; // 学号
+//                            $newClass->class_id       = $student->class_id;
+//                            $newClass->student_id     = $student->ID;
+//                            $newClass->status = '1';
+//                            $newClass->create_user = $this->getLoginUserId();
+//                            $newClass->create_time = new CDbExpression('NOW()');
+//                            $newClass->save(false);
+//                        } else {
+//                            // 存在，并且修改了班级信息时
+//                            if ($student->old_class_id != $student->class_id) { // 班级信息不一致时，表示修改了班级信息
+//                                // 当前班级信息状态设置为暂停
+//                                $currentClass->status = '0';
+//                                $currentClass->save(false);
+//                                
+//                                // 新加新的班级信息
+//                                $newClass = new TStudentClasses();
+//                                $newClass->student_number = $student->student_number; // 学号
+//                                $newClass->class_id       = $student->class_id;
+//                                $newClass->student_id     = $student->ID;
+//                                $newClass->status = '1';
+//                                $newClass->create_user = $this->getLoginUserId();
+//                                $newClass->create_time = new CDbExpression('NOW()');
+//                                $newClass->save(false);
+//                            } else {
+//                                // 班级信息没有发生变化，而学号发生了修改的情况
+//                                if ($student->old_student_number != $student->student_number) {
+//                                    $currentClass->student_number = $student->student_number;
+//                                    $currentClass->save(false);
+//                                }
+//                            }
+//                        }
 
                         if ($student->save()) {
                             $tran->commit();

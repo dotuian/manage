@@ -106,22 +106,23 @@ $this->breadcrumbs=array(
                                 <?php } ?>
                             </div>
                         </div>
-                        
+                        <!-- 
                         <div class="form-group">
                             <label class="col-lg-2 control-label">目前所在班级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control required', 'disabled'=>'disabled',)); ?>
-                                <?php echo $form->error($model,'class_id'); ?>
+                                <?php // echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control required', 'disabled'=>'disabled',)); ?>
+                                <?php // echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
                     
                         <div class="form-group">
                             <label class="col-lg-2 control-label">目前所在班级学号</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'student_number', array('class'=>'form-control required', 'placeholder'=>'目前所在班级学号', 'disabled'=>'disabled',)); ?>
-                                <?php echo $form->error($model,'student_number'); ?>
+                                <?php // echo $form->textField($model,'student_number', array('class'=>'form-control required', 'placeholder'=>'目前所在班级学号', 'disabled'=>'disabled',)); ?>
+                                <?php // echo $form->error($model,'student_number'); ?>
                             </div>
                         </div>
+                        -->
 
                         <div class="form-group">
                             <label class="col-lg-2 control-label">住宿情况</label>
