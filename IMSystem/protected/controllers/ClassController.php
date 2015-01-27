@@ -198,6 +198,7 @@ class ClassController extends BaseController {
                 $class->class_name = trim($_POST['TClasses']['class_name']);
                 $class->teacher_id = trim($_POST['TClasses']['teacher_id']);
                 
+                $class->term_type = trim($_POST['TClasses']['term_type']);
                 $class->class_type = trim($_POST['TClasses']['class_type']);
                 $class->specialty_name = trim($_POST['TClasses']['specialty_name']);
                 

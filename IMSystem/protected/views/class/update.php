@@ -63,7 +63,7 @@ $this->breadcrumbs=array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">学期</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'term_type', TClasses::model()->getTermTypeOption(false), array('class'=>'form-control', 'disabled'=>'disabled')); ?>
+                                <?php echo $form->dropDownList($model,'term_type', TClasses::model()->getTermTypeOption(false), array('class'=>'form-control')); ?>
                                 <?php echo $form->error($model,'term_type'); ?>
                             </div>
                         </div>

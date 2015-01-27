@@ -110,13 +110,13 @@ $(document).ready(function(){
                             </div>
                         </div>
                     
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label class="col-lg-2 control-label">班级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control','disabled'=>'disabled')); ?>
-                                <?php echo $form->error($model,'class_id'); ?>
+                                <?php // echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control','disabled'=>'disabled')); ?>
+                                <?php // echo $form->error($model,'class_id'); ?>
                             </div>
-                        </div>
+                        </div>-->
                     
                         <div class="form-group">
                             <label class="col-lg-2 control-label">住宿情况</label>

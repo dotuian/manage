@@ -207,7 +207,7 @@ $this->breadcrumbs=array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">家长QQ</label>
                             <div class="col-lg-10">
-                                <?php echo $form->numberField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
+                                <?php echo $form->textField($model,'parents_qq', array('class'=>'form-control', 'placeholder'=>'家长QQ')); ?>
                                 <?php echo $form->error($model,'parents_qq'); ?>
                             </div>
                         </div>
