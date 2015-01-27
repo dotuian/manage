@@ -83,20 +83,20 @@ $this->breadcrumbs=array(
                                 <?php if(count($classes) > 0) {  ?>
                                 <table class="table table-striped table-bordered table-hover">
                                     <th class="center">年度</th>
-<!--                                    <th class="center">年级</th>
-                                    <th class="center">学期</th>
-                                    <th class="center">类型</th>
-                                    <th class="center">专业</th>-->
+                                    <th class="center autohide">年级</th>
+                                    <th class="center autohide">学期</th>
+                                    <th class="center autohide">类型</th>
+                                    <th class="center autohide">专业</th>
                                     <th class="center">班级</th>
                                     <th class="center">学号</th>
                                     <th class="center">班主任</th>
                                     <?php foreach ($classes as $class) { ?>
                                     <tr>
                                         <td class="center"><?php echo $class['entry_year']; ?></td>
-<!--                                        <td class="center"><?php echo TClasses::model()->getEntryYearDisplayName($class['grade']); ?></td>
-                                        <td class="center"><?php echo TClasses::model()->getTermTypeDisplayName($class['term_type']);?></td>
-                                        <td class="center"><?php echo TClasses::model()->getClassTypeName($class['class_type']); ?></td>
-                                        <td class="center"><?php echo $class['specialty_name']; ?></td>-->
+                                        <td class="center autohide"><?php echo TClasses::model()->getEntryYearDisplayName($class['grade']); ?></td>
+                                        <td class="center autohide"><?php echo TClasses::model()->getTermTypeDisplayName($class['term_type']);?></td>
+                                        <td class="center autohide"><?php echo TClasses::model()->getClassTypeName($class['class_type']); ?></td>
+                                        <td class="center autohide"><?php echo $class['specialty_name']; ?></td>
                                         <td class="center"><?php echo $class['class_name']; ?></td>
                                         <td class="center"><?php echo $class['student_number']; ?></td>
                                         <td class="center"><?php echo $class['name']; ?></td>
@@ -110,7 +110,7 @@ $this->breadcrumbs=array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">目前所在班级</label>
                             <div class="col-lg-10">
-                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control required')); ?>
+                                <?php echo $form->dropDownList($model,'class_id', TClasses::model()->getAllUsingClassOption(true), array('class'=>'form-control required', 'disabled'=>'disabled',)); ?>
                                 <?php echo $form->error($model,'class_id'); ?>
                             </div>
                         </div>
@@ -118,7 +118,7 @@ $this->breadcrumbs=array(
                         <div class="form-group">
                             <label class="col-lg-2 control-label">目前所在班级学号</label>
                             <div class="col-lg-10">
-                                <?php echo $form->textField($model,'student_number', array('class'=>'form-control required', 'placeholder'=>'目前所在班级学号')); ?>
+                                <?php echo $form->textField($model,'student_number', array('class'=>'form-control required', 'placeholder'=>'目前所在班级学号', 'disabled'=>'disabled',)); ?>
                                 <?php echo $form->error($model,'student_number'); ?>
                             </div>
                         </div>

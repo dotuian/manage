@@ -45,7 +45,7 @@ class ClassController extends BaseController {
     public function actionSearch() {
 
         $sql = "select a.*, b.ID as teacher_id, b.name as teacher_name,
-                (select count(c.student_number) from t_student_classes c where a.ID=c.class_id ) as student_count 
+                (select count(c.student_number) from t_student_classes c where a.ID=c.class_id and c.status='1') as student_count 
                 from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $countSql = "select count(*) from t_classes a left join t_teachers b on a.teacher_id=b.ID where 1=1 ";
         $condition = '';
