@@ -10,8 +10,7 @@
 // set foreign_key_checks=off
 // set foreign_key_checks=on
 
-// 20140001 学号 = 入学年月 + 普高(01)/技能(02) + 校内编号(4位)
-
+// 
 
 
 return array(
@@ -29,12 +28,12 @@ return array(
     'modules' => array(
         // uncomment the following to enable the Gii tool
 
-//        'gii' => array(
-//            'class' => 'system.gii.GiiModule',
-//            'password' => 'rootadmin',
-//            // If removed, Gii defaults to localhost only. Edit carefully to taste.
-//            'ipFilters' => array('127.0.0.1', '::1'),
-//        ),
+        //'gii' => array(
+        //    'class' => 'system.gii.GiiModule',
+        //    'password' => 'rootadmin',
+        //    // If removed, Gii defaults to localhost only. Edit carefully to taste.
+        //    'ipFilters' => array('127.0.0.1', '::1'),
+        //),
     ),
     // application components
     'components' => array(
@@ -114,12 +113,13 @@ return array(
             'routes' => array(
                 array(
                     'class' => 'CFileLogRoute',
-                    'levels' => 'info, warning, error, profile',
+                    'levels' => 'error',
+                    'logFile' => 'application_' . date('Ymd') . '.log',
                 ),
-               array(
-                    'class'=>'CWebLogRoute',
-                    //'levels' => 'trace,info,error,warning,debug',
-                ),
+//               array(
+//                    'class'=>'CWebLogRoute',
+//                    'levels' => 'trace,info,error,warning,debug',
+//                ),
             ),
         ),
         
@@ -128,7 +128,7 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        'adminEmail' => 'webmaster@example.com',
+        'adminEmail' => 'dotuian@outlook.com',
         'EmptySelectOption' => '--------',
         'PageSize' => 50,
         'FilePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..\..\files\\upload\\',
