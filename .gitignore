@@ -19,7 +19,7 @@
 
 #不忽略.gitignore文件
 !.gitignore
-
+!.gitkeep
 
 #忽略一下文件夹及文件
 /index.php
