@@ -2018,12 +2018,13 @@ footer a:hover{
 
 footer .copy{
 	font-size: 11px;
-        color: #fff;
+    color: #fff;
+    text-align: center;
 }
 
 footer .copy a{
 	font-size: 11px;
-        color: #fff;
+    color: #fff;
 }
 
 /* Noty Style */

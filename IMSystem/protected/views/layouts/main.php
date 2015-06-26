@@ -8,10 +8,10 @@
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
 
-        <meta name="description" content="孝感综合高级中学" />
-        <meta name="description" content="校园信息系统" />
-        <meta name="keywords" content="孝感综合高级中学,校园信息系统" />
-        <meta name="author" content="孝感综合高级中学" />
+        <meta name="description" content="<?php echo Yii::app()->name; ?>" />
+        <meta name="description" content="<?php echo Yii::app()->params['appName'];?>" />
+        <meta name="keywords" content="<?php echo Yii::app()->name; ?>,<?php echo Yii::app()->params['appName'];?>" />
+        <meta name="author" content="<?php echo Yii::app()->name; ?>" />
 
         <!-- MoodStrap CSS framework -->
         <!-- Stylesheets -->
@@ -75,8 +75,8 @@
             -->
             
             <a href="<?php echo Yii::app()->homeUrl; ?>" class="navbar-brand">
-                 <span class="bold">孝感综合高级中学</span>
-                 <i>校园信息系统</i> 
+                 <span class="bold"><?php echo Yii::app()->name; ?></span>
+                 <i><?php echo Yii::app()->params['appName'];?></i> 
             </a>
         </div>
 
@@ -436,22 +436,14 @@
 <!-- Footer starts -->
 <footer>
     <div class="container">
-        <div class="row">
-            <div class="col-md-10">
-                <!-- Copyright info -->
-                <p class="copy">
-                    Copyright &copy; 2014 -- <?php echo date('Y')?> | 
-                    <a href="http://xgzhgz.com" target="_blank">孝感市综合高级中学</a> 
-                </p>
-            </div>
-            <div class="col-md-2">
-                <!-- Copyright info -->
-                <p class="copy">
-                    技术支持QQ：254557578 <br/>
-                    邮箱：<email>dotuian@outlook.com</email>
-                </p>
-            </div>
-        </div>
+        <p class="copy">
+            Copyright &copy; 2014 -- <?php echo date('Y')?> | 
+            <a href="http://xgzhgz.com" target="_blank">孝感市综合高级中学</a> 版权所有　地址：湖北省孝感市槐荫大道100号 , 电话:0712-2462735 , 鄂ICP备000000号
+        </p>
+
+        <p class="copy">
+            技术支持QQ：254557578　邮箱：<email>dotuian@outlook.com</email>
+        </p>
     </div>
 </footer> 	
 

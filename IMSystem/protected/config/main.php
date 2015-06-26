@@ -15,7 +15,7 @@
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => '孝感市综合高级中学 - ',
+    'name' => '孝感市综合高级中学',
     'language' => 'zh_cn',
     // preloading 'log' component
     'preload' => array('log'),
@@ -75,27 +75,27 @@ return array(
          */
         'db' => array(
             'class' => 'DbConnectionMan',
-            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+            'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
             'emulatePrepare' => true,
             'username' => 'root',
-            'password' => 'rootadmin',
+            'password' => 'vertrigo',
             'charset' => 'utf8',
             'enableProfiling' => true,
             'enableParamLogging' => true,
             'enableSlave' => false,
             'slaves' => array(
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
                     'username' => 'root',
-                    'password' => 'rootadmin',
+                    'password' => 'vertrigo',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
                 ),
                 array(
-                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3316',
+                    'connectionString' => 'mysql:host=localhost;dbname=xsglxtsql;port=3306',
                     'username' => 'root',
-                    'password' => 'rootadmin',
+                    'password' => 'vertrigo',
                     'charset' => 'utf8',
                     'enableProfiling' => true,
                     'enableParamLogging' => true,
@@ -127,6 +127,8 @@ return array(
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
     'params' => array(
+        'appName' => '校园信息系统',
+        
         // this is used in contact page
         'adminEmail' => 'dotuian@outlook.com',
         'EmptySelectOption' => '--------',
